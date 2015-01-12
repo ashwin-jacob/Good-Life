@@ -7,11 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.goodlife.dao.UserRoleDAO;
+
+//import com.goodlife.dao.UserRoleDAO;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserAlreadyExistsException;
 import com.goodlife.exceptions.UserNotFoundException;
-import com.goodlife.model.UserRole;
+//import com.goodlife.model.UserRole;
 import com.goodlife.model.Users;
 import com.goodlife.service.InvitationService;
 import com.goodlife.service.util.ApplicationMailer;
@@ -23,8 +24,8 @@ public class InvitationServiceImpl implements InvitationService {
 	@Autowired
 	UsersDAO usersDao;
 
-	@Autowired
-	UserRoleDAO userRoleDao;
+	//@Autowired
+	//UserRoleDAO userRoleDao;
 
 	@Autowired
 	ApplicationMailer mailer;
@@ -33,8 +34,8 @@ public class InvitationServiceImpl implements InvitationService {
 	private int RandomMin = 100001;
 	private int RandomMax = 999999;
 
-	public void InviteUserByUsername(String username, String loggedInUser)
-			throws UserAlreadyExistsException {
+	public void inviteUserByUsername(String username, String loggedInUser)
+			throws UserAlreadyExistsException, UserNotFoundException {
 		Integer randomNumber;
 		Users user = usersDao.findByUserName(username);
 		if (user != null) {
@@ -46,18 +47,20 @@ public class InvitationServiceImpl implements InvitationService {
 
 		Users newUser = new Users();
 		newUser.setUsername(username);
-		newUser.setEnabled(false);
+		newUser.setRegistered(false);
 		newUser.setPassword(tempPassword);
-		newUser.setInvited_by(loggedInUser);
-		newUser.setInvited_date(new Date());
-		newUser.setInvitation_code(randomNumber);
-
-		UserRole userRole = new UserRole();
+		newUser.setInvitedBy(loggedInUser);
+		newUser.setInvitedDate(new Date());
+		newUser.setInvitationCode(randomNumber);
+		newUser.setRoleTypeCode("S");
+		
+		/*UserRole userRole = new UserRole();
 		userRole.setRole("ROLE_STUDENT");
 		userRole.setUser(newUser);
+		
+		userRoleDao.addUserRole(userRole);*/
 
 		usersDao.addUser(newUser);
-		userRoleDao.addUserRole(userRole);
 
 		String subject = "creating account";
 		String body = "random number is " + randomNumber;
@@ -91,17 +94,17 @@ public class InvitationServiceImpl implements InvitationService {
 	}
 
 	@Override
-	public void DeleteUser(String username) throws UserNotFoundException{
+	public void deleteUser(String username) throws UserNotFoundException{
 			usersDao.deleteUser(username);
 	}
 
 	@Override
-	public void DisableUser(String username)  throws UserNotFoundException {
+	public void disableUser(String username)  throws UserNotFoundException {
 			usersDao.disableUser(username);
 	}
 
 	@Override
-	public void EnableUser(String username) throws UserNotFoundException {
+	public void enableUser(String username) throws UserNotFoundException {
 			usersDao.enableUser(username);
 	}
 
@@ -113,16 +116,22 @@ public class InvitationServiceImpl implements InvitationService {
 			throw new UserNotFoundException("Username entered does not exist in our database.");
 		}
 		
-		if (!resetPassword && user.isEnabled()) {
+		if (!resetPassword && user.isRegistered()) {
 			throw new UserAlreadyExistsException("The user you are trying to signup with already exists and is active.  If you forgot your password, we recommend using the reset password link.");
 		}
 		
 		Integer randomNumber = generateRandomNumber(RandomMin, RandomMax);
-		user.setInvitation_code(randomNumber);
+		user.setInvitationCode(randomNumber);
 		usersDao.addUser(user);
 		String subject = "New Invitation Code";
 		String body = "Invitation Code is " + randomNumber;
 		mailer.sendMail(username, subject, body);
+	}
+
+	@Override
+	public void suspendUser(String username) throws UserNotFoundException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

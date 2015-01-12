@@ -38,7 +38,7 @@ public class SuperAdminController {
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			String loggedInUser = authentication.getName();
-			invitationService.InviteUserByUsername(username, loggedInUser);
+			invitationService.inviteUserByUsername(username, loggedInUser);
 		} catch (Exception e) {
 			//need to do something if we get an exception.
 		}
@@ -55,7 +55,7 @@ public class SuperAdminController {
 	public String deleteUser(@ModelAttribute(value = "username") String username,
 			BindingResult result) {
 		try {
-			invitationService.DeleteUser(username);
+			invitationService.deleteUser(username);
 		} catch (Exception e) {
 			//need to do something if we get an exception.
 		}
@@ -72,7 +72,7 @@ public class SuperAdminController {
 	public String disableUser(@ModelAttribute(value = "username") String username,
 			BindingResult result) {
 		try {
-			invitationService.DisableUser(username);
+			invitationService.disableUser(username);
 		} catch (Exception e) {
 			//need to do something if we get an exception.
 		}
@@ -89,7 +89,7 @@ public class SuperAdminController {
 	public String enableUser(@ModelAttribute(value = "username") String username,
 			BindingResult result) {
 		try {
-			invitationService.EnableUser(username);
+			invitationService.enableUser(username);
 		} catch (Exception e) {
 			//need to do something if we get an exception.
 		}

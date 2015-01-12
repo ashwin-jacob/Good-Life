@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.goodlife.dao.UserRoleDAO;
+//import com.goodlife.dao.UserRoleDAO;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.InvalidEmailToken;
 import com.goodlife.exceptions.UserAlreadyExistsException;
+import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Users;
 import com.goodlife.service.UserService;
 import com.goodlife.service.util.PasswordEncoder;
@@ -26,23 +27,24 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	UsersDAO usersDao;
 
-	@Autowired
-	UserRoleDAO userRoleDao;
+	//@Autowired
+	//UserRoleDAO userRoleDao;
 	
 	@Autowired
 	PasswordEncoder passwdEncoder;
 
 
-	public void ActivateAndUpdateUser(String email, String passwd, String token, boolean resetPassword) throws InvalidEmailToken, UserAlreadyExistsException {
+	public void activateAndUpdateUser(String email, String passwd, String token, boolean resetPassword) 
+			throws InvalidEmailToken, UserAlreadyExistsException, UserNotFoundException {
 		Users user = usersDao.findByUserName(email);
-		if (!user.getInvitation_code().toString().equals(token)) {
+		if (!user.getInvitationCode().toString().equals(token)) {
 			throw new InvalidEmailToken("Email token does not match!!");
 		}
 		
-		if (!resetPassword && user.isEnabled()) {
+		if (!resetPassword && user.isRegistered()) {
 			throw new UserAlreadyExistsException("The user you are trying to signup with already exists and is active.  If you forgot your password, we recommend using the reset password link.");
 		}
-		user.setEnabled(true);
+		user.setRegistered(true);
 		user.setPassword(passwdEncoder.encodePassword(passwd));
 		usersDao.addUser(user);
 	}

@@ -30,23 +30,25 @@ public class LoginServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		try {
 			Users user = loginDao.findByUserName(username);
-			List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRole());
-			return buildUserForAuthentication(user, authorities);
+			Set<String> roles = new HashSet<String>();
+			roles.add(user.getRoleTypeCode());
+			List<GrantedAuthority> authority = buildUserAuthority(roles);
+			return buildUserForAuthentication(user, authority);
 		} catch (Exception e) {
 			throw new UsernameNotFoundException(username);
 		}
 	}
-
+	
 	private User buildUserForAuthentication(Users user, List<GrantedAuthority> authorities) {
 		return new User(user.getUsername(), user.getPassword(),
-				user.isEnabled(), true, true, true, authorities);
+				user.isRegistered(), true, true, true, authorities);
 	}
 
-	private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
+	private List<GrantedAuthority> buildUserAuthority(Set<String> userRoles) {
 		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 		// Build user's authorities
-		for (UserRole userRole : userRoles) {
-			setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
+		for (String userRole : userRoles) {
+			setAuths.add(new SimpleGrantedAuthority(userRole));
 		}
 		List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
 		return Result;

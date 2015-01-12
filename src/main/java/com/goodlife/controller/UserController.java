@@ -68,7 +68,7 @@ public class UserController {
 		
 		try {
 			logger.debug("Details: " + email + ":" + password1 + ":" + password2 + ":" + token);
-			userService.ActivateAndUpdateUser(email, password1, token, false);
+			userService.activateAndUpdateUser(email, password1, token, false);
 		} catch (Exception e) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", e.getMessage());
@@ -115,7 +115,7 @@ public class UserController {
 		
 		try {
 			logger.debug("Details: " + email + ":" + password1 + ":" + password2 + ":" + token);
-			userService.ActivateAndUpdateUser(email, password1, token, true);
+			userService.activateAndUpdateUser(email, password1, token, true);
 		} catch (Exception e) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", e.getMessage());
