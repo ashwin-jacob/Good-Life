@@ -52,9 +52,12 @@ public class InvitationServiceImpl implements InvitationService {
 		newUser.setInvitedBy(loggedInUser);
 		newUser.setInvitedDate(new Date());
 		newUser.setInvitationCode(randomNumber);
+		
 		newUser.setRoleTypeCode("S");
 		
 		/*UserRole userRole = new UserRole();
+
+		UserRole userRole = new UserRole();
 		userRole.setRole("ROLE_STUDENT");
 		userRole.setUser(newUser);
 		

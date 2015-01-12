@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
 	PasswordEncoder passwdEncoder;
 
 
+
 	public void activateAndUpdateUser(String email, String passwd, String token, boolean resetPassword) 
 			throws InvalidEmailToken, UserAlreadyExistsException, UserNotFoundException {
 		Users user = usersDao.findByUserName(email);
