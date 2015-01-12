@@ -34,7 +34,7 @@ public class InvitationServiceImpl implements InvitationService {
 	private int RandomMax = 999999;
 
 	public void InviteUserByUsername(String username, String loggedInUser)
-			throws UserAlreadyExistsException {
+			throws UserAlreadyExistsException, UserNotFoundException {
 		Integer randomNumber;
 		Users user = usersDao.findByUserName(username);
 		if (user != null) {
@@ -46,11 +46,11 @@ public class InvitationServiceImpl implements InvitationService {
 
 		Users newUser = new Users();
 		newUser.setUsername(username);
-		newUser.setEnabled(false);
+		newUser.setRegistered(false);
 		newUser.setPassword(tempPassword);
-		newUser.setInvited_by(loggedInUser);
-		newUser.setInvited_date(new Date());
-		newUser.setInvitation_code(randomNumber);
+		newUser.setInvitedBy(loggedInUser);
+		newUser.setInvitedDate(new Date());
+		newUser.setInvitationCode(randomNumber);
 
 		UserRole userRole = new UserRole();
 		userRole.setRole("ROLE_STUDENT");
@@ -113,12 +113,12 @@ public class InvitationServiceImpl implements InvitationService {
 			throw new UserNotFoundException("Username entered does not exist in our database.");
 		}
 		
-		if (!resetPassword && user.isEnabled()) {
+		if (!resetPassword && user.isRegistered()) {
 			throw new UserAlreadyExistsException("The user you are trying to signup with already exists and is active.  If you forgot your password, we recommend using the reset password link.");
 		}
 		
 		Integer randomNumber = generateRandomNumber(RandomMin, RandomMax);
-		user.setInvitation_code(randomNumber);
+		user.setInvitationCode(randomNumber);
 		usersDao.addUser(user);
 		String subject = "New Invitation Code";
 		String body = "Invitation Code is " + randomNumber;

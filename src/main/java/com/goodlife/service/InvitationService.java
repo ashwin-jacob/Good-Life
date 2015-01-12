@@ -6,7 +6,7 @@ import com.goodlife.exceptions.UserNotFoundException;
 public interface InvitationService {
 
 	public void InviteUserByUsername(String username, String loggedInUser)
-			throws UserAlreadyExistsException;
+			throws UserAlreadyExistsException, UserNotFoundException;
 
 	public void DeleteUser(String username) throws UserNotFoundException;
 
