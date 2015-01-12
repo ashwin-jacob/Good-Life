@@ -35,7 +35,7 @@ public class Users {
 	private String password;
 
 	@Column(name = "role_typ_cd", nullable = false, length = 1)
-	private String roleTypeCode;
+	private char roleTypeCode;
 	
 	@Column(name = "rgstrd", nullable = false)
 	private boolean registered;
@@ -78,7 +78,7 @@ public class Users {
     }
     
 	public Users(Integer userId, String email, String username,
-			String password, String roleTypeCode, boolean registered,
+			String password, char roleTypeCode, boolean registered,
 			Integer invitationCode, String invitedBy, Date invitedDate,
 			Integer userStatusId, String firstname, String lastname,
 			String city, String state, String aboutMe) {
@@ -213,11 +213,11 @@ public class Users {
 		this.aboutMe = aboutMe;
 	}
 
-	public String getRoleTypeCode() {
+	public char getRoleTypeCode() {
 		return roleTypeCode;
 	}
 
-	public void setRoleTypeCode(String roleTypeCode) {
+	public void setRoleTypeCode(char roleTypeCode) {
 		this.roleTypeCode = roleTypeCode;
 	}
 }

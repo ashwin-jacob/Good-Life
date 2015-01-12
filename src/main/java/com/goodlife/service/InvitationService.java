@@ -13,8 +13,6 @@ public interface InvitationService {
 	public void disableUser(String username) throws UserNotFoundException;
 
 	public void enableUser(String username) throws UserNotFoundException;
-	
-	public void suspendUser(String username) throws UserNotFoundException;
 
 	public void resendInvitation(String username, boolean resetPassword) throws UserAlreadyExistsException, UserNotFoundException;
 }

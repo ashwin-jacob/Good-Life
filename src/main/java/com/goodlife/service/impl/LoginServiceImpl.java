@@ -31,7 +31,7 @@ public class LoginServiceImpl implements UserDetailsService {
 		try {
 			Users user = loginDao.findByUserName(username);
 			Set<String> roles = new HashSet<String>();
-			roles.add(user.getRoleTypeCode());
+			roles.add(String.valueOf(user.getRoleTypeCode()));
 			List<GrantedAuthority> authority = buildUserAuthority(roles);
 			return buildUserForAuthentication(user, authority);
 		} catch (Exception e) {

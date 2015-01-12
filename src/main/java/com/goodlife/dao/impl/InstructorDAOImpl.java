@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.goodlife.dao.InstructorDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Instructor;
+import com.goodlife.model.Student;
 
 @Repository
 public class InstructorDAOImpl implements InstructorDAO  {
@@ -24,7 +25,7 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	}
 	
 	@Override
-	public void promoteInstructor(String username, String roleTypeCode)
+	public void promoteInstructor(String username, char roleTypeCode)
 			throws UserNotFoundException {
 		Instructor user = findInstructorByUserName(username);
        	user.setRoleTypeCode(roleTypeCode);
@@ -33,28 +34,48 @@ public class InstructorDAOImpl implements InstructorDAO  {
 
 	@Override
 	public void disableInstructor(String username) throws UserNotFoundException {
-		// TODO Auto-generated method stub
-		
+		Instructor user = findInstructorByUserName(username);
+       	user.setRegistered(false);
+        this.sessionFactory.getCurrentSession().save(user);
 	}
+
+	@Override
+	public void enableInstructor(String username) throws UserNotFoundException {
+		Instructor user = findInstructorByUserName(username);
+       	user.setRegistered(true);
+        this.sessionFactory.getCurrentSession().save(user);
+	}
+
+	@Override
+	public void addInstructor(Instructor user) {
+		this.sessionFactory.getCurrentSession().save(user);
+	}
+
+	@Override
+	public void deleteInstructor(String username) throws UserNotFoundException {
+		Instructor user = findInstructorByUserName(username);
+		this.sessionFactory.getCurrentSession().delete(user);
+	}
+	
+	@Override
+	public void suspendInstructor(String username) throws UserNotFoundException {
+		Instructor user = findInstructorByUserName(username);
+		Integer usrStsId = user.getUserStatusId();
+		// TODO
+		// UserStatus status = (UserStatus) this.sessionFactory.getCurrentSession().get(UserStatus.class, usrStsId);
+		// status.setStatusTypeCode("S");
+		this.sessionFactory.getCurrentSession().save(user);
+		// this.sessionFactory.getCurrentSession().save(status);
+	}
+	
 	@Override
 	public void activateInstructor(String username) throws UserNotFoundException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public void addExistingInstructorToRoster(String username, Integer rosterId)
-			throws UserNotFoundException {
 		Instructor user = findInstructorByUserName(username);
-       	user.setRosterId(rosterId);
-       	this.sessionFactory.getCurrentSession().save(user);
-	}
-	
-	@Override
-	public void deleteInstructorInRoster(String username, Integer rosterId)
-			throws UserNotFoundException {
-		Instructor user = findInstructorByUserName(username);
-       	user.setRosterId(null);
-        this.sessionFactory.getCurrentSession().save(user);			
+		Integer usrStsId = user.getUserStatusId();
+		// TODO
+		// UserStatus status = (UserStatus) this.sessionFactory.getCurrentSession().get(UserStatus.class, usrStsId);
+		// status.setStatusTypeCode("A");
+		this.sessionFactory.getCurrentSession().save(user);
+		// this.sessionFactory.getCurrentSession().save(status);
 	}
 }

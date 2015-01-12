@@ -52,9 +52,12 @@ public class InvitationServiceImpl implements InvitationService {
 		newUser.setInvitedBy(loggedInUser);
 		newUser.setInvitedDate(new Date());
 		newUser.setInvitationCode(randomNumber);
-		newUser.setRoleTypeCode("S");
+		
+		newUser.setRoleTypeCode('S');
 		
 		/*UserRole userRole = new UserRole();
+
+		UserRole userRole = new UserRole();
 		userRole.setRole("ROLE_STUDENT");
 		userRole.setUser(newUser);
 		
@@ -126,12 +129,6 @@ public class InvitationServiceImpl implements InvitationService {
 		String subject = "New Invitation Code";
 		String body = "Invitation Code is " + randomNumber;
 		mailer.sendMail(username, subject, body);
-	}
-
-	@Override
-	public void suspendUser(String username) throws UserNotFoundException {
-		// TODO Auto-generated method stub
-		
 	}
 
 }
