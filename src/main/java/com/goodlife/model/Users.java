@@ -1,5 +1,6 @@
 package com.goodlife.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -17,7 +18,7 @@ import org.hibernate.annotations.CascadeType;
 @Entity
 @Table(name = "USERS", catalog = "goodlife")
 @Inheritance
-public class Users {
+public class Users implements Serializable {
 
 	@Id
 	@Column(name = "usr_id", unique = true, nullable = false)

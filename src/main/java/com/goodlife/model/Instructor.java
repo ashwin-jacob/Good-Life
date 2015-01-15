@@ -19,7 +19,6 @@ import org.hibernate.annotations.CascadeType;
 @Table(name="INSTRUCTOR", catalog = "goodlife")
 public class Instructor extends Users {
 
-	@Id
 	@Column(name = "roster_id")
 	@GeneratedValue
 	private Integer rosterId;
