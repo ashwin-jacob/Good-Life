@@ -5,21 +5,19 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "USERS", catalog = "goodlife")
 @Inheritance
 public class Users implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@Column(name = "usr_id", unique = true, nullable = false)
 	@GeneratedValue
@@ -49,9 +47,6 @@ public class Users implements Serializable {
 	
 	@Column(name = "invit_dt", nullable = true)
 	private Date invitedDate;
-
-	@Column(name = "usr_sts_id", nullable = true)
-	private Integer userStatusId;
 	
     @Column(name="frst_nm", length = 50)
     private String firstname;
@@ -67,12 +62,6 @@ public class Users implements Serializable {
     
     @Column(name="abt_me", length = 250)
     private String aboutMe;
-    
-	/*
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
-	private Set<UserRole> userRole = new HashSet<UserRole>(0);
-	*/
 	
     public Users() {
     	
@@ -93,7 +82,6 @@ public class Users implements Serializable {
 		this.invitationCode = invitationCode;
 		this.invitedBy = invitedBy;
 		this.invitedDate = invitedDate;
-		this.userStatusId = userStatusId;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.city = city;
@@ -164,14 +152,6 @@ public class Users implements Serializable {
 
 	public void setInvitedDate(Date invitedDate) {
 		this.invitedDate = invitedDate;
-	}
-
-	public Integer getUserStatusId() {
-		return userStatusId;
-	}
-
-	public void setUserStatusId(Integer userStatusId) {
-		this.userStatusId = userStatusId;
 	}
 	
     public String getFirstname() {

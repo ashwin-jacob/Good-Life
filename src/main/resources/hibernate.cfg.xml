@@ -5,11 +5,14 @@
  
 <hibernate-configuration>
     <session-factory>
-		<!-- <mapping class="com.goodlife.model.UserInfo" />
-		<mapping class="com.goodlife.model.UserRole" /> -->
 		<mapping class="com.goodlife.model.Users" />
 		<mapping class="com.goodlife.model.SuperAdmin" />
 		<mapping class="com.goodlife.model.Instructor" />
 		<mapping class="com.goodlife.model.Student" />
+		
+		<!--  <mapping class="com.goodlife.dao.UsersDAO" />
+		<mapping class="com.goodlife.dao.SuperAdminDAO" />
+		<mapping class="com.goodlife.dao.InstructorDAO" />
+		<mapping class="com.goodlife.dao.StudentDAO" /> -->
     </session-factory>
 </hibernate-configuration>

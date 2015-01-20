@@ -23,10 +23,7 @@ public class InvitationServiceImpl implements InvitationService {
 
 	@Autowired
 	UsersDAO usersDao;
-
-	//@Autowired
-	//UserRoleDAO userRoleDao;
-
+	
 	@Autowired
 	ApplicationMailer mailer;
 

@@ -2,7 +2,6 @@ package com.goodlife.dao;
 
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Instructor;
-import com.goodlife.model.Users;
 
 public interface InstructorDAO {
 	public Instructor findInstructorByUserName(String username) throws UserNotFoundException;

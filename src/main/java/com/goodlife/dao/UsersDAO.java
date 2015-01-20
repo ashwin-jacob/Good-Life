@@ -10,7 +10,7 @@ public interface UsersDAO
 	public Users findByUserName(String username) throws UserNotFoundException;
 	public List<Users> findByFirstName(String firstname) throws UserNotFoundException;
 	public List<Users> findByLastName(String lastname) throws UserNotFoundException;
-	public List<Users> findByRoleType(String roleTypeCode) throws UserNotFoundException;
+	public List<Users> findByRoleType(char roleTypeCode) throws UserNotFoundException;
 	public List<Users> findByEmail(String email) throws UserNotFoundException;
 	// public List<Users> findSuspended() throws UserNotFoundException;
 	

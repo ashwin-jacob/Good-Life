@@ -35,7 +35,7 @@ public class StudentDAOImpl implements StudentDAO  {
 	@Override
 	public void suspendStudent(String username) throws UserNotFoundException {
 		Student user = findStudentByUserName(username);
-		Integer usrStsId = user.getUserStatusId();
+		//Integer usrStsId = user.getUserStatusId();
 		//TODO
 		this.sessionFactory.getCurrentSession().save(user);
 		// this.sessionFactory.getCurrentSession().save(status);
@@ -44,7 +44,7 @@ public class StudentDAOImpl implements StudentDAO  {
 	@Override
 	public void activateStudent(String username) throws UserNotFoundException {
 		Student user = findStudentByUserName(username);
-		Integer usrStsId = user.getUserStatusId();
+		//Integer usrStsId = user.getUserStatusId();
 		// TODO
 		this.sessionFactory.getCurrentSession().save(user);
 		// this.sessionFactory.getCurrentSession().save(status);

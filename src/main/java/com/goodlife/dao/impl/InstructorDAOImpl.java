@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.goodlife.dao.InstructorDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Instructor;
-import com.goodlife.model.Student;
 
 @Repository
 public class InstructorDAOImpl implements InstructorDAO  {
@@ -60,7 +59,7 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	@Override
 	public void suspendInstructor(String username) throws UserNotFoundException {
 		Instructor user = findInstructorByUserName(username);
-		Integer usrStsId = user.getUserStatusId();
+		//Integer usrStsId = user.getUserStatusId();
 		// TODO
 		// UserStatus status = (UserStatus) this.sessionFactory.getCurrentSession().get(UserStatus.class, usrStsId);
 		// status.setStatusTypeCode("S");
@@ -71,7 +70,7 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	@Override
 	public void activateInstructor(String username) throws UserNotFoundException {
 		Instructor user = findInstructorByUserName(username);
-		Integer usrStsId = user.getUserStatusId();
+		//Integer usrStsId = user.getUserStatusId();
 		// TODO
 		// UserStatus status = (UserStatus) this.sessionFactory.getCurrentSession().get(UserStatus.class, usrStsId);
 		// status.setStatusTypeCode("A");

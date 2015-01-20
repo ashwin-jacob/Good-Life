@@ -30,9 +30,6 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UsersDAO usersDao;
-
-	//@Autowired
-	//UserRoleDAO userRoleDao;
 	
 	@Autowired
 	PasswordEncoder passwdEncoder;
@@ -69,7 +66,7 @@ public class UserServiceImpl implements UserService {
 		return usersDao.findByEmail(email);
 	}
 
-	public List<Users> findByRoleType(String roleTypeCode)
+	public List<Users> findByRoleType(char roleTypeCode)
 			throws UserNotFoundException {
 		return usersDao.findByRoleType(roleTypeCode);
 	}
