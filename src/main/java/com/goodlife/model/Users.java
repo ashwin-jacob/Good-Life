@@ -22,7 +22,6 @@ public class Users implements Serializable {
 
 	@Id
 	@Column(name = "usr_id", unique = true, nullable = false)
-	@GeneratedValue
 	private Integer userId;
 	
 	@Id
