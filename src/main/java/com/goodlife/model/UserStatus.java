@@ -24,27 +24,22 @@ public class UserStatus implements Serializable{
 	
 	@Id
 	@Column(name = "usr_sts_id", unique = true, nullable = false)
-	@GeneratedValue
 	private Integer userStatusId;
 	
 	@ManyToOne
 	@JoinColumn(name = "usr_id", unique = false, nullable = false)
-	@GeneratedValue
 	private Integer userId;
 	
 	
 	@Column(name = "sts_typ_cd", unique = false, nullable = false)
-	@GeneratedValue
 	private char statusTypeCode;
 	
 	
 	@Column(name = "strt_dt", unique = false, nullable = true)
-	@GeneratedValue
 	private Date startDate;
 	
 	
 	@Column(name = "end_dt", unique = false, nullable = true)
-	@GeneratedValue
 	private Date endDate;
 	
 	public UserStatus(){
