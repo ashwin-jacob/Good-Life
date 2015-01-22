@@ -7,11 +7,8 @@ public interface InstructorDAO {
 	public Instructor findInstructorByUserName(String username) throws UserNotFoundException;
 	public void promoteInstructor(String username, char roleTypeCode) throws UserNotFoundException;
 	
-	public void disableInstructor(String username) throws UserNotFoundException;
-	public void enableInstructor(String username) throws UserNotFoundException;
-	void addInstructor(Instructor user);
+	public Integer disableInstructor(String username) throws UserNotFoundException;
+	public Integer enableInstructor(String username) throws UserNotFoundException;
+	Integer addInstructor(Instructor user);
 	public void deleteInstructor(String username) throws UserNotFoundException;
-	
-	public void suspendInstructor(String username) throws UserNotFoundException;
-	public void activateInstructor(String username) throws UserNotFoundException;
 }

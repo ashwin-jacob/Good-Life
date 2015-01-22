@@ -7,7 +7,7 @@ import com.goodlife.model.UploadPostFlag;
 
 public interface UploadPostFlagDAO {
 	
-	public void addUploadPostFlag(UploadPostFlag uploadPostFlag);	
+	public Integer addUploadPostFlag(UploadPostFlag uploadPostFlag);	
 	public List<UploadPostFlag> findFlaggedBy(Integer userid) throws FlagNotFoundException;
 	public List<UploadPostFlag> findUploadPostFlagbyPostId(Integer id) throws FlagNotFoundException;
 	public Integer nFlagByPostId(Integer id) throws FlagNotFoundException;

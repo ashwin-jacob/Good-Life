@@ -44,8 +44,9 @@ public class UploadAnsLikeDAOImpl implements UploadAnsLikeDAO {
 	}
 
 	@Override
-	public void addUploadAnsLike(UploadAnsLike uploadAnsLike) {
-		this.sessionFactory.getCurrentSession().save(uploadAnsLike);
+	public Integer addUploadAnsLike(UploadAnsLike uploadAnsLike) {
+		UploadAnsLike savedLike = (UploadAnsLike) this.sessionFactory.getCurrentSession().save(uploadAnsLike);
+		return savedLike.getlikeId();
 	}
 
 	@Override

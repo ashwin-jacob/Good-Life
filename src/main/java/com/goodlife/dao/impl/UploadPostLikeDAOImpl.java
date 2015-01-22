@@ -43,8 +43,9 @@ public class UploadPostLikeDAOImpl implements UploadPostLikeDAO {
 	}
 
 	@Override
-	public void addUploadPostLike(UploadPostLike uploadPostLike) {
-		this.sessionFactory.getCurrentSession().save(uploadPostLike);
+	public Integer addUploadPostLike(UploadPostLike uploadPostLike) {
+		UploadPostLike savedLike = (UploadPostLike) this.sessionFactory.getCurrentSession().save(uploadPostLike);
+		return savedLike.getlikeId();
 	}
 
 	@Override

@@ -25,51 +25,37 @@ public class StudentDAOImpl implements StudentDAO  {
 	}
 	
 	@Override
-	public void promoteStudent(String username, char roleTypeCode)
+	public Integer promoteStudent(String username, char roleTypeCode)
 			throws UserNotFoundException {
 		Student user = findStudentByUserName(username);
         user.setRoleTypeCode(roleTypeCode);
-       	this.sessionFactory.getCurrentSession().save(user);
-	}
-
-	@Override
-	public void suspendStudent(String username) throws UserNotFoundException {
-		Student user = findStudentByUserName(username);
-		//Integer usrStsId = user.getUserStatusId();
-		//TODO
-		this.sessionFactory.getCurrentSession().save(user);
-		// this.sessionFactory.getCurrentSession().save(status);
+       	Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);
+       	return saved.getUserId();
 	}
 	
 	@Override
-	public void activateStudent(String username) throws UserNotFoundException {
-		Student user = findStudentByUserName(username);
-		//Integer usrStsId = user.getUserStatusId();
-		// TODO
-		this.sessionFactory.getCurrentSession().save(user);
-		// this.sessionFactory.getCurrentSession().save(status);
-	}
-	
-	@Override
-	public void disableStudent(String username) throws UserNotFoundException {
+	public Integer disableStudent(String username) throws UserNotFoundException {
 		Student user = findStudentByUserName(username);
 		user.setRegistered(false);
-        this.sessionFactory.getCurrentSession().save(user);
+		Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);
+		return saved.getUserId();
 	}
 
 	@Override
-	public void addExistingStudentToRoster(String username, Integer rosterId)
+	public Integer addExistingStudentToRoster(String username, Integer rosterId)
 			throws UserNotFoundException {
 		Student user = findStudentByUserName(username);
         user.setRosterId(rosterId);
-        this.sessionFactory.getCurrentSession().save(user);	
+        Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);	
+        return saved.getUserId();
 	}
 
 	@Override
-	public void enableStudent(String username) throws UserNotFoundException {
+	public Integer enableStudent(String username) throws UserNotFoundException {
 		Student user = findStudentByUserName(username);
 		user.setRegistered(true);
-        this.sessionFactory.getCurrentSession().save(user);
+		Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);
+		return saved.getUserId();
 	}
 
 	@Override
@@ -79,7 +65,8 @@ public class StudentDAOImpl implements StudentDAO  {
 	}
 
 	@Override
-	public void addStudent(Student user) {
-        this.sessionFactory.getCurrentSession().save(user);		
+	public Integer addStudent(Student user) {
+		Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);	
+		return saved.getUserId();
 	}
 }

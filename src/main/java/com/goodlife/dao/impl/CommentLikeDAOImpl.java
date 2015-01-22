@@ -42,8 +42,9 @@ public class CommentLikeDAOImpl implements CommentLikeDAO {
 	}
 
 	@Override
-	public void addCommentLike(CommentLike commentLike) {
-		this.sessionFactory.getCurrentSession().save(commentLike);
+	public Integer addCommentLike(CommentLike commentLike) {
+		CommentLike savedComment = (CommentLike) this.sessionFactory.getCurrentSession().save(commentLike);
+		return savedComment.getlikeId();
 	}
 
 	@Override

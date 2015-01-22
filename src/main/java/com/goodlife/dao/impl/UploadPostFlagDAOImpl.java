@@ -43,8 +43,9 @@ public class UploadPostFlagDAOImpl implements UploadPostFlagDAO {
 	}
 
 	@Override
-	public void addUploadPostFlag(UploadPostFlag uploadPostFlag) {
-		this.sessionFactory.getCurrentSession().save(uploadPostFlag);
+	public Integer addUploadPostFlag(UploadPostFlag uploadPostFlag) {
+		UploadPostFlag savedFlag = (UploadPostFlag) this.sessionFactory.getCurrentSession().save(uploadPostFlag);
+		return savedFlag.getFlagId();
 	}
 
 	@Override

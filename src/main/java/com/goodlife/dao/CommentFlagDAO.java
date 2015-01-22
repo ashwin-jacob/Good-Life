@@ -7,7 +7,7 @@ import com.goodlife.model.CommentFlag;
 
 public interface CommentFlagDAO {
 	
-	public void addCommentFlag(CommentFlag commentFlag);	
+	public Integer addCommentFlag(CommentFlag commentFlag);	
 	public List<CommentFlag> findFlaggedBy(Integer userid) throws FlagNotFoundException;
 	public List<CommentFlag> findCommentFlagbyCmtId(Integer id) throws FlagNotFoundException;
 	public Integer nFlagByCmtId(Integer id) throws FlagNotFoundException;

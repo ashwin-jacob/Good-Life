@@ -43,8 +43,9 @@ public class UploadAnsFlagDAOImpl implements UploadAnsFlagDAO {
 	}
 
 	@Override
-	public void addUploadAnsFlag(UploadAnsFlag uploadAnsFlag) {
-		this.sessionFactory.getCurrentSession().save(uploadAnsFlag);
+	public Integer addUploadAnsFlag(UploadAnsFlag uploadAnsFlag) {
+		UploadAnsFlag savedFlag = (UploadAnsFlag) this.sessionFactory.getCurrentSession().save(uploadAnsFlag);
+		return savedFlag.getFlagId();
 	}
 
 	public Integer nFlagByAnsId(Integer id) throws FlagNotFoundException {

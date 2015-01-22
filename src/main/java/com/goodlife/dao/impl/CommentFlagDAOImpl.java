@@ -44,8 +44,9 @@ public class CommentFlagDAOImpl implements CommentFlagDAO {
 	}
 
 	@Override
-	public void addCommentFlag(CommentFlag commentFlag) {
-		this.sessionFactory.getCurrentSession().save(commentFlag);
+	public Integer addCommentFlag(CommentFlag commentFlag) {
+		CommentFlag savedFlag = (CommentFlag) this.sessionFactory.getCurrentSession().save(commentFlag);
+		return savedFlag.getFlagId();
 	}
 
 	@Override
