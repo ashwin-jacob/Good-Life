@@ -13,7 +13,7 @@ import com.goodlife.model.UploadPostFlag;
 public class UploadPostFlagDAOImpl implements UploadPostFlagDAO {
 	
 	private static final String FIND_WHO_FLAGGED = 
-			"select * from UPLOAD_POST_FLAG where flgd_by = :username";
+			"select * from UPLOAD_POST_FLAG where flgd_by = :userid";
 	
 	private static final String FIND_BY_POST = 
 			"select * from UPLOAD_POST_FLAG where pst_id = :postId";
@@ -25,10 +25,10 @@ public class UploadPostFlagDAOImpl implements UploadPostFlagDAO {
     private SessionFactory sessionFactory;
 	
 	@Override
-	public List<UploadPostFlag> findFlaggedUserName(String username)
+	public List<UploadPostFlag> findFlaggedBy(Integer userid)
 			throws FlagNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(FIND_WHO_FLAGGED);
-		query.setParameter("username", username);
+		query.setParameter("userid", userid);
 		List<UploadPostFlag> flagList = query.list();
 		return flagList;
 	}

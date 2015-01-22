@@ -21,7 +21,7 @@ import com.goodlife.model.Student;
 import com.goodlife.model.Users;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "test-config.xml" }) 
+@ContextConfiguration(locations = { "/test-context.xml" }) 
 public class UsersDAOImplTest {
 
 	private static final Integer USER_ID = 1234;

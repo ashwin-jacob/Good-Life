@@ -24,12 +24,12 @@ public class UploadAnsLike {
 	@Column(name = "lk_id", unique = true, nullable = false)
 	private Integer likeId;
 
-	@Column(name = "lkd_by", length = 50)
-	private String likedBy;
+	@Column(name = "lkd_by")
+	private Integer likedBy;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	//@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "up_ans_id", nullable = false)
-	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+	//@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
 	private Integer upAnsId;
 
 	public Integer getlikeId() {
@@ -40,11 +40,11 @@ public class UploadAnsLike {
 		this.likeId = likeId;
 	}
 
-	public String getlikedBy() {
+	public Integer getlikedBy() {
 		return likedBy;
 	}
 
-	public void setlikegedBy(String likedBy) {
+	public void setlikegedBy(Integer likedBy) {
 		this.likedBy = likedBy;
 	}
 

@@ -8,7 +8,7 @@ import com.goodlife.model.UploadAnsFlag;
 public interface UploadAnsFlagDAO {
 	
 	public void addUploadAnsFlag(UploadAnsFlag uploadAnsFlag);	
-	public List<UploadAnsFlag> findFlaggedUserName(String username) throws FlagNotFoundException;
+	public List<UploadAnsFlag> findFlaggedBy(Integer userid) throws FlagNotFoundException;
 	public List<UploadAnsFlag> findUploadAnsFlagbyAnsId(Integer id) throws FlagNotFoundException;
 	public Integer nFlagByAnsId(Integer id) throws FlagNotFoundException;
 }

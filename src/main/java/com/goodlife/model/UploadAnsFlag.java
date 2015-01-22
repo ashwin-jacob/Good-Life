@@ -24,13 +24,13 @@ public class UploadAnsFlag {
 	@Column(name = "flg_id", unique = true, nullable = false)
 	private Integer flagId;
 
-	@Column(name = "flgd_by", length = 50)
-	private String flaggedBy;
+	@Column(name = "flgd_by")
+	private Integer flaggedBy;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	//@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "up_ans_id", nullable = false)
-	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
-	private Integer upAnsId;
+	//@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+	private Integer uploadAnswerId;
 
 	public Integer getFlagId() {
 		return flagId;
@@ -40,20 +40,20 @@ public class UploadAnsFlag {
 		this.flagId = flagId;
 	}
 
-	public String getFlaggedBy() {
+	public Integer getFlaggedBy() {
 		return flaggedBy;
 	}
 
-	public void setFlaggedBy(String flaggedBy) {
+	public void setFlaggedBy(Integer flaggedBy) {
 		this.flaggedBy = flaggedBy;
 	}
 
 	public Integer getUpAnsId() {
-		return upAnsId;
+		return uploadAnswerId;
 	}
 
 	public void setUpAnsId(Integer upAnsId) {
-		this.upAnsId = upAnsId;
+		this.uploadAnswerId = upAnsId;
 	}
 	
 }
