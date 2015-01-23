@@ -69,10 +69,11 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 		}
 
 		@Override
-		public void suspendUser(UserStatus userStatus)
+		public Integer suspendUser(UserStatus userStatus)
 				throws UserNotFoundException {
 			// TODO Auto-generated method stub
-			this.sessionFactory.getCurrentSession().save(userStatus);
+			userStatus = (UserStatus)this.sessionFactory.getCurrentSession().save(userStatus);
+			return userStatus.getUserId();
 		}
 
 		@Override
@@ -83,6 +84,17 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 			userStatus.setEndDate(newEndDate);
 			this.sessionFactory.getCurrentSession().save(userStatus);
 			
+		}
+		
+		
+
+		@Override
+		public void changeUserStatus(Integer userStatusId, char statusTypeCode)
+				throws UserNotFoundException {
+			// TODO Auto-generated method stub
+			UserStatus userStatus = findByUserStatusId(userStatusId);
+			userStatus.setStatusTypeCode(statusTypeCode);
+			this.sessionFactory.getCurrentSession().save(userStatus);
 		}
 
 		@Override
