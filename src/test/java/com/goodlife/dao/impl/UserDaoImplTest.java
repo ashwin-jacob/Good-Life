@@ -15,7 +15,7 @@ import com.goodlife.dao.UsersDAO;
 public class UserDaoImplTest {
 	
 	@Autowired
-	UsersDAO userDAO; 
+	UsersDAO userDAO;    
 
 	@Test
 	public void testAddUser() {

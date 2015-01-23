@@ -1,26 +1,23 @@
 package com.goodlife.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "SHORT_ANS_Q", catalog = "goodlife")
 public class ShortAnswerQ implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "sa_q_id", nullable = false, unique = true)
 	private Integer saQId;
@@ -32,7 +29,7 @@ public class ShortAnswerQ implements Serializable{
 	private String question;
 	
 	@Column(name = "help_txt")
-	private String helpTxt;
+	private String helpText;
 	
 	@Column(name = "order_id", nullable = false)
 	private Integer orderId;
@@ -47,7 +44,7 @@ public class ShortAnswerQ implements Serializable{
 		this.saQId = saQId;
 		this.subChapId = subChapId;
 		this.question = question;
-		this.helpTxt = helpTxt;
+		this.helpText = helpTxt;
 		this.orderId = orderId;
 	}
 
@@ -75,12 +72,12 @@ public class ShortAnswerQ implements Serializable{
 		this.question = question;
 	}
 
-	public String getHelpTxt() {
-		return helpTxt;
+	public String getHelpText() {
+		return helpText;
 	}
 
-	public void setHelpTxt(String helpTxt) {
-		this.helpTxt = helpTxt;
+	public void setHelpText(String helpTxt) {
+		this.helpText = helpTxt;
 	}
 
 	public Integer getOrderId() {

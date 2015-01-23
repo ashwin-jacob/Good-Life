@@ -17,16 +17,14 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-@Entity(name = "UserStatus")
+@Entity
 @Table(name = "USER_STATUS", catalog = "goodlife")
-@Inheritance
 public class UserStatus implements Serializable{
 	
 	@Id
 	@Column(name = "usr_sts_id", unique = true, nullable = false)
 	private Integer userStatusId;
 	
-	@ManyToOne
 	@JoinColumn(name = "usr_id", unique = false, nullable = false)
 	private Integer userId;
 	
