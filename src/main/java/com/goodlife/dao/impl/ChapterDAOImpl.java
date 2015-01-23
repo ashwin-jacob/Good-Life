@@ -74,4 +74,12 @@ public class ChapterDAOImpl implements ChapterDAO{
 		
 	}
 
+	@Override
+	public List<Chapter> ListAllChapters() throws ChapterNotFoundException {
+		// TODO Auto-generated method stub
+		Query query = this.sessionFactory.getCurrentSession().createQuery("from CHAPTER");
+		List<Chapter> allChapterList = query.list();
+		return allChapterList;
+	}
+
 }
