@@ -85,8 +85,7 @@ public class UserManagementController {
 
 	@ResponseBody
 	@RequestMapping(value = "/activate", method = RequestMethod.GET)
-	public AjaxResponse<Integer> activateUser(@RequestParam(value="userStatusId") Integer userStatusId, 
-			ModelMap model) throws UserNotFoundException {
+	public AjaxResponse<Integer> activateUser(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
 		
 		UserStatus userStatus = userStatusDAO.findByUserStatusId(userStatusId);
 		userStatusDAO.changeUserStatus(userStatusId, 'A');
@@ -100,14 +99,15 @@ public class UserManagementController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public String deleteUser(@RequestParam(value="userStatusId") Integer userStatusId, 
-			ModelMap model) throws UserNotFoundException {
+	public AjaxResponse<Integer> deleteUser(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
 		
 		UserStatus userStatus = userStatusDAO.findByUserStatusId(userStatusId);
-		//userStatusDAO.activate or changeStatus() - updates the entry
+		userStatusDAO.changeUserStatus(userStatusId, 'D');
 		
-		//userStatusDAO.activateUser(userId, startDate, endDate);
-		return "#";
+		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
+		response = ajaxResponseBuilder.createSuccessResponse(0);
+
+		return response;
 	}
 	
 }
