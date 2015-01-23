@@ -12,4 +12,5 @@ public interface SubChapterDAO {
 	public void updateOrder(List<Integer> subChapterIdList) throws UserNotFoundException;
 	public void updateTitle(Integer subChapId, String subChapTitle) throws UserNotFoundException;
 	public void updateDescription(Integer subChapId, String subChapDescr) throws UserNotFoundException;
+	public List<SubChapter> getSubChapListByChapter(Integer chapId) throws UserNotFoundException;
 }

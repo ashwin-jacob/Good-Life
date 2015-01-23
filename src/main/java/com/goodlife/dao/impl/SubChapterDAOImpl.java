@@ -2,6 +2,7 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -70,5 +71,17 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 		subChapter = (SubChapter)this.sessionFactory.getCurrentSession().load(SubChapter.class, subChapId);
 		subChapter.setSubChapDescr(subChapDescr);;
 		this.sessionFactory.getCurrentSession().save(subChapter);
+	}
+	@Override
+	public List<SubChapter> getSubChapListByChapter(Integer chapId)
+			throws UserNotFoundException {
+
+		List<SubChapter> subChapList;
+		try{
+			subChapList = (List<SubChapter>)this.sessionFactory.getCurrentSession().load(SubChapter.class, chapId);
+		}catch(ObjectNotFoundException e){
+			subChapList = (List<SubChapter>)this.sessionFactory.getCurrentSession().get(SubChapter.class, chapId);
+		}
+		return subChapList;
 	}
 }
