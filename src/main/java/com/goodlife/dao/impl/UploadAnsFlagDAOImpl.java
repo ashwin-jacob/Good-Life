@@ -13,7 +13,7 @@ import com.goodlife.model.UploadAnsFlag;
 public class UploadAnsFlagDAOImpl implements UploadAnsFlagDAO {
 	
 	private static final String FIND_WHO_FLAGGED = 
-			"select * from UPLOAD_ANS_FLAG where flgd_by = :username";
+			"select * from UPLOAD_ANS_FLAG where flgd_by = :userid";
 	
 	private static final String FIND_BY_ANS = 
 			"select * from UPLOAD_ANS_FLAG where ans_id = :ansId";
@@ -25,10 +25,10 @@ public class UploadAnsFlagDAOImpl implements UploadAnsFlagDAO {
     private SessionFactory sessionFactory;
 	
 	@Override
-	public List<UploadAnsFlag> findFlaggedUserName(String username)
+	public List<UploadAnsFlag> findFlaggedBy(Integer userid)
 			throws FlagNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(FIND_WHO_FLAGGED);
-		query.setParameter("username", username);
+		query.setParameter("userid", userid);
 		List<UploadAnsFlag> flagList = query.list();
 		return flagList;
 	}
@@ -43,8 +43,9 @@ public class UploadAnsFlagDAOImpl implements UploadAnsFlagDAO {
 	}
 
 	@Override
-	public void addUploadAnsFlag(UploadAnsFlag uploadAnsFlag) {
-		this.sessionFactory.getCurrentSession().save(uploadAnsFlag);
+	public Integer addUploadAnsFlag(UploadAnsFlag uploadAnsFlag) {
+		UploadAnsFlag savedFlag = (UploadAnsFlag) this.sessionFactory.getCurrentSession().save(uploadAnsFlag);
+		return savedFlag.getFlagId();
 	}
 
 	public Integer nFlagByAnsId(Integer id) throws FlagNotFoundException {

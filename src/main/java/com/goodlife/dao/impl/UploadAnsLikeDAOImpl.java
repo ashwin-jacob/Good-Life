@@ -14,7 +14,7 @@ import com.goodlife.model.UploadAnsLike;
 public class UploadAnsLikeDAOImpl implements UploadAnsLikeDAO {
 	
 	private static final String FIND_WHO_LIKES = 
-			"select * from UPLOAD_ANS_LIKE where flgd_by = :username";
+			"select * from UPLOAD_ANS_LIKE where flgd_by = :userid";
 	
 	private static final String FIND_BY_ANS = 
 			"select * from UPLOAD_ANS_LIKE where ans_id = :ansId";
@@ -26,10 +26,10 @@ public class UploadAnsLikeDAOImpl implements UploadAnsLikeDAO {
     private SessionFactory sessionFactory;
 	
 	@Override
-	public List<UploadAnsLike> findLikesUserName(String username)
+	public List<UploadAnsLike> findLikedBy(Integer userid)
 			throws LikeNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(FIND_WHO_LIKES);
-		query.setParameter("username", username);
+		query.setParameter("userid", userid);
 		List<UploadAnsLike> likeList = query.list();
 		return likeList;
 	}
@@ -44,8 +44,9 @@ public class UploadAnsLikeDAOImpl implements UploadAnsLikeDAO {
 	}
 
 	@Override
-	public void addUploadAnsLike(UploadAnsLike uploadAnsLike) {
-		this.sessionFactory.getCurrentSession().save(uploadAnsLike);
+	public Integer addUploadAnsLike(UploadAnsLike uploadAnsLike) {
+		UploadAnsLike savedLike = (UploadAnsLike) this.sessionFactory.getCurrentSession().save(uploadAnsLike);
+		return savedLike.getlikeId();
 	}
 
 	@Override

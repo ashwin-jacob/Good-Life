@@ -5,21 +5,19 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "USERS", catalog = "goodlife")
 @Inheritance
 public class Users implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@Column(name = "usr_id", unique = true, nullable = false)
 	private Integer userId;
@@ -37,20 +35,17 @@ public class Users implements Serializable {
 	@Column(name = "role_typ_cd", nullable = false, length = 1)
 	private char roleTypeCode;
 	
-	@Column(name = "rgstrd", nullable = false)
+	@Column(name = "rgstrd", columnDefinition = "TINYINT", nullable = false, length = 1)
 	private boolean registered;
 	
 	@Column(name = "invit_cd", nullable = false)
 	private Integer invitationCode;
 	
-	@Column(name = "invit_by", nullable = true, length = 250)
+	@Column(name = "invit_by", nullable = true, length = 50)
 	private String invitedBy;
 	
 	@Column(name = "invit_dt", nullable = true)
 	private Date invitedDate;
-
-	@Column(name = "usr_sts_id", nullable = true)
-	private Integer userStatusId;
 	
     @Column(name="frst_nm", length = 50)
     private String firstname;
@@ -67,11 +62,8 @@ public class Users implements Serializable {
     @Column(name="abt_me", length = 250)
     private String aboutMe;
     
-	/*
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
-	private Set<UserRole> userRole = new HashSet<UserRole>(0);
-	*/
+    @Column(name="prf_img_path") 
+    private String profileImagePath;
 	
     public Users() {
     	
@@ -81,7 +73,7 @@ public class Users implements Serializable {
 			String password, char roleTypeCode, boolean registered,
 			Integer invitationCode, String invitedBy, Date invitedDate,
 			Integer userStatusId, String firstname, String lastname,
-			String city, String state, String aboutMe) {
+			String city, String state, String aboutMe, String profileImagePath) {
 		super();
 		this.userId = userId;
 		this.email = email;
@@ -92,12 +84,12 @@ public class Users implements Serializable {
 		this.invitationCode = invitationCode;
 		this.invitedBy = invitedBy;
 		this.invitedDate = invitedDate;
-		this.userStatusId = userStatusId;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.city = city;
 		this.state = state;
 		this.aboutMe = aboutMe;
+		this.profileImagePath = profileImagePath;
 	}
 
 
@@ -164,14 +156,6 @@ public class Users implements Serializable {
 	public void setInvitedDate(Date invitedDate) {
 		this.invitedDate = invitedDate;
 	}
-
-	public Integer getUserStatusId() {
-		return userStatusId;
-	}
-
-	public void setUserStatusId(Integer userStatusId) {
-		this.userStatusId = userStatusId;
-	}
 	
     public String getFirstname() {
         return firstname;
@@ -219,5 +203,13 @@ public class Users implements Serializable {
 
 	public void setRoleTypeCode(char roleTypeCode) {
 		this.roleTypeCode = roleTypeCode;
+	}
+
+	public String getProfileImagePath() {
+		return profileImagePath;
+	}
+
+	public void setProfileImagePath(String profileImagePath) {
+		this.profileImagePath = profileImagePath;
 	}
 }

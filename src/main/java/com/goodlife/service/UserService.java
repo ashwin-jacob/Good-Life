@@ -20,5 +20,8 @@ public interface UserService {
 	
 	public List<Users> findByEmail(String email) throws UserNotFoundException;
 	
-	public List<Users> findByRoleType(String roleTypeCode) throws UserNotFoundException;
+	public List<Users> findByRoleType(char roleTypeCode) throws UserNotFoundException;
+	
+	//TODO
+	//public Integer nFlags(String username);
 }

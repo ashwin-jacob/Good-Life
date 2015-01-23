@@ -5,12 +5,11 @@
  
 <hibernate-configuration>
     <session-factory>
-		<!-- <mapping class="com.goodlife.model.UserInfo" />
-		<mapping class="com.goodlife.model.UserRole" /> -->
 		<mapping class="com.goodlife.model.Users" />
 		<mapping class="com.goodlife.model.SuperAdmin" />
 		<mapping class="com.goodlife.model.Instructor" />
 		<mapping class="com.goodlife.model.Student" />
+
 		<mapping class="com.goodlife.model.Chapter" />
 		<mapping class="com.goodlife.model.ChapterPage" />
 		<mapping class="com.goodlife.model.SubChapter" />
@@ -21,5 +20,14 @@
 		<mapping class="com.goodlife.model.UploadedAnswer" />
 		<mapping class="com.goodlife.model.ShortAnswerQ" />
 		<mapping class="com.goodlife.model.ShortAnswerUserAnswer" />
+		
+		<!-- <mapping class="com.goodlife.model.CommentFlag" /> -->
+		<mapping class="com.goodlife.model.UploadAnsFlag" />
+		<!--  <mapping class="com.goodlife.model.UploadPostFlag" />
+		<mapping class="com.goodlife.model.CommentLike" /> -->
+		<mapping class="com.goodlife.model.UploadAnsLike" />
+		<!-- <mapping class="com.goodlife.model.UploadPostLike" /> -->
+		
+
     </session-factory>
 </hibernate-configuration>

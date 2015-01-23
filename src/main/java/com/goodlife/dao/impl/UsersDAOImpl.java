@@ -2,6 +2,8 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
+
+
 //import javax.persistence.Query;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -16,33 +18,43 @@ import com.goodlife.model.Users;
 public class UsersDAOImpl implements UsersDAO  {
 	// TODO: userStatus and Flag needs to be resolved.
 	private static final String QUERY_FIND_ROLE = 
-			"select user.username, user.firstname, user.lastname, user.email, user.roleTypeCode, user.userStatus "
-			+ "from Users user where user.roleTypeCode = :roleTypeCode";
+			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd, "
+			+ "from USERS user where user.role_typ_cd = :roleTypeCode";
 	
 	private static final String QUERY_FIRSTNAME = 
-			"select user.username, user.firstname, user.lastname, user.email, user.roleTypeCode, user.userStatus "
-			+ "from Users user where user.firstname = :firstname";
+			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd, "
+			+ "from USERS user where user.frst_nm = :firstname";
 	
 	private static final String QUERY_LASTNAME = 
-			"select user.username, user.firstname, user.lastname, user.email, user.roleTypeCode, user.userStatus "
-			+ "from Users user where user.lastname = :lastname";
+			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd, "
+			+ "from USERS user where user.lst_nm = :lastname";
 	
 	private static final String QUERY_EMAIL = 
-			"select user.username, user.firstname, user.lastname, user.email, user.roleTypeCode, user.userStatus "
-			+ "from Users user where user.email = :email";
+			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd, "
+			+ "from USERS user where user.email = :email";
+	
+	private static final String QUERY_CITY = 
+			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd, "
+			+ "from USERS user where user.city = :city";
+	
+	private static final String QUERY_STATE = 
+			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd, "
+			+ "from USERS user where user.state = :state";
 	
 	@Autowired
     private SessionFactory sessionFactory;
 	
 	@Override
-	public void addUser(Users user) {
-		this.sessionFactory.getCurrentSession().save(user);
+	public Integer addUser(Users user) {
+		Users savedUser = (Users) this.sessionFactory.getCurrentSession().save(user);
+		return savedUser.getUserId();
 	}
 
 	@Override
-	public void deleteUser(String username) throws UserNotFoundException {
+	public Integer deleteUser(String username) throws UserNotFoundException {
 		Users user = findByUserName(username);
         this.sessionFactory.getCurrentSession().delete(user);
+        return user.getUserId();
 	}
 	
 	@Override
@@ -69,10 +81,9 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
-	public List<Users> findByRoleType(String roleTypeCode)
+	public List<Users> findByRoleType(char roleTypeCode)
 			throws UserNotFoundException {
-		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_FIND_ROLE);
-		query.setParameter("roleTypeCode", roleTypeCode);
+		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_FIND_ROLE).setParameter("roleTypeCode", roleTypeCode);
 		List<Users> userList = query.list();
 		return userList;
 	}
@@ -96,6 +107,20 @@ public class UsersDAOImpl implements UsersDAO  {
 	@Override
 	public List<Users> findByEmail(String email) throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_EMAIL).setParameter("email", email);
+		List<Users> userList = query.list();
+		return userList;
+	}
+
+	@Override
+	public List<Users> findByCity(String city) throws UserNotFoundException {
+		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_CITY).setParameter("city", city);
+		List<Users> userList = query.list();
+		return userList;
+	}
+
+	@Override
+	public List<Users> findByState(String state) throws UserNotFoundException {
+		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_STATE).setParameter("state", state);
 		List<Users> userList = query.list();
 		return userList;
 	}

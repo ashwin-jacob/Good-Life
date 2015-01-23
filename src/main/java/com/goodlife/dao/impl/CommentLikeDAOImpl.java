@@ -13,7 +13,7 @@ import com.goodlife.model.CommentLike;
 public class CommentLikeDAOImpl implements CommentLikeDAO {
 	
 	private static final String FIND_WHO_LIKES = 
-			"select * from COMMENT_LIKE where lkd_by = :username";
+			"select * from COMMENT_LIKE where lkd_by = :userId";
 	
 	private static final String FIND_BY_COMMENT = 
 			"select * from COMMENT_LIKE where cmmt_id = :commentId";
@@ -25,9 +25,9 @@ public class CommentLikeDAOImpl implements CommentLikeDAO {
     private SessionFactory sessionFactory;
 	
 	@Override
-	public List<CommentLike> findLikesUserName(String username) throws LikeNotFoundException {
+	public List<CommentLike> findLikedBy(Integer userid) throws LikeNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(FIND_WHO_LIKES);
-		query.setParameter("username", username);
+		query.setParameter("userId", userid);
 		List<CommentLike> likeList = query.list();
 		return likeList;
 	}
@@ -42,8 +42,9 @@ public class CommentLikeDAOImpl implements CommentLikeDAO {
 	}
 
 	@Override
-	public void addCommentLike(CommentLike commentLike) {
-		this.sessionFactory.getCurrentSession().save(commentLike);
+	public Integer addCommentLike(CommentLike commentLike) {
+		CommentLike savedComment = (CommentLike) this.sessionFactory.getCurrentSession().save(commentLike);
+		return savedComment.getlikeId();
 	}
 
 	@Override

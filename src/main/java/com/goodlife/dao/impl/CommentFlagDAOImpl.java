@@ -14,7 +14,7 @@ import com.goodlife.model.CommentFlag;
 public class CommentFlagDAOImpl implements CommentFlagDAO {
 	
 	private static final String FIND_WHO_FLAGGED = 
-			"select * from COMMENT_FLAG where flgd_by = :username";
+			"select * from COMMENT_FLAG where flgd_by = :userid";
 	
 	private static final String FIND_BY_COMMENT = 
 			"select * from COMMENT_FLAG where cmmt_id = :commentId";
@@ -24,12 +24,12 @@ public class CommentFlagDAOImpl implements CommentFlagDAO {
 	
 	@Autowired
     private SessionFactory sessionFactory;
-	
+
 	@Override
-	public List<CommentFlag> findFlaggedUserName(String username)
+	public List<CommentFlag> findFlaggedBy(Integer userid)
 			throws FlagNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(FIND_WHO_FLAGGED);
-		query.setParameter("username", username);
+		query.setParameter("userid", userid);
 		List<CommentFlag> flagList = query.list();
 		return flagList;
 	}
@@ -44,8 +44,9 @@ public class CommentFlagDAOImpl implements CommentFlagDAO {
 	}
 
 	@Override
-	public void addCommentFlag(CommentFlag commentFlag) {
-		this.sessionFactory.getCurrentSession().save(commentFlag);
+	public Integer addCommentFlag(CommentFlag commentFlag) {
+		CommentFlag savedFlag = (CommentFlag) this.sessionFactory.getCurrentSession().save(commentFlag);
+		return savedFlag.getFlagId();
 	}
 
 	@Override

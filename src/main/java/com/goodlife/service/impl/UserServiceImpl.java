@@ -10,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-
-//import com.goodlife.dao.UserRoleDAO;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.InvalidEmailToken;
 import com.goodlife.exceptions.UserAlreadyExistsException;
@@ -30,9 +28,6 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UsersDAO usersDao;
-
-	//@Autowired
-	//UserRoleDAO userRoleDao;
 	
 	@Autowired
 	PasswordEncoder passwdEncoder;
@@ -55,13 +50,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	
-	public Users findByUserName(String username)
-			throws UserNotFoundException {
+	public Users findByUserName(String username) throws UserNotFoundException {
 		return usersDao.findByUserName(username);
 	}
 
-	public List<Users> findByFirstName(String firstname)
-			throws UserNotFoundException {
+	public List<Users> findByFirstName(String firstname) throws UserNotFoundException {
 		return usersDao.findByFirstName(firstname);
 	}
 
@@ -69,14 +62,20 @@ public class UserServiceImpl implements UserService {
 		return usersDao.findByEmail(email);
 	}
 
-	public List<Users> findByRoleType(String roleTypeCode)
-			throws UserNotFoundException {
+	public List<Users> findByRoleType(char roleTypeCode) throws UserNotFoundException {
 		return usersDao.findByRoleType(roleTypeCode);
 	}
 
-	public List<Users> findByLastName(String lastname)
-			throws UserNotFoundException {
+	public List<Users> findByLastName(String lastname) throws UserNotFoundException {
 		return usersDao.findByLastName(lastname);
+	}
+	
+	public List<Users> findByCity(String city) throws UserNotFoundException {
+		return usersDao.findByCity(city);
+	}
+	
+	public List<Users> findByState(String state) throws UserNotFoundException {
+		return usersDao.findByState(state);
 	}
 
 }
