@@ -2,6 +2,8 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -77,9 +79,23 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 			throws UserNotFoundException {
 		
 		MultiChoiceQ multiChoice = new MultiChoiceQ();
-		multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
+		try{
+			multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
+		}catch(ObjectNotFoundException e){
+			multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().get(MultiChoiceQ.class, multiChoiceId);
+		}
 		multiChoice.setCorrectAnswer(correctAnswer);
 		this.sessionFactory.getCurrentSession().save(multiChoice);
+	}
+
+	@Override
+	public List<MultiChoiceQ> getAllMultiChoice(Integer multiChoiceId)
+			throws UserNotFoundException {
+		
+		Query query = this.sessionFactory.getCurrentSession().createQuery("FROM MULTI_CHOICE_Q WHERE MC_Q_ID = :multiChoiceId");
+		query.setParameter("multiChoiceId", multiChoiceId);
+		List<MultiChoiceQ> multiChoiceList = query.list();
+		return multiChoiceList;
 	}
 
 }
