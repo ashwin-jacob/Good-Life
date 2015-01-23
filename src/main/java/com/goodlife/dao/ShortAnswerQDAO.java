@@ -12,4 +12,6 @@ public interface ShortAnswerQDAO {
 	public void updateHelpText(Integer saQId, String helpText) throws UserNotFoundException;
 	public void updateOrderId(List<Integer> saQIdList) throws UserNotFoundException;
 	public ShortAnswerQ getShortAnswerById(Integer saQId) throws UserNotFoundException;
+	public List<ShortAnswerQ> getShortAnswerBySubChapter(Integer subChapId) throws UserNotFoundException;
+	
 }
