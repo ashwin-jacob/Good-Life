@@ -5,6 +5,7 @@ import java.util.List;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.UploadPost;
 
+
 public interface UploadPostDAO {
 
 	public Integer addUploadPost(String subjectText, String descriptionText, String filePath,

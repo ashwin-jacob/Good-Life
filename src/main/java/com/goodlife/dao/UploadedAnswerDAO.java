@@ -3,6 +3,7 @@ package com.goodlife.dao;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.UploadedAnswer;
 
+
 public interface UploadedAnswerDAO {
 
 	public Integer addUploadedAnswer(Integer mediaTypeId, String filePath, Integer userId,

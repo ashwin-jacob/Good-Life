@@ -1,3 +1,4 @@
+
 package com.goodlife.dao;
 
 import com.goodlife.exceptions.UserNotFoundException;

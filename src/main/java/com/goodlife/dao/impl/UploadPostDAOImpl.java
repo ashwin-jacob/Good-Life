@@ -1,5 +1,6 @@
 package com.goodlife.dao.impl;
 
+
 import java.util.List;
 
 import org.hibernate.ObjectNotFoundException;

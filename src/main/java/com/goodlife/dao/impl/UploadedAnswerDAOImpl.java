@@ -11,6 +11,7 @@ import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.UploadedAnswer;
 
+
 public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 
 	@Autowired

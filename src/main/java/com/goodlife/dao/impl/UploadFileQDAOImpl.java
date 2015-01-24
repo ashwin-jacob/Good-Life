@@ -8,6 +8,7 @@ import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.UploadFileQ;
 
+
 public class UploadFileQDAOImpl implements UploadFileQDAO{
 
 	@Autowired
