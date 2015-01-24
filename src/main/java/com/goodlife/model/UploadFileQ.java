@@ -28,16 +28,21 @@ public class UploadFileQ implements Serializable{
 	
 	@Column(name = "help_txt")
 	private String helpText;
+	
+	@Column(name = "descr")
+	private String description;
 
 	public UploadFileQ() {
 		super();
 	}
 
-	public UploadFileQ(Integer uploadQuesId, Integer subChapId, String helpText) {
+	public UploadFileQ(Integer uploadQuesId, Integer subChapId, String helpText,
+			String description) {
 		super();
 		this.uploadQuesId = uploadQuesId;
 		this.subChapId = subChapId;
 		this.helpText = helpText;
+		this.description = description;
 	}
 
 	public Integer getUploadQuesId() {
@@ -63,4 +68,13 @@ public class UploadFileQ implements Serializable{
 	public void setHelpText(String helpText) {
 		this.helpText = helpText;
 	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
 }
