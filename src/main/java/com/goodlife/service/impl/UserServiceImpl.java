@@ -10,10 +10,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+
+
+
+import com.goodlife.dao.InstructorDAO;
+import com.goodlife.dao.StudentDAO;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.InvalidEmailToken;
 import com.goodlife.exceptions.UserAlreadyExistsException;
 import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.model.Instructor;
+import com.goodlife.model.Student;
 import com.goodlife.model.Users;
 import com.goodlife.service.UserService;
 import com.goodlife.service.util.PasswordEncoder;
@@ -22,12 +29,17 @@ import com.goodlife.service.util.PasswordEncoder;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-	static final Logger logger = LogManager
-			.getLogger(UserServiceImpl.class.getName());
+	static final Logger logger = LogManager.getLogger(UserServiceImpl.class.getName());
 
 	
 	@Autowired
 	UsersDAO usersDao;
+	
+	@Autowired
+	StudentDAO studentDao;
+	
+	@Autowired
+	InstructorDAO instructorDao;
 	
 	@Autowired
 	PasswordEncoder passwdEncoder;
@@ -62,8 +74,8 @@ public class UserServiceImpl implements UserService {
 		return usersDao.findByEmail(email);
 	}
 
-	public List<Users> findByRoleType(char roleTypeCode) throws UserNotFoundException {
-		return usersDao.findByRoleType(roleTypeCode);
+	public List<Users> findByRoleTypes(List<Character> roles) throws UserNotFoundException {
+		return usersDao.findByRoleTypes(roles);
 	}
 
 	public List<Users> findByLastName(String lastname) throws UserNotFoundException {
@@ -78,4 +90,11 @@ public class UserServiceImpl implements UserService {
 		return usersDao.findByState(state);
 	}
 
+	public List<Student> findStudentByRosterId(Integer rosterId) throws UserNotFoundException {
+		return studentDao.findStudentByRosterId(rosterId);
+	}
+
+	public List<Instructor> findInstructorByRosterId(Integer rosterId) throws UserNotFoundException {
+		return instructorDao.findInstructorByRosterId(rosterId);
+	}
 }

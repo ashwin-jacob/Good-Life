@@ -16,5 +16,6 @@ public interface ChapterDAO {
 	public void updateOrder(Integer chapterId, List<Chapter> chapterList) throws ChapterNotFoundException;
 	public void updateTitle(Integer chapterId, String newChapterTitle) throws ChapterNotFoundException;
 	public void updateDescr(Integer chapterId, String newChapterDescr) throws ChapterNotFoundException;
+	public List<Chapter> ListAllChapters() throws ChapterNotFoundException;
 	
 }

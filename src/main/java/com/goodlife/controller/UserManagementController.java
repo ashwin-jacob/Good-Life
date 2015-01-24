@@ -3,6 +3,8 @@ package com.goodlife.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.goodlife.dao.UserStatusDAO;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.model.AjaxResponse;
 import com.goodlife.model.UserStatus;
 import com.goodlife.model.Users;
 
@@ -26,6 +29,9 @@ import com.goodlife.model.Users;
 @Controller
 @RequestMapping(value = "/userlookup")
 public class UserManagementController {
+	
+	@Inject
+	private AjaxResponseBuilder ajaxResponseBuilder;
 	
 	static final Logger logger = LogManager.getLogger(UserManagementController.class.getName());
 	
@@ -59,9 +65,8 @@ public class UserManagementController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/suspend", method = RequestMethod.GET)
-	public Integer suspendUser(@RequestParam(value="userId") Integer userId, 
-				@RequestParam(value="endDate") Date endDate,
-				ModelMap model) throws UserNotFoundException {
+	public AjaxResponse<Integer> suspendUser(@RequestParam(value="userId") Integer userId,
+											 @RequestParam(value="endDate") Date endDate) throws UserNotFoundException {
 		
 		UserStatus userStatus = new UserStatus();
 		userStatus.setUserId(userId);
@@ -69,36 +74,40 @@ public class UserManagementController {
 		userStatus.setStatusTypeCode('S');
 		userStatus.setEndDate(endDate);
 		
-		//Integer userStatusId = userStatusDAO.suspendUser(userStatus);
+		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
+		response = ajaxResponseBuilder.createSuccessResponse(userStatusDAO.suspendUser(userStatus));
 		
 		//model.addAttribute("userStatusId", userStatusId);
-		model.addAttribute("userStatus", "suspended");
+		//model.addAttribute("userStatus", "suspended");
 		
-		// return userStatusId;
-		return null;
+		return response;
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/activate", method = RequestMethod.GET)
-	public String activateUser(@RequestParam(value="userStatusId") Integer userStatusId, 
-			ModelMap model) throws UserNotFoundException {
+	public AjaxResponse<Integer> activateUser(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
 		
 		UserStatus userStatus = userStatusDAO.findByUserStatusId(userStatusId);
-		//userStatusDAO.activate or changeStatus() - updates the entry
+		userStatusDAO.changeUserStatus(userStatusId, 'A');
+		
+		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
+		response = ajaxResponseBuilder.createSuccessResponse(0);
 		
 		//userStatusDAO.activateUser(userId, startDate, endDate);
-		return "#";
+		return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public String deleteUser(@RequestParam(value="userStatusId") Integer userStatusId, 
-			ModelMap model) throws UserNotFoundException {
+	public AjaxResponse<Integer> deleteUser(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
 		
 		UserStatus userStatus = userStatusDAO.findByUserStatusId(userStatusId);
-		//userStatusDAO.activate or changeStatus() - updates the entry
+		userStatusDAO.changeUserStatus(userStatusId, 'D');
 		
-		//userStatusDAO.activateUser(userId, startDate, endDate);
-		return "#";
+		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
+		response = ajaxResponseBuilder.createSuccessResponse(0);
+
+		return response;
 	}
+	
 }
