@@ -5,6 +5,8 @@ import java.util.List;
 import com.goodlife.exceptions.InvalidEmailToken;
 import com.goodlife.exceptions.UserAlreadyExistsException;
 import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.model.Instructor;
+import com.goodlife.model.Student;
 import com.goodlife.model.Users;
 
 public interface UserService {
@@ -20,8 +22,11 @@ public interface UserService {
 	
 	public List<Users> findByEmail(String email) throws UserNotFoundException;
 	
-	public List<Users> findByRoleType(char roleTypeCode) throws UserNotFoundException;
+	public List<Users> findByRoleTypes(List<Character> roles) throws UserNotFoundException;
 	
+	public List<Student> findStudentByRosterId(Integer rosterId) throws UserNotFoundException;
+	
+	public List<Instructor> findInstructorByRosterId(Integer rosterId) throws UserNotFoundException;
 	//TODO
 	//public Integer nFlags(String username);
 }

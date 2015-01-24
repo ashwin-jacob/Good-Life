@@ -1,11 +1,14 @@
 package com.goodlife.dao;
 
+import java.util.List;
+
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Student;
 import com.goodlife.model.Users;
 
 public interface StudentDAO {
 	public Student findStudentByUserName(String username) throws UserNotFoundException;
+	public List<Student> findStudentByRosterId(Integer rosterId) throws UserNotFoundException;
 	public Integer promoteStudent(String username, char roleTypeCode) throws UserNotFoundException;
 	
 	public Integer disableStudent(String username) throws UserNotFoundException;

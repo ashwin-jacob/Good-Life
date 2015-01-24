@@ -1,5 +1,7 @@
 package com.goodlife.dao.impl;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -57,5 +59,12 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	public void deleteInstructor(String username) throws UserNotFoundException {
 		Instructor user = findInstructorByUserName(username);
 		this.sessionFactory.getCurrentSession().delete(user);
+	}
+
+	@Override
+	public List<Instructor> findInstructorByRosterId(Integer rosterId)
+			throws UserNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
