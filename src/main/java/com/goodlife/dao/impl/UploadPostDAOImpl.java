@@ -4,6 +4,7 @@ package com.goodlife.dao.impl;
 import java.util.List;
 
 import org.hibernate.ObjectNotFoundException;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -47,14 +48,29 @@ public class UploadPostDAOImpl implements UploadPostDAO{
 	@Override
 	public List<UploadPost> getUploadPostByUser(Integer userId)
 			throws UserNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<UploadPost> postList;
+		Query query;
+		
+		query = this.sessionFactory.getCurrentSession().createQuery("FROM UPLOAD_POST WHERE USR_ID = :userId");
+		query.setParameter("userId", userId);
+		
+		postList = query.list();
+		
+		return postList;
 	}
 
 	@Override
 	public List<UploadPost> getRecentPosts() throws UserNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<UploadPost> postList;
+		Query query;
+		
+		query = this.sessionFactory.getCurrentSession().createQuery("FROM UPLOAD_POST LIMIT 100");
+		
+		postList = query.list();
+		
+		return postList;
 	}
 
 }
