@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.SubChapterDAO;
+import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.SubChapter;
 
@@ -22,14 +23,7 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addSubChapter(Integer chapId, String subChapDescr, String subChapTitle, Integer orderId)
-		throws UserNotFoundException{
-		
-		SubChapter subChapter = new SubChapter();
-		subChapter.setChapId(chapId);
-		subChapter.setSubChapDescr(subChapDescr);
-		subChapter.setSubChapTitle(subChapTitle);
-		subChapter.setOrderId(orderId);
+	public Integer addSubChapter(SubChapter subChapter){
 		
 		this.sessionFactory.getCurrentSession().save(subChapter);
 				
@@ -37,7 +31,7 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 	}
 	@Override
 	public void deleteSubChapter(Integer subChapId) 
-		throws UserNotFoundException{
+		throws SubChapterNotFoundException{
 		
 		SubChapter subChapter = new SubChapter();
 		subChapter = (SubChapter)this.sessionFactory.getCurrentSession().load(SubChapter.class, subChapId);
@@ -45,7 +39,7 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 	}
 	@Override
 	public void updateOrder(List<Integer> subChapterIdList) 
-		throws UserNotFoundException{
+		throws SubChapterNotFoundException{
 		
 		SubChapter subChapter = new SubChapter();
 		for (int i = 0; i < subChapterIdList.size(); i++){
@@ -56,7 +50,7 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 	}
 	@Override
 	public void updateTitle(Integer subChapId, String subChapTitle) 
-		throws UserNotFoundException{
+		throws SubChapterNotFoundException{
 		
 		SubChapter subChapter = new SubChapter();
 		subChapter = (SubChapter)this.sessionFactory.getCurrentSession().load(SubChapter.class, subChapId);
@@ -65,7 +59,7 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 	}
 	@Override
 	public void updateDescription(Integer subChapId, String subChapDescr) 
-		throws UserNotFoundException{
+		throws SubChapterNotFoundException{
 		
 		SubChapter subChapter = new SubChapter();
 		subChapter = (SubChapter)this.sessionFactory.getCurrentSession().load(SubChapter.class, subChapId);
@@ -74,7 +68,7 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 	}
 	@Override
 	public List<SubChapter> getSubChapListByChapter(Integer chapId)
-			throws UserNotFoundException {
+			throws SubChapterNotFoundException {
 
 		List<SubChapter> subChapList;
 		try{

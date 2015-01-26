@@ -102,6 +102,40 @@ public class ChapterController {
 		return response;
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/updatechapterorder", method = RequestMethod.GET)
+	public AjaxResponse<Integer> updateChapterOrder(List<Chapter> newChapterOrderList) throws ChapterNotFoundException {
+		
+		chapterDAO.updateOrder(newChapterOrderList);
+		
+		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
+		response = ajaxResponseBuilder.createSuccessResponse(0);
+		return response;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "updatechaptertitle", method = RequestMethod.GET)
+	public AjaxResponse<Integer> updateChapterTitle(Integer chapId, String chapTitle) throws ChapterNotFoundException {
+		
+		chapterDAO.updateTitle(chapId, chapTitle);
+		
+		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
+		response = ajaxResponseBuilder.createSuccessResponse(0);
+		return response;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "updatechapterdescr", method = RequestMethod.GET)
+	public AjaxResponse<Integer> updateChapterDescr(Integer chapId, String chapDescr) throws ChapterNotFoundException {
+		
+		chapterDAO.updateDescr(chapId, chapDescr);
+		
+		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
+		response = ajaxResponseBuilder.createSuccessResponse(0);
+		return response;
+		
+	}
 	
 	
 }

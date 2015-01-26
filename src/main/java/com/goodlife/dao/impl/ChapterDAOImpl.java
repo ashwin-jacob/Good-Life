@@ -44,8 +44,7 @@ public class ChapterDAOImpl implements ChapterDAO{
 	}
 
 	@Override
-	public void updateOrder(Integer chapterId,
-			List<Chapter> chapterList) throws ChapterNotFoundException {
+	public void updateOrder(List<Chapter> chapterList) throws ChapterNotFoundException {
 		// TODO Auto-generated method stub
 		for(int i=0; i<chapterList.size(); i++){
 			chapterList.get(i).setOrderId(i);
