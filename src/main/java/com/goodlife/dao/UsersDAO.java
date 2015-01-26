@@ -14,6 +14,8 @@ public interface UsersDAO
 	public List<Users> findByEmail(String email) throws UserNotFoundException;
 	public List<Users> findByCity(String city) throws UserNotFoundException;
 	public List<Users> findByState(String state) throws UserNotFoundException;
+	public List<Users> advancedQuery(String input, String field, List<Character> roles) 
+			throws UserNotFoundException;
 	
 	Integer addUser(Users user);
 	Integer deleteUser(String username) throws UserNotFoundException;

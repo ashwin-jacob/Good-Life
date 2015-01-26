@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.goodlife.dao.InstructorDAO;
 import com.goodlife.dao.StudentDAO;
 import com.goodlife.dao.UsersDAO;
@@ -96,5 +97,12 @@ public class UserServiceImpl implements UserService {
 
 	public List<Instructor> findInstructorByRosterId(Integer rosterId) throws UserNotFoundException {
 		return instructorDao.findInstructorByRosterId(rosterId);
+	}
+
+
+	@Override
+	public List<Users> advancedQuery(String input, String field, List<Character> roles) 
+		throws UserNotFoundException {
+		return usersDao.advancedQuery(input, field, roles);
 	}
 }

@@ -4,6 +4,9 @@ import java.util.List;
 
 
 
+import java.util.Map.Entry;
+
+
 //import javax.persistence.Query;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -86,7 +89,7 @@ public class UsersDAOImpl implements UsersDAO  {
 		String sql = "select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd "
 				+ "from USERS user";
 		for (char role : roles) {
-			sql += "where user.role_typ_cd = " + role + " and ";
+			sql += " where user.role_typ_cd = " + role + " and ";
 		}
 		sql = sql.substring(0, sql.length()-5);
 		Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
@@ -127,6 +130,23 @@ public class UsersDAOImpl implements UsersDAO  {
 	@Override
 	public List<Users> findByState(String state) throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_STATE).setParameter("state", state);
+		List<Users> userList = query.list();
+		return userList;
+	}
+
+	@Override
+	public List<Users> advancedQuery(String input, String field, List<Character> roles) 
+			throws UserNotFoundException {
+		String sql = "select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd from USERS user";
+		sql += " where user." + field + " = " + input;
+		
+		if (roles != null) {
+			for (char role : roles) {
+				sql += " and where user.role_typ_cd = " + role;
+			}
+		}
+		
+		Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
 		List<Users> userList = query.list();
 		return userList;
 	}

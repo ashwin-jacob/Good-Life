@@ -1,5 +1,6 @@
 package com.goodlife.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.UserStatusDAO;
 import com.goodlife.dao.UsersDAO;
+import com.goodlife.exceptions.StateNotFoundException;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.AjaxResponse;
 import com.goodlife.model.UserStatus;
@@ -41,25 +43,45 @@ public class UserManagementController {
 	@Autowired
 	UsersDAO usersDAO;
 	
-	@RequestMapping(value="{input}/{type}/{role}", method=RequestMethod.POST, produces="filtered/json")
-	public void getList(ModelMap model,
-				@PathVariable @RequestParam(value="input", required=false) String input, 
-				@PathVariable @RequestParam(value="type", required=false) String type,
-				@PathVariable @RequestParam(value="role", required=false) String role) {
-		/* PATHS - should we separate these in the UI design?
-		 * 1. role 
-		 * 2. input + type
-		 * 3. input + type + role
-		 */ 
-		if (role != null) {
-			try {
-				List<Users> roleUsers = usersDAO.findByRoleType(role.charAt(0));
-			} catch (UserNotFoundException e) {
-				// TODO Auto-generated catch block
-				logger.debug("No " + role + "s");
-				e.printStackTrace();
-			}
+	/*
+	 * ** field should match the db column name.
+	 * example from UI : { "input": "whateveUserTypes",
+	 * 						"field": "lst_nm",
+	 * 						"sb": 1,
+	 * 						"mb": 0,
+	 * 						"fb": 0}
+	 */
+	@RequestMapping(value="{input}/{type}/student?{sb}moderator?{mb}facilitator?{fb}", 
+					method=RequestMethod.POST, produces="filtered/json")
+	public AjaxResponse<List<Users>> getList(ModelMap model,
+				@PathVariable @RequestParam(value="input") String input, 
+				@PathVariable @RequestParam(value="field") String field,
+				@PathVariable @RequestParam(value="sb") Integer sb,
+				@PathVariable @RequestParam(value="mb") Integer mb,
+				@PathVariable @RequestParam(value="fb") Integer fb) {
+
+		List<Users> filteredList = new ArrayList<Users>();
+		String searchStr = cleanInput(input, field);
+		
+		List<Character> roles = new ArrayList<Character>();
+		if (sb == 1) {
+			roles.add('S');
+		} if (mb == 1) {
+			roles.add('M');
+		} if (fb == 1) {
+			roles.add('F');
 		}
+	
+		try {
+			filteredList = usersDAO.advancedQuery(searchStr, field, roles);
+		} catch (UserNotFoundException e) {
+			logger.debug("No users found.");
+			e.printStackTrace();
+		}
+		
+		AjaxResponse<List<Users>> response = new AjaxResponse<List<Users>>();
+		response = ajaxResponseBuilder.createSuccessResponse(filteredList);
+		return response;
 	}
 	
 	
@@ -93,7 +115,6 @@ public class UserManagementController {
 		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
 		response = ajaxResponseBuilder.createSuccessResponse(0);
 		
-		//userStatusDAO.activateUser(userId, startDate, endDate);
 		return response;
 	}
 	
@@ -110,4 +131,18 @@ public class UserManagementController {
 		return response;
 	}
 	
+	private String cleanInput(String input, String type) {
+		
+		input = input.trim();
+		if (type == "state") {
+			StateConversionUtil stateUtil = new StateConversionUtil();
+			try {
+				return stateUtil.lookUp(input);
+			} catch (StateNotFoundException e) {
+				logger.debug(input + " is an invalid state name.");
+				e.printStackTrace();
+			}
+		}
+		return input;
+	}
 }

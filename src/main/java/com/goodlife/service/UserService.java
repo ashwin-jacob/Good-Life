@@ -27,6 +27,9 @@ public interface UserService {
 	public List<Student> findStudentByRosterId(Integer rosterId) throws UserNotFoundException;
 	
 	public List<Instructor> findInstructorByRosterId(Integer rosterId) throws UserNotFoundException;
+	
+	public List<Users> advancedQuery(String input, String field, List<Character> roles) 
+			throws UserNotFoundException;
 	//TODO
 	//public Integer nFlags(String username);
 }
