@@ -13,7 +13,7 @@ public interface ChapterDAO {
 	public Integer addChapter(Chapter chapter);
 	public void deleteChapter(Integer chapterId) throws ChapterNotFoundException;
 	public Chapter findByChapterId(Integer chapterId) throws ChapterNotFoundException;
-	public void updateOrder(Integer chapterId, List<Chapter> chapterList) throws ChapterNotFoundException;
+	public void updateOrder(List<Chapter> chapterList) throws ChapterNotFoundException;
 	public void updateTitle(Integer chapterId, String newChapterTitle) throws ChapterNotFoundException;
 	public void updateDescr(Integer chapterId, String newChapterDescr) throws ChapterNotFoundException;
 	public List<Chapter> listAllChapters() throws ChapterNotFoundException;
