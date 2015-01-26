@@ -75,11 +75,34 @@ public class ChapterDAOImpl implements ChapterDAO{
 	}
 
 	@Override
-	public List<Chapter> ListAllChapters() throws ChapterNotFoundException {
+	public List<Chapter> listAllChapters() throws ChapterNotFoundException {
 		// TODO Auto-generated method stub
 		Query query = this.sessionFactory.getCurrentSession().createQuery("from CHAPTER");
 		List<Chapter> allChapterList = query.list();
 		return allChapterList;
 	}
+
+	@Override
+	public List<Chapter> listAllPublishedChapters()
+			throws ChapterNotFoundException {
+		// TODO Auto-generated method stub
+		Query query = this.sessionFactory.getCurrentSession().createQuery("from CHAPTER where published = :published");
+		query.setParameter("published", true);
+		List<Chapter> publishedChapterList = query.list();
+		return publishedChapterList;
+	}
+
+	@Override
+	public List<Chapter> listAllChapterDrafts() throws ChapterNotFoundException {
+		// TODO Auto-generated method stub
+		Query query = this.sessionFactory.getCurrentSession().createQuery("from CHAPTER where published = :published");
+		query.setParameter("published", false);
+		List<Chapter> chapterDraftList = query.list();
+		return chapterDraftList;
+	}
+	
+	
+	
+	
 
 }
