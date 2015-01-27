@@ -17,12 +17,8 @@ public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
-	public Integer addMultiChoiceOption(Integer multiQuesId, String choiceText)
+	public Integer addMultiChoiceOption(MultiChoiceOption multiChoiceOption)
 			throws UserNotFoundException {
-		
-		MultiChoiceOption multiChoiceOption = new MultiChoiceOption();
-		multiChoiceOption.setMultiQuesId(multiQuesId);
-		multiChoiceOption.setChoiceText(choiceText);
 		
 		this.sessionFactory.getCurrentSession().save(multiChoiceOption);
 		
