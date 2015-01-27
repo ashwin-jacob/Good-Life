@@ -37,11 +37,11 @@ public class UserManagementController {
 	
 	static final Logger logger = LogManager.getLogger(UserManagementController.class.getName());
 	
-	@Autowired
-	UserStatusDAO userStatusDAO;
+	@Inject
+	private UserStatusDAO userStatusDAO;
 	
-	@Autowired
-	UsersDAO usersDAO;
+	@Inject
+	private UsersDAO usersDAO;
 	
 	/*
 	 * ** field should match the db column name.

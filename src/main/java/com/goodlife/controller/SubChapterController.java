@@ -29,8 +29,8 @@ public class SubChapterController {
 	
 	static final Logger logger = LogManager.getLogger(SubChapterController.class.getName());
 	
-	@Autowired
-	SubChapterDAO subChapterDAO;
+	@Inject
+	private SubChapterDAO subChapterDAO;
 	
 	@ResponseBody
 	@RequestMapping(value = "/addsubchapter", method = RequestMethod.GET)
