@@ -15,8 +15,7 @@ import com.goodlife.model.Student;
 public class StudentDAOImpl implements StudentDAO  {
 
 	private static final String QUERY_ROSTER = 
-			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd "
-			+ "from USERS user where user.roster_id = :rosterId";
+			"from USERS user where user.roster_id = :rosterId and user.role_typ_cd = " + 'S';
 	
 	@Autowired
     private SessionFactory sessionFactory;
@@ -25,7 +24,7 @@ public class StudentDAOImpl implements StudentDAO  {
 	public Student findStudentByUserName(String username) throws UserNotFoundException {
 		Student user = (Student) this.sessionFactory.getCurrentSession().get(Student.class, username);
 		if (null == user) {
-        	throw new UserNotFoundException("User: " + username + ".  Not found in the database!");
+        	throw new UserNotFoundException("Student: " + username + ".  Not found in the database!");
         }
 		return user;
 	}

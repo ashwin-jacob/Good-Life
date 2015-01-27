@@ -19,30 +19,18 @@ import com.goodlife.model.Users;
 
 @Repository
 public class UsersDAOImpl implements UsersDAO  {
-	// TODO: userStatus and Flag needs to be resolved.
-	private static final String QUERY_FIND_ROLE = 
-			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd "
-			+ "from USERS user where user.role_typ_cd = :roleTypeCode";
+
+	private static final String QUERY_FIND_ROLE = "from USERS user where user.role_typ_cd = :roleTypeCode";
 	
-	private static final String QUERY_FIRSTNAME = 
-			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd "
-			+ "from USERS user where user.frst_nm = :firstname";
+	private static final String QUERY_FIRSTNAME = "from USERS user where user.frst_nm = :firstname";
 	
-	private static final String QUERY_LASTNAME = 
-			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd "
-			+ "from USERS user where user.lst_nm = :lastname";
+	private static final String QUERY_LASTNAME = "from USERS user where user.lst_nm = :lastname";
 	
-	private static final String QUERY_EMAIL = 
-			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd "
-			+ "from USERS user where user.email = :email";
+	private static final String QUERY_EMAIL = "from USERS user where user.email = :email";
 	
-	private static final String QUERY_CITY = 
-			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd "
-			+ "from USERS user where user.city = :city";
+	private static final String QUERY_CITY = "from USERS user where user.city = :city";
 	
-	private static final String QUERY_STATE = 
-			"select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd "
-			+ "from USERS user where user.state = :state";
+	private static final String QUERY_STATE = "from USERS user where user.state = :state";
 	
 	@Autowired
     private SessionFactory sessionFactory;
@@ -86,10 +74,9 @@ public class UsersDAOImpl implements UsersDAO  {
 	@Override
 	public List<Users> findByRoleTypes(List<Character> roles)
 			throws UserNotFoundException {
-		String sql = "select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd "
-				+ "from USERS user";
+		String sql = "from USERS user ";
 		for (char role : roles) {
-			sql += " where user.role_typ_cd = " + role + " and ";
+			sql += "where user.role_typ_cd = " + role + " and ";
 		}
 		sql = sql.substring(0, sql.length()-5);
 		Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
@@ -137,8 +124,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	@Override
 	public List<Users> advancedQuery(String input, String field, List<Character> roles) 
 			throws UserNotFoundException {
-		String sql = "select user.usr_nm, user.frst_nm, user.lst_nm, user.email, user.role_typ_cd from USERS user";
-		sql += " where user." + field + " = " + input;
+		String sql = "from USERS user where user." + field + " = " + input;
 		
 		if (roles != null) {
 			for (char role : roles) {

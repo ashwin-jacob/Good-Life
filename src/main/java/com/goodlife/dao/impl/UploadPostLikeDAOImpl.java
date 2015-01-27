@@ -12,11 +12,9 @@ import com.goodlife.model.UploadPostLike;
 
 public class UploadPostLikeDAOImpl implements UploadPostLikeDAO {
 	
-	private static final String FIND_WHO_LIKES = 
-			"select * from UPLOAD_POST_LIKE where flgd_by = :userid";
+	private static final String FIND_WHO_LIKES = "from UPLOAD_POST_LIKE where flgd_by = :userid";
 	
-	private static final String FIND_BY_POST = 
-			"select * from UPLOAD_POST_LIKE where pst_id = :postId";
+	private static final String FIND_BY_POST = "from UPLOAD_POST_LIKE where pst_id = :postId";
 	
 	private static final String FIND_N_LIKES_BY_POST = 
 			"select count(pst_id) from UPLOAD_POST_LIKE where pst_id = :postId";

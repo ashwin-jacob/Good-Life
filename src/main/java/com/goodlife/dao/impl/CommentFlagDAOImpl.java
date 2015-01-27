@@ -14,10 +14,10 @@ import com.goodlife.model.CommentFlag;
 public class CommentFlagDAOImpl implements CommentFlagDAO {
 	
 	private static final String FIND_WHO_FLAGGED = 
-			"select * from COMMENT_FLAG where flgd_by = :userid";
+			"from COMMENT_FLAG where flgd_by = :userid";
 	
 	private static final String FIND_BY_COMMENT = 
-			"select * from COMMENT_FLAG where cmmt_id = :commentId";
+			"from COMMENT_FLAG where cmmt_id = :commentId";
 	
 	private static final String FIND_N_FLAGS_BY_CMT = 
 			"select count(cmmt_id) from COMMENT_FLAG where cmmt_id = :commentId";

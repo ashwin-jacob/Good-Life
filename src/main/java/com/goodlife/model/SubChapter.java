@@ -21,9 +21,8 @@ import org.hibernate.annotations.CascadeType;
 public class SubChapter implements Serializable{
 
 	@Id
-	@Column(name = "sup_chap_id", nullable = false, unique = true)
-	private Integer subChapId;
-	
+	@Column(name = "sub_chap_id", nullable = false, unique = true)
+	private Integer subChapId;	
 	
 	@JoinColumn(name = "chap_id", nullable = false)
 	private Integer chapId;

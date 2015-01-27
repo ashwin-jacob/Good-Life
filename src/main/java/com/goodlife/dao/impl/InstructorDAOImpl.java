@@ -2,6 +2,7 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -9,10 +10,15 @@ import org.springframework.stereotype.Repository;
 import com.goodlife.dao.InstructorDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Instructor;
+import com.goodlife.model.Student;
 
 @Repository
 public class InstructorDAOImpl implements InstructorDAO  {
 
+	private static final String QUERY_ROSTER = 
+			"from USERS user where user.roster_id = :rosterId and user.role_typ_cd = " + 'M' +
+			"OR user.role_typ_cd = " + 'F';
+	
 	@Autowired
     private SessionFactory sessionFactory;
 	
@@ -20,7 +26,7 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	public Instructor findInstructorByUserName(String username) throws UserNotFoundException {
 		Instructor user = (Instructor) this.sessionFactory.getCurrentSession().get(Instructor.class, username);
 		if (null == user) {
-        	throw new UserNotFoundException("User: " + username + ".  Not found in the database!");
+        	throw new UserNotFoundException("Instructor: " + username + ".  Not found in the database!");
         }
 		return user;
 	}
@@ -64,7 +70,8 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	@Override
 	public List<Instructor> findInstructorByRosterId(Integer rosterId)
 			throws UserNotFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_ROSTER).setParameter("rosterId", rosterId);
+		List<Instructor> userList = query.list();
+		return userList;
 	}
 }

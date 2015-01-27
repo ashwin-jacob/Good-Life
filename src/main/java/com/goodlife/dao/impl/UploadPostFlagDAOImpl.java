@@ -12,11 +12,9 @@ import com.goodlife.model.UploadPostFlag;
 
 public class UploadPostFlagDAOImpl implements UploadPostFlagDAO {
 	
-	private static final String FIND_WHO_FLAGGED = 
-			"select * from UPLOAD_POST_FLAG where flgd_by = :userid";
+	private static final String FIND_WHO_FLAGGED = "from UPLOAD_POST_FLAG where flgd_by = :userid";
 	
-	private static final String FIND_BY_POST = 
-			"select * from UPLOAD_POST_FLAG where pst_id = :postId";
+	private static final String FIND_BY_POST = "from UPLOAD_POST_FLAG where pst_id = :postId";
 	
 	private static final String FIND_N_FLAGS_BY_POST = 
 			"select count(pst_id) from UPLOAD_POST_FLAG where pst_id = :postId";
