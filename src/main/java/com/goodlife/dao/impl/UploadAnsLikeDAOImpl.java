@@ -13,11 +13,9 @@ import com.goodlife.model.UploadAnsLike;
 
 public class UploadAnsLikeDAOImpl implements UploadAnsLikeDAO {
 	
-	private static final String FIND_WHO_LIKES = 
-			"select * from UPLOAD_ANS_LIKE where flgd_by = :userid";
+	private static final String FIND_WHO_LIKES = "from UPLOAD_ANS_LIKE where flgd_by = :userid";
 	
-	private static final String FIND_BY_ANS = 
-			"select * from UPLOAD_ANS_LIKE where ans_id = :ansId";
+	private static final String FIND_BY_ANS = "from UPLOAD_ANS_LIKE where ans_id = :ansId";
 	
 	private static final String FIND_N_LIKES_BY_ANS = 
 			"select count(ans_id) from UPLOAD_ANS_LIKE where ans_id = :ansId";

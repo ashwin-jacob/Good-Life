@@ -17,18 +17,11 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
     private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addShortAnswerQuestion(Integer subChapId, String question,
-			String helpText, Integer orderId) throws UserNotFoundException {
-
-		ShortAnswerQ shortAns = new ShortAnswerQ();
-		shortAns.setSubChapId(subChapId);
-		shortAns.setQuestion(question);
-		shortAns.setHelpText(helpText);
-		shortAns.setOrderId(orderId);
+	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) throws UserNotFoundException {
 		
-		this.sessionFactory.getCurrentSession().save(shortAns);
+		this.sessionFactory.getCurrentSession().save(shortAnswerQ);
 		
-		return shortAns.getSaQId();
+		return shortAnswerQ.getSaQId();
 	}
 
 	@Override

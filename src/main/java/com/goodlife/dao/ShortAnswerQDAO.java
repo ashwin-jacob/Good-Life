@@ -7,7 +7,7 @@ import com.goodlife.model.ShortAnswerQ;
 
 public interface ShortAnswerQDAO {
 
-	public Integer addShortAnswerQuestion(Integer subChapId, String question, String helpText, Integer orderId) throws UserNotFoundException;
+	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) throws UserNotFoundException;
 	public void updateQuestionText(Integer saQId, String question) throws UserNotFoundException;
 	public void updateHelpText(Integer saQId, String helpText) throws UserNotFoundException;
 	public void updateOrderId(List<Integer> saQIdList) throws UserNotFoundException;

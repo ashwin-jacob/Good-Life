@@ -13,10 +13,10 @@ import com.goodlife.model.CommentLike;
 public class CommentLikeDAOImpl implements CommentLikeDAO {
 	
 	private static final String FIND_WHO_LIKES = 
-			"select * from COMMENT_LIKE where lkd_by = :userId";
+			"from COMMENT_LIKE where lkd_by = :userId";
 	
 	private static final String FIND_BY_COMMENT = 
-			"select * from COMMENT_LIKE where cmmt_id = :commentId";
+			"from COMMENT_LIKE where cmmt_id = :commentId";
 	
 	private static final String FIND_N_LIKES_BY_CMT = 
 			"select count(cmmt_id) from COMMENT_LIKE where cmmt_id = :commentId";

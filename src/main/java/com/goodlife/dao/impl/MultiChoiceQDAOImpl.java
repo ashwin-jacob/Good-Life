@@ -17,20 +17,12 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addMultiChoice(String quesText, String helpText,
-			Integer correctAnswer, Integer subChapId, Integer orderId)
+	public Integer addMultiChoice(MultiChoiceQ multiChoiceQ)
 			throws UserNotFoundException {
 		
-		MultiChoiceQ multiChoice = new MultiChoiceQ();
-		multiChoice.setQuesText(quesText);
-		multiChoice.setHelpText(helpText);
-		multiChoice.setCorrectAnswer(correctAnswer);
-		multiChoice.setSubChapId(subChapId);
-		multiChoice.setOrderId(orderId);
+		this.sessionFactory.getCurrentSession().save(multiChoiceQ);
 		
-		this.sessionFactory.getCurrentSession().save(multiChoice);
-		
-		return multiChoice.getMultiQuesId();
+		return multiChoiceQ.getMultiQuesId();
 	}
 
 	@Override

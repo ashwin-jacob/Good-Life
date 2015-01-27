@@ -7,7 +7,7 @@ import com.goodlife.model.MultiChoiceOption;
 
 public interface MultiChoiceOptionDAO {
 	
-	public Integer addMultiChoiceOption(Integer multiQuesId, String choiceText) throws UserNotFoundException;
+	public Integer addMultiChoiceOption(MultiChoiceOption multiChoiceOption) throws UserNotFoundException;
 	public void updateChoiceText(Integer optionId) throws UserNotFoundException;
 	public List<MultiChoiceOption> getMultiChoiceOptions(Integer multiQuesId);
 

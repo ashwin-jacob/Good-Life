@@ -17,16 +17,8 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
     private SessionFactory sessionFactory;
 	
 	@Override
-	public void addUserAnswer(Integer subChapId, Integer saQId,
-			String userAnswer, Integer userId, Boolean aprvd)
+	public void addUserAnswer(ShortAnswerUserAnswer shortAnswerUA)
 			throws UserNotFoundException {
-
-		ShortAnswerUserAnswer shortAnswerUA = new ShortAnswerUserAnswer();
-		shortAnswerUA.setSubChapId(subChapId);
-		shortAnswerUA.setSaQId(saQId);
-		shortAnswerUA.setUserAnswer(userAnswer);
-		shortAnswerUA.setUserId(userId);
-		shortAnswerUA.setAprvd(aprvd);
 		
 		this.sessionFactory.getCurrentSession().save(shortAnswerUA);
 	}

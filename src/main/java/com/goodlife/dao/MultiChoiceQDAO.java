@@ -7,8 +7,7 @@ import com.goodlife.model.MultiChoiceQ;
 
 public interface MultiChoiceQDAO {
 	
-	public Integer addMultiChoice(String questionText, String helpText, Integer correctAnswer,
-			                      Integer subChapId, Integer orderId) throws UserNotFoundException;
+	public Integer addMultiChoice(MultiChoiceQ multiChoiceQ) throws UserNotFoundException;
 	public void deleteMultiChoice(Integer multiChoiceId) throws UserNotFoundException;
 	public void updateOrder(List<Integer> multiChoiceIdList) throws UserNotFoundException;
 	public void updateQuestionText(Integer multiChoiceId, String quesText) throws UserNotFoundException;

@@ -16,13 +16,7 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public void addMultiChoiceAnswer(Integer userId, Integer multiQuesId,
-			Integer userAnswer) throws UserNotFoundException {
-		
-		MultiChoiceUserAns multiChoiceAns = new MultiChoiceUserAns();
-		multiChoiceAns.setUserId(userId);
-		multiChoiceAns.setMultiQuesId(multiQuesId);
-		multiChoiceAns.setUserAnswer(userAnswer);
+	public void addMultiChoiceAnswer(MultiChoiceUserAns multiChoiceAns) throws UserNotFoundException {
 		
 		this.sessionFactory.getCurrentSession().save(multiChoiceAns);
 	}

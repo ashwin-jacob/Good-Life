@@ -12,11 +12,9 @@ import com.goodlife.model.UploadAnsFlag;
 
 public class UploadAnsFlagDAOImpl implements UploadAnsFlagDAO {
 	
-	private static final String FIND_WHO_FLAGGED = 
-			"select * from UPLOAD_ANS_FLAG where flgd_by = :userid";
+	private static final String FIND_WHO_FLAGGED = "from UPLOAD_ANS_FLAG where flgd_by = :userid";
 	
-	private static final String FIND_BY_ANS = 
-			"select * from UPLOAD_ANS_FLAG where ans_id = :ansId";
+	private static final String FIND_BY_ANS = "from UPLOAD_ANS_FLAG where ans_id = :ansId";
 	
 	private static final String FIND_N_FLAGS_BY_ANS = 
 			"select count(ans_id) from UPLOAD_ANS_FLAG where ans_id = :ansId";

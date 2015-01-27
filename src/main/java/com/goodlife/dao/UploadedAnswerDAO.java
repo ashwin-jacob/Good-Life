@@ -6,8 +6,7 @@ import com.goodlife.model.UploadedAnswer;
 
 public interface UploadedAnswerDAO {
 
-	public Integer addUploadedAnswer(Integer mediaTypeId, String filePath, Integer userId,
-									 Boolean shared, Integer uploadQuesId) throws UserNotFoundException;
+	public Integer addUploadedAnswer(UploadedAnswer uploadedAnswer) throws UserNotFoundException;
 	public Boolean setApproveAnswer(Integer uploadAnswerId, Boolean aprvd) throws UserNotFoundException;
 	public Boolean setShareAnswer(Integer uploadAnswerId, Boolean shared) throws UserNotFoundException;
 	public UploadedAnswer getUserAnswer(Integer userId, Integer uploadQuesId) throws UserNotFoundException;

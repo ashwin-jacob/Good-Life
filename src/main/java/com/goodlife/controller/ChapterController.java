@@ -29,8 +29,8 @@ public class ChapterController {
 	
 	static final Logger logger = LogManager.getLogger(ChapterController.class.getName());
 	
-	@Autowired
-	ChapterDAO chapterDAO;
+	@Inject
+	private ChapterDAO chapterDAO;
 	
 	@ResponseBody
 	@RequestMapping(value = "/addchapter", method = RequestMethod.GET)

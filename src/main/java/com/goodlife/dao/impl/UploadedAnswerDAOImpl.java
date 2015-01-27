@@ -18,16 +18,8 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addUploadedAnswer(Integer mediaTypeId, String filePath,
-			Integer userId, Boolean shared, Integer uploadQuesId)
+	public Integer addUploadedAnswer(UploadedAnswer uploadedAnswer)
 			throws UserNotFoundException {
-
-		UploadedAnswer uploadedAnswer = new UploadedAnswer();
-		uploadedAnswer.setMediaTypeId(mediaTypeId);
-		uploadedAnswer.setFilePath(filePath);
-		uploadedAnswer.setUserId(userId);
-		uploadedAnswer.setShared(shared);
-		uploadedAnswer.setUploadQuesId(uploadQuesId);
 		
 		this.sessionFactory.getCurrentSession().save(uploadedAnswer);
 		
