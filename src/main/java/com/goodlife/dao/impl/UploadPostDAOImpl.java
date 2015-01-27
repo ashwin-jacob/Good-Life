@@ -18,16 +18,8 @@ public class UploadPostDAOImpl implements UploadPostDAO{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addUploadPost(String subjectText, String descriptionText,
-			String filePath, Integer mediaTypeId, Integer userId)
+	public Integer addUploadPost(UploadPost uploadPost)
 			throws UserNotFoundException {
-
-		UploadPost uploadPost = new UploadPost();
-		uploadPost.setSubjectText(subjectText);
-		uploadPost.setDescriptionText(descriptionText);
-		uploadPost.setFilePath(filePath);
-		uploadPost.setMediaTypeId(mediaTypeId);
-		uploadPost.setUserId(userId);
 		
 		this.sessionFactory.getCurrentSession().save(uploadPost);
 		

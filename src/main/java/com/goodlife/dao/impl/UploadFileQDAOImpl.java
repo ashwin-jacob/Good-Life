@@ -15,13 +15,9 @@ public class UploadFileQDAOImpl implements UploadFileQDAO{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addUploadFileQuestion(Integer subChapId, String helpText, String description)
+	public Integer addUploadFileQuestion(UploadFileQ uploadFileQ)
 			throws UserNotFoundException {
 
-		UploadFileQ uploadFileQ = new UploadFileQ();
-		uploadFileQ.setSubChapId(subChapId);
-		uploadFileQ.setHelpText(helpText);
-		
 		this.sessionFactory.getCurrentSession().save(uploadFileQ);
 		
 		return uploadFileQ.getUploadQuesId();
