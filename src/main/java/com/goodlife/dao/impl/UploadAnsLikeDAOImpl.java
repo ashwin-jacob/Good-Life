@@ -5,12 +5,14 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.UploadAnsLikeDAO;
 import com.goodlife.exceptions.LikeNotFoundException;
 import com.goodlife.model.CommentLike;
 import com.goodlife.model.UploadAnsLike;
 
+@Repository
 public class UploadAnsLikeDAOImpl implements UploadAnsLikeDAO {
 	
 	private static final String FIND_WHO_LIKES = "from UPLOAD_ANS_LIKE where flgd_by = :userid";

@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.ChapterDAO;
 import com.goodlife.exceptions.ChapterNotFoundException;
@@ -13,6 +14,7 @@ import com.goodlife.model.Chapter;
 import com.goodlife.model.UserStatus;
 import com.goodlife.model.Users;
 
+@Repository
 public class ChapterDAOImpl implements ChapterDAO{
 	@Autowired
     private SessionFactory sessionFactory;

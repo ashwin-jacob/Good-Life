@@ -6,10 +6,12 @@ import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.MultiChoiceQDAO;
 import com.goodlife.model.MultiChoiceQ;
 
+@Repository
 public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 	
 	@Autowired

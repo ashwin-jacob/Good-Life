@@ -6,12 +6,13 @@ import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.UploadedAnswer;
 
-
+@Repository
 public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 
 	@Autowired

@@ -5,11 +5,13 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.CommentLikeDAO;
 import com.goodlife.exceptions.LikeNotFoundException;
 import com.goodlife.model.CommentLike;
 
+@Repository
 public class CommentLikeDAOImpl implements CommentLikeDAO {
 	
 	private static final String FIND_WHO_LIKES = 

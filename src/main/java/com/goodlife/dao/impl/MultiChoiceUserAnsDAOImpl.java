@@ -5,11 +5,13 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.MultiChoiceUserAnsDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.MultiChoiceUserAns;
 
+@Repository
 public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 
 	@Autowired

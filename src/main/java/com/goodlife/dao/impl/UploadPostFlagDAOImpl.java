@@ -5,11 +5,13 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.UploadPostFlagDAO;
 import com.goodlife.exceptions.FlagNotFoundException;
 import com.goodlife.model.UploadPostFlag;
 
+@Repository
 public class UploadPostFlagDAOImpl implements UploadPostFlagDAO {
 	
 	private static final String FIND_WHO_FLAGGED = "from UPLOAD_POST_FLAG where flgd_by = :userid";

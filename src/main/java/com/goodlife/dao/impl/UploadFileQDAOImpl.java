@@ -3,12 +3,13 @@ package com.goodlife.dao.impl;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.UploadFileQ;
 
-
+@Repository
 public class UploadFileQDAOImpl implements UploadFileQDAO{
 
 	@Autowired

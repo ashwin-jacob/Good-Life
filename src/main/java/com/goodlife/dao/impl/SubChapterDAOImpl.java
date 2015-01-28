@@ -17,6 +17,7 @@ import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.SubChapter;
 
+@Repository
 public class SubChapterDAOImpl implements SubChapterDAO {
 
 	@Autowired
