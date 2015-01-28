@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goodlife.dao.MultiChoiceQDAO;
-import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.MultiChoiceQ;
 
 public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
@@ -17,8 +16,7 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addMultiChoice(MultiChoiceQ multiChoiceQ)
-			throws UserNotFoundException {
+	public Integer addMultiChoice(MultiChoiceQ multiChoiceQ) {
 		
 		this.sessionFactory.getCurrentSession().save(multiChoiceQ);
 		
@@ -26,8 +24,7 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 	}
 
 	@Override
-	public void deleteMultiChoice(Integer multiChoiceId)
-			throws UserNotFoundException {
+	public void deleteMultiChoice(Integer multiChoiceId) throws ObjectNotFoundException {
 
 		MultiChoiceQ multiChoice = new MultiChoiceQ();
 		multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
@@ -36,7 +33,7 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 
 	@Override
 	public void updateOrder(List<Integer> multiChoiceIdList)
-			throws UserNotFoundException {
+			throws ObjectNotFoundException {
 
 		MultiChoiceQ multiChoice = new MultiChoiceQ();
 		for (int i = 0; i < multiChoiceIdList.size(); i++){
@@ -48,7 +45,7 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 
 	@Override
 	public void updateQuestionText(Integer multiChoiceId, String quesText)
-			throws UserNotFoundException {
+			throws ObjectNotFoundException {
 		
 		MultiChoiceQ multiChoice = new MultiChoiceQ();
 		multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
@@ -58,7 +55,7 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 
 	@Override
 	public void updateHelpText(Integer multiChoiceId, String helpText)
-			throws UserNotFoundException {
+			throws ObjectNotFoundException {
 		
 		MultiChoiceQ multiChoice = new MultiChoiceQ();
 		multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
@@ -68,7 +65,7 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 
 	@Override
 	public void updateCorrectAnswer(Integer multiChoiceId, Integer correctAnswer)
-			throws UserNotFoundException {
+			throws ObjectNotFoundException {
 		
 		MultiChoiceQ multiChoice = new MultiChoiceQ();
 		try{
@@ -81,11 +78,10 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 	}
 
 	@Override
-	public List<MultiChoiceQ> getAllMultiChoice(Integer multiChoiceId)
-			throws UserNotFoundException {
+	public List<MultiChoiceQ> getAllMultiChoice(Integer subChapId) {
 		
-		Query query = this.sessionFactory.getCurrentSession().createQuery("FROM MULTI_CHOICE_Q WHERE MC_Q_ID = :multiChoiceId");
-		query.setParameter("multiChoiceId", multiChoiceId);
+		Query query = this.sessionFactory.getCurrentSession().createQuery("FROM MULTI_CHOICE_Q WHERE SUB_CHAP_ID = :subChapId");
+		query.setParameter("subChapId", subChapId);
 		List<MultiChoiceQ> multiChoiceList = query.list();
 		return multiChoiceList;
 	}

@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goodlife.dao.MultiChoiceOptionDAO;
-import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.MultiChoiceOption;
 
 public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
@@ -17,8 +16,7 @@ public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
 	private SessionFactory sessionFactory;
 
 	@Override
-	public Integer addMultiChoiceOption(MultiChoiceOption multiChoiceOption)
-			throws UserNotFoundException {
+	public Integer addMultiChoiceOption(MultiChoiceOption multiChoiceOption) {
 		
 		this.sessionFactory.getCurrentSession().save(multiChoiceOption);
 		
@@ -26,7 +24,7 @@ public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
 	}
 
 	@Override
-	public void updateChoiceText(Integer optionId) throws UserNotFoundException {
+	public void updateChoiceText(Integer optionId, String text) throws ObjectNotFoundException {
 		
 		MultiChoiceOption multiChoiceOption = new MultiChoiceOption();
 		try{
@@ -34,7 +32,7 @@ public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
 		}catch(ObjectNotFoundException e){
 			multiChoiceOption = (MultiChoiceOption)this.sessionFactory.getCurrentSession().get(MultiChoiceOption.class, optionId);
 		}
-		multiChoiceOption.setOptionId(optionId);
+		multiChoiceOption.setChoiceText(text);
 		this.sessionFactory.getCurrentSession().save(multiChoiceOption);		
 	}
 
@@ -46,6 +44,22 @@ public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
 		List<MultiChoiceOption> multiChoiceList = query.list();
 		
 		return multiChoiceList;
+	}
+
+	@Override
+	public void deleteMultiChoiceOption(Integer optionId) throws ObjectNotFoundException {
+		MultiChoiceOption mcOpt = findMultiChoiceOptionById(optionId);
+		this.sessionFactory.getCurrentSession().delete(mcOpt);
+	}
+
+	@Override
+	public MultiChoiceOption findMultiChoiceOptionById(Integer optionId)
+			throws ObjectNotFoundException {
+		MultiChoiceOption mcOpt = (MultiChoiceOption) this.sessionFactory.getCurrentSession().get(MultiChoiceOption.class, optionId);
+		if (null == mcOpt) {
+        	throw new ObjectNotFoundException(null, "MultiChoice Option: " + optionId + ".  Not found in the database!");
+        }
+		return mcOpt;
 	}
 
 }
