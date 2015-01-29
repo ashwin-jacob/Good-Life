@@ -16,12 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.MultiChoiceOptionDAO;
 import com.goodlife.dao.MultiChoiceQDAO;
-import com.goodlife.exceptions.SubChapterNotFoundException;
-import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.AjaxResponse;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
-import com.goodlife.model.SubChapter;
 
 @Controller
 @RequestMapping(value = "/multichoice")
@@ -119,7 +116,8 @@ public class MultiChoiceController {
 
 	@ResponseBody
 	@RequestMapping(value = "/updateoptiontext", method = RequestMethod.GET)
-	public AjaxResponse<Integer> updateOptionText(Integer optionId, String optionText) throws ObjectNotFoundException {
+	public AjaxResponse<Integer> updateOptionText(@RequestParam(value="optionId") Integer optionId, 
+			@RequestParam(value="optionText") String optionText) throws ObjectNotFoundException {
 		
 		mcOptdao.updateChoiceText(optionId, optionText);
 		

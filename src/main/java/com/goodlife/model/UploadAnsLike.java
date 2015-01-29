@@ -16,7 +16,7 @@ import org.hibernate.annotations.CascadeType;
 
 
 @Entity (name = "UploadAnslike")
-@Table(name="UPLOAD_ANS_like", catalog = "goodlife")
+@Table(name="UPLOAD_ANS_LIKE", catalog = "goodlife")
 public class UploadAnsLike {
 
 	@Id

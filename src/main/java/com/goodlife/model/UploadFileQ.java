@@ -20,6 +20,8 @@ import org.hibernate.annotations.CascadeType;
 @Table(name = "UPLOAD_FILE_Q", catalog = "goodlife")
 public class UploadFileQ implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "up_q_id", nullable = false, unique = true)
 	private Integer uploadQuesId;
@@ -32,18 +34,22 @@ public class UploadFileQ implements Serializable{
 	
 	@Column(name = "descr")
 	private String description;
+	
+	@Column(name = "order_id")
+	private Integer orderId;
 
 	public UploadFileQ() {
 		super();
 	}
 
 	public UploadFileQ(Integer uploadQuesId, Integer subChapId, String helpText,
-			String description) {
+			String description, Integer orderId) {
 		super();
 		this.uploadQuesId = uploadQuesId;
 		this.subChapId = subChapId;
 		this.helpText = helpText;
 		this.description = description;
+		this.orderId = orderId;
 	}
 
 	public Integer getUploadQuesId() {
@@ -76,6 +82,14 @@ public class UploadFileQ implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Integer getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(Integer orderId) {
+		this.orderId = orderId;
 	}
 	
 }

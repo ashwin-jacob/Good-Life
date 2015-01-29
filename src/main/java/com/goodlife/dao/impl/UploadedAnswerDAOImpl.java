@@ -19,8 +19,7 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addUploadedAnswer(UploadedAnswer uploadedAnswer)
-			throws UserNotFoundException {
+	public Integer addUploadedAnswer(UploadedAnswer uploadedAnswer) {
 		
 		this.sessionFactory.getCurrentSession().save(uploadedAnswer);
 		
@@ -29,36 +28,45 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 
 	@Override
 	public Boolean setApproveAnswer(Integer uploadAnswerId, Boolean aprvd)
-			throws UserNotFoundException {
+			throws ObjectNotFoundException {
 
-		UploadedAnswer uploadedAnswer = new UploadedAnswer();
-		try{
+		UploadedAnswer uploadedAnswer;
+		try {
 			uploadedAnswer = (UploadedAnswer)this.sessionFactory.getCurrentSession().load(UploadedAnswer.class, uploadAnswerId);
-		}catch(ObjectNotFoundException e){
+		} catch (ObjectNotFoundException e){
 			uploadedAnswer = (UploadedAnswer)this.sessionFactory.getCurrentSession().get(UploadedAnswer.class, uploadAnswerId);
 		}
+		
+		if (uploadedAnswer == null) {
+			throw new ObjectNotFoundException(null, "No uploaded answer found with id: " + uploadAnswerId);
+		}
+		
 		uploadedAnswer.setAprvd(aprvd);
 		this.sessionFactory.getCurrentSession().save(uploadedAnswer);
 		return aprvd;
 	}
 
 	@Override
-	public Boolean setShareAnswer(Integer uploadAnswerId, Boolean shared)
-			throws UserNotFoundException {
+	public Boolean setSharedAnswer(Integer uploadAnswerId, Boolean shared)
+			throws ObjectNotFoundException {
 		
-		UploadedAnswer uploadedAnswer = new UploadedAnswer();
+		UploadedAnswer uploadedAnswer;
 		try{
 			uploadedAnswer = (UploadedAnswer)this.sessionFactory.getCurrentSession().load(UploadedAnswer.class, uploadAnswerId);
 		}catch(ObjectNotFoundException e){
 			uploadedAnswer = (UploadedAnswer)this.sessionFactory.getCurrentSession().get(UploadedAnswer.class, uploadAnswerId);
 		}
+		if (uploadedAnswer == null) {
+			throw new ObjectNotFoundException(null, "No uploaded answer found with id: " + uploadAnswerId);
+		}
+		
 		uploadedAnswer.setShared(shared);
 		return null;
 	}
 
 	@Override
 	public UploadedAnswer getUserAnswer(Integer userId, Integer uploadQuesId)
-			throws UserNotFoundException {
+			throws ObjectNotFoundException {
 		
 		List<UploadedAnswer> uploadedAnswer;
 		
@@ -69,6 +77,10 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 		
 		uploadedAnswer = query.list();
 		
+		if (uploadedAnswer == null) {
+			throw new ObjectNotFoundException(null, 
+					"User answer for user " + userId + " upload question " + uploadQuesId + " not found.");
+		}
 		return uploadedAnswer.get(0);
 	}
 

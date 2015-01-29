@@ -1,14 +1,18 @@
 
 package com.goodlife.dao;
 
-import com.goodlife.exceptions.UserNotFoundException;
+import java.util.List;
+
+import org.hibernate.ObjectNotFoundException;
+
 import com.goodlife.model.UploadFileQ;
 
 public interface UploadFileQDAO {
 
-	public Integer addUploadFileQuestion(UploadFileQ uploadFileQ) throws UserNotFoundException;
-	public void updateDescripton(Integer uploadQuesId, String description) throws UserNotFoundException;
-	public void updateHelpText(Integer uploadQuesId, String helpText) throws UserNotFoundException;
-	public UploadFileQ getUploadFileQuestion(Integer subChapId) throws UserNotFoundException;
-	
+	public Integer addUploadFileQuestion(UploadFileQ uploadFileQ);
+	public void updateDescription(Integer uploadQuesId, String description) throws ObjectNotFoundException;
+	public void updateHelpText(Integer uploadQuesId, String helpText) throws ObjectNotFoundException;
+	public UploadFileQ getUploadFileQuestion(Integer subChapId) throws ObjectNotFoundException;
+	public List<UploadFileQ> findAllUploadFileQBySubchapId(Integer subChapId);
+	public void updateOrder(List<Integer> quesIdList) throws ObjectNotFoundException;
 }
