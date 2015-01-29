@@ -19,6 +19,8 @@ import org.hibernate.annotations.CascadeType;
 @Table(name = "CHAPTER", catalog = "goodlife")
 public class Chapter implements Serializable{
 	
+	private static final long serialVersionUID = 307308746494710816L;
+
 	@Id
 	@Column(name = "chap_id", nullable = false, unique = true)
 	private Integer chapId;

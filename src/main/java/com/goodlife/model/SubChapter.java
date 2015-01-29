@@ -20,6 +20,8 @@ import org.hibernate.annotations.CascadeType;
 @Table (name = "SUBCHAPTER", catalog = "goodlife")
 public class SubChapter implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name = "sub_chap_id", nullable = false, unique = true)
 	private Integer subChapId;	
@@ -36,7 +38,9 @@ public class SubChapter implements Serializable{
 	@Column(name = "order_id", nullable = false)
 	private Integer orderId;
 	
-	public SubChapter(){}
+	public SubChapter(){
+		super();
+	}
 	
 	public SubChapter(Integer subChapId,
 					  Integer chapId,
