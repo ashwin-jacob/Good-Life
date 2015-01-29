@@ -19,7 +19,7 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
     private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) throws ShortAnswerNotFoundException {
+	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) {
 		
 		this.sessionFactory.getCurrentSession().save(shortAnswerQ);
 		
@@ -51,11 +51,8 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 		ShortAnswerQ shortAns = new ShortAnswerQ();
 		
 		for(int i = 0; i <saQIdList.size(); i++){
-			try{
-				shortAns = (ShortAnswerQ)this.sessionFactory.getCurrentSession().load(ShortAnswerQ.class, saQIdList.get(i));
-			}catch(ObjectNotFoundException e){
-				shortAns = (ShortAnswerQ)this.sessionFactory.getCurrentSession().get(ShortAnswerQ.class, saQIdList.get(i));
-			}
+			shortAns = getShortAnswerById(saQIdList.get(i));
+		
 			shortAns.setOrderId(i);
 			this.sessionFactory.getCurrentSession().save(shortAns);
 		}

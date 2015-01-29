@@ -49,7 +49,7 @@ public class UploadQuestionController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/updatehelptext", method = RequestMethod.GET)
+	@RequestMapping(value = "/updatedescription", method = RequestMethod.GET)
 	public AjaxResponse<Integer> updateDescription(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
 			@RequestParam(value="descr") String descr) 
 			throws ObjectNotFoundException {

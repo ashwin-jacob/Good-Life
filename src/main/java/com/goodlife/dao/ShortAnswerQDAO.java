@@ -8,7 +8,7 @@ import com.goodlife.model.ShortAnswerQ;
 
 public interface ShortAnswerQDAO {
 
-	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) throws ShortAnswerNotFoundException;
+	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ);
 	public void updateQuestionText(Integer saQId, String question) throws ShortAnswerNotFoundException;
 	public void updateHelpText(Integer saQId, String helpText) throws ShortAnswerNotFoundException;
 	public void updateOrderId(List<Integer> saQIdList) throws ShortAnswerNotFoundException;
