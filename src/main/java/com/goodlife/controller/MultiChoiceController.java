@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.MultiChoiceOptionDAO;
 import com.goodlife.dao.MultiChoiceQDAO;
+import com.goodlife.exceptions.MultipleChoiceNotFoundException;
+import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
 import com.goodlife.model.AjaxResponse;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
@@ -76,7 +78,7 @@ public class MultiChoiceController {
 		
 		try {
 			mcOptdao.deleteMultiChoiceOption(mcOptId);
-		} catch (ObjectNotFoundException e) {
+		} catch (MultipleChoiceOptionNotFoundException e) {
 			logger.debug("DELETE: Multi Choice Option id: " + mcOptId + " not found.");
 		}
 		
@@ -92,7 +94,7 @@ public class MultiChoiceController {
 		
 		try {
 			mcQdao.deleteMultiChoice(mcQId);
-		} catch (ObjectNotFoundException e) {
+		} catch (MultipleChoiceNotFoundException e) {
 			logger.debug("DELETE: Multi Choice id: " + mcQId + " not found.");
 		}
 		
@@ -104,7 +106,7 @@ public class MultiChoiceController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/listalloptionsbyquestion", method = RequestMethod.GET)
-	public AjaxResponse<List<MultiChoiceOption>> listAllOptionsByQuestion(@RequestParam(value="quesId") Integer quesId) throws ObjectNotFoundException {
+	public AjaxResponse<List<MultiChoiceOption>> listAllOptionsByQuestion(@RequestParam(value="quesId") Integer quesId) throws MultipleChoiceOptionNotFoundException {
 		
 		List<MultiChoiceOption> optionList = mcOptdao.getMultiChoiceOptions(quesId);	
 		
@@ -117,7 +119,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/updateoptiontext", method = RequestMethod.GET)
 	public AjaxResponse<Integer> updateOptionText(@RequestParam(value="optionId") Integer optionId, 
-			@RequestParam(value="optionText") String optionText) throws ObjectNotFoundException {
+			@RequestParam(value="optionText") String optionText) throws MultipleChoiceOptionNotFoundException {
 		
 		mcOptdao.updateChoiceText(optionId, optionText);
 		
@@ -142,7 +144,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/updatequestionorder", method = RequestMethod.GET)
 	public AjaxResponse<Integer> updateQuestionOrder(
-			@RequestParam(value="multiChoiceIdList") List<Integer> multiChoiceIdList) throws ObjectNotFoundException {
+			@RequestParam(value="multiChoiceIdList") List<Integer> multiChoiceIdList) throws MultipleChoiceNotFoundException {
 		
 		mcQdao.updateOrder(multiChoiceIdList);
 		
@@ -154,7 +156,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/updatequestiontext", method = RequestMethod.GET)
 	public AjaxResponse<Integer> updateQuestionText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
-			@RequestParam(value="quesText") String quesText) throws ObjectNotFoundException {
+			@RequestParam(value="quesText") String quesText) throws MultipleChoiceNotFoundException {
 		
 		mcQdao.updateQuestionText(multiChoiceId, quesText);
 		
@@ -166,7 +168,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/updatehelptext", method = RequestMethod.GET)
 	public AjaxResponse<Integer> updateHelpText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
-			@RequestParam(value="helpText") String helpText) throws ObjectNotFoundException {
+			@RequestParam(value="helpText") String helpText) throws MultipleChoiceNotFoundException {
 		
 		mcQdao.updateQuestionText(multiChoiceId, helpText);
 		
@@ -178,7 +180,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/updatecorrectanswer", method = RequestMethod.GET)
 	public AjaxResponse<Integer> updateCorrectAnswer(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
-			@RequestParam(value="quesText") Integer correctAnswer) throws ObjectNotFoundException {
+			@RequestParam(value="quesText") Integer correctAnswer) throws MultipleChoiceNotFoundException {
 		
 		mcQdao.updateCorrectAnswer(multiChoiceId, correctAnswer);
 		
