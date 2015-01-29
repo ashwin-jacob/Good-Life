@@ -14,4 +14,5 @@ public interface SubChapterDAO {
 	public void updateTitle(Integer subChapId, String subChapTitle) throws SubChapterNotFoundException;
 	public void updateDescription(Integer subChapId, String subChapDescr) throws SubChapterNotFoundException;
 	public List<SubChapter> getSubChapListByChapter(Integer chapId) throws SubChapterNotFoundException;
+	public SubChapter getSubChapterById(Integer subChapId) throws SubChapterNotFoundException;
 }

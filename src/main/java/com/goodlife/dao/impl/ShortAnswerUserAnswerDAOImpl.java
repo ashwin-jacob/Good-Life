@@ -20,14 +20,14 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 	
 	@Override
 	public void addUserAnswer(ShortAnswerUserAnswer shortAnswerUA)
-			throws UserNotFoundException {
+			throws ObjectNotFoundException {
 		
 		this.sessionFactory.getCurrentSession().save(shortAnswerUA);
 	}
 
 	@Override
 	public ShortAnswerUserAnswer getUserAnswer(Integer userId, Integer saQId)
-			throws UserNotFoundException {
+			throws ObjectNotFoundException {
 
 		List<ShortAnswerUserAnswer> shortAnswerUA;
 		Query query;
@@ -38,6 +38,13 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 		
 		shortAnswerUA = query.list();
 		
+		if(null == shortAnswerUA){
+			throw new ObjectNotFoundException(null, "The combination of user Id: " + userId + " and saQId: " + saQId + "were not found in the database!");
+		}
+		if(shortAnswerUA.size() > 1){
+			throw new ObjectNotFoundException(null, "The combination of user Id: " + userId + " and saQId: " + saQId + "returned too many results in the database!");
+		}
+		
 		return shortAnswerUA.get(0);
 	}
 
@@ -45,11 +52,14 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 	public void approveAnswer(Integer userId)
 			throws UserNotFoundException {
 		
-		ShortAnswerUserAnswer shortAnswerUA = new ShortAnswerUserAnswer();
+		ShortAnswerUserAnswer shortAnswerUA;
 		try{
 			shortAnswerUA = (ShortAnswerUserAnswer)this.sessionFactory.getCurrentSession().load(ShortAnswerUserAnswer.class, userId);
 		}catch(ObjectNotFoundException e){
 			shortAnswerUA = (ShortAnswerUserAnswer)this.sessionFactory.getCurrentSession().get(ShortAnswerUserAnswer.class, userId);
+		}
+		if(null == shortAnswerUA){
+			throw new UserNotFoundException("User Id: " + userId + " not found in the database!");
 		}
 		shortAnswerUA.setAprvd(true);
 		this.sessionFactory.getCurrentSession().save(shortAnswerUA);

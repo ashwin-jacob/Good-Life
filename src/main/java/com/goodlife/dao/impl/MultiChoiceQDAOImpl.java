@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.MultiChoiceQDAO;
+import com.goodlife.exceptions.MultipleChoiceNotFoundException;
 import com.goodlife.model.MultiChoiceQ;
 
 @Repository
@@ -26,20 +27,19 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 	}
 
 	@Override
-	public void deleteMultiChoice(Integer multiChoiceId) throws ObjectNotFoundException {
+	public void deleteMultiChoice(Integer multiChoiceId) throws MultipleChoiceNotFoundException {
 
-		MultiChoiceQ multiChoice = new MultiChoiceQ();
-		multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
+		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
 		this.sessionFactory.getCurrentSession().delete(multiChoice);
 	}
 
 	@Override
 	public void updateOrder(List<Integer> multiChoiceIdList)
-			throws ObjectNotFoundException {
+			throws MultipleChoiceNotFoundException {
 
 		MultiChoiceQ multiChoice = new MultiChoiceQ();
 		for (int i = 0; i < multiChoiceIdList.size(); i++){
-			multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceIdList.get(i));
+			multiChoice = getMultiChoiceQById(multiChoiceIdList.get(i));
 			multiChoice.setOrderId(i);
 			this.sessionFactory.getCurrentSession().save(multiChoice);
 		}
@@ -47,34 +47,27 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 
 	@Override
 	public void updateQuestionText(Integer multiChoiceId, String quesText)
-			throws ObjectNotFoundException {
+			throws MultipleChoiceNotFoundException {
 		
-		MultiChoiceQ multiChoice = new MultiChoiceQ();
-		multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
+		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
 		multiChoice.setQuesText(quesText);
 		this.sessionFactory.getCurrentSession().save(multiChoice);	
 	}
 
 	@Override
 	public void updateHelpText(Integer multiChoiceId, String helpText)
-			throws ObjectNotFoundException {
+			throws MultipleChoiceNotFoundException {
 		
-		MultiChoiceQ multiChoice = new MultiChoiceQ();
-		multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
+		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
 		multiChoice.setHelpText(helpText);
 		this.sessionFactory.getCurrentSession().save(multiChoice);
 	}
 
 	@Override
 	public void updateCorrectAnswer(Integer multiChoiceId, Integer correctAnswer)
-			throws ObjectNotFoundException {
+			throws MultipleChoiceNotFoundException {
 		
-		MultiChoiceQ multiChoice = new MultiChoiceQ();
-		try{
-			multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
-		}catch(ObjectNotFoundException e){
-			multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().get(MultiChoiceQ.class, multiChoiceId);
-		}
+		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
 		multiChoice.setCorrectAnswer(correctAnswer);
 		this.sessionFactory.getCurrentSession().save(multiChoice);
 	}
@@ -87,5 +80,22 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 		List<MultiChoiceQ> multiChoiceList = query.list();
 		return multiChoiceList;
 	}
+	
+	@Override
+	public MultiChoiceQ getMultiChoiceQById(Integer multiChoiceId) throws MultipleChoiceNotFoundException{
+		
+		MultiChoiceQ multiChoice = new MultiChoiceQ();
+		try{
+			multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
+		}catch(ObjectNotFoundException e){
+			multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().get(MultiChoiceQ.class, multiChoiceId);
+		}
+		if(null == multiChoice){
+			throw new MultipleChoiceNotFoundException("Multiple Choice Id: " + multiChoiceId + " not found in database!");
+		}
+		
+		return multiChoice;
+	}
+	
 
 }

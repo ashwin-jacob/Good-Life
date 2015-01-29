@@ -2,16 +2,17 @@ package com.goodlife.dao;
 
 import java.util.List;
 
-import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.exceptions.ShortAnswerNotFoundException;
+import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.ShortAnswerQ;
 
 public interface ShortAnswerQDAO {
 
-	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) throws UserNotFoundException;
-	public void updateQuestionText(Integer saQId, String question) throws UserNotFoundException;
-	public void updateHelpText(Integer saQId, String helpText) throws UserNotFoundException;
-	public void updateOrderId(List<Integer> saQIdList) throws UserNotFoundException;
-	public ShortAnswerQ getShortAnswerById(Integer saQId) throws UserNotFoundException;
-	public List<ShortAnswerQ> getShortAnswerBySubChapter(Integer subChapId) throws UserNotFoundException;
+	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) throws ShortAnswerNotFoundException;
+	public void updateQuestionText(Integer saQId, String question) throws ShortAnswerNotFoundException;
+	public void updateHelpText(Integer saQId, String helpText) throws ShortAnswerNotFoundException;
+	public void updateOrderId(List<Integer> saQIdList) throws ShortAnswerNotFoundException;
+	public ShortAnswerQ getShortAnswerById(Integer saQId) throws ShortAnswerNotFoundException;
+	public List<ShortAnswerQ> getShortAnswerBySubChapter(Integer subChapId) throws SubChapterNotFoundException;
 	
 }

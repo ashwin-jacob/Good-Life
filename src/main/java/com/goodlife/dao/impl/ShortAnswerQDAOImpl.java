@@ -3,13 +3,13 @@ package com.goodlife.dao.impl;
 import java.util.List;
 
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.ShortAnswerQDAO;
-import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.exceptions.ShortAnswerNotFoundException;
+import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.ShortAnswerQ;
 
 @Repository
@@ -19,7 +19,7 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
     private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) throws UserNotFoundException {
+	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) throws ShortAnswerNotFoundException {
 		
 		this.sessionFactory.getCurrentSession().save(shortAnswerQ);
 		
@@ -28,37 +28,25 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 
 	@Override
 	public void updateQuestionText(Integer saQId, String question)
-			throws UserNotFoundException {
+			throws ShortAnswerNotFoundException {
 		
-		ShortAnswerQ shortAns = new ShortAnswerQ();
-		try{
-			shortAns = (ShortAnswerQ)this.sessionFactory.getCurrentSession().load(ShortAnswerQ.class, saQId);
-		}catch(ObjectNotFoundException e){
-			shortAns = (ShortAnswerQ)this.sessionFactory.getCurrentSession().get(ShortAnswerQ.class, saQId);
-		}
+		ShortAnswerQ shortAns = getShortAnswerById(saQId);
 		shortAns.setQuestion(question);
-		
 		this.sessionFactory.getCurrentSession().save(shortAns);
 	}
 
 	@Override
 	public void updateHelpText(Integer saQId, String helpText)
-			throws UserNotFoundException {
+			throws ShortAnswerNotFoundException {
 		
-		ShortAnswerQ shortAns = new ShortAnswerQ();
-		try{
-			shortAns = (ShortAnswerQ)this.sessionFactory.getCurrentSession().load(ShortAnswerQ.class, saQId);
-		}catch(ObjectNotFoundException e){
-			shortAns = (ShortAnswerQ)this.sessionFactory.getCurrentSession().get(ShortAnswerQ.class, saQId);
-		}
+		ShortAnswerQ shortAns = getShortAnswerById(saQId);
 		shortAns.setHelpText(helpText);
-		
 		this.sessionFactory.getCurrentSession().save(shortAns);
 	}
 
 	@Override
 	public void updateOrderId(List<Integer> saQIdList)
-			throws UserNotFoundException {
+			throws ShortAnswerNotFoundException {
 		
 		ShortAnswerQ shortAns = new ShortAnswerQ();
 		
@@ -75,7 +63,7 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 
 	@Override
 	public ShortAnswerQ getShortAnswerById(Integer saQId) 
-		throws UserNotFoundException {
+		throws ShortAnswerNotFoundException {
 		
 		ShortAnswerQ shortAnswerQ = new ShortAnswerQ();
 		try{
@@ -83,12 +71,15 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 		}catch(ObjectNotFoundException e){
 			shortAnswerQ = (ShortAnswerQ)this.sessionFactory.getCurrentSession().get(ShortAnswerQ.class, saQId);
 		}
+		if(null == shortAnswerQ){
+			throw new ShortAnswerNotFoundException("Short Answer Question Id: " + saQId + " not found in the database!");
+		}
 		return shortAnswerQ;
 	}
 
 	@Override
 	public List<ShortAnswerQ> getShortAnswerBySubChapter(Integer subChapId)
-			throws UserNotFoundException {
+			throws SubChapterNotFoundException {
 
 		List<ShortAnswerQ> shortAnsList;
 		
@@ -97,7 +88,9 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 		}catch(ObjectNotFoundException e){
 			shortAnsList = (List<ShortAnswerQ>)this.sessionFactory.getCurrentSession().get(ShortAnswerQ.class, subChapId);
 		}
-		
+		if(null == shortAnsList){
+			throw new SubChapterNotFoundException("Sub Chapter Id: " + subChapId + " not found in the database!");
+		}
 		return shortAnsList;
 	}
 
