@@ -1,17 +1,24 @@
 package com.goodlife.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity (name = "Instructor")
 @Table(name="INSTRUCTOR", catalog = "goodlife")
-public class Instructor extends Users {
+public class Instructor implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@JoinColumn(name = "usr_id", unique = true, nullable = false)
+	private Integer userId;
 	
 	@Column(name = "roster_id")
 	@GeneratedValue
@@ -70,5 +77,13 @@ public class Instructor extends Users {
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
+	}
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 }

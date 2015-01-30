@@ -1,17 +1,23 @@
 package com.goodlife.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity (name = "Student")
 @Table(name="STUDENT", catalog = "goodlife")
-public class Student extends Users {
+public class Student implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@JoinColumn(name = "usr_id", unique = true, nullable = false)
+	private Integer userId;
 	
 	@Column(name = "roster_id")
 	private Integer rosterId;
@@ -21,9 +27,6 @@ public class Student extends Users {
 	
 	@Column(name = "start_dt")
 	private Date startDate;
-	
-	@Column(name = "promo_dt")
-	private Date promotionDate;
 
 
 	public Student() {
@@ -36,7 +39,6 @@ public class Student extends Users {
 		this.rosterId = rosterId;
 		this.currentSubChapterId = currentSubChapterId;
 		this.startDate = startDate;
-		this.promotionDate = promotionDate;
 	}
 
 	public Integer getRosterId() {
@@ -63,11 +65,11 @@ public class Student extends Users {
 		this.startDate = startDate;
 	}
 
-	public Date getPromotionDate() {
-		return promotionDate;
+	public Integer getUserId() {
+		return userId;
 	}
 
-	public void setPromotionDate(Date promotionDate) {
-		this.promotionDate = promotionDate;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 }

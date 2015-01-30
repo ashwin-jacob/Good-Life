@@ -28,23 +28,6 @@ public class StudentDAOImpl implements StudentDAO  {
         }
 		return user;
 	}
-	
-	@Override
-	public Integer promoteStudent(String username, char roleTypeCode)
-			throws UserNotFoundException {
-		Student user = findStudentByUserName(username);
-        user.setRoleTypeCode(roleTypeCode);
-       	Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);
-       	return saved.getUserId();
-	}
-	
-	@Override
-	public Integer disableStudent(String username) throws UserNotFoundException {
-		Student user = findStudentByUserName(username);
-		user.setRegistered(false);
-		Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);
-		return saved.getUserId();
-	}
 
 	@Override
 	public Integer addExistingStudentToRoster(String username, Integer rosterId)
@@ -53,26 +36,6 @@ public class StudentDAOImpl implements StudentDAO  {
         user.setRosterId(rosterId);
         Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);	
         return saved.getUserId();
-	}
-
-	@Override
-	public Integer enableStudent(String username) throws UserNotFoundException {
-		Student user = findStudentByUserName(username);
-		user.setRegistered(true);
-		Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);
-		return saved.getUserId();
-	}
-
-	@Override
-	public void deleteStudent(String username) throws UserNotFoundException {
-		Student user = findStudentByUserName(username);
-        this.sessionFactory.getCurrentSession().delete(user);		
-	}
-
-	@Override
-	public Integer addStudent(Student user) {
-		Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);	
-		return saved.getUserId();
 	}
 
 	@Override

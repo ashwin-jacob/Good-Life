@@ -65,6 +65,9 @@ public class Users implements Serializable {
     @Column(name="prf_img_path") 
     private String profileImagePath;
 	
+	@Column(name = "promo_dt")
+	private Date promotionDate;
+	
     public Users() {
     	
     }
@@ -211,5 +214,13 @@ public class Users implements Serializable {
 
 	public void setProfileImagePath(String profileImagePath) {
 		this.profileImagePath = profileImagePath;
+	}
+
+	public Date getPromotionDate() {
+		return promotionDate;
+	}
+
+	public void setPromotionDate(Date promotionDate) {
+		this.promotionDate = promotionDate;
 	}
 }

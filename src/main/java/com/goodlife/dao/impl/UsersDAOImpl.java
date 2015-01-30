@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 
+
 //import javax.persistence.Query;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.model.Student;
 import com.goodlife.model.Users;
 
 @Repository
@@ -89,6 +91,7 @@ public class UsersDAOImpl implements UsersDAO  {
 			throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_FIRSTNAME).setParameter("firstname", firstname);
 		List<Users> userList = query.list();
+		System.out.println(userList.getClass().isArray());
 		return userList;
 	}
 
@@ -135,5 +138,14 @@ public class UsersDAOImpl implements UsersDAO  {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
 		List<Users> userList = query.list();
 		return userList;
+	}
+	
+	@Override
+	public Integer promoteUser(String username, char roleTypeCode)
+			throws UserNotFoundException {
+		Users user = findByUserName(username);
+        user.setRoleTypeCode(roleTypeCode);
+       	Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);
+       	return saved.getUserId();
 	}
 }

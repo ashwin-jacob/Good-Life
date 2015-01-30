@@ -21,4 +21,5 @@ public interface UsersDAO
 	Integer deleteUser(String username) throws UserNotFoundException;
 	public void disableUser(String username) throws UserNotFoundException;
 	public void enableUser(String username) throws UserNotFoundException;
+	public Integer promoteUser(String username, char roleTypeCode) throws UserNotFoundException;
 }
