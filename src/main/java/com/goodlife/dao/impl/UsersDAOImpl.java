@@ -145,7 +145,7 @@ public class UsersDAOImpl implements UsersDAO  {
 			throws UserNotFoundException {
 		Users user = findByUserName(username);
         user.setRoleTypeCode(roleTypeCode);
-       	Student saved = (Student) this.sessionFactory.getCurrentSession().save(user);
+       	Users saved = (Users) this.sessionFactory.getCurrentSession().save(user);
        	return saved.getUserId();
 	}
 }
