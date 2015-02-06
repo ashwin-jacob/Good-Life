@@ -62,4 +62,8 @@ Create a new server in Eclipse by going to the server tab on the bottom and righ
 ```
 insert into users values('thomas.fuentes@tsgforce.com',true,25,'raj',curdate(),'goodlife')
 insert into user_roles (username,role) values('thomas.fuentes@tsgforce.com','ROLE_SUPERADMIN')
+insert into users (email, usr_nm, invit_cd, pwd, rgstrd, role_typ_cd)
+values ('dhaval.raj@tsgforce.com','dhavalr',123456, 'password',1, '1');
+commit;
+
 ```
