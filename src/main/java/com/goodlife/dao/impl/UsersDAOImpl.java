@@ -8,9 +8,13 @@ import java.util.Map.Entry;
 
 
 
+
+
+import org.hibernate.Criteria;
 //import javax.persistence.Query;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -52,7 +56,9 @@ public class UsersDAOImpl implements UsersDAO  {
 	
 	@Override
 	public Users findByUserName(String username) throws UserNotFoundException {
-		Users user = (Users) this.sessionFactory.getCurrentSession().get(Users.class, username);
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
+        criteria.add(Restrictions.eqOrIsNull("username", username));
+        Users user = (Users) criteria.uniqueResult();
 		if (null == user) {
         	throw new UserNotFoundException("User: " + username + ".  Not found in the database!");
         }
