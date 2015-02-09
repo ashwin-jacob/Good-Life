@@ -37,14 +37,12 @@ public class UsersDAOImpl implements UsersDAO  {
     private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional
 	public Integer addUser(Users user) {
 		Users savedUser = (Users) this.sessionFactory.getCurrentSession().save(user);
 		return savedUser.getUserId();
 	}
 
 	@Override
-	@Transactional
 	public Integer deleteUser(String username) throws UserNotFoundException {
 		Users user = findByUserName(username);
         this.sessionFactory.getCurrentSession().delete(user);
@@ -52,7 +50,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 	
 	@Override
-	@Transactional
 	public Users findByUserName(String username) throws UserNotFoundException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
         criteria.add(Restrictions.eqOrIsNull("username", username));
@@ -64,7 +61,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
-	@Transactional
 	public void disableUser(String username) throws UserNotFoundException {
 		Users user = findByUserName(username);
         user.setRegistered(false);
@@ -72,7 +68,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
-	@Transactional
 	public void enableUser(String username) throws UserNotFoundException{
 		Users user = findByUserName(username);
         user.setRegistered(true);
@@ -80,7 +75,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
-	@Transactional
 	public List<Users> findByRoleTypes(List<Character> roles)
 			throws UserNotFoundException {
 		String sql = "from Users user ";
@@ -94,7 +88,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
-	@Transactional
 	public List<Users> findByFirstName(String firstname)
 			throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_FIRSTNAME).setParameter("firstname", firstname);
@@ -104,7 +97,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
-	@Transactional
 	public List<Users> findByLastName(String lastname)
 			throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_LASTNAME).setParameter("lastname", lastname);
@@ -113,7 +105,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
-	@Transactional
 	public List<Users> findByEmail(String email) throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_EMAIL).setParameter("email", email);
 		List<Users> userList = query.list();
@@ -121,7 +112,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
-	@Transactional
 	public List<Users> findByCity(String city) throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_CITY).setParameter("city", city);
 		List<Users> userList = query.list();
@@ -129,7 +119,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
-	@Transactional
 	public List<Users> findByState(String state) throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_STATE).setParameter("state", state);
 		List<Users> userList = query.list();
@@ -137,7 +126,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
-	@Transactional
 	public List<Users> advancedQuery(String input, String field, List<Character> roles) 
 			throws UserNotFoundException {
 		String sql = "from USERS user where user." + field + " = " + input;
@@ -154,7 +142,6 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 	
 	@Override
-	@Transactional
 	public Integer promoteUser(String username, char roleTypeCode)
 			throws UserNotFoundException {
 		Users user = findByUserName(username);
