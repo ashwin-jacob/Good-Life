@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
@@ -18,10 +20,10 @@ public class MultiChoiceOption implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "option_id", nullable = false, unique = true)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "option_id", nullable = true, unique = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer optionId;
 	
-	@Id
 	@JoinColumn(name = "mc_q_id", nullable  = false)
 	private Integer multiQuesId;
 	

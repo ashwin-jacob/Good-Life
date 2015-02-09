@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
@@ -16,12 +17,12 @@ public class Instructor implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 	
-	@Id
 	@JoinColumn(name = "usr_id", unique = true, nullable = false)
 	private Integer userId;
 	
-	@Column(name = "roster_id")
-	@GeneratedValue
+	@Id
+	@Column(name = "roster_id", unique = true, nullable = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer rosterId;
 	
 	@Column(name = "n_stdnt")
@@ -38,9 +39,10 @@ public class Instructor implements Serializable  {
 		super();
 	}
 
-	public Instructor(Integer rosterId, Integer numStudent,
+	public Instructor(Integer userId, Integer rosterId, Integer numStudent,
 			Integer totalCapacity, Date startDate) {
 		super();
+		this.userId = userId;
 		this.rosterId = rosterId;
 		this.numStudent = numStudent;
 		this.totalCapacity = totalCapacity;

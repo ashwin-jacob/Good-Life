@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.JoinColumn;
@@ -22,7 +23,8 @@ import org.hibernate.annotations.CascadeType;
 public class UserStatus implements Serializable{
 	
 	@Id
-	@Column(name = "usr_sts_id", unique = true, nullable = false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "usr_sts_id", unique = true, nullable = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer userStatusId;
 	
 	@JoinColumn(name = "usr_id", unique = false, nullable = false)

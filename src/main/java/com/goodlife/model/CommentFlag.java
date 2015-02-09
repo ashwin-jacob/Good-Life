@@ -21,7 +21,7 @@ public class CommentFlag {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "flag_id", unique = true, nullable = false)
+	@Column(name = "flag_id", unique = true, nullable = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer flagId;
 
 	@Column(name = "flgd_by")

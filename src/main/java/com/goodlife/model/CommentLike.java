@@ -21,7 +21,7 @@ public class CommentLike {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "lk_id", unique = true, nullable = false)
+	@Column(name = "lk_id", unique = true, nullable = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer likeId;
 
 	@Column(name = "lkd_by")

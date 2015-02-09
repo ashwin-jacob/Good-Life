@@ -2,18 +2,11 @@ package com.goodlife.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
-
 
 @Entity (name = "UploadAnslike")
 @Table(name="UPLOAD_ANS_LIKE", catalog = "goodlife")
@@ -21,7 +14,7 @@ public class UploadAnsLike {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "lk_id", unique = true, nullable = false)
+	@Column(name = "lk_id", nullable = true, unique = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer likeId;
 
 	@Column(name = "lkd_by")

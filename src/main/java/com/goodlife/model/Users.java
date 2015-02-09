@@ -22,7 +22,7 @@ public class Users implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "usr_id", unique = true, nullable = false, columnDefinition = "MEDIUMINT NOT NULL AUTO_INCREMENT")
+	@Column(name = "usr_id", unique = true, nullable = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer userId;
 	
 	@Id
