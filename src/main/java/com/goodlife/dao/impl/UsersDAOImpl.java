@@ -64,6 +64,15 @@ public class UsersDAOImpl implements UsersDAO  {
         }
 		return user;
 	}
+	
+	@Override
+	public List<Users> findByLastName(String lastname)
+			throws UserNotFoundException {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
+        criteria.add(Restrictions.ilike("lastname", lastname));
+		List<Users> userList = criteria.list();
+		return userList;
+	}
 
 	@Override
 	public void disableUser(String username) throws UserNotFoundException {
@@ -101,13 +110,13 @@ public class UsersDAOImpl implements UsersDAO  {
 		return userList;
 	}
 
-	@Override
-	public List<Users> findByLastName(String lastname)
-			throws UserNotFoundException {
-		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_LASTNAME).setParameter("lastname", lastname);
-		List<Users> userList = query.list();
-		return userList;
-	}
+//	@Override
+//	public List<Users> findByLastName(String lastname)
+//			throws UserNotFoundException {
+//		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_LASTNAME).setParameter("lastname", lastname);
+//		List<Users> userList = query.list();
+//		return userList;
+//	}
 
 	@Override
 	public List<Users> findByEmail(String email) throws UserNotFoundException {

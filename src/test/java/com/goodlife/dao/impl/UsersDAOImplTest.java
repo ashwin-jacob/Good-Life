@@ -2,7 +2,6 @@ package com.goodlife.dao.impl;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
-import com.goodlife.model.Student;
 import com.goodlife.model.Users;
 
 @Transactional
@@ -26,28 +24,23 @@ import com.goodlife.model.Users;
 @ContextConfiguration(locations = { "/test-context.xml" }) 
 public class UsersDAOImplTest {
 
-	private static final Integer USER_ID = 1234;
-	private static final String USER_NAME = "goodlife123";
-	private static final Integer INV_CD = 010101;
-	private static final char ROLE = 'M';
-	private static final String EMAIL = "goodlife123@test.com";
-	private static final String FNAME = "good";
-	private static final String LNAME = "life";
+	private static final Integer USER_ID = 1;
+	private static final String USER_NAME = "dhaval";
+	private static final Integer INV_CD = 123456;
+	private static final char ROLE = 'S';
+	private static final String EMAIL = "dhaval.raj@tsgforce.com";
+	private static final String FNAME = "Dhaval";
+	private static final String LNAME = "Raj";
 	
 	@Autowired
-	private static UsersDAO usersDAO;
+	private UsersDAO usersDAO;
 	
 	@Before
 	public void setUp() {
-		usersDAO = mock(UsersDAO.class);
+		//usersDAO = mock(UsersDAO.class);
 		Users user = createUser();
-		usersDAO.addUser(user);
+		//usersDAO.addUser(user);
 	}
-	
-	/* @Test
-	public void testAddUser() {
-		fail("Not yet implemented");
-	}*/
 
 	@Test
 	public void testDeleteUser() throws UserNotFoundException {
@@ -97,10 +90,12 @@ public class UsersDAOImplTest {
 	@Test
 	public void testFindByLastName() throws UserNotFoundException {
 		List<Users> users = usersDAO.findByLastName(LNAME);
-		assertTrue(users.getClass().isArray());
-		if (users != null) {
-			assertTrue(users instanceof Users);
-		}
+		System.out.println("SIZWE:" + users.size());
+		assertTrue(users.size() == 1);
+		//assertTrue(users.getClass().isArray());
+//		if (users != null) {
+//			assertTrue(users instanceof Users);
+//		}
 	}
 
 	@Test
@@ -114,7 +109,6 @@ public class UsersDAOImplTest {
 	
 	public static Users createUser() {
 		Users user = new Users();
-		user.setUserId(USER_ID);
 		user.setUsername(USER_NAME);
 		user.setInvitationCode(INV_CD);
 		user.setEmail(EMAIL);
