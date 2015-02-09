@@ -23,7 +23,7 @@ import com.goodlife.model.Users;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/test-context.xml" }) 
+@ContextConfiguration(locations = { "test-context.xml" }) 
 public class UsersDAOImplTest {
 
 	private static final Integer USER_ID = 1234;
@@ -41,7 +41,10 @@ public class UsersDAOImplTest {
 	public void setUp() {
 		usersDAO = mock(UsersDAO.class);
 		Users user = createUser();
-		usersDAO.addUser(user);
+		Integer userNum;
+		userNum = usersDAO.addUser(user);
+		System.out.println(userNum);
+		
 	}
 	
 	/* @Test
@@ -59,31 +62,33 @@ public class UsersDAOImplTest {
 	@Test
 	public void testFindByUserName() throws UserNotFoundException {
 		Users found = usersDAO.findByUserName(USER_NAME);
-		assertEquals(found.getUserId(), USER_ID);
+		assertEquals(USER_ID, found.getUserId());
 	}
 
 	@Test
 	public void testDisableUser() throws UserNotFoundException {
 		usersDAO.disableUser(USER_NAME);
 		Users found = usersDAO.findByUserName(USER_NAME);
-		assertEquals(found.isRegistered(), Boolean.FALSE);
+		assertEquals(Boolean.FALSE, found.isRegistered());
 	}
 
 	@Test
 	public void testEnableUser() throws UserNotFoundException {
 		usersDAO.enableUser(USER_NAME);
 		Users found = usersDAO.findByUserName(USER_NAME);
-		assertEquals(found.isRegistered(), Boolean.TRUE);
+		assertEquals(Boolean.TRUE, found.isRegistered());
 	}
 
-//	@Test
-//	public void testFindByRoleType() throws UserNotFoundException {
-//		List<Users> moderators = usersDAO.findByRoleType(ROLE);
-//		assertTrue(moderators.getClass().isArray());
-//		if (moderators != null) {
-//			assertTrue(moderators instanceof Users);
-//		}
-//	}
+	@Test
+	public void testFindByRoleType() throws UserNotFoundException {
+		List<Character> roles = new ArrayList<Character>();
+		roles.add(ROLE);
+		List<Users> moderators = usersDAO.findByRoleTypes(roles);
+		assertTrue(moderators.getClass().isArray());
+		if (moderators != null) {
+			assertTrue(moderators instanceof Users);
+		}
+	}
 
 	@Test
 	public void testFindByFirstName() throws UserNotFoundException {

@@ -6,48 +6,45 @@ import java.util.List;
 
 import java.util.Map.Entry;
 
-
-
-
-
 import org.hibernate.Criteria;
-//import javax.persistence.Query;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
-import com.goodlife.model.Student;
 import com.goodlife.model.Users;
 
 @Repository
 public class UsersDAOImpl implements UsersDAO  {
 
-	private static final String QUERY_FIND_ROLE = "from USERS user where user.role_typ_cd = :roleTypeCode";
+	private static final String QUERY_FIND_ROLE = "from Users user where user.role_typ_cd = :roleTypeCode";
 	
-	private static final String QUERY_FIRSTNAME = "from USERS user where user.frst_nm = :firstname";
+	private static final String QUERY_FIRSTNAME = "from Users user where user.frst_nm = :firstname";
 	
-	private static final String QUERY_LASTNAME = "from USERS user where user.lst_nm = :lastname";
+	private static final String QUERY_LASTNAME = "from Users user where user.lst_nm = :lastname";
 	
-	private static final String QUERY_EMAIL = "from USERS user where user.email = :email";
+	private static final String QUERY_EMAIL = "from Users user where user.email = :email";
 	
-	private static final String QUERY_CITY = "from USERS user where user.city = :city";
+	private static final String QUERY_CITY = "from Users user where user.city = :city";
 	
-	private static final String QUERY_STATE = "from USERS user where user.state = :state";
+	private static final String QUERY_STATE = "from Users user where user.state = :state";
 	
 	@Autowired
     private SessionFactory sessionFactory;
 	
 	@Override
+	@Transactional
 	public Integer addUser(Users user) {
 		Users savedUser = (Users) this.sessionFactory.getCurrentSession().save(user);
 		return savedUser.getUserId();
 	}
 
 	@Override
+	@Transactional
 	public Integer deleteUser(String username) throws UserNotFoundException {
 		Users user = findByUserName(username);
         this.sessionFactory.getCurrentSession().delete(user);
@@ -55,6 +52,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 	
 	@Override
+	@Transactional
 	public Users findByUserName(String username) throws UserNotFoundException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
         criteria.add(Restrictions.eqOrIsNull("username", username));
@@ -66,6 +64,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
+	@Transactional
 	public void disableUser(String username) throws UserNotFoundException {
 		Users user = findByUserName(username);
         user.setRegistered(false);
@@ -73,6 +72,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
+	@Transactional
 	public void enableUser(String username) throws UserNotFoundException{
 		Users user = findByUserName(username);
         user.setRegistered(true);
@@ -80,9 +80,10 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
+	@Transactional
 	public List<Users> findByRoleTypes(List<Character> roles)
 			throws UserNotFoundException {
-		String sql = "from USERS user ";
+		String sql = "from Users user ";
 		for (char role : roles) {
 			sql += "where user.role_typ_cd = " + role + " and ";
 		}
@@ -93,6 +94,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
+	@Transactional
 	public List<Users> findByFirstName(String firstname)
 			throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_FIRSTNAME).setParameter("firstname", firstname);
@@ -102,6 +104,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
+	@Transactional
 	public List<Users> findByLastName(String lastname)
 			throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_LASTNAME).setParameter("lastname", lastname);
@@ -110,6 +113,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
+	@Transactional
 	public List<Users> findByEmail(String email) throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_EMAIL).setParameter("email", email);
 		List<Users> userList = query.list();
@@ -117,6 +121,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
+	@Transactional
 	public List<Users> findByCity(String city) throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_CITY).setParameter("city", city);
 		List<Users> userList = query.list();
@@ -124,6 +129,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
+	@Transactional
 	public List<Users> findByState(String state) throws UserNotFoundException {
 		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_STATE).setParameter("state", state);
 		List<Users> userList = query.list();
@@ -131,6 +137,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 
 	@Override
+	@Transactional
 	public List<Users> advancedQuery(String input, String field, List<Character> roles) 
 			throws UserNotFoundException {
 		String sql = "from USERS user where user." + field + " = " + input;
@@ -147,6 +154,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	}
 	
 	@Override
+	@Transactional
 	public Integer promoteUser(String username, char roleTypeCode)
 			throws UserNotFoundException {
 		Users user = findByUserName(username);

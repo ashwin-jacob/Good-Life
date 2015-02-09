@@ -79,7 +79,8 @@ public class Users implements Serializable {
 			String password, char roleTypeCode, boolean registered,
 			Integer invitationCode, String invitedBy, Date invitedDate,
 			Integer userStatusId, String firstname, String lastname,
-			String city, String state, String aboutMe, String profileImagePath) {
+			String city, String state, String aboutMe, String profileImagePath,
+			Date promotionDate) {
 		super();
 		this.userId = userId;
 		this.email = email;
@@ -96,6 +97,7 @@ public class Users implements Serializable {
 		this.state = state;
 		this.aboutMe = aboutMe;
 		this.profileImagePath = profileImagePath;
+		this.promotionDate = promotionDate;
 	}
 
 
