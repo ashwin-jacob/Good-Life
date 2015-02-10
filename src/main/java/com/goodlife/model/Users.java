@@ -22,7 +22,7 @@ public class Users implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "usr_id", unique = true, nullable = false, columnDefinition = "MEDIUMINT NOT NULL AUTO_INCREMENT")
+	@Column(name = "usr_id", unique = true, nullable = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer userId;
 	
 	@Id
@@ -79,7 +79,8 @@ public class Users implements Serializable {
 			String password, char roleTypeCode, boolean registered,
 			Integer invitationCode, String invitedBy, Date invitedDate,
 			Integer userStatusId, String firstname, String lastname,
-			String city, String state, String aboutMe, String profileImagePath) {
+			String city, String state, String aboutMe, String profileImagePath,
+			Date promotionDate) {
 		super();
 		this.userId = userId;
 		this.email = email;
@@ -96,6 +97,7 @@ public class Users implements Serializable {
 		this.state = state;
 		this.aboutMe = aboutMe;
 		this.profileImagePath = profileImagePath;
+		this.promotionDate = promotionDate;
 	}
 
 

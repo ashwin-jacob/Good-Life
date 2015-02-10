@@ -21,7 +21,7 @@ public class UploadPostFlag {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "flg_id", unique = true, nullable = false)
+	@Column(name = "flg_id", nullable = true, unique = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer flagId;
 
 	@Column(name = "flgd_by")

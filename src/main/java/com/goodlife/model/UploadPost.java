@@ -4,24 +4,24 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 
 @Entity
 @Table(name = "UPLOAD_POST", catalog = "goodlife")
 public class UploadPost implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@Column(name = "post_id", unique = true)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "post_id", nullable = true, unique = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer postId;
 	
 	@Column(name = "subj_txt")

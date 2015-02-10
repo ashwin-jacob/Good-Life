@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
@@ -107,7 +108,7 @@ public class UsersDAOImpl implements UsersDAO  {
 	@Override
 	public List<Users> findByRoleTypes(List<Character> roles)
 			throws UserNotFoundException {
-		String sql = "from USERS user ";
+		String sql = "from Users user ";
 		for (char role : roles) {
 			sql += "where user.role_typ_cd = " + role + " and ";
 		}

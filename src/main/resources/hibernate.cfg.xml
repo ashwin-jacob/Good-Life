@@ -9,7 +9,7 @@
 		<mapping class="com.goodlife.model.SuperAdmin" />
 		<mapping class="com.goodlife.model.Instructor" />
 		<mapping class="com.goodlife.model.Student" />
-
+		<mapping class="com.goodlife.model.UserStatus" />
 		<mapping class="com.goodlife.model.Chapter" />
 		<mapping class="com.goodlife.model.ChapterPage" />
 		<mapping class="com.goodlife.model.SubChapter" />
