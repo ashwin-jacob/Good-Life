@@ -90,9 +90,9 @@ public class UserController {
 		try {
 			invitationService.resendInvitation(username, true);
 		} catch (Exception e) {
-			model.addAttribute("error", "true");
-			model.addAttribute("exceptionMessage", e.getMessage());
-			return "landing/resetPasswdCode";
+			//model.addAttribute("error", "true");
+			//model.addAttribute("exceptionMessage", e.getMessage());
+			//return "landing/resetPasswdCode";
 		}
 		logger.debug("Resending invitation Code");
 		return "landing/resetPwdLastStep";

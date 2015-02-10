@@ -20,7 +20,7 @@ public interface UserService {
 	
 	public List<Users> findByLastName(String lastname) throws UserNotFoundException;
 	
-	public List<Users> findByEmail(String email) throws UserNotFoundException;
+	public Users findByEmail(String email) throws UserNotFoundException;
 	
 	public List<Users> findByRoleTypes(List<Character> roles) throws UserNotFoundException;
 	

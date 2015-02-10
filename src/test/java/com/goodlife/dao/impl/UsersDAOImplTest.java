@@ -5,14 +5,10 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Rule;
+
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.mockito.Mockito.*;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Users;
-import com.goodlife.exceptions.UserNotFoundException;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -38,13 +33,8 @@ public class UsersDAOImplTest {
 	
 	@Autowired
 	private UsersDAO usersDAO;
-	
-	
-	@Before
-	public void setUp() {
-		Users user = createUser();
-	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = com.goodlife.exceptions.UserNotFoundException.class)
 	public void testDeleteUser() throws UserNotFoundException {
 		usersDAO.deleteUser(USER_NAME);	

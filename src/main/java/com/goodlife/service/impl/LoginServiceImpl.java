@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.goodlife.dao.UsersDAO;
-import com.goodlife.model.UserRole;
 import com.goodlife.model.Users;
 
 @Service("loginService")
@@ -31,12 +30,26 @@ public class LoginServiceImpl implements UserDetailsService {
 		try {
 			Users user = loginDao.findByUserName(username);
 			Set<String> roles = new HashSet<String>();
-			roles.add(String.valueOf(user.getRoleTypeCode()));
+			roles.add(returnRole(String.valueOf(user.getRoleTypeCode())));
 			List<GrantedAuthority> authority = buildUserAuthority(roles);
 			return buildUserForAuthentication(user, authority);
 		} catch (Exception e) {
 			throw new UsernameNotFoundException(username);
 		}
+	}
+	
+	private String returnRole(String characterRole) {
+		if (characterRole.equals("S"))
+				return "ROLE_STUDENT";
+		if (characterRole.equals("F"))
+				return "ROLE_FACILITATOR";
+		if (characterRole.equals("A"))
+				return "ROLE_SUPERADMIN";
+		if (characterRole.equals("M"))
+				return "ROLE_MODERATOR";
+		if (characterRole.equals("T"))
+				return "ROLE_TRAINER";
+		return null;
 	}
 	
 	private User buildUserForAuthentication(Users user, List<GrantedAuthority> authorities) {

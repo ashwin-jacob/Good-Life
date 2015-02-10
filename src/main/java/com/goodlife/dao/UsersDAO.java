@@ -11,7 +11,7 @@ public interface UsersDAO
 	public List<Users> findByFirstName(String firstname) throws UserNotFoundException;
 	public List<Users> findByLastName(String lastname) throws UserNotFoundException;
 	public List<Users> findByRoleTypes(List<Character> roles) throws UserNotFoundException;
-	public List<Users> findByEmail(String email) throws UserNotFoundException;
+	public Users findByEmail(String email) throws UserNotFoundException;
 	public List<Users> findByCity(String city) throws UserNotFoundException;
 	public List<Users> findByState(String state) throws UserNotFoundException;
 	public List<Users> advancedQuery(String input, String field, List<Character> roles) 

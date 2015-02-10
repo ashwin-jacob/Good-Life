@@ -125,7 +125,7 @@ public class InvitationServiceImpl implements InvitationService {
 		usersDao.addUser(user);
 		String subject = "New Invitation Code";
 		String body = "Invitation Code is " + randomNumber;
-		mailer.sendMail(username, subject, body);
+		mailer.sendMail(user.getEmail(), subject, body);
 	}
 
 }

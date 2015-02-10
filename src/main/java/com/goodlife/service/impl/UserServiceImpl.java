@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
 
 	public void activateAndUpdateUser(String email, String passwd, String token, boolean resetPassword) 
 			throws InvalidEmailToken, UserAlreadyExistsException, UserNotFoundException {
-		Users user = usersDao.findByUserName(email);
+		Users user = usersDao.findByEmail(email);
 		if (!user.getInvitationCode().toString().equals(token)) {
 			throw new InvalidEmailToken("Email token does not match!!");
 		}
@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 		return usersDao.findByFirstName(firstname);
 	}
 
-	public List<Users> findByEmail(String email) throws UserNotFoundException {
+	public Users findByEmail(String email) throws UserNotFoundException {
 		return usersDao.findByEmail(email);
 	}
 

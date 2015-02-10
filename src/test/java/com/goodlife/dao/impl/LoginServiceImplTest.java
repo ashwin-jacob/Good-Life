@@ -44,9 +44,7 @@ public class LoginServiceImplTest {
 	
 	@Before
 	public void setUp() throws UserNotFoundException {
-		usersDAO = mock(UsersDAO.class);
 		Users user = createUser();
-		when(usersDAO.findByUserName(USER_NAME)).thenReturn(user);
 	}
 
 
