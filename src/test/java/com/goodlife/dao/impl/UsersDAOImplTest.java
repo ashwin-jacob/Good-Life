@@ -87,8 +87,8 @@ public class UsersDAOImplTest {
 
 	@Test
 	public void testFindByEmail() throws UserNotFoundException {
-		List<Users> users = usersDAO.findByEmail(EMAIL);
-		assertTrue(users.size() == 1);
+		Users users = usersDAO.findByEmail(EMAIL);
+		assertEquals(users.getUserId(), USER_ID);;
 	}
 	
 	public static Users createUser() {
