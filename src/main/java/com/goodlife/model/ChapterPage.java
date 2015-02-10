@@ -31,14 +31,14 @@ public class ChapterPage implements Serializable{
 	private Integer page_num;
 	
 	@Column(name = "page_url")
-	private Integer pageUrl;
+	private String pageUrl;
 
 	public ChapterPage() {
 		super();
 	}
 
 	public ChapterPage(Integer pageId, Integer chapId, Integer page_num,
-			Integer pageUrl) {
+			String pageUrl) {
 		super();
 		this.pageId = pageId;
 		this.chapId = chapId;
@@ -70,11 +70,11 @@ public class ChapterPage implements Serializable{
 		this.page_num = page_num;
 	}
 
-	public Integer getPageUrl() {
+	public String getPageUrl() {
 		return pageUrl;
 	}
 
-	public void setPageUrl(Integer pageUrl) {
+	public void setPageUrl(String pageUrl) {
 		this.pageUrl = pageUrl;
 	}
 }
