@@ -2,8 +2,10 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -74,6 +76,15 @@ public class ChapterDAOImpl implements ChapterDAO{
 		this.sessionFactory.getCurrentSession().save(chapter);
 		
 	}
+	
+	@Override
+	public Integer updatePublished(Integer chapterId, Boolean published) throws ChapterNotFoundException{
+		
+		Chapter chapter = findByChapterId(chapterId);
+		chapter.setPublished(published);
+		this.sessionFactory.getCurrentSession().save(chapter);
+		return chapter.getChapId();
+	}
 
 	@Override
 	public List<Chapter> listAllChapters() throws ChapterNotFoundException {
@@ -83,13 +94,17 @@ public class ChapterDAOImpl implements ChapterDAO{
 		return allChapterList;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Chapter> listAllPublishedChapters()
 			throws ChapterNotFoundException {
 		// TODO Auto-generated method stub
-		Query query = this.sessionFactory.getCurrentSession().createQuery("from CHAPTER where published = :published");
-		query.setParameter("published", true);
-		List<Chapter> publishedChapterList = query.list();
+		//Query query = this.sessionFactory.getCurrentSession().createQuery("from CHAPTER where published = true");
+		//query.setParameter("published", true);
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Chapter.class);
+		criteria.add(Restrictions.eq("published", true));
+		List<Chapter> publishedChapterList = criteria.list();
 		return publishedChapterList;
 	}
 

@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,14 +23,15 @@ import com.goodlife.model.Chapter;
 
 @Controller
 @RequestMapping(value = "/chapterlookup")
+@Transactional
 public class ChapterController {
 	
-	@Inject
+	@Autowired
 	private AjaxResponseBuilder ajaxResponseBuilder;
 	
 	static final Logger logger = LogManager.getLogger(ChapterController.class.getName());
 	
-	@Inject
+	@Autowired
 	private ChapterDAO chapterDAO;
 	
 	@ResponseBody
@@ -42,7 +44,7 @@ public class ChapterController {
 		chapter.setChapTitle(chapTitle);
 		chapter.setChapDescr(chapDescr);
 		chapter.setOrderId(orderId);
-		chapter.setPublished(true);
+		chapter.setPublished(false);
 		
 		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
 		response = ajaxResponseBuilder.createSuccessResponse(chapterDAO.addChapter(chapter));
@@ -51,19 +53,12 @@ public class ChapterController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/savechapter", method = RequestMethod.GET)
-	public AjaxResponse<Integer> saveChapter(@RequestParam(value="chapTitle") String chapTitle,
-											 @RequestParam(value="chapDescr") String chapDescr,
-											 @RequestParam(value="orderId") Integer orderId) throws ChapterNotFoundException {
-		
-		Chapter chapter = new Chapter();
-		chapter.setChapTitle(chapTitle);
-		chapter.setChapDescr(chapDescr);
-		chapter.setOrderId(orderId);
-		chapter.setPublished(false);
+	@RequestMapping(value = "/publishchapter", method = RequestMethod.GET)
+	public AjaxResponse<Integer> publishChapter(@RequestParam(value="chapId") Integer chapId,
+												@RequestParam(value="published") Boolean published) throws ChapterNotFoundException {
 		
 		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(chapterDAO.addChapter(chapter));
+		response = ajaxResponseBuilder.createSuccessResponse(chapterDAO.updatePublished(chapId,published));
 		
 		return response;
 	}

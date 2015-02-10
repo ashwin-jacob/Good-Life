@@ -19,5 +19,6 @@ public interface ChapterDAO {
 	public List<Chapter> listAllChapters() throws ChapterNotFoundException;
 	public List<Chapter> listAllPublishedChapters() throws ChapterNotFoundException;
 	public List<Chapter> listAllChapterDrafts() throws ChapterNotFoundException;
+	public Integer updatePublished(Integer chapterId, Boolean published) throws ChapterNotFoundException;
 	
 }
