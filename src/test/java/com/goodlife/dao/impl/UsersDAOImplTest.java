@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
-import com.goodlife.model.Student;
 import com.goodlife.model.Users;
 
 @Transactional
@@ -26,28 +25,21 @@ import com.goodlife.model.Users;
 @ContextConfiguration(locations = { "/test-context.xml" }) 
 public class UsersDAOImplTest {
 
-	private static final Integer USER_ID = 1234;
-	private static final String USER_NAME = "goodlife123";
-	private static final Integer INV_CD = 010101;
-	private static final char ROLE = 'M';
-	private static final String EMAIL = "goodlife123@test.com";
-	private static final String FNAME = "good";
-	private static final String LNAME = "life";
+	private static final Integer USER_ID = 1;
+	private static final String USER_NAME = "dhaval";
+	private static final Integer INV_CD = 123456;
+	private static final char ROLE = 'S';
+	private static final String EMAIL = "dhaval.raj@tsgforce.com";
+	private static final String FNAME = "Dhaval";
+	private static final String LNAME = "Raj";
 	
 	@Autowired
-	private static UsersDAO usersDAO;
+	private UsersDAO usersDAO;
 	
 	@Before
 	public void setUp() {
-		usersDAO = mock(UsersDAO.class);
 		Users user = createUser();
-		usersDAO.addUser(user);
 	}
-	
-	/* @Test
-	public void testAddUser() {
-		fail("Not yet implemented");
-	}*/
 
 	@Test
 	public void testDeleteUser() throws UserNotFoundException {
@@ -76,45 +68,38 @@ public class UsersDAOImplTest {
 		assertEquals(found.isRegistered(), Boolean.TRUE);
 	}
 
-//	@Test
-//	public void testFindByRoleType() throws UserNotFoundException {
-//		List<Users> moderators = usersDAO.findByRoleType(ROLE);
-//		assertTrue(moderators.getClass().isArray());
-//		if (moderators != null) {
-//			assertTrue(moderators instanceof Users);
-//		}
-//	}
+	@Test
+	public void testFindByRoleType() throws UserNotFoundException {
+		List<Character> roles = new ArrayList<Character>();
+		roles.add(ROLE);
+		List<Users> moderators = usersDAO.findByRoleTypes(roles);
+		assertTrue(moderators.getClass().isArray());
+		if (moderators != null) {
+			assertTrue(moderators instanceof Users);
+		}
+	}
 
 	@Test
 	public void testFindByFirstName() throws UserNotFoundException {
 		List<Users> users = usersDAO.findByFirstName(FNAME);
-		assertTrue(users.getClass().isArray());
-		if (users != null) {
-			assertTrue(users instanceof Users);
-		}
+		assertTrue(users.size() == 1);
 	}
 
 	@Test
 	public void testFindByLastName() throws UserNotFoundException {
 		List<Users> users = usersDAO.findByLastName(LNAME);
-		assertTrue(users.getClass().isArray());
-		if (users != null) {
-			assertTrue(users instanceof Users);
-		}
+		System.out.println("SIZWE:" + users.size());
+		assertTrue(users.size() == 1);
 	}
 
 	@Test
 	public void testFindByEmail() throws UserNotFoundException {
 		List<Users> users = usersDAO.findByEmail(EMAIL);
-		assertTrue(users.getClass().isArray());
-		if (users != null) {
-			assertTrue(users instanceof Users);
-		}
+		assertTrue(users.size() == 1);
 	}
 	
 	public static Users createUser() {
 		Users user = new Users();
-		user.setUserId(USER_ID);
 		user.setUsername(USER_NAME);
 		user.setInvitationCode(INV_CD);
 		user.setEmail(EMAIL);
