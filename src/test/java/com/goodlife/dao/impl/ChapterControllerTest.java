@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import static org.mockito.Mockito.*;
@@ -52,23 +53,63 @@ public class ChapterControllerTest {
 	@Transactional
 	public void testListPublishedChapters() throws ChapterNotFoundException {
 		List<Chapter> chapList = chapterController.listPublishedChapters().getcontent();
-		assertEquals(chapList.size(),ARRAY_SIZE);
+		assertTrue(chapList.size() > 0);
+	}
+	
+	@Test
+	@Transactional
+	public void testListAllChapterDrafts() throws ChapterNotFoundException {
+		List<Chapter> chapList = chapterController.listAllChapterDrafts().getcontent();
+		assertTrue(chapList.size() > 0);
 	}
 	
 	@Test
 	@Transactional
 	public void testAddChapter() throws ChapterNotFoundException{
 		Integer chapId = chapterController.addChapter(CHAP_TITLE, CHAP_DESC, ORDER + 1).getcontent();
-		Integer expectedId = 2;
+		Integer expectedId = 3;
+		assertEquals(chapId,expectedId);
+	}
+	
+	@Test
+	@Transactional
+	@Rollback
+	public void testDeleteChapter() throws ChapterNotFoundException{
+		Integer chapId = chapterController.deleteChapter(CHAP_ID).getcontent();
+		Integer expectedId = 0;
 		assertEquals(chapId,expectedId);
 	}
 	
 	@Test
 	@Transactional
 	public void testpublishChapter() throws ChapterNotFoundException{
-		Integer chapId = chapterController.publishChapter(CHAP_ID,true).getcontent();
-		Integer expectedId = 1;
-		assertEquals(chapId,expectedId);
+		Boolean isPublished = chapterController.publishChapter(CHAP_ID,true).getcontent();
+		assertTrue(isPublished);
+	}
+	
+	@Test
+	@Transactional
+	public void testUpdateChapterTitle() throws ChapterNotFoundException{
+		String updatedTitle = "New Title!";
+		Boolean isUpdated = chapterController.updateChapterTitle(CHAP_ID,updatedTitle).getcontent();
+		assertTrue(isUpdated);
+	}
+	
+	@Test
+	@Transactional
+	public void testUpdateChapterDescr() throws ChapterNotFoundException{
+		String updatedDescr = "New Description!";
+		Boolean isUpdated = chapterController.updateChapterTitle(CHAP_ID,updatedDescr).getcontent();
+		assertTrue(isUpdated);
+	}
+	
+	@Test
+	@Transactional
+	public void testUpdateChapterOrder() throws ChapterNotFoundException{
+		List<Integer> chapList = new ArrayList<Integer>();
+		chapList.add(2);
+		chapList.add(1);
+		assertTrue(chapterController.updateChapterOrder(chapList).getcontent());
 	}
 	
 	public static Chapter createChapter() {

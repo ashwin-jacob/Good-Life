@@ -54,10 +54,10 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/publishchapter", method = RequestMethod.GET)
-	public AjaxResponse<Integer> publishChapter(@RequestParam(value="chapId") Integer chapId,
+	public AjaxResponse<Boolean> publishChapter(@RequestParam(value="chapId") Integer chapId,
 												@RequestParam(value="published") Boolean published) throws ChapterNotFoundException {
 		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
 		response = ajaxResponseBuilder.createSuccessResponse(chapterDAO.updatePublished(chapId,published));
 		
 		return response;
@@ -67,10 +67,8 @@ public class ChapterController {
 	@RequestMapping(value = "/deletechapter", method = RequestMethod.GET)
 	public AjaxResponse<Integer> deleteChapter(@RequestParam(value="chapId") Integer chapId) throws ChapterNotFoundException {
 		
-		chapterDAO.deleteChapter(chapId);
-		
 		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(0);
+		response = ajaxResponseBuilder.createSuccessResponse(chapterDAO.deleteChapter(chapId));
 		
 		return response;
 	}
@@ -99,35 +97,29 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatechapterorder", method = RequestMethod.GET)
-	public AjaxResponse<Integer> updateChapterOrder(List<Chapter> newChapterOrderList) throws ChapterNotFoundException {
-		
-		chapterDAO.updateOrder(newChapterOrderList);
-		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(0);
+	public AjaxResponse<Boolean> updateChapterOrder(List<Integer> newChapterOrderList) throws ChapterNotFoundException {
+				
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		response = ajaxResponseBuilder.createSuccessResponse(chapterDAO.updateOrder(newChapterOrderList));
 		return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "updatechaptertitle", method = RequestMethod.GET)
-	public AjaxResponse<Integer> updateChapterTitle(Integer chapId, String chapTitle) throws ChapterNotFoundException {
+	public AjaxResponse<Boolean> updateChapterTitle(Integer chapId, String chapTitle) throws ChapterNotFoundException {
 		
-		chapterDAO.updateTitle(chapId, chapTitle);
-		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(0);
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		response = ajaxResponseBuilder.createSuccessResponse(chapterDAO.updateTitle(chapId, chapTitle));
 		return response;
 		
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "updatechapterdescr", method = RequestMethod.GET)
-	public AjaxResponse<Integer> updateChapterDescr(Integer chapId, String chapDescr) throws ChapterNotFoundException {
+	public AjaxResponse<Boolean> updateChapterDescr(Integer chapId, String chapDescr) throws ChapterNotFoundException {
 		
-		chapterDAO.updateDescr(chapId, chapDescr);
-		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(0);
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		response = ajaxResponseBuilder.createSuccessResponse(chapterDAO.updateDescr(chapId, chapDescr));
 		return response;
 		
 	}
