@@ -66,10 +66,7 @@ public class UsersDAOImplTest {
 		List<Character> roles = new ArrayList<Character>();
 		roles.add(ROLE);
 		List<Users> moderators = usersDAO.findByRoleTypes(roles);
-		assertTrue(moderators.getClass().isArray());
-		if (moderators != null) {
-			assertTrue(moderators instanceof Users);
-		}
+		assertTrue(moderators.size() == 1);
 	}
 
 	@Test
@@ -81,7 +78,7 @@ public class UsersDAOImplTest {
 	@Test
 	public void testFindByLastName() throws UserNotFoundException {
 		List<Users> users = usersDAO.findByLastName(LNAME);
-		System.out.println("SIZWE:" + users.size());
+		System.out.println("SIZE:" + users.size());
 		assertTrue(users.size() == 1);
 	}
 

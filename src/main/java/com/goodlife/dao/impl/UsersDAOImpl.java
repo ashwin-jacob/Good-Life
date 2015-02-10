@@ -113,13 +113,10 @@ public class UsersDAOImpl implements UsersDAO {
 	@Override
 	public List<Users> findByRoleTypes(List<Character> roles)
 			throws UserNotFoundException {
-		String sql = "from Users user ";
-		for (char role : roles) {
-			sql += "where user.role_typ_cd = " + role + " and ";
-		}
-		sql = sql.substring(0, sql.length() - 5);
-		Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
-		List<Users> userList = query.list();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Users.class);
+		criteria.add(Restrictions.in("roleTypeCode",roles));
+		List<Users> userList = criteria.list();
 		return userList;
 	}
 
