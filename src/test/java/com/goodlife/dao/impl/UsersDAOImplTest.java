@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -19,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Users;
+import com.goodlife.exceptions.UserNotFoundException;
 
 @Transactional
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -36,16 +39,16 @@ public class UsersDAOImplTest {
 	@Autowired
 	private UsersDAO usersDAO;
 	
+	
 	@Before
 	public void setUp() {
 		Users user = createUser();
 	}
 
-	@Test
+	@Test(expected = com.goodlife.exceptions.UserNotFoundException.class)
 	public void testDeleteUser() throws UserNotFoundException {
-		usersDAO.deleteUser(USER_NAME);
+		usersDAO.deleteUser(USER_NAME);	
 		Users found = usersDAO.findByUserName(USER_NAME);
-		assertNull(found);
 	}
 
 	@Test
