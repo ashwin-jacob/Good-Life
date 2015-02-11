@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.ChapterPageDAO;
 import com.goodlife.exceptions.ChapterPageNotFoundException;
+import com.goodlife.model.Chapter;
 import com.goodlife.model.ChapterPage;
 
 @Repository
@@ -25,12 +26,12 @@ public class ChapterPageDAOImpl implements ChapterPageDAO{
 	}
 
 	@Override
-	public void deleteChapter(Integer pageId)
+	public Boolean deleteChapterPage(Integer pageId)
 			throws ChapterPageNotFoundException {
 		// TODO Auto-generated method stub
 		ChapterPage chapterPage = findByPageId(pageId);
         this.sessionFactory.getCurrentSession().delete(chapterPage);
-		
+		return Boolean.TRUE;
 	}
 
 	@Override
@@ -61,24 +62,29 @@ public class ChapterPageDAOImpl implements ChapterPageDAO{
 	}
 
 	@Override
-	public void updateOrder(List<ChapterPage> chapterPageList)
+	public Boolean updateChapterPageOrder(List<Integer> chapterPageList)
 			throws ChapterPageNotFoundException {
-		// TODO Auto-generated method stub
-		for(int i=0; i<chapterPageList.size(); i++){
-			chapterPageList.get(i).setPage_num(i);
-			this.sessionFactory.getCurrentSession().save(chapterPageList.get(i));
+		ChapterPage chapterPage = new ChapterPage();
+		try{
+			for(int i=0; i<chapterPageList.size(); i++){
+				chapterPage = (ChapterPage)this.sessionFactory.getCurrentSession().get(ChapterPage.class,chapterPageList.get(i));
+				chapterPage.setPage_num(i);
+				this.sessionFactory.getCurrentSession().save(chapterPage);
+			}
+			return Boolean.TRUE;
+		}catch(ObjectNotFoundException e){
+			return Boolean.FALSE;
 		}
-		
 	}
 
 	@Override
-	public void updatePageUrl(Integer pageId, String newUrl)
+	public Boolean updatePageUrl(Integer pageId, String newUrl)
 			throws ChapterPageNotFoundException {
 		// TODO Auto-generated method stub
 		ChapterPage chapterPage = findByPageId(pageId);
 		chapterPage.setPageUrl(newUrl);
 		this.sessionFactory.getCurrentSession().save(chapterPage);
-		
+		return Boolean.TRUE;
 	}
 
 }
