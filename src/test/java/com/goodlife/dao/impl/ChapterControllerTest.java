@@ -5,30 +5,18 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.mockito.Mockito.*;
-
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goodlife.controller.ChapterController;
-import com.goodlife.dao.ChapterDAO;
-import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.ChapterNotFoundException;
-import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Chapter;
-import com.goodlife.model.Users;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/test-context.xml" })
@@ -39,11 +27,11 @@ public class ChapterControllerTest {
 	private static final Integer ORDER = 1;
 	private static final String CHAP_DESC = "CHAPTER 1 DESCRIPTION";
 	private static final Boolean PUBLISHED = true;
-	private static final int ARRAY_SIZE = 1;
 	
 	@Autowired
 	private ChapterController chapterController;
 	
+	@SuppressWarnings("unused")
 	@Before
 	public void setUp() throws ChapterNotFoundException {
 		Chapter chapter = createChapter();

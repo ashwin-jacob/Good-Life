@@ -3,6 +3,7 @@ package com.goodlife.dao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -24,6 +25,9 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 		
 		@Autowired
 	    private SessionFactory sessionFactory;
+		
+		@Autowired
+		private UsersDAO usersDAO;
 
 		@Override
 		public List<UserStatus> findByUserId(Integer userId) throws UserNotFoundException {
@@ -50,7 +54,6 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 		@Override
 		public List<UserStatus> findCurrentSuspendedUsers()
 				throws UserNotFoundException {
-			// TODO Auto-generated method stub
 			Query query = this.sessionFactory.getCurrentSession().createQuery("from USER_STATUS where sts_typ_cd = :statusTypeCode AND end_dt >= current_date");
 			query.setParameter("statusTypeCode", 'S');
 			List<UserStatus> userStatusList = query.list();
@@ -60,7 +63,6 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 		@Override
 		public Integer findNumberofSuspensionsByUserId(Integer userId)
 				throws UserNotFoundException {
-			// TODO Auto-generated method stub
 			Query query = this.sessionFactory.getCurrentSession().createQuery("from USER_STATUS where usr_id = :userId AND sts_typ_cd = :statusTypeCode");
 			query.setParameter("userId", userId);
 			query.setParameter("statusTypeCode", 'S');
@@ -69,32 +71,47 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 		}
 
 		@Override
-		public Integer suspendUser(UserStatus userStatus)
+		public Boolean suspendUser(UserStatus userStatus)
 				throws UserNotFoundException {
-			// TODO Auto-generated method stub
-			userStatus = (UserStatus)this.sessionFactory.getCurrentSession().save(userStatus);
-			return userStatus.getUserId();
-		}
-
-		@Override
-		public void changeEndDate(Integer userStatusId, Date newEndDate)
-				throws UserNotFoundException {
-			// TODO Auto-generated method stub
-			UserStatus userStatus = findByUserStatusId(userStatusId);
-			userStatus.setEndDate(newEndDate);
-			this.sessionFactory.getCurrentSession().save(userStatus);
+			Users user = usersDAO.findByUserId(userStatus.getUserId());
+			Integer saveSuccess;
+			if(user != null)
+				saveSuccess = (Integer)this.sessionFactory.getCurrentSession().save(userStatus);
+			else
+				throw new UserNotFoundException("User Id: " + userStatus.getUserId() + " not found");
 			
+			if(saveSuccess != null)
+				return Boolean.TRUE;
+			else
+				return Boolean.FALSE;
+		}
+
+		@Override
+		public Boolean changeEndDate(Integer userStatusId, Date newEndDate)
+				throws UserNotFoundException {
+			try{
+				UserStatus userStatus = findByUserStatusId(userStatusId);
+				userStatus.setEndDate(newEndDate);
+				this.sessionFactory.getCurrentSession().save(userStatus);
+				return Boolean.TRUE;
+			}catch(ObjectNotFoundException e){
+				return Boolean.FALSE;
+			}			
 		}
 		
 		
 
 		@Override
-		public void changeUserStatus(Integer userStatusId, char statusTypeCode)
+		public Boolean changeUserStatus(Integer userStatusId, char statusTypeCode)
 				throws UserNotFoundException {
-			// TODO Auto-generated method stub
 			UserStatus userStatus = findByUserStatusId(userStatusId);
-			userStatus.setStatusTypeCode(statusTypeCode);
-			this.sessionFactory.getCurrentSession().save(userStatus);
+			if(userStatus != null){
+				userStatus.setStatusTypeCode(statusTypeCode);
+				this.sessionFactory.getCurrentSession().save(userStatus);
+			}
+			else
+				throw new UserNotFoundException("User Status Id: " + userStatusId + " not found.");
+			return Boolean.TRUE;
 		}
 
 		@Override

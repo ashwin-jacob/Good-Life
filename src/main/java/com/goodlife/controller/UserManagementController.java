@@ -87,7 +87,7 @@ public class UserManagementController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/suspend", method = RequestMethod.GET)
-	public AjaxResponse<Integer> suspendUser(@RequestParam(value="userId") Integer userId,
+	public AjaxResponse<Boolean> suspendUser(@RequestParam(value="userId") Integer userId,
 											 @RequestParam(value="endDate") Date endDate) throws UserNotFoundException {
 		
 		UserStatus userStatus = new UserStatus();
@@ -96,7 +96,7 @@ public class UserManagementController {
 		userStatus.setStatusTypeCode('S');
 		userStatus.setEndDate(endDate);
 		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
 		response = ajaxResponseBuilder.createSuccessResponse(userStatusDAO.suspendUser(userStatus));
 		
 		//model.addAttribute("userStatusId", userStatusId);
@@ -107,26 +107,24 @@ public class UserManagementController {
 
 	@ResponseBody
 	@RequestMapping(value = "/activate", method = RequestMethod.GET)
-	public AjaxResponse<Integer> activateUser(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
+	public AjaxResponse<Boolean> activateUser(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
 		
 		UserStatus userStatus = userStatusDAO.findByUserStatusId(userStatusId);
-		userStatusDAO.changeUserStatus(userStatusId, 'A');
 		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(0);
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		response = ajaxResponseBuilder.createSuccessResponse(userStatusDAO.changeUserStatus(userStatusId, 'A'));
 		
 		return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public AjaxResponse<Integer> deleteUser(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
+	public AjaxResponse<Boolean> deleteUser(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
 		
 		UserStatus userStatus = userStatusDAO.findByUserStatusId(userStatusId);
-		userStatusDAO.changeUserStatus(userStatusId, 'D');
 		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(0);
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		response = ajaxResponseBuilder.createSuccessResponse(userStatusDAO.changeUserStatus(userStatusId, 'D'));
 
 		return response;
 	}
