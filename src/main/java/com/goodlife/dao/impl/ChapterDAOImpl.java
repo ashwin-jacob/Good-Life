@@ -2,8 +2,11 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,23 +24,27 @@ public class ChapterDAOImpl implements ChapterDAO{
 
 	@Override
 	public Integer addChapter(Chapter chapter) {
-		// TODO Auto-generated method stub
+		
 		this.sessionFactory.getCurrentSession().save(chapter);
 		return chapter.getChapId();
 	}
 
 	@Override
-	public void deleteChapter(Integer chapterId)
+	public Integer deleteChapter(Integer chapterId)
 			throws ChapterNotFoundException {
-		// TODO Auto-generated method stub
+		
 		Chapter chapter = findByChapterId(chapterId);
         this.sessionFactory.getCurrentSession().delete(chapter);
+        if(findByChapterId(chapterId) == null)
+        	return 0;
+        else
+        	return chapterId;
 	}
 
 	@Override
 	public Chapter findByChapterId(Integer chapterId)
 			throws ChapterNotFoundException {
-		// TODO Auto-generated method stub
+		
 		Chapter chapter = (Chapter) this.sessionFactory.getCurrentSession().get(Chapter.class, chapterId);
 		if (null == chapterId) {
         	throw new ChapterNotFoundException("Chapter: " + chapterId + ".  Not found in the database!");
@@ -46,59 +53,92 @@ public class ChapterDAOImpl implements ChapterDAO{
 	}
 
 	@Override
-	public void updateOrder(List<Chapter> chapterList) throws ChapterNotFoundException {
-		// TODO Auto-generated method stub
-		for(int i=0; i<chapterList.size(); i++){
-			chapterList.get(i).setOrderId(i);
-			this.sessionFactory.getCurrentSession().save(chapterList.get(i));
+	public Boolean updateOrder(List<Integer> chapterList) throws ChapterNotFoundException {
+		Chapter chapter = new Chapter();
+		try{
+			for(int i=0; i<chapterList.size(); i++){
+				chapter = (Chapter)this.sessionFactory.getCurrentSession().get(Chapter.class,chapterList.get(i));
+				chapter.setOrderId(i);
+				this.sessionFactory.getCurrentSession().save(chapter);
+			}
+			return Boolean.TRUE;
+		}catch(ObjectNotFoundException e){
+			return Boolean.FALSE;
 		}
 		
 	}
 
 	@Override
-	public void updateTitle(Integer chapterId, String newChapterTitle)
+	public Boolean updateTitle(Integer chapterId, String newChapterTitle)
 			throws ChapterNotFoundException {
-		// TODO Auto-generated method stub
-		Chapter chapter = findByChapterId(chapterId);
-		chapter.setChapTitle(newChapterTitle);
-		this.sessionFactory.getCurrentSession().save(chapter);
 		
+		try{
+			Chapter chapter = findByChapterId(chapterId);
+			chapter.setChapTitle(newChapterTitle);
+			this.sessionFactory.getCurrentSession().save(chapter);
+			
+			return Boolean.TRUE;
+			
+		}catch(ObjectNotFoundException e){
+			return Boolean.FALSE;
+		}
 	}
 
 	@Override
-	public void updateDescr(Integer chapterId, String newChapterDescr)
+	public Boolean updateDescr(Integer chapterId, String newChapterDescr)
 			throws ChapterNotFoundException {
-		// TODO Auto-generated method stub
-		Chapter chapter = findByChapterId(chapterId);
-		chapter.setChapDescr(newChapterDescr);
-		this.sessionFactory.getCurrentSession().save(chapter);
 		
+		try{
+			Chapter chapter = findByChapterId(chapterId);
+			chapter.setChapDescr(newChapterDescr);
+			this.sessionFactory.getCurrentSession().save(chapter);
+			
+			return Boolean.TRUE;
+			
+		}catch(ObjectNotFoundException e){
+			return Boolean.FALSE;
+		}
+		
+	}
+	
+	@Override
+	public Boolean updatePublished(Integer chapterId, Boolean published) throws ChapterNotFoundException{
+		
+		try{
+			Chapter chapter = findByChapterId(chapterId);
+			chapter.setPublished(published);
+			this.sessionFactory.getCurrentSession().save(chapter);
+			return Boolean.TRUE;
+		}catch(ObjectNotFoundException e){
+			return Boolean.FALSE;
+		}
 	}
 
 	@Override
 	public List<Chapter> listAllChapters() throws ChapterNotFoundException {
-		// TODO Auto-generated method stub
+		
 		Query query = this.sessionFactory.getCurrentSession().createQuery("from CHAPTER");
 		List<Chapter> allChapterList = query.list();
 		return allChapterList;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Chapter> listAllPublishedChapters()
 			throws ChapterNotFoundException {
-		// TODO Auto-generated method stub
-		Query query = this.sessionFactory.getCurrentSession().createQuery("from CHAPTER where published = :published");
-		query.setParameter("published", true);
-		List<Chapter> publishedChapterList = query.list();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Chapter.class);
+		criteria.add(Restrictions.eqOrIsNull("published", true));
+		List<Chapter> publishedChapterList = criteria.list();
 		return publishedChapterList;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Chapter> listAllChapterDrafts() throws ChapterNotFoundException {
-		// TODO Auto-generated method stub
-		Query query = this.sessionFactory.getCurrentSession().createQuery("from CHAPTER where published = :published");
-		query.setParameter("published", false);
-		List<Chapter> chapterDraftList = query.list();
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Chapter.class);
+		criteria.add(Restrictions.eqOrIsNull("published", false));
+		List<Chapter> chapterDraftList = criteria.list();
 		return chapterDraftList;
 	}
 	

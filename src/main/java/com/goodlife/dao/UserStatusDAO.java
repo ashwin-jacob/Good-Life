@@ -15,7 +15,7 @@ public interface UserStatusDAO{
 	public List<UserStatus> findCurrentSuspendedUsers() throws UserNotFoundException;
 	public Integer findNumberofSuspensionsByUserId(Integer userId) throws UserNotFoundException;
 	
-	public Integer suspendUser(UserStatus userStatus) throws UserNotFoundException;
-	public void changeEndDate(Integer userStatusId, Date newEndDate) throws UserNotFoundException;
-	public void changeUserStatus(Integer userStatusId, char statusTypeCode) throws UserNotFoundException;
+	public Boolean suspendUser(UserStatus userStatus) throws UserNotFoundException;
+	public Boolean changeEndDate(Integer userStatusId, Date newEndDate) throws UserNotFoundException;
+	public Boolean changeUserStatus(Integer userStatusId, char statusTypeCode) throws UserNotFoundException;
 }

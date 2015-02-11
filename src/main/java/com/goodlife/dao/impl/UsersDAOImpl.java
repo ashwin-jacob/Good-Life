@@ -2,7 +2,6 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,12 +65,19 @@ public class UsersDAOImpl implements UsersDAO {
 		return userList;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Users findByEmail(String email) throws UserNotFoundException {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				Users.class);
 		criteria.add(Restrictions.ilike("email", email));
+		return (Users) criteria.uniqueResult();
+	}
+	
+	@Override
+	public Users findByUserId(Integer userId) throws UserNotFoundException {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Users.class);
+		criteria.add(Restrictions.eq("userId", userId));
 		return (Users) criteria.uniqueResult();
 	}
 
@@ -113,13 +119,10 @@ public class UsersDAOImpl implements UsersDAO {
 	@Override
 	public List<Users> findByRoleTypes(List<Character> roles)
 			throws UserNotFoundException {
-		String sql = "from Users user ";
-		for (char role : roles) {
-			sql += "where user.role_typ_cd = " + role + " and ";
-		}
-		sql = sql.substring(0, sql.length() - 5);
-		Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
-		List<Users> userList = query.list();
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Users.class);
+		criteria.add(Restrictions.in("roleTypeCode",roles));
+		List<Users> userList = criteria.list();
 		return userList;
 	}
 
@@ -127,7 +130,15 @@ public class UsersDAOImpl implements UsersDAO {
 	@Override
 	public List<Users> advancedQuery(String input, String field,
 			List<Character> roles) throws UserNotFoundException {
-		String sql = "from USERS user where user." + field + " = " + input;
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				Users.class);
+		if(roles != null)
+			criteria.add(Restrictions.and(Restrictions.sqlRestriction(field + " = '" + input + "'"),
+					 Restrictions.in("roleTypeCode",roles)));
+		else
+			criteria.add(Restrictions.sqlRestriction(field + " = '" + input + "'"));
+		return criteria.list();
+		/*String sql = "from USERS user where user." + field + " = " + input;
 
 		if (roles != null) {
 			for (char role : roles) {
@@ -137,7 +148,7 @@ public class UsersDAOImpl implements UsersDAO {
 
 		Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
 		List<Users> userList = query.list();
-		return userList;
+		return userList;*/
 	}
 
 	@Override
