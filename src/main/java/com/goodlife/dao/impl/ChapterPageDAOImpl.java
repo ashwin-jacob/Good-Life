@@ -87,4 +87,17 @@ public class ChapterPageDAOImpl implements ChapterPageDAO{
 		return Boolean.TRUE;
 	}
 
+	@Override
+	public Boolean deleteAllPagesByChapterId(Integer chapterId)
+			throws ChapterPageNotFoundException {
+		// TODO Auto-generated method stub
+		List<ChapterPage> chapterPageDeleteList = findAllChapterPagesByChapterId(chapterId);
+		
+		for(int i = 0; i < chapterPageDeleteList.size(); i++){
+			deleteChapterPage(chapterPageDeleteList.get(i).getChapId());
+		}
+		
+		return Boolean.TRUE;
+	}
+
 }

@@ -190,4 +190,14 @@ public class ChapterController {
 		
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "deletechapterpagesbychapid", method = RequestMethod.GET)
+	public AjaxResponse<Boolean> deleteAllChapterPagesByChapId(@RequestParam(value="chapId") Integer chapId) throws ChapterPageNotFoundException {
+		
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		response = ajaxResponseBuilder.createSuccessResponse(chapterPageDAO.deleteAllPagesByChapterId(chapId));
+		return response;
+		
+	}
+	
 }
