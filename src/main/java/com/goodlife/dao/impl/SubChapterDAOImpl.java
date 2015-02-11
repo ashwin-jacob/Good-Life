@@ -1,20 +1,17 @@
 package com.goodlife.dao.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Query;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.exceptions.SubChapterNotFoundException;
-import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.SubChapter;
 
 @Repository
@@ -24,57 +21,76 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Integer addSubChapter(SubChapter subChapter){
+	public Integer addSubChapter(SubChapter subChapter) throws SubChapterNotFoundException{
 		
-		this.sessionFactory.getCurrentSession().save(subChapter);
-				
-		return subChapter.getSubChapId();
+		Serializable success = this.sessionFactory.getCurrentSession().save(subChapter);
+		
+		if(success != null)
+			return subChapter.getSubChapId();
+		else
+			throw new SubChapterNotFoundException("Sub Chapter was not added.");
 	}
 	@Override
-	public void deleteSubChapter(Integer subChapId) 
+	public Boolean deleteSubChapter(Integer subChapId) 
 		throws SubChapterNotFoundException{
 		
 		SubChapter subChapter = getSubChapterById(subChapId);
 		this.sessionFactory.getCurrentSession().delete(subChapter);
-		
+		if(this.sessionFactory.getCurrentSession().get(SubChapter.class, subChapId) != null){
+			return Boolean.FALSE;
+		}
+		else
+			return Boolean.TRUE;
 	}
 	@Override
-	public void updateOrder(List<Integer> subChapterIdList) 
+	public Boolean updateOrder(List<Integer> subChapterIdList) 
 		throws SubChapterNotFoundException{
 		
-		SubChapter subChapter;
+		SubChapter subChapter = new SubChapter();
 		for (int i = 0; i < subChapterIdList.size(); i++){
 			subChapter = getSubChapterById(subChapterIdList.get(i));
-			subChapter.setOrderId(i);
-			this.sessionFactory.getCurrentSession().save(subChapter);
+			if(subChapter == null)
+				throw new SubChapterNotFoundException("Sub Chapter Id: " + subChapterIdList.get(i) + " was not found.");
+			subChapter.setOrderId(i+1);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(subChapter);
 		}
+		return Boolean.TRUE;
 	}
 	@Override
-	public void updateTitle(Integer subChapId, String subChapTitle) 
+	public Boolean updateTitle(Integer subChapId, String subChapTitle) 
 		throws SubChapterNotFoundException{
 		
 		SubChapter subChapter = getSubChapterById(subChapId);
-		subChapter.setSubChapTitle(subChapTitle);
-		this.sessionFactory.getCurrentSession().save(subChapter);
+		if(subChapter != null){
+			subChapter.setSubChapTitle(subChapTitle);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(subChapter);
+		}
+		else
+			throw new SubChapterNotFoundException("Sub Chapter Id: " + subChapId + " was not found.");
+		
+		return Boolean.TRUE;
 	}
 	@Override
-	public void updateDescription(Integer subChapId, String subChapDescr) 
+	public Boolean updateDescription(Integer subChapId, String subChapDescr) 
 		throws SubChapterNotFoundException{
 		
 		SubChapter subChapter = getSubChapterById(subChapId);
-		subChapter.setSubChapDescr(subChapDescr);
-		this.sessionFactory.getCurrentSession().save(subChapter);
+		if(subChapter != null){
+			subChapter.setSubChapDescr(subChapDescr);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(subChapter);
+		}
+		else
+			throw new SubChapterNotFoundException("Sub Chapter Id: " + subChapId + " was not found.");
+		
+		return Boolean.TRUE;
 	}
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<SubChapter> getSubChapListByChapter(Integer chapId)
 			throws SubChapterNotFoundException {
-
-		List<SubChapter> subChapList;
-		try{
-			subChapList = (List<SubChapter>)this.sessionFactory.getCurrentSession().load(SubChapter.class, chapId);
-		}catch(ObjectNotFoundException e){
-			subChapList = (List<SubChapter>)this.sessionFactory.getCurrentSession().get(SubChapter.class, chapId);
-		}
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SubChapter.class);
+		criteria.add(Restrictions.eqOrIsNull("chapId", chapId));
+		List<SubChapter> subChapList = criteria.list();
 		if(null == subChapList){
 			throw new SubChapterNotFoundException("subChapId: " + chapId + " not found in the database!");
 		}
@@ -85,11 +101,9 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 			throws SubChapterNotFoundException {
 
 		SubChapter subChapter;
-		try{
-			subChapter = (SubChapter)this.sessionFactory.getCurrentSession().load(SubChapter.class, subChapId);
-		}catch(ObjectNotFoundException e){
-			subChapter = (SubChapter)this.sessionFactory.getCurrentSession().get(SubChapter.class, subChapId);
-		}
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(SubChapter.class);
+		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
+		subChapter = (SubChapter) criteria.uniqueResult();
 		if(null == subChapter){
 			throw new SubChapterNotFoundException("subChapId: " + subChapId + " not found in the database!");
 		}
