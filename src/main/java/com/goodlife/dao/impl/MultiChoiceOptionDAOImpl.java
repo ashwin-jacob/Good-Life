@@ -2,9 +2,9 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
-import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Query;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,39 +27,43 @@ public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
 	}
 
 	@Override
-	public void updateChoiceText(Integer optionId, String text) throws MultipleChoiceOptionNotFoundException {
+	public Boolean updateChoiceText(Integer optionId, String text) throws MultipleChoiceOptionNotFoundException {
 		
 		MultiChoiceOption multiChoiceOption = findMultiChoiceOptionById(optionId);
+		if(multiChoiceOption == null)
+			throw new MultipleChoiceOptionNotFoundException("Multi Choice Option Id:" + optionId + " not found.");
 		multiChoiceOption.setChoiceText(text);
-		this.sessionFactory.getCurrentSession().save(multiChoiceOption);		
+		this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoiceOption);
+		
+		return Boolean.TRUE;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MultiChoiceOption> getMultiChoiceOptions(Integer multiQuesId) throws MultipleChoiceOptionNotFoundException{
 
-		Query query = this.sessionFactory.getCurrentSession().createQuery("FROM MULTI_CHOICE_OPTION WHERE MC_Q_ID = :multiQuesId");
-		query.setParameter("multiQuesId", multiQuesId);
-		List<MultiChoiceOption> multiChoiceList = query.list();
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceOption.class);
+		criteria.add(Restrictions.eqOrIsNull("multiQuesId", multiQuesId));
+		List<MultiChoiceOption> multiChoiceList = criteria.list();
 		
 		return multiChoiceList;
 	}
 
 	@Override
-	public void deleteMultiChoiceOption(Integer optionId) throws MultipleChoiceOptionNotFoundException {
+	public Boolean deleteMultiChoiceOption(Integer optionId) throws MultipleChoiceOptionNotFoundException {
 		MultiChoiceOption mcOpt = findMultiChoiceOptionById(optionId);
+		if(mcOpt == null)
+			throw new MultipleChoiceOptionNotFoundException("Multi Choice Option Id:" + optionId + " not found."); 
 		this.sessionFactory.getCurrentSession().delete(mcOpt);
+		return Boolean.TRUE;
 	}
 
 	@Override
 	public MultiChoiceOption findMultiChoiceOptionById(Integer optionId)
 			throws MultipleChoiceOptionNotFoundException {
-		MultiChoiceOption mcOpt;
-		try{
-			mcOpt = (MultiChoiceOption) this.sessionFactory.getCurrentSession().load(MultiChoiceOption.class, optionId);
-		}
-		catch(ObjectNotFoundException e){
-			mcOpt = (MultiChoiceOption) this.sessionFactory.getCurrentSession().get(MultiChoiceOption.class, optionId);
-		}
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceOption.class);
+		criteria.add(Restrictions.eqOrIsNull("optionId", optionId));
+		MultiChoiceOption mcOpt = (MultiChoiceOption) criteria.uniqueResult();
 		if (null == mcOpt) {
         	throw new MultipleChoiceOptionNotFoundException("MultiChoice Option: " + optionId + ".  Not found in the database!");
         }

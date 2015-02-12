@@ -2,9 +2,9 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
-import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Query;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -21,75 +21,89 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 	@Override
 	public Integer addMultiChoice(MultiChoiceQ multiChoiceQ) {
 		
-		this.sessionFactory.getCurrentSession().save(multiChoiceQ);
-		
+		this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoiceQ);
 		return multiChoiceQ.getMultiQuesId();
 	}
 
 	@Override
-	public void deleteMultiChoice(Integer multiChoiceId) throws MultipleChoiceNotFoundException {
+	public Boolean deleteMultiChoice(Integer multiChoiceId) throws MultipleChoiceNotFoundException {
 
 		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
-		this.sessionFactory.getCurrentSession().delete(multiChoice);
+		if(multiChoice != null)
+			this.sessionFactory.getCurrentSession().delete(multiChoice);
+		else
+			throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + multiChoiceId + " not found.");
+		return Boolean.TRUE;
 	}
 
 	@Override
-	public void updateOrder(List<Integer> multiChoiceIdList)
+	public Boolean updateOrder(List<Integer> multiChoiceIdList)
 			throws MultipleChoiceNotFoundException {
 
 		MultiChoiceQ multiChoice = new MultiChoiceQ();
 		for (int i = 0; i < multiChoiceIdList.size(); i++){
 			multiChoice = getMultiChoiceQById(multiChoiceIdList.get(i));
-			multiChoice.setOrderId(i);
-			this.sessionFactory.getCurrentSession().save(multiChoice);
+			if(multiChoice == null)
+				throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + multiChoiceIdList.get(i) + " not found.");
+			multiChoice.setOrderId(i+1);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
 		}
+		return Boolean.TRUE;
 	}
 
 	@Override
-	public void updateQuestionText(Integer multiChoiceId, String quesText)
+	public Boolean updateQuestionText(Integer multiChoiceId, String quesText)
 			throws MultipleChoiceNotFoundException {
 		
 		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
+		if(multiChoice == null)
+			throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + multiChoiceId + " not found.");
 		multiChoice.setQuesText(quesText);
-		this.sessionFactory.getCurrentSession().save(multiChoice);	
+		this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
+		return Boolean.TRUE;
 	}
 
 	@Override
-	public void updateHelpText(Integer multiChoiceId, String helpText)
+	public Boolean updateHelpText(Integer multiChoiceId, String helpText)
 			throws MultipleChoiceNotFoundException {
 		
 		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
+		if(multiChoice == null)
+			throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + multiChoiceId + " not found.");
 		multiChoice.setHelpText(helpText);
-		this.sessionFactory.getCurrentSession().save(multiChoice);
+		this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
+		
+		return Boolean.TRUE;
 	}
 
 	@Override
-	public void updateCorrectAnswer(Integer multiChoiceId, Integer correctAnswer)
+	public Boolean updateCorrectAnswer(Integer multiChoiceId, Integer correctAnswer)
 			throws MultipleChoiceNotFoundException {
 		
 		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
+		if(multiChoice == null)
+			throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + multiChoiceId + " not found.");
 		multiChoice.setCorrectAnswer(correctAnswer);
-		this.sessionFactory.getCurrentSession().save(multiChoice);
+		this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
+		return Boolean.TRUE;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<MultiChoiceQ> getAllMultiChoice(Integer subChapId) {
 		
-		Query query = this.sessionFactory.getCurrentSession().createQuery("FROM MULTI_CHOICE_Q WHERE SUB_CHAP_ID = :subChapId");
-		query.setParameter("subChapId", subChapId);
-		List<MultiChoiceQ> multiChoiceList = query.list();
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceQ.class);
+		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
+		List<MultiChoiceQ> multiChoiceList = criteria.list();
 		return multiChoiceList;
 	}
 	
 	@Override
 	public MultiChoiceQ getMultiChoiceQById(Integer multiChoiceId) throws MultipleChoiceNotFoundException{
 		
-		MultiChoiceQ multiChoice = new MultiChoiceQ();
-		try{
-			multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().load(MultiChoiceQ.class, multiChoiceId);
-		}catch(ObjectNotFoundException e){
-			multiChoice = (MultiChoiceQ)this.sessionFactory.getCurrentSession().get(MultiChoiceQ.class, multiChoiceId);
-		}
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceQ.class);
+		criteria.add(Restrictions.eqOrIsNull("multiQuesId", multiChoiceId));
+		MultiChoiceQ multiChoice = (MultiChoiceQ) criteria.uniqueResult();
 		if(null == multiChoice){
 			throw new MultipleChoiceNotFoundException("Multiple Choice Id: " + multiChoiceId + " not found in database!");
 		}
