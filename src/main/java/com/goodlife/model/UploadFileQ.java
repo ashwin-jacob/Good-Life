@@ -31,8 +31,8 @@ public class UploadFileQ implements Serializable{
 	@Column(name = "descr")
 	private String description;
 	
-	@Column(name = "order_id")
-	private Integer orderId;
+	/*@Column(name = "order_id")
+	private Integer orderId;*/
 
 	public UploadFileQ() {
 		super();
@@ -45,7 +45,7 @@ public class UploadFileQ implements Serializable{
 		this.subChapId = subChapId;
 		this.helpText = helpText;
 		this.description = description;
-		this.orderId = orderId;
+		//this.orderId = orderId;
 	}
 
 	public Integer getUploadQuesId() {
@@ -80,12 +80,12 @@ public class UploadFileQ implements Serializable{
 		this.description = description;
 	}
 
-	public Integer getOrderId() {
+	/*public Integer getOrderId() {
 		return orderId;
 	}
 
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
-	}
+	}*/
 	
 }

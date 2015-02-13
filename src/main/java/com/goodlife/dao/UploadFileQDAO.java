@@ -10,9 +10,9 @@ import com.goodlife.model.UploadFileQ;
 public interface UploadFileQDAO {
 
 	public Integer addUploadFileQuestion(UploadFileQ uploadFileQ);
-	public void updateDescription(Integer uploadQuesId, String description) throws ObjectNotFoundException;
-	public void updateHelpText(Integer uploadQuesId, String helpText) throws ObjectNotFoundException;
+	public Boolean updateDescription(Integer uploadQuesId, String description) throws ObjectNotFoundException;
+	public Boolean updateHelpText(Integer uploadQuesId, String helpText) throws ObjectNotFoundException;
 	public UploadFileQ getUploadFileQuestion(Integer subChapId) throws ObjectNotFoundException;
 	public List<UploadFileQ> findAllUploadFileQBySubchapId(Integer subChapId);
-	public void updateOrder(List<Integer> quesIdList) throws ObjectNotFoundException;
+	//public Boolean updateOrder(List<Integer> quesIdList) throws ObjectNotFoundException;
 }

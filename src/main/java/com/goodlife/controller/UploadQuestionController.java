@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import com.goodlife.model.AjaxResponse;
 import com.goodlife.model.UploadFileQ;
 
 @Controller
+@Transactional
 @RequestMapping(value = "/uploadQuestion")
 public class UploadQuestionController {
 	
@@ -34,13 +36,14 @@ public class UploadQuestionController {
 	@RequestMapping(value = "/adduploadfilequestion", method = RequestMethod.GET)
 	public AjaxResponse<Integer> addUploadFileQuestion(@RequestParam(value="subChapId") Integer subChapId,
 											 @RequestParam(value="helpTxt") String helpTxt,
-											 @RequestParam(value="descr") String descr,
-											 @RequestParam(value="orderId") Integer orderId) {
+											 @RequestParam(value="descr") String descr){
+											 //@RequestParam(value="orderId") Integer orderId) {
 		
 		UploadFileQ uploadFileQ = new UploadFileQ();
+		uploadFileQ.setDescription(descr);
 		uploadFileQ.setSubChapId(subChapId);
 		uploadFileQ.setHelpText(helpTxt);
-		uploadFileQ.setOrderId(orderId);
+		//uploadFileQ.setOrderId(orderId);
 		
 		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
 		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.addUploadFileQuestion(uploadFileQ));
@@ -50,26 +53,22 @@ public class UploadQuestionController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatedescription", method = RequestMethod.GET)
-	public AjaxResponse<Integer> updateDescription(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
+	public AjaxResponse<Boolean> updateDescription(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
 			@RequestParam(value="descr") String descr) 
 			throws ObjectNotFoundException {
-		
-		uploadDAO.updateDescription(uploadQuesId, descr);
-		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(0);
+				
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.updateDescription(uploadQuesId, descr));
 		return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatehelptext", method = RequestMethod.GET)
-	public AjaxResponse<Integer> updateHelpText(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
+	public AjaxResponse<Boolean> updateHelpText(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
 			@RequestParam(value="helpTxt") String helpText) throws ObjectNotFoundException {
-		
-		uploadDAO.updateHelpText(uploadQuesId, helpText);
-		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(0);
+				
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.updateHelpText(uploadQuesId, helpText));
 		return response;
 	}
 	
@@ -85,15 +84,13 @@ public class UploadQuestionController {
 		return response;
 	}
 	
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping(value = "/updateorder", method = RequestMethod.GET)
-	public AjaxResponse<Integer> updateOrder(@RequestParam(value="uploadQuesId") List<Integer> quesIdList) 
+	public AjaxResponse<Boolean> updateOrder(@RequestParam(value="uploadQuesId") List<Integer> quesIdList) 
 			throws ObjectNotFoundException {
-		
-		uploadDAO.updateOrder(quesIdList);
-		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(0);
+				
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.updateOrder(quesIdList));
 		return response;
-	}
+	}*/
 }

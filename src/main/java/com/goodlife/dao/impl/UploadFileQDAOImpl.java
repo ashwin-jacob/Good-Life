@@ -2,17 +2,15 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.UploadFileQDAO;
-import com.goodlife.exceptions.UserNotFoundException;
-import com.goodlife.model.MultiChoiceQ;
 import com.goodlife.model.UploadFileQ;
-import com.goodlife.model.Users;
 
 @Repository
 public class UploadFileQDAOImpl implements UploadFileQDAO{
@@ -29,51 +27,60 @@ public class UploadFileQDAOImpl implements UploadFileQDAO{
 	}
 	
 	@Override
-	public void updateDescription(Integer uploadQuesId, String description) throws ObjectNotFoundException {
+	public Boolean updateDescription(Integer uploadQuesId, String description) throws ObjectNotFoundException {
 
 		UploadFileQ uploadFileQ = getUploadFileQuestion(uploadQuesId);
+		if(uploadFileQ == null)
+			throw new ObjectNotFoundException(null,"Upload Question Id: " + uploadQuesId + " not found.");
 		uploadFileQ.setDescription(description);
+		return Boolean.TRUE;
 	}
 
 	@Override
-	public void updateHelpText(Integer uploadQuesId, String helpText) throws ObjectNotFoundException {
+	public Boolean updateHelpText(Integer uploadQuesId, String helpText) throws ObjectNotFoundException {
 
 		UploadFileQ uploadFileQ = getUploadFileQuestion(uploadQuesId);
+		if(uploadFileQ == null)
+			throw new ObjectNotFoundException(null,"Upload Question Id: " + uploadQuesId + " not found.");
 		uploadFileQ.setHelpText(helpText);
+		return Boolean.TRUE;
 	}
 
 	@Override
 	public UploadFileQ getUploadFileQuestion(Integer uploadFileQId) throws ObjectNotFoundException {
-
-		UploadFileQ uploadFileQ = new UploadFileQ();
-		try{
-			uploadFileQ = (UploadFileQ)this.sessionFactory.getCurrentSession().load(UploadFileQ.class, uploadFileQId);
-		}catch(ObjectNotFoundException e){
-			uploadFileQ = (UploadFileQ)this.sessionFactory.getCurrentSession().get(UploadFileQ.class, uploadFileQId);
-		}
+		
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UploadFileQ.class);
+		criteria.add(Restrictions.eqOrIsNull("uploadQuesId", uploadFileQId));
+		UploadFileQ uploadFileQ = (UploadFileQ) criteria.uniqueResult();
 		if (uploadFileQ == null) {
 			throw new ObjectNotFoundException(null, "Upload question with id " + uploadFileQId + " not found.");
 		}
-		
 		return uploadFileQ;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<UploadFileQ> findAllUploadFileQBySubchapId(Integer subChapId) {
-		String SQL = "from UPLOAD_FILE_Q where sub_chap_id = :subChapId";
-		Query query = this.sessionFactory.getCurrentSession().createQuery(SQL).setParameter("subChapId", subChapId);
-		List<UploadFileQ> quesList = query.list();
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UploadFileQ.class);
+		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
+		List<UploadFileQ> quesList = criteria.list();
 		return quesList;
 	}
 
-	@Override
-	public void updateOrder(List<Integer> quesIdList) throws ObjectNotFoundException {
-		UploadFileQ uploadFileQ;
+	/*@Override
+	public Boolean updateOrder(List<Integer> quesIdList) throws ObjectNotFoundException {
+		UploadFileQ uploadFileQ = new UploadFileQ();
+		Criteria criteria;
 		for (int i = 0; i < quesIdList.size(); i++){
-			uploadFileQ = (UploadFileQ) this.sessionFactory.getCurrentSession().load(UploadFileQ.class, quesIdList.get(i));
-			uploadFileQ.setOrderId(i);
+			criteria = this.sessionFactory.getCurrentSession().createCriteria(UploadFileQ.class);
+			criteria.add(Restrictions.eqOrIsNull("uploadQuesId", quesIdList.get(i)));
+			uploadFileQ = (UploadFileQ) criteria.uniqueResult();
+			if(uploadFileQ == null)
+				throw new ObjectNotFoundException(null,"Upload Question Id: " + quesIdList.get(i) + " not found.");
+			uploadFileQ.setOrderId(i+1);
 			this.sessionFactory.getCurrentSession().save(uploadFileQ);
 		}
-	}
+		return Boolean.TRUE;
+	}*/
 
 }
