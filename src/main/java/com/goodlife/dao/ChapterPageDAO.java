@@ -3,12 +3,14 @@ package com.goodlife.dao;
 import java.util.List;
 
 
+
+import com.goodlife.exceptions.ChapterNotFoundException;
 import com.goodlife.exceptions.ChapterPageNotFoundException;
 import com.goodlife.model.ChapterPage;
 
 public interface ChapterPageDAO {
 	
-	public Integer addChapterPage(ChapterPage chapterPage);
+	public Integer addChapterPage(ChapterPage chapterPage) throws ChapterNotFoundException;
 	public Boolean deleteChapterPage(Integer pageId) throws ChapterPageNotFoundException;
 	public ChapterPage findByPageId(Integer pageId)throws ChapterPageNotFoundException;
 	public List<ChapterPage> findAllChapterPagesByChapterId(Integer chapterId) throws ChapterPageNotFoundException;

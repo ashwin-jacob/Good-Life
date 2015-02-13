@@ -1,9 +1,6 @@
 package com.goodlife.controller;
 
-import java.util.Date;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -135,12 +132,12 @@ public class ChapterController {
 	@ResponseBody
 	@RequestMapping(value = "addchapterpage", method = RequestMethod.GET)
 	public AjaxResponse<Integer> addChapterPage(@RequestParam(value="chapId") Integer chapId,
-			 									@RequestParam(value="page_num") Integer page_num,
-			 									@RequestParam(value="pageUrl") String pageUrl) throws ChapterPageNotFoundException{
+			 									@RequestParam(value="pageNum") Integer pageNum,
+			 									@RequestParam(value="pageUrl") String pageUrl) throws ChapterNotFoundException{
 		
 		ChapterPage chapterPage = new ChapterPage();
 		chapterPage.setChapId(chapId);
-		chapterPage.setPage_num(page_num);
+		chapterPage.setPageNum(pageNum);
 		chapterPage.setPageUrl(pageUrl);
 		
 		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
