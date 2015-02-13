@@ -67,6 +67,17 @@ public class UploadFileQDAOImpl implements UploadFileQDAO{
 		return quesList;
 	}
 
+	@Override
+	public Boolean deleteUploadFileQuestion(Integer uploadQuesId) throws ObjectNotFoundException{
+		UploadFileQ uploadFileQ = getUploadFileQuestion(uploadQuesId);
+		if(uploadFileQ == null)
+			return Boolean.FALSE;
+		else{
+			this.sessionFactory.getCurrentSession().delete(uploadFileQ);
+			return Boolean.TRUE;
+		}
+	}
+
 	/*@Override
 	public Boolean updateOrder(List<Integer> quesIdList) throws ObjectNotFoundException {
 		UploadFileQ uploadFileQ = new UploadFileQ();

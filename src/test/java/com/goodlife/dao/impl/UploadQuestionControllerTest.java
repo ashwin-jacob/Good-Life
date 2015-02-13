@@ -2,13 +2,10 @@ package com.goodlife.dao.impl;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,5 +66,12 @@ public class UploadQuestionControllerTest {
 		assertEquals(uploadList.get(0).getUploadQuesId(),UP_Q_ID);
 	}
 	
-	
+	@Test
+	@Transactional
+	public void testDeleteUploadFileQuestion(){
+		Integer startSize = uploadQuestionController.allUploadQuestionsBySubchapId(SUBCHAPID).getcontent().size();
+		Boolean success = uploadQuestionController.deleteUploadFileQuestion(UP_Q_ID).getcontent();
+		assertTrue(success);
+		assertTrue(startSize > uploadQuestionController.allUploadQuestionsBySubchapId(SUBCHAPID).getcontent().size());
+	}
 }

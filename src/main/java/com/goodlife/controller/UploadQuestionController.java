@@ -52,6 +52,16 @@ public class UploadQuestionController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/deleteuploadfilequestion", method = RequestMethod.GET)
+	public AjaxResponse<Boolean> deleteUploadFileQuestion(@RequestParam(value="uploadQuesId") Integer uploadQuesId) 
+			throws ObjectNotFoundException {
+				
+		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.deleteUploadFileQuestion(uploadQuesId));
+		return response;
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/updatedescription", method = RequestMethod.GET)
 	public AjaxResponse<Boolean> updateDescription(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
 			@RequestParam(value="descr") String descr) 
