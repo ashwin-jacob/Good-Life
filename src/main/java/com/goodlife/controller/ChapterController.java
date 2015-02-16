@@ -1,12 +1,17 @@
 package com.goodlife.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,21 +43,46 @@ public class ChapterController {
 	private ChapterPageDAO chapterPageDAO;
 	
 	@ResponseBody
-	@RequestMapping(value = "/addchapter", method = RequestMethod.GET)
-	public AjaxResponse<Integer> addChapter(@RequestParam(value="chapTitle") String chapTitle,
+	@RequestMapping(value = "/addchapter", method = RequestMethod.POST)
+	public String addChapter(@RequestParam(value="chapTitle") String chapTitle,
 											 @RequestParam(value="chapDescr") String chapDescr,
-											 @RequestParam(value="orderId") Integer orderId) throws ChapterNotFoundException {
-		
+											 @RequestParam(value="orderId") String orderId) throws ChapterNotFoundException {
+		logger.debug("inside add chapter");
+
 		Chapter chapter = new Chapter();
 		chapter.setChapTitle(chapTitle);
 		chapter.setChapDescr(chapDescr);
-		chapter.setOrderId(orderId);
+		chapter.setOrderId(Integer.valueOf(orderId));
 		chapter.setPublished(false);
 		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(chapterDAO.addChapter(chapter));
+		Integer response = 0;
+		response = chapterDAO.addChapter(chapter);
 		
-		return response;
+		logger.debug("response - add chapter: "+ response);
+
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
+	
+	@RequestMapping(value = "/home", method = RequestMethod.GET)
+	public String welcomePage(ModelMap model) {
+		logger.error("hitting the chapter homepage");
+		return "curriculum/chapterHome";
 	}
 	
 	@ResponseBody
