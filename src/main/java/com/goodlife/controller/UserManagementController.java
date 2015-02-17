@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,8 @@ import com.goodlife.model.Users;
  * User management on (filtered) user list for Super Admin
  */
 @Controller
-@RequestMapping(value = "/userlookup")
+@RequestMapping(value = "/usermanagement")
+@Transactional
 public class UserManagementController {
 	
 	static final Logger logger = LogManager.getLogger(UserManagementController.class.getName());
@@ -46,14 +48,13 @@ public class UserManagementController {
 	 * 						"mb": 0,
 	 * 						"fb": 0}
 	 */
-	@RequestMapping(value="{input}/{type}/student?{sb}moderator?{mb}facilitator?{fb}", 
-					method=RequestMethod.POST, produces="filtered/json")
-	public List<Users> getList(ModelMap model,
-				@PathVariable @RequestParam(value="input") String input, 
-				@PathVariable @RequestParam(value="field") String field,
-				@PathVariable @RequestParam(value="sb") Integer sb,
-				@PathVariable @RequestParam(value="mb") Integer mb,
-				@PathVariable @RequestParam(value="fb") Integer fb) {
+	@RequestMapping(value="/search", method=RequestMethod.POST)
+	@ResponseBody
+	public List<Users> getList(@RequestParam(value="input") String input, 
+				@RequestParam(value="field") String field,
+				@RequestParam(value="sb") Integer sb,
+				@RequestParam(value="mb") Integer mb,
+				@RequestParam(value="fb") Integer fb) {
 
 		List<Users> filteredList = new ArrayList<Users>();
 		String searchStr = cleanInput(input, field);
@@ -83,52 +84,28 @@ public class UserManagementController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/suspend", method = RequestMethod.GET)
-	public Boolean suspendUser(@RequestParam(value="userId") Integer userId,
-											 @RequestParam(value="endDate") Date endDate) throws UserNotFoundException {
+	public Boolean suspendUser(@RequestParam(value="userId") Integer userId) throws UserNotFoundException {
+		//TODO Look up user based on userId and mark user as suspended for a week (Default)
+		//Currently, no date will be sent with the userID
 		
-		UserStatus userStatus = new UserStatus();
-		userStatus.setUserId(userId);
-		userStatus.setStartDate(new Date());
-		userStatus.setStatusTypeCode('S');
-		userStatus.setEndDate(endDate);
-		
-		Boolean response = userStatusDAO.suspendUser(userStatus);
-		
-		//model.addAttribute("userStatusId", userStatusId);
-		//model.addAttribute("userStatus", "suspended");
-		
-		if(response == null)
-			return Boolean.FALSE;
-		else
-			return response;	}
+		return null;	
+	}
 
 	@ResponseBody
 	@RequestMapping(value = "/activate", method = RequestMethod.GET)
-	public Boolean activateUser(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
+	public Boolean activateUser(@RequestParam(value="userId") Integer userId) throws UserNotFoundException {
+		//TODO Activate user by looking at the userID sent in
 		
-		UserStatus userStatus = userStatusDAO.findByUserStatusId(userStatusId);
-		if(userStatus == null)
-			throw new UserNotFoundException("User Status Id: " + userStatusId + " not found.");
-		
-		Boolean response = userStatusDAO.changeUserStatus(userStatusId, 'A');
-		
-		if(response == null)
-			return Boolean.FALSE;
-		else
-			return response;
-		}
+		return null;
+	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public Boolean deleteUser(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
-		
-		Boolean response = userStatusDAO.changeUserStatus(userStatusId, 'D');
+	public Boolean deleteUser(@RequestParam(value="userId") Integer userId) throws UserNotFoundException {
+		//TODO Delete user by looking at the userID sent in
 
-		if(response == null)
-			return Boolean.FALSE;
-		else
-			return response;
-		}
+		return null;
+	}
 	
 	private String cleanInput(String input, String type) {
 		
