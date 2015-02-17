@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.annotation.Rollback;
@@ -14,14 +13,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.goodlife.controller.ChapterController;
 import com.goodlife.controller.MultiChoiceController;
 import com.goodlife.dao.MultiChoiceOptionDAO;
 import com.goodlife.dao.MultiChoiceQDAO;
-import com.goodlife.exceptions.ChapterNotFoundException;
 import com.goodlife.exceptions.MultipleChoiceNotFoundException;
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
-import com.goodlife.model.Chapter;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
 
@@ -52,21 +48,21 @@ public class MultiChoiceControllerTest {
 	@Test
 	@Transactional
 	public void testAddMultiChoiceQuestion() throws MultipleChoiceNotFoundException{
-		Integer multiId = multiChoiceController.addMultiChoiceQuestion(QUES_TEXT, SUB_CHAP_ID, HELP_TEXT, CORR_ANS, ORDER).getcontent();
+		Integer multiId = multiChoiceController.addMultiChoiceQuestion(QUES_TEXT, SUB_CHAP_ID, HELP_TEXT, CORR_ANS, ORDER);
 		assertEquals(multiId,NEW_MC_Q_ID);
 	}
 	
 	@Test
 	@Transactional
 	public void testDeleteMultiChoiceQuestion() throws MultipleChoiceNotFoundException{
-		Boolean success = multiChoiceController.deleteMultiChoiceQuestion(1).getcontent();
+		Boolean success = multiChoiceController.deleteMultiChoiceQuestion(1);
 		assertTrue(success);
 	}
 	
 	@Test
 	@Transactional
 	public void testAddMultiChoiceOption() throws MultipleChoiceNotFoundException{
-		Integer multiId = multiChoiceController.addMultiChoiceOption(NEW_MC_Q_ID, CHOICE_TEXT).getcontent();
+		Integer multiId = multiChoiceController.addMultiChoiceOption(NEW_MC_Q_ID, CHOICE_TEXT);
 		assertEquals(multiId,NEW_OPTION_ID);
 	}
 	
@@ -74,14 +70,14 @@ public class MultiChoiceControllerTest {
 	@Transactional
 	@Rollback
 	public void testDeleteMultiChoiceOption() throws MultipleChoiceOptionNotFoundException{
-		Boolean success = multiChoiceController.deleteMultiChoiceOption(OPTION_ID).getcontent();
+		Boolean success = multiChoiceController.deleteMultiChoiceOption(OPTION_ID);
 		assertTrue(success);
 	}
 	
 	@Test
 	@Transactional
 	public void testListAllOptionsByQuestion() throws MultipleChoiceOptionNotFoundException{
-		List<MultiChoiceOption> multiChoiceList = multiChoiceController.listAllOptionsByQuestion(MC_Q_ID).getcontent();
+		List<MultiChoiceOption> multiChoiceList = multiChoiceController.listAllOptionsByQuestion(MC_Q_ID);
 		assertTrue(multiChoiceList.size() > 0);
 	}
 	
@@ -89,7 +85,7 @@ public class MultiChoiceControllerTest {
 	@Transactional
 	public void testUpdateOptionText() throws MultipleChoiceOptionNotFoundException{
 		String newText = "New Text";
-		Boolean success = multiChoiceController.updateOptionText(OPTION_ID, newText).getcontent();
+		Boolean success = multiChoiceController.updateOptionText(OPTION_ID, newText);
 		assertTrue(success);
 		assertEquals(multiChoiceOption.getMultiChoiceOptions(MC_Q_ID).get(0).getChoiceText(),newText);
 	}
@@ -97,7 +93,7 @@ public class MultiChoiceControllerTest {
 	@Test
 	@Transactional
 	public void testListAllQuestionBySubChapter() {
-		List<MultiChoiceQ> multiChoiceQList = multiChoiceController.listAllQuestionBySubchapter(SUB_CHAP_ID).getcontent();
+		List<MultiChoiceQ> multiChoiceQList = multiChoiceController.listAllQuestionBySubchapter(SUB_CHAP_ID);
 		assertTrue(multiChoiceQList.size() > 0);
 	}
 	
@@ -107,7 +103,7 @@ public class MultiChoiceControllerTest {
 		List<Integer> quesOrder = new ArrayList<Integer>();
 		quesOrder.add(0,MC_Q_ID+1);
 		quesOrder.add(1,MC_Q_ID);
-		Boolean success = multiChoiceController.updateQuestionOrder(quesOrder).getcontent();
+		Boolean success = multiChoiceController.updateQuestionOrder(quesOrder);
 		assertTrue(success);
 		assertEquals(multiChoiceQ.getMultiChoiceQById(MC_Q_ID).getOrderId(),Integer.valueOf(2));
 	}
@@ -115,14 +111,14 @@ public class MultiChoiceControllerTest {
 	@Test
 	@Transactional
 	public void testUpdateQuestionText() throws MultipleChoiceNotFoundException{
-		Boolean success = multiChoiceController.updateQuestionText(MC_Q_ID, QUES_TEXT).getcontent();
+		Boolean success = multiChoiceController.updateQuestionText(MC_Q_ID, QUES_TEXT);
 		assertTrue(success);
 		assertEquals(multiChoiceQ.getMultiChoiceQById(MC_Q_ID).getQuesText(),QUES_TEXT);
 	}
 	@Test
 	@Transactional
 	public void testUpdateHelpText() throws MultipleChoiceNotFoundException{
-		Boolean success = multiChoiceController.updateHelpText(MC_Q_ID, HELP_TEXT).getcontent();
+		Boolean success = multiChoiceController.updateHelpText(MC_Q_ID, HELP_TEXT);
 		assertTrue(success);
 		assertEquals(multiChoiceQ.getMultiChoiceQById(MC_Q_ID).getHelpText(),HELP_TEXT);
 	}
@@ -130,7 +126,7 @@ public class MultiChoiceControllerTest {
 	@Test
 	@Transactional
 	public void testCorrectAnswer() throws MultipleChoiceNotFoundException{
-		Boolean success = multiChoiceController.updateCorrectAnswer(MC_Q_ID, CORR_ANS + 1).getcontent();
+		Boolean success = multiChoiceController.updateCorrectAnswer(MC_Q_ID, CORR_ANS + 1);
 		assertTrue(success);
 		assertTrue(multiChoiceQ.getMultiChoiceQById(MC_Q_ID).getCorrectAnswer() == CORR_ANS + 1);
 	}

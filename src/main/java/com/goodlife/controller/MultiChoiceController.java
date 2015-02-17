@@ -1,8 +1,7 @@
 package com.goodlife.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,16 +17,12 @@ import com.goodlife.dao.MultiChoiceOptionDAO;
 import com.goodlife.dao.MultiChoiceQDAO;
 import com.goodlife.exceptions.MultipleChoiceNotFoundException;
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
-import com.goodlife.model.AjaxResponse;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
 
 @Controller
 @RequestMapping(value = "/multichoice")
 public class MultiChoiceController {
-	
-	@Inject
-	private AjaxResponseBuilder ajaxResponseBuilder;
 	
 	static final Logger logger = LogManager.getLogger(MultiChoiceController.class.getName());
 	
@@ -39,7 +34,7 @@ public class MultiChoiceController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/addmultichoicequestion", method = RequestMethod.GET)
-	public AjaxResponse<Integer> addMultiChoiceQuestion(@RequestParam(value="questionText") String questionText,
+	public Integer addMultiChoiceQuestion(@RequestParam(value="questionText") String questionText,
 											 @RequestParam(value="subChapId") Integer subChapId,
 											 @RequestParam(value="helpTxt") String helpTxt,
 											 @RequestParam(value="corrAns") Integer corrAns,
@@ -52,120 +47,123 @@ public class MultiChoiceController {
 		mcQ.setCorrectAnswer(corrAns);
 		mcQ.setOrderId(orderId);
 		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(mcQdao.addMultiChoice(mcQ));
-		
-		return response;
+		return mcQdao.addMultiChoice(mcQ);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/addmultichoiceoption", method = RequestMethod.GET)
-	public AjaxResponse<Integer> addMultiChoiceOption(@RequestParam(value="mcQId") Integer mcQId,
+	public Integer addMultiChoiceOption(@RequestParam(value="mcQId") Integer mcQId,
 											 @RequestParam(value="choiceText") String choiceText) {
 		
 		MultiChoiceOption mcOpt = new MultiChoiceOption();
 		mcOpt.setMultiQuesId(mcQId);
 		mcOpt.setChoiceText(choiceText);
-		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(mcOptdao.addMultiChoiceOption(mcOpt));
-		
-		return response;
+
+		return mcOptdao.addMultiChoiceOption(mcOpt);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/deletemultichoiceoption", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> deleteMultiChoiceOption(@RequestParam(value="Id") Integer mcOptId) throws MultipleChoiceOptionNotFoundException {
+	public Boolean deleteMultiChoiceOption(@RequestParam(value="Id") Integer mcOptId) throws MultipleChoiceOptionNotFoundException {
 				
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(mcOptdao.deleteMultiChoiceOption(mcOptId));
-		
-		return response;
+		Boolean response = mcOptdao.deleteMultiChoiceOption(mcOptId);
+		if(response == null)
+			return Boolean.FALSE;
+		else
+			return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/deletemultichoiceques", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> deleteMultiChoiceQuestion(@RequestParam(value="Id") Integer mcQId) throws MultipleChoiceNotFoundException {
+	public Boolean deleteMultiChoiceQuestion(@RequestParam(value="Id") Integer mcQId) throws MultipleChoiceNotFoundException {
 		
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(mcQdao.deleteMultiChoice(mcQId));
+		Boolean response = mcQdao.deleteMultiChoice(mcQId);
 		if(response == null)
-			throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + mcQId + " not found.");
-		return response;
+			return Boolean.FALSE;
+		else
+			return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/listalloptionsbyquestion", method = RequestMethod.GET)
-	public AjaxResponse<List<MultiChoiceOption>> listAllOptionsByQuestion(@RequestParam(value="quesId") Integer quesId) throws MultipleChoiceOptionNotFoundException {
+	public List<MultiChoiceOption> listAllOptionsByQuestion(@RequestParam(value="quesId") Integer quesId) throws MultipleChoiceOptionNotFoundException {
 		
 		List<MultiChoiceOption> optionList = mcOptdao.getMultiChoiceOptions(quesId);	
 		
-		AjaxResponse<List<MultiChoiceOption>> response = new AjaxResponse<List<MultiChoiceOption>>();
-		response = ajaxResponseBuilder.createSuccessResponse(optionList);
-		
-		return response;
+		if(optionList == null)
+			return new ArrayList<MultiChoiceOption>();
+		else
+			return optionList;
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/updateoptiontext", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateOptionText(@RequestParam(value="optionId") Integer optionId, 
+	public Boolean updateOptionText(@RequestParam(value="optionId") Integer optionId, 
 			@RequestParam(value="optionText") String optionText) throws MultipleChoiceOptionNotFoundException {
 		
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(mcOptdao.updateChoiceText(optionId, optionText));
-		return response;
+		Boolean response = mcOptdao.updateChoiceText(optionId, optionText);
+		if(response == null)
+			return Boolean.FALSE;
+		else
+			return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/listallquestionbysubchapter", method = RequestMethod.GET)
-	public AjaxResponse<List<MultiChoiceQ>> listAllQuestionBySubchapter(
+	public List<MultiChoiceQ> listAllQuestionBySubchapter(
 			@RequestParam(value="subChapId") Integer subChapId) throws ObjectNotFoundException {
 		
 		List<MultiChoiceQ> mcQList = mcQdao.getAllMultiChoice(subChapId);	
 		
-		AjaxResponse<List<MultiChoiceQ>> response = new AjaxResponse<List<MultiChoiceQ>>();
-		response = ajaxResponseBuilder.createSuccessResponse(mcQList);
-		
-		return response;
+		if(mcQList == null)
+			return new ArrayList<MultiChoiceQ>();
+		else
+			return mcQList;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatequestionorder", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateQuestionOrder(
+	public Boolean updateQuestionOrder(
 			@RequestParam(value="multiChoiceIdList") List<Integer> multiChoiceIdList) throws MultipleChoiceNotFoundException {
 				
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(mcQdao.updateOrder(multiChoiceIdList));
-		return response;
-	}
+		Boolean response = mcQdao.updateOrder(multiChoiceIdList);
+		if(response == null)
+			return Boolean.FALSE;
+		else
+			return response;	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatequestiontext", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateQuestionText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
+	public Boolean updateQuestionText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
 			@RequestParam(value="quesText") String quesText) throws MultipleChoiceNotFoundException {
 				
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(mcQdao.updateQuestionText(multiChoiceId, quesText));
-		return response;
-	}
+		Boolean response = mcQdao.updateQuestionText(multiChoiceId, quesText);
+		if(response == null)
+			return Boolean.FALSE;
+		else
+			return response;
+		}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatehelptext", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateHelpText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
+	public Boolean updateHelpText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
 			@RequestParam(value="helpText") String helpText) throws MultipleChoiceNotFoundException {
 				
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(mcQdao.updateQuestionText(multiChoiceId, helpText));
-		return response;
-	}
+		Boolean response = mcQdao.updateQuestionText(multiChoiceId, helpText);
+		if(response == null)
+			return Boolean.FALSE;
+		else
+			return response;	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatecorrectanswer", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateCorrectAnswer(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
+	public Boolean updateCorrectAnswer(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
 			@RequestParam(value="quesText") Integer correctAnswer) throws MultipleChoiceNotFoundException {
 				
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(mcQdao.updateCorrectAnswer(multiChoiceId, correctAnswer));
-		return response;
-	}	
+		Boolean response = mcQdao.updateCorrectAnswer(multiChoiceId, correctAnswer);
+		if(response == null)
+			return Boolean.FALSE;
+		else
+			return response;
+		}	
 }

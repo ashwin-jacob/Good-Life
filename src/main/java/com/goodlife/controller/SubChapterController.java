@@ -2,8 +2,6 @@ package com.goodlife.controller;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.exceptions.SubChapterNotFoundException;
-import com.goodlife.model.AjaxResponse;
 import com.goodlife.model.SubChapter;
 
 @Controller
@@ -34,7 +31,7 @@ public class SubChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/addsubchapter", method = RequestMethod.GET)
-	public AjaxResponse<Integer> addSubChapter(@RequestParam(value="chapId") Integer chapId,
+	public Integer addSubChapter(@RequestParam(value="chapId") Integer chapId,
 											 @RequestParam(value="subChapTitle") String subChapTitle,
 											 @RequestParam(value="subChapDescr") String subChapDescr,
 											 @RequestParam(value="orderId") Integer orderId) throws SubChapterNotFoundException {
@@ -45,30 +42,23 @@ public class SubChapterController {
 		subChapter.setSubChapDescr(subChapDescr);
 		subChapter.setOrderId(orderId);
 		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(subChapterDAO.addSubChapter(subChapter));
-		
-		return response;
+		return subChapterDAO.addSubChapter(subChapter);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "deletesubchapter", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> deleteSubChapter(@RequestParam(value="subchapId") Integer subChapId) throws SubChapterNotFoundException {
+	public Boolean deleteSubChapter(@RequestParam(value="subchapId") Integer subChapId) throws SubChapterNotFoundException {
 		
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(subChapterDAO.deleteSubChapter(subChapId));
+		Boolean response = subChapterDAO.deleteSubChapter(subChapId);
 		
 		return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "listallsubchaptersbychapter", method = RequestMethod.GET)
-	public AjaxResponse<List<SubChapter>> listAllSubChaptersByChapter(@RequestParam(value="chapId") Integer chapId) throws SubChapterNotFoundException {
+	public List<SubChapter> listAllSubChaptersByChapter(@RequestParam(value="chapId") Integer chapId) throws SubChapterNotFoundException {
 		
-		List<SubChapter> subChapterList = subChapterDAO.getSubChapListByChapter(chapId);
-		
-		AjaxResponse<List<SubChapter>> response = new AjaxResponse<List<SubChapter>>();
-		response = ajaxResponseBuilder.createSuccessResponse(subChapterList);
+		List<SubChapter> response = subChapterDAO.getSubChapListByChapter(chapId);
 		
 		return response;
 		
@@ -76,31 +66,28 @@ public class SubChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatesubchapterorder", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateSubChapterOrder(@RequestParam(value="newSubChapterOrderList") List<Integer> newSubChapterOrderList) throws SubChapterNotFoundException {
+	public Boolean updateSubChapterOrder(@RequestParam(value="newSubChapterOrderList") List<Integer> newSubChapterOrderList) throws SubChapterNotFoundException {
 		
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(subChapterDAO.updateOrder(newSubChapterOrderList));
+		Boolean response = subChapterDAO.updateOrder(newSubChapterOrderList);
 		return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "updatesubchaptertitle", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateSubChapterTitle(@RequestParam(value="subChapId") Integer subChapId,
+	public Boolean updateSubChapterTitle(@RequestParam(value="subChapId") Integer subChapId,
 													   @RequestParam(value="subChapTitle") String subChapTitle) throws SubChapterNotFoundException {
 		
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(subChapterDAO.updateTitle(subChapId, subChapTitle));
+		Boolean response = subChapterDAO.updateTitle(subChapId, subChapTitle);
 		return response;
 		
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "updatesubchapterdescr", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateSubChapterDescr(@RequestParam(value="subChapId") Integer subChapId,
+	public Boolean updateSubChapterDescr(@RequestParam(value="subChapId") Integer subChapId,
 													   @RequestParam(value="subChapDescr") String subChapDescr) throws SubChapterNotFoundException {
 		
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(subChapterDAO.updateDescription(subChapId, subChapDescr));
+		Boolean response = subChapterDAO.updateDescription(subChapId, subChapDescr);
 		return response;
 		
 	}

@@ -2,30 +2,46 @@ package com.goodlife.dao.impl;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import static org.mockito.Mockito.*;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.goodlife.controller.ChapterController;
+import com.goodlife.controller.SuperAdminController;
 import com.goodlife.controller.UserManagementController;
+import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.UserStatusDAO;
 import com.goodlife.dao.UsersDAO;
+import com.goodlife.exceptions.ChapterNotFoundException;
 import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.model.Chapter;
 import com.goodlife.model.Users;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/test-context.xml" })
-public class UserManagementControllerTest {
+public class SuperAdminControllerTest {
 
 	private static final Integer USER_ID = 1;
 	private static final String USER_NAME = "dhaval";
@@ -36,54 +52,21 @@ public class UserManagementControllerTest {
 	private static final String LNAME = "Raj";
 	
 	@Autowired
-	private UsersDAO usersDAO;
+	private SuperAdminController superAdminController;
 	
-	@Autowired
-	private UserStatusDAO userStatus;
+	@Mock
+	private BindingResult mockResult;
 	
-	@Autowired
-	private UserManagementController userManagement;
-	
-	@SuppressWarnings("unused")
 	@Before
-	public void setUp() throws UserNotFoundException {
-		Users user = createUser();
+	public void setUp() {
+		MockitoAnnotations.initMocks(this);
+		Mockito.when(mockResult.hasErrors()).thenReturn(false);
 	}
 
 	@Test
 	@Transactional
-	public void testGetList() {
-		List<Users> userList = userManagement.getList(new ModelMap(), "Raj", "lst_nm", 1, 0, 0);
-		assertEquals(userList.get(0).getFirstname(),"Dhaval");
-	}
-	
-	@Test
-	@Transactional
-	public void testActivateUser() throws UserNotFoundException{
-		assertTrue(userManagement.activateUser(USER_ID));
-	}
-	
-	@Test
-	@Transactional
-	public void testSuspendUser() throws UserNotFoundException{
-		assertTrue(userManagement.suspendUser(USER_ID, new Date()));
-	}
-	
-	@Test
-	@Transactional
-	@Rollback
-	public void testDeleteUser() throws UserNotFoundException{
-		assertTrue(userManagement.deleteUser(USER_ID));
-	}
-	
-	public static Users createUser() {
-		Users user = new Users();
-		user.setUsername(USER_NAME);
-		user.setInvitationCode(INV_CD);
-		user.setEmail(EMAIL);
-		user.setFirstname(FNAME);
-		user.setLastname(LNAME);
-		user.setRoleTypeCode(ROLE);
-		return user;
+	public void addUserAndInvite(){
+		String pageUrl = superAdminController.addUserAndInvite(USER_NAME, mockResult);
+		assertEquals(pageUrl,"landing/inviteSent");
 	}
 }

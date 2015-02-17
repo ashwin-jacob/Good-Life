@@ -2,8 +2,6 @@ package com.goodlife.controller;
 
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.UploadFileQDAO;
-import com.goodlife.model.AjaxResponse;
 import com.goodlife.model.UploadFileQ;
 
 @Controller
@@ -26,15 +23,12 @@ public class UploadQuestionController {
 	
 	static final Logger logger = LogManager.getLogger(UploadQuestionController.class.getName());
 	
-	@Inject
-	private AjaxResponseBuilder ajaxResponseBuilder;
-	
 	@Autowired
 	private UploadFileQDAO uploadDAO;
 	
 	@ResponseBody
 	@RequestMapping(value = "/adduploadfilequestion", method = RequestMethod.GET)
-	public AjaxResponse<Integer> addUploadFileQuestion(@RequestParam(value="subChapId") Integer subChapId,
+	public Integer addUploadFileQuestion(@RequestParam(value="subChapId") Integer subChapId,
 											 @RequestParam(value="helpTxt") String helpTxt,
 											 @RequestParam(value="descr") String descr){
 											 //@RequestParam(value="orderId") Integer orderId) {
@@ -45,61 +39,52 @@ public class UploadQuestionController {
 		uploadFileQ.setHelpText(helpTxt);
 		//uploadFileQ.setOrderId(orderId);
 		
-		AjaxResponse<Integer> response = new AjaxResponse<Integer>();
-		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.addUploadFileQuestion(uploadFileQ));
-		
-		return response;
+		return uploadDAO.addUploadFileQuestion(uploadFileQ);
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/deleteuploadfilequestion", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> deleteUploadFileQuestion(@RequestParam(value="uploadQuesId") Integer uploadQuesId) 
+	public Boolean deleteUploadFileQuestion(@RequestParam(value="uploadQuesId") Integer uploadQuesId) 
 			throws ObjectNotFoundException {
 				
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.deleteUploadFileQuestion(uploadQuesId));
+		Boolean response = uploadDAO.deleteUploadFileQuestion(uploadQuesId);
 		return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatedescription", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateDescription(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
+	public Boolean updateDescription(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
 			@RequestParam(value="descr") String descr) 
 			throws ObjectNotFoundException {
 				
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.updateDescription(uploadQuesId, descr));
+		Boolean response = uploadDAO.updateDescription(uploadQuesId, descr);
 		return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatehelptext", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateHelpText(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
+	public Boolean updateHelpText(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
 			@RequestParam(value="helpTxt") String helpText) throws ObjectNotFoundException {
 				
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
-		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.updateHelpText(uploadQuesId, helpText));
+		Boolean response = uploadDAO.updateHelpText(uploadQuesId, helpText);
 		return response;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/alluploadquestionsbysubchapter") 
-	public AjaxResponse<List<UploadFileQ>> allUploadQuestionsBySubchapId(@RequestParam(value="subChapId") Integer subChapId)
+	public List<UploadFileQ> allUploadQuestionsBySubchapId(@RequestParam(value="subChapId") Integer subChapId)
 			throws ObjectNotFoundException {
 		
-		List<UploadFileQ> quesList = uploadDAO.findAllUploadFileQBySubchapId(subChapId);
-		
-		AjaxResponse<List<UploadFileQ>> response = new AjaxResponse<List<UploadFileQ>>();
-		response = ajaxResponseBuilder.createSuccessResponse(quesList);
+		List<UploadFileQ> response = uploadDAO.findAllUploadFileQBySubchapId(subChapId);
 		return response;
 	}
 	
 	/*@ResponseBody
 	@RequestMapping(value = "/updateorder", method = RequestMethod.GET)
-	public AjaxResponse<Boolean> updateOrder(@RequestParam(value="uploadQuesId") List<Integer> quesIdList) 
+	public Boolean updateOrder(@RequestParam(value="uploadQuesId") List<Integer> quesIdList) 
 			throws ObjectNotFoundException {
 				
-		AjaxResponse<Boolean> response = new AjaxResponse<Boolean>();
+		Boolean response = new Boolean();
 		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.updateOrder(quesIdList));
 		return response;
 	}*/
