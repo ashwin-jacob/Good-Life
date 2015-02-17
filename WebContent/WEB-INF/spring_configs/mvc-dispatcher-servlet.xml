@@ -28,6 +28,14 @@
 			<value>.jsp</value>
 		</property>
 	</bean>
+	
+	<!-- <bean id="viewResolver" class="org.springframework.web.servlet.view.mustache.MustacheViewResolver">
+        <property name="suffix" value=".html"/>
+        <property name="cache" value="true"/>
+        <property name="templateFactory">
+            <bean class="org.springframework.web.servlet.view.mustache.java.MustacheJTemplateFactory" />
+        </property>
+	</bean> -->
 
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">

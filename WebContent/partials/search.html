@@ -22,56 +22,39 @@
 		</accordion-heading>
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-xs-2">
-					<input ng-model="search.name" type="text" class="adminSearchText form-control input-sm" placeholder="Search for...">
-				</div>
-				<div class="col-xs-2">
-					<select ng-model="typeSelected" ng-options="opt as opt.label for opt in searchOptions" class="adminSearchText form-control input-sm"> </select>
-				</div>
-				<div class="col-xs-2">
-					<div class="adminSearchText">
-						<div
-							multi-select
-							input-model="roleOptions"
-							button-label="name"
-							item-label="name"
-							tick-property="ticked">
+				<form novalidate name="searchForm">
+					<div class="col-xs-2">
+						<input name="textInput" ng-model="searchValues.textInput" type="text" class="adminSearchText form-control input-sm" placeholder="Search for..." required>
+					</div>
+					<div class="col-xs-2">
+						<select name="typeSelected" ng-model="searchValues.typeSelected" ng-options="opt as opt.label for opt in searchOptions" class="adminSearchText form-control input-sm" required> </select>
+					</div>
+					<div class="col-xs-2">
+						<div class="adminSearchText">
+							<div
+								multi-select
+								input-model="roleOptions"
+								button-label="name"
+								item-label="name"
+								tick-property="ticked">
+							</div>
 						</div>
 					</div>
-				</div>
-				<div class="col-xs-2">
-					<button class="btn btn-primary btn-sm">Submit</button>
-				</div>
+					<div class="col-xs-2">
+						<button ng-disabled="!searchForm.$valid" class="btn btn-primary btn-sm" ng-click="submitSearch(searchValues)">Submit</button>
+					</div>
+				</form>
 			</div>
-		</div>	
+		</div>
 	</accordion-group>
 </accordion>
-
-<!-- Table to show intended results -->
 <table ng-table="userTable" class="table">
-	<tr ng-repeat="user in userData">
-		<td data-title="'First Name'" sortable="'fname'">
-			{{user.fname}}
+	<tr ng-repeat="user in $data">
+		<td data-title="'First Name'" sortable="'name'">
+			{{user.name}}
 		</td>
-		<td data-title="'Last Name'" sortable="'lname'">
-			{{user.lname}}
-		</td>
-		<td data-title="'User Name'" sortable="'uName'">
-			{{user.uname}}
-		</td>
-		<td data-title="'E-mail'" sortable="'email'">
-			{{user.email}}
-		</td>
-		<td data-title="'Role'" sortable="'role'">
-			{{user.role}}
-		</td>
-		<td data-title="'Status'" sortable="'status'">
-			{{user.status}}
-		</td>
-		<td data-title="'Action'">
-			<button type="button" class="btn btn-success">A</button>
-			<button type="button" class="btn btn-warning">S</button>
-			<button type="button" class="btn btn-danger">D</button>
+		<td data-title="'Last Name'" sortable="'person'">
+			{{user.person}}
 		</td>
 	</tr>
 </table>

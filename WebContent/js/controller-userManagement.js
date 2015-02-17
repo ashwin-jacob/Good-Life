@@ -1,4 +1,5 @@
 var userManagement = angular.module('userManagement', []);
+var prefix = "http://localhost:8080/good-life"; //For Dev Purposes
 
 /*
 	Admin Seach page controller
@@ -6,36 +7,31 @@ var userManagement = angular.module('userManagement', []);
 userManagement.controller('AdminSearch', ['$scope', '$http', '$log', '$filter', 'ngTableParams',
 	function($scope, $http, $log, $filter, ngTableParams) {
 
-		//Sample Data
-		$scope.userData = [
-  {
-    fname: "Ashwin",
-    lname: "Jacob",
-    uname: "shwin23",
-    email: "ashwin.jacob@tsgforce.com",
-    role: "student",
-    status: "active"
-  },
-  {
-    fname: "Carlo",
-    lname: "Vendiola",
-    uname: "cviola",
-    email: "carlo.ven@tsgforce.com",
-    role: "student",
-    status: "active"
-  }
-];
-		$scope.example1model = [];
+		$scope.submitSearch = function(searchForm) {
+			$log.log( 'Submitting values' );
+			var idsForRoles = getIdsForRoles($scope.roleOptions);
+			var urlSearch = prefix + "/userlookup/";
+			urlSearch += searchForm.textInput + "/" +searchForm.typeSelected.id+"/";
+			urlSearch += "sb/" + idsForRoles.student + "/mb/" + idsForRoles.moderator + "/fb/" + idsForRoles.facilitator;
+			$log.log("URL Value: "+ urlSearch);
+
+			$http.post(urlSearch).
+				success(function(data, status, headers, config) {
+					console.log("Got to success for submit");
+					console.log(data);
+				}).
+				error(function(data, status, headers, config) {
+					console.log("Got to error for submit");
+					console.log(data);
+				});
+		};
 
 		//Search Options for the Text Field
 		$scope.searchOptions = [
-			{ label:'User Name', id:1},
-			{ label:'First Name', id:2},
-			{ label:'Last Name', id:3},
-			{ label:'E-mail', id:4},
-			{ label:'Roser ID', id:5} ];
-		//User needs to select one search value
-		$scope.typeSelected = $scope.searchOptions[1];
+			{ label:'User Name', id:"usr_id"},
+			{ label:'First Name', id:"frst_nm"},
+			{ label:'Last Name', id:"lst_nm"},
+			{ label:'E-mail', id:"email"}];
 
 		//Role options
 		$scope.roleOptions = [
@@ -43,43 +39,37 @@ userManagement.controller('AdminSearch', ['$scope', '$http', '$log', '$filter', 
 			{ name:'Facilitator', id:'facilitator', ticked: false},
 			{ name:'Moderator', id:'moderator', ticked: false}];
 
-		$scope.roleSelected = {};
+		//Table Information
+		var data = [{name: "Ashwin", person: "Jacob"},
+						{name: "Shane", person:"Jacob"},
+						{name: "Carlo", person:"Vendiola"}];
 
-		//Function that gets the user data for table
-		$scope.getUserData = function() {
-			if($scope.userData.length > 0) {
-				$scope.seachisOpen = false;
+		$scope.userTable = new ngTableParams({
+			//Settings
+			page: 1,
+			count: 10,
+			sorting: {
+				name: 'asc'
 			}
-			return $scope.userData;
-		}
-
-		//Creation of the Table using 3rd party api
-	    $scope.userTable = new ngTableParams({
-	    	page:1,
-	    	count:10,
-	    	sorting: {
-	    		fname: 'asc'
-	    	}
-	    }, {
-    		total: function() { return $scope.getUserData().length; },
-    		getData: function($defer, params) {
-    			var filteredData = $scope.getUserData();
-    			var orderedData = params.sorting() ?
-    				$filter('orderBy')(filteredData, params.orderBy()): filteredData;
-
-    			$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-    		}
-	    });
-
-	    $http.get('localhost:8080/good-life/chapterlookup/listpublishedchapters').
-		  success(function(data, status, headers, config) {
-		    // this callback will be called asynchronously
-		    // when the response is available
-		    $log.log('Got to success');
-		  }).
-		  error(function(data, status, headers, config) {
-		    // called asynchronously if an error occurs
-		    // or server returns response with an error status.
-		    $log.log('Got to error');
+		}, {
+			total: data.length,
+			getData: function($defer, params) {
+				var orderedData = params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+				$defer.resolve(orderedData.slice((params.page()-1)*params.count(),params.page()*params.count()));
+			}
 		});
-	}]);
+
+		var getIdsForRoles = function(roleOptions) {
+			var rolechoosen = {student:0, moderator:0, facilitator:0};
+			angular.forEach(roleOptions, function(value, key) {
+				if( value.ticked === true ) {
+					if(value.id == "student") rolechoosen.student = 1;
+					if(value.id == "facilitator") rolechoosen.facilitator = 1;
+					if(value.id == "moderator") rolechoosen.moderator = 1;
+						
+				}
+			});
+			return rolechoosen;
+		};
+
+}]);

@@ -13,3 +13,6 @@ select.adminSearchText {
 div.adminSearchText {
 	float:left;
 }
+.submit-form input.ng-invalid.ng-touched {
+    background-color: #FA787E;
+}
