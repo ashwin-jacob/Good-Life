@@ -1,5 +1,6 @@
 package com.goodlife.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,8 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -83,28 +82,39 @@ public class UserManagementController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "/suspend", method = RequestMethod.GET)
-	public Boolean suspendUser(@RequestParam(value="userId") Integer userId) throws UserNotFoundException {
-		//TODO Look up user based on userId and mark user as suspended for a week (Default)
-		//Currently, no date will be sent with the userID
-		
-		return null;	
-	}
+	@RequestMapping(value = "/adduserstatus", method = RequestMethod.GET)
+	public Integer addUserStatus(@RequestParam(value="userId") Integer userId,
+									@RequestParam(value="statusTypeCode") Character statusTypeCode) throws UserNotFoundException {
 
-	@ResponseBody
-	@RequestMapping(value = "/activate", method = RequestMethod.GET)
-	public Boolean activateUser(@RequestParam(value="userId") Integer userId) throws UserNotFoundException {
-		//TODO Activate user by looking at the userID sent in
+		UserStatus userStatus = new UserStatus();
+		userStatus.setUserId(userId);
+		userStatus.setStartDate(new Timestamp(new Date().getTime()));
+		// 604800000 is the amount of milliseconds in 7 days
+		userStatus.setEndDate(new Timestamp(new Date().getTime() + 604800000));	
+		userStatus.setStatusTypeCode(statusTypeCode);
+		Integer result = userStatusDAO.addUserStatus(userStatus);
 		
-		return null;
+		return result;	
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/delete", method = RequestMethod.GET)
-	public Boolean deleteUser(@RequestParam(value="userId") Integer userId) throws UserNotFoundException {
-		//TODO Delete user by looking at the userID sent in
-
-		return null;
+	@RequestMapping(value = "/deleteuserstatus", method = RequestMethod.GET)
+	public Boolean deleteUserStatus(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
+		Boolean result = userStatusDAO.deleteUserStatus(userStatusId);
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/changeenddate", method = RequestMethod.GET)
+	public Boolean changeEndDate(@RequestParam(value="userStatusId") Integer userStatusId, @RequestParam(value="newDate") Date newDate){
+		
+		try {
+			Boolean result = userStatusDAO.changeEndDate(userStatusId, newDate);
+			return result;
+		} catch (UserNotFoundException e) {
+			e.printStackTrace();
+			return Boolean.FALSE;
+		}
 	}
 	
 	private String cleanInput(String input, String type) {

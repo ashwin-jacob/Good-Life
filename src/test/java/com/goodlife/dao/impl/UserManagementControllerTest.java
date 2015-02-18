@@ -8,18 +8,16 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.ModelMap;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goodlife.controller.UserManagementController;
 import com.goodlife.dao.UserStatusDAO;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.model.UserStatus;
 import com.goodlife.model.Users;
 
 
@@ -53,28 +51,46 @@ public class UserManagementControllerTest {
 	@Test
 	@Transactional
 	public void testGetList() {
-		List<Users> userList = userManagement.getList(new ModelMap(), "Raj", "lst_nm", 1, 0, 0);
+		List<Users> userList = userManagement.getList("Raj", "lst_nm", 1, 0, 0);
 		assertEquals(userList.get(0).getFirstname(),"Dhaval");
 	}
 	
 	@Test
 	@Transactional
-	public void testActivateUser() throws UserNotFoundException{
-		assertTrue(userManagement.activateUser(USER_ID));
+	public void testAddUserStatus() throws UserNotFoundException{
+		userManagement.addUserStatus(USER_ID,'s');
+		List<UserStatus> userList = userStatus.findCurrentSuspendedUsers();
+		for(int i = 0; i< userList.size(); i++)
+			System.out.println(userList.get(i).getEndDate());
+		assertTrue(userList.size() > 0);
 	}
 	
 	@Test
 	@Transactional
 	public void testSuspendUser() throws UserNotFoundException{
-		assertTrue(userManagement.suspendUser(USER_ID, new Date()));
+		assertTrue(userManagement.addUserStatus(USER_ID,'s') > 0);
+		assertTrue(userManagement.addUserStatus(USER_ID,'d') > 0);
+		List<UserStatus> status = userStatus.findByUserId(USER_ID);
+		assertTrue(status.size() > 2);
+		
 	}
 	
 	@Test
 	@Transactional
-	@Rollback
-	public void testDeleteUser() throws UserNotFoundException{
-		assertTrue(userManagement.deleteUser(USER_ID));
+	public void testDeleteUserStatus() throws UserNotFoundException {
+		Integer userStatusId = userManagement.addUserStatus(USER_ID, 'd');
+		assertTrue(userManagement.deleteUserStatus(userStatusId));
 	}
+	
+	@Test
+	@Transactional
+	public void testChangeEndDate() throws UserNotFoundException{
+		Integer userStatusId = userManagement.addUserStatus(USER_ID, 's');
+		Date oldDate = userStatus.findByUserStatusId(userStatusId).getEndDate();
+		userManagement.changeEndDate(userStatusId, new Date());
+		assertTrue(oldDate != userStatus.findByUserStatusId(userStatusId).getEndDate());
+	}
+	
 	
 	public static Users createUser() {
 		Users user = new Users();
