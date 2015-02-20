@@ -42,7 +42,7 @@ public class UserManagementController {
 	/*
 	 * ** field should match the db column name.
 	 * example from UI : { "input": "whateveUserTypes",
-	 * 						"field": "lst_nm",
+	 * 						"field": "lst_nm", "frst_nm", "email", "usr_nm"
 	 * 						"sb": 1,
 	 * 						"mb": 0,
 	 * 						"fb": 0}
@@ -81,6 +81,13 @@ public class UserManagementController {
 	}
 	
 	
+	/**
+	 * addUserStatus - Assigns a user status
+	 * @param userId
+	 * @param statusTypeCode - s(suspended), d(deleted)
+	 * @return
+	 * @throws UserNotFoundException
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/adduserstatus", method = RequestMethod.GET)
 	public Integer addUserStatus(@RequestParam(value="userId") Integer userId,
@@ -97,6 +104,12 @@ public class UserManagementController {
 		return result;	
 	}
 	
+	/**
+	 * deleteUserStatus - Undo a status
+	 * @param userStatusId 
+	 * @return
+	 * @throws UserNotFoundException
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/deleteuserstatus", method = RequestMethod.GET)
 	public Boolean deleteUserStatus(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
@@ -104,6 +117,12 @@ public class UserManagementController {
 		return result;
 	}
 	
+	/**
+	 * changeEndDate - Change the end date of suspension
+	 * @param userStatusId
+	 * @param newDate
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/changeenddate", method = RequestMethod.GET)
 	public Boolean changeEndDate(@RequestParam(value="userStatusId") Integer userStatusId, @RequestParam(value="newDate") Date newDate){
