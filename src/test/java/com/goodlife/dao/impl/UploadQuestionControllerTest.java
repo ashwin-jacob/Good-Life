@@ -61,17 +61,16 @@ public class UploadQuestionControllerTest {
 	@Test
 	@Transactional
 	public void testAllUploadQuestionsBySubchapId(){
-		List<UploadFileQ> uploadList = uploadQuestionController.allUploadQuestionsBySubchapId(SUBCHAPID);
-		assertTrue(uploadList.size() > 0);
-		assertEquals(uploadList.get(0).getUploadQuesId(),UP_Q_ID);
+		UploadFileQ uploadList = uploadQuestionController.getUploadQuestionBySubchapId(SUBCHAPID);
+		assertEquals(uploadList.getUploadQuesId(),UP_Q_ID);
 	}
 	
 	@Test
 	@Transactional
 	public void testDeleteUploadFileQuestion(){
-		Integer startSize = uploadQuestionController.allUploadQuestionsBySubchapId(SUBCHAPID).size();
+		UploadFileQ uploadFileQ = uploadQuestionController.getUploadQuestionBySubchapId(SUBCHAPID);
 		Boolean success = uploadQuestionController.deleteUploadFileQuestion(UP_Q_ID);
 		assertTrue(success);
-		assertTrue(startSize > uploadQuestionController.allUploadQuestionsBySubchapId(SUBCHAPID).size());
+		assertTrue(uploadFileQ != null);
 	}
 }

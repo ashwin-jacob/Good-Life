@@ -71,12 +71,12 @@ public class UploadQuestionController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/alluploadquestionsbysubchapter") 
-	public List<UploadFileQ> allUploadQuestionsBySubchapId(@RequestParam(value="subChapId") Integer subChapId)
+	@RequestMapping(value = "/getuploadquestionbysubchapter") 
+	public UploadFileQ getUploadQuestionBySubchapId(@RequestParam(value="subChapId") Integer subChapId)
 			throws ObjectNotFoundException {
 		
-		//List<UploadFileQ> response = uploadDAO.getUploadFileQBySubchapId(subChapId);
-		return null;
+		UploadFileQ response = uploadDAO.getUploadFileQuestion(subChapId);
+		return response;
 	}
 	
 	/*@ResponseBody

@@ -16,9 +16,11 @@ import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.MultiChoiceOptionDAO;
 import com.goodlife.dao.MultiChoiceQDAO;
 import com.goodlife.dao.MultiChoiceUserAnsDAO;
+import com.goodlife.dao.ShortAnswerQDAO;
 import com.goodlife.dao.ShortAnswerUserAnswerDAO;
 import com.goodlife.dao.StudentDAO;
 import com.goodlife.dao.SubChapterDAO;
+import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
 import com.goodlife.exceptions.SubChapterNotFoundException;
@@ -26,6 +28,7 @@ import com.goodlife.model.Chapter;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
 import com.goodlife.model.SubChapter;
+import com.goodlife.model.UploadFileQ;
 
 @Controller
 @RequestMapping(value = "/student")
@@ -55,7 +58,13 @@ public class StudentCurriculumController {
 	private ShortAnswerUserAnswerDAO shortAnswerUserAnsDAO;
 	
 	@Autowired
+	private ShortAnswerQDAO shortAnswerQDAO;
+	
+	@Autowired
 	private UploadedAnswerDAO uploadedAnswerDAO;
+	
+	@Autowired
+	private UploadFileQDAO uploadFileQDAO;
 	
 	@RequestMapping(value = "/getallowedchapters", method = RequestMethod.GET)
 	public List<Chapter> getAllowedChapters(@RequestParam(value = "userId") Integer userId){
@@ -112,6 +121,41 @@ public class StudentCurriculumController {
 							 uploadedAnswerDAO.isUploadedQuestionComplete(userId, subChapId);
 		
 		return isComplete;
+	}
+	/*
+	 * Returns an array of the form object(ie upload file question)
+	 * and a character representing the type of object(ie 'm')
+	 * The array is always of size 2 or null.
+	 * 
+	 * Return types for index 1
+	 * - List<MultipleChoiceQ>
+	 * - List<ShortAnswerQ>
+	 * - List<UploadFileQ> --> always size = 1
+	 * 
+	 * Return types for index 2
+	 * - 'm' --> for list of multiple choice questions
+	 * - 's' --> for list of short answer questions
+	 * - 'u' --> for a single upload file question
+	 */
+	@RequestMapping(value = "/getsubchapform", method = RequestMethod.GET)
+	public ArrayList<Object> getSubChapForm(@RequestParam(value = "subChapId") Integer subChapId) throws SubChapterNotFoundException{
+		ArrayList<Object> formArray = new ArrayList<Object>();
+		if(multiChoiceQDAO.getAllMultiChoice(subChapId) != null){
+			formArray.add(multiChoiceQDAO.getAllMultiChoice(subChapId));
+			formArray.add('m');
+		}
+		else if(shortAnswerQDAO.getShortAnswerBySubChapter(subChapId) != null){
+			formArray.add(shortAnswerQDAO.getShortAnswerBySubChapter(subChapId));
+			formArray.add('s');
+		}
+		else if(uploadFileQDAO.getUploadFileQuestion(subChapId) != null){
+			List<UploadFileQ> uploadList = new ArrayList<UploadFileQ>();
+			uploadList.add(uploadFileQDAO.getUploadFileQuestion(subChapId));
+			formArray.add(uploadList);
+			formArray.add('u');
+		}
+		
+		return formArray;
 	}
 	
 	@RequestMapping(value = "/updatecurrentchapter", method = RequestMethod.GET)
