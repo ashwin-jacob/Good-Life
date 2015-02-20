@@ -27,6 +27,7 @@ import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.Chapter;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
+import com.goodlife.model.ShortAnswerUserAnswer;
 import com.goodlife.model.SubChapter;
 import com.goodlife.model.UploadFileQ;
 
@@ -112,6 +113,12 @@ public class StudentCurriculumController {
 		return multiChoiceUserAnsDAO.getUserAnswer(userId, multiQuesId);
 	}
 	
+	@RequestMapping(value = "/getshortansweruseranswer", method = RequestMethod.GET)
+	public ShortAnswerUserAnswer getShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
+														  @RequestParam(value = "shortAnsId") Integer shortAnsId){
+		return shortAnswerUserAnsDAO.getUserAnswer(userId, shortAnsId);
+	}
+	
 	@RequestMapping(value = "/issubchapcomplete", method = RequestMethod.GET)
 	public Boolean isSubChapComplete(@RequestParam(value = "userId") Integer userId,
 									 @RequestParam(value = "subChapId") Integer subChapId){
@@ -122,6 +129,7 @@ public class StudentCurriculumController {
 		
 		return isComplete;
 	}
+	
 	/*
 	 * Returns an array of the form object(ie upload file question)
 	 * and a character representing the type of object(ie 'm')
