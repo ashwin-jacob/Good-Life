@@ -50,11 +50,24 @@
 </accordion>
 <table ng-table="userTable" class="table">
 	<tr ng-repeat="user in $data">
-		<td data-title="'First Name'" sortable="'name'">
-			{{user.name}}
+		<td data-title="'User ID'" sortable="'userId'">
+			{{user.userId}}
 		</td>
-		<td data-title="'Last Name'" sortable="'person'">
-			{{user.person}}
+		<td data-title="'Email'" sortable="'email'">
+			{{user.email}}
 		</td>
+		<td data-title="'Username'" sortable="'username'">
+			{{user.username}}
+		</td>
+		<td data-title="'First Name'" sortable="'firstname'">
+			{{user.firstname}}
+		</td>
+		<td data-title="'Last Name'" sortable="'lastname'">
+			{{user.lastname}}
+		</td>
+		<td data-title="'Role'" sortable="'roleTypeCode'">
+			{{user.roleTypeCode | roleType}}
+		</td>
+		
 	</tr>
 </table>

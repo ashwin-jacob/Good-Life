@@ -6,7 +6,9 @@ var curriculumMakerApp = angular.module('curriculumMakerApp', [
 	'userManagement',
 	'ngTable',
 	'adminCenter',
-	'multi-select']);
+	'multi-select',
+	'adminFilter',
+	'adminService']);
 
 curriculumMakerApp.config(['$routeProvider',
 	function($routeProvider) {

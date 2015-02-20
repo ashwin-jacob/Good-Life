@@ -1,34 +1,25 @@
 var userManagement = angular.module('userManagement', []);
-var prefix = "http://localhost:8080/good-life"; //For Dev Purposes
 
 /*
 	Admin Seach page controller
 */
-userManagement.controller('AdminSearch', ['$scope', '$http', '$log', '$filter', 'ngTableParams',
-	function($scope, $http, $log, $filter, ngTableParams) {
+userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableParams', 'userService',
+	function($scope, $log, $filter, ngTableParams, userService) {
 
 		$scope.submitSearch = function(searchForm) {
 			$log.log( 'Submitting values' );
 			var idsForRoles = getIdsForRoles($scope.roleOptions);
-			var urlSearch = prefix + "/userlookup/";
-			urlSearch += searchForm.textInput + "/" +searchForm.typeSelected.id+"/";
-			urlSearch += "sb/" + idsForRoles.student + "/mb/" + idsForRoles.moderator + "/fb/" + idsForRoles.facilitator;
-			$log.log("URL Value: "+ urlSearch);
-
-			$http.post(urlSearch).
-				success(function(data, status, headers, config) {
-					console.log("Got to success for submit");
-					console.log(data);
-				}).
-				error(function(data, status, headers, config) {
-					console.log("Got to error for submit");
-					console.log(data);
-				});
+			var parameters = buildObject(searchForm.textInput, searchForm.typeSelected.id, idsForRoles);
+			$log.log(idsForRoles);
+			$log.log(parameters);
+			// data = userService.search(idsForRoles, parameters);
+			// $scope.userTable .reload();
+			userService.search(idsForRoles, parameters).then( handleSuccess, handleError );
 		};
 
 		//Search Options for the Text Field
 		$scope.searchOptions = [
-			{ label:'User Name', id:"usr_id"},
+			{ label:'User Name', id:"usr_nm"},
 			{ label:'First Name', id:"frst_nm"},
 			{ label:'Last Name', id:"lst_nm"},
 			{ label:'E-mail', id:"email"}];
@@ -40,9 +31,7 @@ userManagement.controller('AdminSearch', ['$scope', '$http', '$log', '$filter', 
 			{ name:'Moderator', id:'moderator', ticked: false}];
 
 		//Table Information
-		var data = [{name: "Ashwin", person: "Jacob"},
-						{name: "Shane", person:"Jacob"},
-						{name: "Carlo", person:"Vendiola"}];
+		var data = [];
 
 		$scope.userTable = new ngTableParams({
 			//Settings
@@ -70,6 +59,28 @@ userManagement.controller('AdminSearch', ['$scope', '$http', '$log', '$filter', 
 				}
 			});
 			return rolechoosen;
+		};
+
+		var buildObject = function(textInput, id, idsForRoles) {
+			var sendObject = {};
+			sendObject.input = textInput;
+			sendObject.id = id;
+			sendObject.sb = idsForRoles.student;
+			sendObject.mb = idsForRoles.moderator;
+			sendObject.fb = idsForRoles.facilitator;
+			return sendObject;
+		};
+
+		var handleSuccess = function (response) {
+			$log.log("Succesful search");
+			data = response.data;
+			$scope.userTable .reload();
+		};
+
+		var handleError = function (response) {
+			$log.log("Error with search");
+			data = [{}];
+			$scope.userTable .reload();
 		};
 
 }]);
