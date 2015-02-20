@@ -2,14 +2,17 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.goodlife.dao.ShortAnswerQDAO;
 import com.goodlife.dao.ShortAnswerUserAnswerDAO;
-import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.exceptions.SubChapterNotFoundException;
+import com.goodlife.model.ShortAnswerQ;
 import com.goodlife.model.ShortAnswerUserAnswer;
 
 @Repository
@@ -18,51 +21,65 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 	@Autowired
     private SessionFactory sessionFactory;
 	
+	@Autowired
+	private ShortAnswerQDAO shortAnswerQDAO;
+	
 	@Override
-	public void addUserAnswer(ShortAnswerUserAnswer shortAnswerUA)
+	public Boolean addUserAnswer(ShortAnswerUserAnswer shortAnswerUA)
 			throws ObjectNotFoundException {
 		
 		this.sessionFactory.getCurrentSession().save(shortAnswerUA);
+		
+		if(getUserAnswer(shortAnswerUA.getUserId(), shortAnswerUA.getSaQId()) == null)
+			return Boolean.FALSE;
+		else
+			return Boolean.TRUE;
 	}
 
 	@Override
 	public ShortAnswerUserAnswer getUserAnswer(Integer userId, Integer saQId)
 			throws ObjectNotFoundException {
-
-		List<ShortAnswerUserAnswer> shortAnswerUA;
-		Query query;
 		
-		query = this.sessionFactory.getCurrentSession().createQuery("FROM SHORT_ANS_USER_ANS WHERE USR_ID = :userId AND SA_Q_ID = :saQId");
-		query.setParameter("userId", userId);
-		query.setParameter("saQId", saQId);
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ShortAnswerUserAnswer.class);
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("userId", userId),Restrictions.eqOrIsNull("saQId", saQId)));
 		
-		shortAnswerUA = query.list();
+		ShortAnswerUserAnswer shortAnswerUA = (ShortAnswerUserAnswer) criteria.uniqueResult();
 		
 		if(null == shortAnswerUA){
 			throw new ObjectNotFoundException(null, "The combination of user Id: " + userId + " and saQId: " + saQId + "were not found in the database!");
 		}
-		if(shortAnswerUA.size() > 1){
-			throw new ObjectNotFoundException(null, "The combination of user Id: " + userId + " and saQId: " + saQId + "returned too many results in the database!");
-		}
 		
-		return shortAnswerUA.get(0);
+		return shortAnswerUA;
 	}
 
 	@Override
-	public void approveAnswer(Integer userId)
-			throws UserNotFoundException {
-		
-		ShortAnswerUserAnswer shortAnswerUA;
+	public Boolean approveAnswer(Integer userId, Integer saQId) {
 		try{
-			shortAnswerUA = (ShortAnswerUserAnswer)this.sessionFactory.getCurrentSession().load(ShortAnswerUserAnswer.class, userId);
+			ShortAnswerUserAnswer shortAnswerUA = getUserAnswer(userId, saQId);
+			shortAnswerUA.setAprvd(true);
+			this.sessionFactory.getCurrentSession().save(shortAnswerUA);
+			return Boolean.TRUE;
 		}catch(ObjectNotFoundException e){
-			shortAnswerUA = (ShortAnswerUserAnswer)this.sessionFactory.getCurrentSession().get(ShortAnswerUserAnswer.class, userId);
+			return Boolean.FALSE;
 		}
-		if(null == shortAnswerUA){
-			throw new UserNotFoundException("User Id: " + userId + " not found in the database!");
-		}
-		shortAnswerUA.setAprvd(true);
-		this.sessionFactory.getCurrentSession().save(shortAnswerUA);
 	}
-
+	
+	@Override
+	public Boolean isShortAnswerSubChapComplete(Integer userId, Integer subChapId){
+		
+		Boolean isComplete = Boolean.TRUE;
+		try {
+			List<ShortAnswerQ> questionList = shortAnswerQDAO.getShortAnswerBySubChapter(subChapId);
+			for(int i = 0; i < questionList.size(); i++){
+				if(getUserAnswer(userId, questionList.get(i).getSaQId()) == null || 
+				   getUserAnswer(userId, questionList.get(i).getSaQId()).isAprvd() == false)
+					isComplete = Boolean.FALSE;
+			}
+			return isComplete;
+		} catch (SubChapterNotFoundException e) {
+			e.printStackTrace();
+			return Boolean.FALSE;
+		}
+	}
+	
 }

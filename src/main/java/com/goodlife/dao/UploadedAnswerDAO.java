@@ -12,4 +12,5 @@ public interface UploadedAnswerDAO {
 	public Boolean setApproveAnswer(Integer uploadAnswerId, Boolean aprvd) throws ObjectNotFoundException;
 	public Boolean setSharedAnswer(Integer uploadAnswerId, Boolean shared) throws ObjectNotFoundException;
 	public UploadedAnswer getUserAnswer(Integer userId, Integer uploadQuesId) throws ObjectNotFoundException;
+	public Boolean isUploadedQuestionComplete(Integer userId, Integer subChapId);
 }

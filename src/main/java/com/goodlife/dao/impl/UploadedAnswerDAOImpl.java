@@ -1,15 +1,14 @@
 package com.goodlife.dao.impl;
 
-import java.util.List;
-
+import org.hibernate.Criteria;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
-import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.UploadedAnswer;
 
 @Repository
@@ -17,6 +16,9 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 
 	@Autowired
 	private SessionFactory sessionFactory;
+	
+	@Autowired
+	private UploadFileQDAO uploadFileQDAO;
 	
 	@Override
 	public Integer addUploadedAnswer(UploadedAnswer uploadedAnswer) {
@@ -42,7 +44,7 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 		}
 		
 		uploadedAnswer.setAprvd(aprvd);
-		this.sessionFactory.getCurrentSession().save(uploadedAnswer);
+		this.sessionFactory.getCurrentSession().saveOrUpdate(uploadedAnswer);
 		return aprvd;
 	}
 
@@ -68,20 +70,27 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 	public UploadedAnswer getUserAnswer(Integer userId, Integer uploadQuesId)
 			throws ObjectNotFoundException {
 		
-		List<UploadedAnswer> uploadedAnswer;
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UploadedAnswer.class);
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("userId", userId), Restrictions.eqOrIsNull("uploadQuesId", uploadQuesId)));
 		
-		Query query;
-		query = this.sessionFactory.getCurrentSession().createQuery("FROM UPLOADED_ANS WHERE USR_ID = :userId AND UP_Q_ID = :uploadQuesId");
-		query.setParameter("userId", userId);
-		query.setParameter("uploadQuesId", uploadQuesId);
-		
-		uploadedAnswer = query.list();
+		UploadedAnswer uploadedAnswer = (UploadedAnswer) criteria.uniqueResult();
 		
 		if (uploadedAnswer == null) {
 			throw new ObjectNotFoundException(null, 
 					"User answer for user " + userId + " upload question " + uploadQuesId + " not found.");
 		}
-		return uploadedAnswer.get(0);
+		return uploadedAnswer;
+	}
+	
+	@Override
+	public Boolean isUploadedQuestionComplete(Integer userId, Integer subChapId){
+		Boolean isComplete = Boolean.TRUE;
+		if(uploadFileQDAO.getUploadFileQBySubchapId(subChapId) == null)
+			isComplete = Boolean.FALSE;
+		else if(getUserAnswer(userId,uploadFileQDAO.getUploadFileQBySubchapId(subChapId).getUploadQuesId()) == null ||
+				getUserAnswer(userId,uploadFileQDAO.getUploadFileQBySubchapId(subChapId).getUploadQuesId()).isAprvd() == false)
+			isComplete = Boolean.FALSE;
+		return isComplete;
 	}
 
 }

@@ -2,14 +2,17 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.goodlife.dao.MultiChoiceQDAO;
 import com.goodlife.dao.MultiChoiceUserAnsDAO;
-import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.exceptions.MultipleChoiceNotFoundException;
+import com.goodlife.model.MultiChoiceQ;
 import com.goodlife.model.MultiChoiceUserAns;
 
 @Repository
@@ -18,26 +21,58 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	@Autowired
+	private MultiChoiceQDAO multiChoiceQDAO;
+	
 	@Override
-	public void addMultiChoiceAnswer(MultiChoiceUserAns multiChoiceAns) throws ObjectNotFoundException {
-		
-		this.sessionFactory.getCurrentSession().save(multiChoiceAns);
+	public Boolean addMultiChoiceAnswer(MultiChoiceUserAns multiChoiceAns) throws ObjectNotFoundException {
+		try {
+			multiChoiceQDAO.getMultiChoiceQById(multiChoiceAns.getMultiQuesId());
+			this.sessionFactory.getCurrentSession().save(multiChoiceAns);
+			return Boolean.TRUE;
+		} catch (MultipleChoiceNotFoundException e) {
+			e.printStackTrace();
+			return Boolean.FALSE;
+		}
 	}
 
 	@Override
 	public Integer getUserAnswer(Integer userId, Integer multiQuesId)
 			throws ObjectNotFoundException {
 		
-		List<MultiChoiceUserAns> multiChoiceAns;
-		Query query;
-		query = this.sessionFactory.getCurrentSession().createQuery("FROM MC_USER_ANS WHERE USR_ID = :userId AND MC_Q_ID = :multiQuesId");
-		query.setParameter("userId", userId);
-		query.setParameter("multiQuesId", multiQuesId);
-		multiChoiceAns = query.list();
-		if(multiChoiceAns.size() > 1){
-			throw new ObjectNotFoundException(null, "User Id: " + userId + " and Multiple Choice Question Id: " + multiQuesId + " return too many results!");
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceUserAns.class);
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("multiQuesId", multiQuesId),Restrictions.eqOrIsNull("userId", userId)));
+		MultiChoiceUserAns multiChoiceAns = (MultiChoiceUserAns) criteria.uniqueResult();
+		return multiChoiceAns.getUserAnswer();
+	}
+
+	@Override
+	public Boolean isMultiChoiceCorrect(Integer userId, Integer multiQuesId)
+			throws ObjectNotFoundException {
+		Integer userAns = getUserAnswer(userId,multiQuesId);
+		try {
+			Integer corrAns = multiChoiceQDAO.getMultiChoiceQById(multiQuesId).getCorrectAnswer();
+			return Boolean.valueOf(userAns == corrAns);
+		} catch (MultipleChoiceNotFoundException e) {
+			e.printStackTrace();
+			return Boolean.FALSE;
 		}
-		return multiChoiceAns.get(0).getUserAnswer();
+		
+	}
+
+	@Override
+	public Boolean isMultiChoiceSubChapComplete(Integer userId,
+			Integer subChapId) throws ObjectNotFoundException {
+		Integer userAns;
+		Boolean isComplete = Boolean.TRUE;
+		List<MultiChoiceQ> multiChoiceQList = multiChoiceQDAO.getAllMultiChoice(subChapId);
+		for(int i = 0; i < multiChoiceQList.size(); i++){
+			userAns = getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId());
+			if(userAns == null)
+				isComplete =  Boolean.FALSE;
+		}
+		
+		return isComplete;
 	}
 
 }

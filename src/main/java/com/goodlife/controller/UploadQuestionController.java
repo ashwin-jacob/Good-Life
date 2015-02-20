@@ -75,8 +75,8 @@ public class UploadQuestionController {
 	public List<UploadFileQ> allUploadQuestionsBySubchapId(@RequestParam(value="subChapId") Integer subChapId)
 			throws ObjectNotFoundException {
 		
-		List<UploadFileQ> response = uploadDAO.findAllUploadFileQBySubchapId(subChapId);
-		return response;
+		//List<UploadFileQ> response = uploadDAO.getUploadFileQBySubchapId(subChapId);
+		return null;
 	}
 	
 	/*@ResponseBody
