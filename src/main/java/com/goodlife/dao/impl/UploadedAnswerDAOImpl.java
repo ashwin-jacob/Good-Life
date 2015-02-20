@@ -84,13 +84,14 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 	
 	@Override
 	public Boolean isUploadedQuestionComplete(Integer userId, Integer subChapId){
-		Boolean isComplete = Boolean.TRUE;
+		/*Boolean isComplete = Boolean.TRUE;
 		if(uploadFileQDAO.getUploadFileQBySubchapId(subChapId) == null)
 			isComplete = Boolean.FALSE;
 		else if(getUserAnswer(userId,uploadFileQDAO.getUploadFileQBySubchapId(subChapId).getUploadQuesId()) == null ||
 				getUserAnswer(userId,uploadFileQDAO.getUploadFileQBySubchapId(subChapId).getUploadQuesId()).isAprvd() == false)
 			isComplete = Boolean.FALSE;
-		return isComplete;
+		return isComplete;*/
+		return null;
 	}
 
 }
