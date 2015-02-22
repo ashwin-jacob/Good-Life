@@ -4,11 +4,13 @@ var curriculumMakerApp = angular.module('curriculumMakerApp', [
 	'ngRoute',
 	'ui.bootstrap',
 	'userManagement',
+	'curriculum',
 	'ngTable',
 	'adminCenter',
 	'multi-select',
 	'adminFilter',
-	'adminService']);
+	'adminService',
+	'chapterServices']);
 
 curriculumMakerApp.config(['$routeProvider',
 	function($routeProvider) {
@@ -20,6 +22,10 @@ curriculumMakerApp.config(['$routeProvider',
 			when('/adminConsole', {
 				templateUrl: 'partials/adminConsole.html',
 				controller: 'AdminConsole'
+			}). 
+			when('/chapterBuilder', {
+				templateUrl: 'partials/chapterBuilder.html',
+				controller: 'ChapterBuilder'
 			}). 
 			otherwise({
 				redirectTo: '/searchUsers'

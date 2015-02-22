@@ -1,0 +1,57 @@
+<!-- Navbar for all admins
+ --><nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">
+        <img alt="Brand" width="20" length="20" src="img/GLO_logo_grey.jpg">
+      </a>
+  </div>
+   <ul class="nav navbar-nav">
+   <li><a href="#">Home</a></li>
+   <li><a href="#/chapterBuilder">Curriculum Builder</a></li>
+   <li><a href="#/searchUsers">User Management</a></li>
+   <li><a href="#/adminConsole">Admin Console</a></li>
+   
+   
+   </ul>
+      <p class="navbar-text navbar-right"><a ng-click="" class="navbar-link">Logout</a></p>
+  </div>
+</nav>
+
+</div>
+
+<div class="container-fluid">
+
+	<div class="col col-lg-5 ">
+		<div class="panel panel-default">
+			<table ng-table="chapterTable"
+				class="table table-hover table-condensed">
+				<tr ng-repeat="chapter in $data">
+					<td header-class="success" data-title="'ID'">{{chapter.chapId}}
+					</td>
+					<td header-class="success" data-title="'Title'">{{chapter.chapTitle}}
+					</td>
+					<td header-class="success" data-title="'Description'">{{chapter.chapDescr}}</td>
+					<td header-class="success" data-title="'Order'">
+						{{chapter.orderId}}</td>
+					<td header-class="success"><input type="button" value="Remove"
+						class="btn btn-primary btn-sm"
+						ng-click="removeRow(chapter.chapId)" /></td>
+				</tr>
+				<tr>
+					<td>
+						<button class="btn btn-primary btn-sm" ng-click="addRow()">Add
+						</button>
+							<div collapse="!isCollapsed" name="addForm(collapse)">
+							<div class="well well-lg">Some content</div> 
+							</div>
+					</td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="col col-lg-6"></div>
+</div>

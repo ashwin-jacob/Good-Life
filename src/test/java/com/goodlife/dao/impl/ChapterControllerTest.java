@@ -50,8 +50,8 @@ public class ChapterControllerTest {
 	@Test
 	@Transactional
 	public void testListPublishedChapters() throws ChapterNotFoundException {
-		List<Chapter> chapList = chapterController.listPublishedChapters();
-		assertTrue(chapList.size() > 0);
+		String chapList = chapterController.listPublishedChapters();
+		assertNotNull(chapList);
 	}
 	
 	@Test

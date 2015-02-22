@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+<form ng-submit="addRow()" role="form" class="form-horizontal ng-pristine ng-valid">
+							<div class="form-group">
+								<label class="col-md-2 control-label">Chapter Title</label>
+								<div class="col-md-4">
+									<input type="text" ng-model="chapTitle" name="chapTitle" class="form-control ng-pristine ng-valid">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label">Chapter Description</label>
+								<div class="col-md-4">
+									<input type="text" ng-model="chapDescr" name="chapDescr" class="form-control ng-pristine ng-valid">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2 control-label">Chapter Order</label>
+								<div class="col-md-4">
+									<input type="text" ng-model="chapId" name="chapDescr" class="form-control ng-pristine ng-valid">
+								</div>
+							</div>
+							<div class="form-group">								
+								<div style="padding-left:110px">
+									<input type="submit" class="btn btn-primary" value="Save">
+								</div>
+							</div>
+						</form>
+</body>
+</html>

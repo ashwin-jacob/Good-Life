@@ -105,11 +105,27 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/listpublishedchapters", method = RequestMethod.GET)
-	public List<Chapter> listPublishedChapters() throws ChapterNotFoundException {
+	public String listPublishedChapters() throws ChapterNotFoundException {
 		
 		List<Chapter> allPublishedChapterList = chapterDAO.listAllPublishedChapters();
+				
+		ObjectMapper mapper = new ObjectMapper();
 		
-		return allPublishedChapterList;
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(allPublishedChapterList);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
