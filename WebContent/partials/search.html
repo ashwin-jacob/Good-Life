@@ -1,16 +1,8 @@
 <!-- Serach Page for Admin -->
 
-<!-- Navbar for all admins
- --><nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">
-        <img alt="Brand" width="20" length="20" src="img/GLO_logo_grey.jpg">
-      </a>
-  </div>
-      <p class="navbar-text navbar-right"><a ng-click="" class="navbar-link">Logout</a></p>
-  </div>
-</nav>
+<!-- Navbar for all admins-->
+  <div ng-include="'partials/header.html'"></div>
+
 <!-- Accordion for searching users -->
 <accordion>
 	<accordion-group is-open="seachisOpen" style="overflow:visible">
