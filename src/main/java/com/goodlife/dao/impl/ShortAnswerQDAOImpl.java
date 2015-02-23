@@ -2,8 +2,10 @@ package com.goodlife.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -27,35 +29,48 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 	}
 
 	@Override
-	public void updateQuestionText(Integer saQId, String question)
+	public Boolean updateQuestionText(Integer saQId, String question)
 			throws ShortAnswerNotFoundException {
 		
 		ShortAnswerQ shortAns = getShortAnswerById(saQId);
-		shortAns.setQuestion(question);
-		this.sessionFactory.getCurrentSession().save(shortAns);
+		if(shortAns == null)
+			return Boolean.FALSE;
+		else{
+			shortAns.setQuestion(question);
+			this.sessionFactory.getCurrentSession().save(shortAns);
+			return Boolean.TRUE;
+		}
 	}
 
 	@Override
-	public void updateHelpText(Integer saQId, String helpText)
+	public Boolean updateHelpText(Integer saQId, String helpText)
 			throws ShortAnswerNotFoundException {
 		
 		ShortAnswerQ shortAns = getShortAnswerById(saQId);
-		shortAns.setHelpText(helpText);
-		this.sessionFactory.getCurrentSession().save(shortAns);
+		if(shortAns == null)
+			return Boolean.FALSE;
+		else{
+			shortAns.setHelpText(helpText);
+			this.sessionFactory.getCurrentSession().save(shortAns);
+			return Boolean.TRUE;
+		}
 	}
 
 	@Override
-	public void updateOrderId(List<Integer> saQIdList)
+	public Boolean updateOrderId(List<Integer> saQIdList)
 			throws ShortAnswerNotFoundException {
 		
 		ShortAnswerQ shortAns = new ShortAnswerQ();
+		Boolean isSuccess = Boolean.TRUE;
 		
 		for(int i = 0; i <saQIdList.size(); i++){
 			shortAns = getShortAnswerById(saQIdList.get(i));
-		
-			shortAns.setOrderId(i);
+			if(shortAns == null)
+				isSuccess = Boolean.FALSE;
+			shortAns.setOrderId(i+1);
 			this.sessionFactory.getCurrentSession().save(shortAns);
 		}
+		return isSuccess;
 	}
 
 	@Override
@@ -74,17 +89,16 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 		return shortAnswerQ;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ShortAnswerQ> getShortAnswerBySubChapter(Integer subChapId)
 			throws SubChapterNotFoundException {
 
-		List<ShortAnswerQ> shortAnsList;
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ShortAnswerQ.class);
+		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
 		
-		try{
-			shortAnsList = (List<ShortAnswerQ>)this.sessionFactory.getCurrentSession().load(ShortAnswerQ.class, subChapId);
-		}catch(ObjectNotFoundException e){
-			shortAnsList = (List<ShortAnswerQ>)this.sessionFactory.getCurrentSession().get(ShortAnswerQ.class, subChapId);
-		}
+		List<ShortAnswerQ> shortAnsList = criteria.list();
+		
 		if(null == shortAnsList){
 			throw new SubChapterNotFoundException("Sub Chapter Id: " + subChapId + " not found in the database!");
 		}

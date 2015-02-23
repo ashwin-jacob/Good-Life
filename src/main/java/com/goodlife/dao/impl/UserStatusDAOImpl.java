@@ -70,14 +70,15 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 		@Override
 		public Integer addUserStatus(UserStatus userStatus)
 				throws UserNotFoundException {
+			
 			Users user = usersDAO.findByUserId(userStatus.getUserId());
-			Integer statusId;
+			
 			if(user != null)
-				statusId = (Integer)this.sessionFactory.getCurrentSession().save(userStatus);
+				this.sessionFactory.getCurrentSession().save(userStatus);
 			else
 				throw new UserNotFoundException("User Id: " + userStatus.getUserId() + " not found");
 
-			return statusId;
+			return userStatus.getUserStatusId();
 		}
 
 		@Override

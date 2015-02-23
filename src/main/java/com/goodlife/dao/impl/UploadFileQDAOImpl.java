@@ -1,7 +1,5 @@
 package com.goodlife.dao.impl;
 
-import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.SessionFactory;
@@ -58,12 +56,11 @@ public class UploadFileQDAOImpl implements UploadFileQDAO{
 		return uploadFileQ;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<UploadFileQ> findAllUploadFileQBySubchapId(Integer subChapId) {
+	public UploadFileQ getUploadFileQBySubchapId(Integer subChapId) {
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UploadFileQ.class);
 		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
-		List<UploadFileQ> quesList = criteria.list();
+		UploadFileQ quesList = (UploadFileQ) criteria.uniqueResult();
 		return quesList;
 	}
 

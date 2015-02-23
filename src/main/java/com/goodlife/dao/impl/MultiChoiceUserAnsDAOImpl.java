@@ -43,7 +43,10 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceUserAns.class);
 		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("multiQuesId", multiQuesId),Restrictions.eqOrIsNull("userId", userId)));
 		MultiChoiceUserAns multiChoiceAns = (MultiChoiceUserAns) criteria.uniqueResult();
-		return multiChoiceAns.getUserAnswer();
+		if(multiChoiceAns == null)
+			return null;
+		else
+			return multiChoiceAns.getUserAnswer();
 	}
 
 	@Override
@@ -66,10 +69,14 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 		Integer userAns;
 		Boolean isComplete = Boolean.TRUE;
 		List<MultiChoiceQ> multiChoiceQList = multiChoiceQDAO.getAllMultiChoice(subChapId);
-		for(int i = 0; i < multiChoiceQList.size(); i++){
-			userAns = getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId());
-			if(userAns == null)
-				isComplete =  Boolean.FALSE;
+		if(multiChoiceQList == null || multiChoiceQList.isEmpty())
+			isComplete = Boolean.FALSE;
+		else{
+			for(int i = 0; i < multiChoiceQList.size(); i++){
+				userAns = getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId());
+				if(userAns == null)
+					isComplete =  Boolean.FALSE;
+			}
 		}
 		
 		return isComplete;

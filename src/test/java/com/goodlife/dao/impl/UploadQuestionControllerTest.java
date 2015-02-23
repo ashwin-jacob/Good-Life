@@ -35,9 +35,9 @@ public class UploadQuestionControllerTest {
 	@Test
 	@Transactional
 	public void testAddUploadFileQuestion() {
-		Integer uploadId = uploadQuestionController.addUploadFileQuestion(NEW_SUBCHAPID, NEW_HELP_TXT,
+		String uploadId = uploadQuestionController.addUploadFileQuestion(NEW_SUBCHAPID, NEW_HELP_TXT,
 																		  NEW_QUESTION);
-		assertEquals(uploadId,NEW_UP_Q_ID);
+		assertEquals(uploadId,String.valueOf(NEW_UP_Q_ID));
 		assertEquals(uploadFileQDAO.getUploadFileQuestion(NEW_SUBCHAPID).getDescription(),NEW_QUESTION);
 		assertEquals(uploadFileQDAO.getUploadFileQuestion(NEW_SUBCHAPID).getHelpText(),NEW_HELP_TXT);
 	}
@@ -45,32 +45,33 @@ public class UploadQuestionControllerTest {
 	@Test
 	@Transactional
 	public void testUpdateDescription(){
-		Boolean success = uploadQuestionController.updateDescription(UP_Q_ID, NEW_QUESTION);
-		assertTrue(success);
+		String success = uploadQuestionController.updateDescription(UP_Q_ID, NEW_QUESTION);
+		assertEquals(success.toUpperCase(),"TRUE");
 		assertEquals(uploadFileQDAO.getUploadFileQuestion(UP_Q_ID).getDescription(),NEW_QUESTION);
 	}
 	
 	@Test
 	@Transactional
 	public void testUpdateHelpText(){
-		Boolean success = uploadQuestionController.updateHelpText(UP_Q_ID, NEW_HELP_TXT);
-		assertTrue(success);
+		String success = uploadQuestionController.updateHelpText(UP_Q_ID, NEW_HELP_TXT);
+		assertEquals(success.toUpperCase(),"TRUE");
 		assertEquals(uploadFileQDAO.getUploadFileQuestion(UP_Q_ID).getHelpText(),NEW_HELP_TXT);
 	}
 	
 	@Test
 	@Transactional
 	public void testAllUploadQuestionsBySubchapId(){
-		UploadFileQ uploadList = uploadQuestionController.getUploadQuestionBySubchapId(SUBCHAPID);
-		assertEquals(uploadList.getUploadQuesId(),UP_Q_ID);
+		String uploadList = uploadQuestionController.getUploadQuestionBySubchapId(SUBCHAPID);
+		System.out.println(uploadList);
+		assertNotNull(uploadList);
 	}
 	
 	@Test
 	@Transactional
 	public void testDeleteUploadFileQuestion(){
-		UploadFileQ uploadFileQ = uploadQuestionController.getUploadQuestionBySubchapId(SUBCHAPID);
-		Boolean success = uploadQuestionController.deleteUploadFileQuestion(UP_Q_ID);
-		assertTrue(success);
+		UploadFileQ uploadFileQ = uploadFileQDAO.getUploadFileQuestion(SUBCHAPID);
+		String success = uploadQuestionController.deleteUploadFileQuestion(UP_Q_ID);
+		assertTrue(success.toUpperCase().equals("TRUE"));
 		assertTrue(uploadFileQ != null);
 	}
 }

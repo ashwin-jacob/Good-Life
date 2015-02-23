@@ -1,5 +1,6 @@
 package com.goodlife.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -65,21 +66,27 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 	}
 	
 	@Override
-	public Boolean isShortAnswerSubChapComplete(Integer userId, Integer subChapId){
-		
+	public Boolean isShortAnswerSubChapComplete(Integer userId, Integer subChapId) {
+		System.out.println("Entering isShortAnswerSubChapComplete");
 		Boolean isComplete = Boolean.TRUE;
+		List<ShortAnswerQ> questionList = new ArrayList<ShortAnswerQ>();
 		try {
-			List<ShortAnswerQ> questionList = shortAnswerQDAO.getShortAnswerBySubChapter(subChapId);
-			for(int i = 0; i < questionList.size(); i++){
-				if(getUserAnswer(userId, questionList.get(i).getSaQId()) == null || 
-				   getUserAnswer(userId, questionList.get(i).getSaQId()).isAprvd() == false)
-					isComplete = Boolean.FALSE;
-			}
-			return isComplete;
+			questionList = shortAnswerQDAO.getShortAnswerBySubChapter(subChapId);
 		} catch (SubChapterNotFoundException e) {
 			e.printStackTrace();
-			return Boolean.FALSE;
+			isComplete = Boolean.FALSE;
 		}
+		if(questionList == null || questionList.isEmpty())
+			isComplete = Boolean.FALSE;
+		else{
+		    for(int i = 0; i < questionList.size(); i++){
+				if(getUserAnswer(userId, questionList.get(i).getSaQId()).isAprvd() == Boolean.FALSE)
+					isComplete = Boolean.FALSE;
+				System.out.println(String.valueOf(isComplete));
+			}
+		}
+		System.out.println("leaving isShortAnswerSubChapComplete");
+		return isComplete;
 	}
 	
 }

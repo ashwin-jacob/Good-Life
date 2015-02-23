@@ -1,10 +1,14 @@
 package com.goodlife.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +28,7 @@ import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
 import com.goodlife.exceptions.SubChapterNotFoundException;
-import com.goodlife.model.Chapter;
 import com.goodlife.model.MultiChoiceOption;
-import com.goodlife.model.MultiChoiceQ;
-import com.goodlife.model.ShortAnswerUserAnswer;
 import com.goodlife.model.SubChapter;
 import com.goodlife.model.UploadFileQ;
 
@@ -68,66 +69,150 @@ public class StudentCurriculumController {
 	private UploadFileQDAO uploadFileQDAO;
 	
 	@RequestMapping(value = "/getallowedchapters", method = RequestMethod.GET)
-	public List<Chapter> getAllowedChapters(@RequestParam(value = "userId") Integer userId){
-		List<Chapter> chapList = studentDAO.getAllowedChapters(userId);
-		if(chapList == null)
-			return new ArrayList<Chapter>();
-		else
-			return chapList;
+	public String getAllowedChapters(@RequestParam(value = "userId") Integer userId){
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(studentDAO.getAllowedChapters(userId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@RequestMapping(value = "/getsubchapsbychapter", method = RequestMethod.GET)
-	public List<SubChapter> getSubChapsByChapter(@RequestParam(value = "chapId") Integer chapId){
+	public String getSubChapsByChapter(@RequestParam(value = "chapId") Integer chapId){
+		
+		List<SubChapter> subChapList = new ArrayList<SubChapter>();
 		try {
-			List<SubChapter> subChapList = subChapDAO.getSubChapListByChapter(chapId);
-			return subChapList;
+			subChapList = subChapDAO.getSubChapListByChapter(chapId);
 		} catch (SubChapterNotFoundException e) {
 			e.printStackTrace();
-			return new ArrayList<SubChapter>();
 		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(subChapList);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@RequestMapping(value = "/getmultichoicebysubchap", method = RequestMethod.GET)
-	public List<MultiChoiceQ> getMultiChoiceBySubChap(@RequestParam(value = "subChapId") Integer subChapId){
-		List<MultiChoiceQ> multiChoiceList = multiChoiceQDAO.getAllMultiChoice(subChapId);
-		if(multiChoiceList == null)
-			return new ArrayList<MultiChoiceQ>();
-		else
-			return multiChoiceList;
+	public String getMultiChoiceBySubChap(@RequestParam(value = "subChapId") Integer subChapId){
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(multiChoiceQDAO.getAllMultiChoice(subChapId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@RequestMapping(value = "/getmultichoiceoptions", method = RequestMethod.GET)
-	public List<MultiChoiceOption> getMultiChoiceOptions(@RequestParam(value = "multiQuesId") Integer multiQuesId){
+	public String getMultiChoiceOptions(@RequestParam(value = "multiQuesId") Integer multiQuesId){
+		
+		List<MultiChoiceOption> optionList = new ArrayList<MultiChoiceOption>();
 		try {
-			List<MultiChoiceOption> optionList = multiChoiceOptionDAO.getMultiChoiceOptions(multiQuesId);
-			return optionList;
+			optionList = multiChoiceOptionDAO.getMultiChoiceOptions(multiQuesId);
 		} catch (MultipleChoiceOptionNotFoundException e) {
 			e.printStackTrace();
-			return new ArrayList<MultiChoiceOption>();
 		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(optionList);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@RequestMapping(value = "/getmultichoiceuseranswer", method = RequestMethod.GET)
-	public Integer getMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
+	public String getMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "multiQuesId") Integer multiQuesId){
-		return multiChoiceUserAnsDAO.getUserAnswer(userId, multiQuesId);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(multiChoiceUserAnsDAO.getUserAnswer(userId, multiQuesId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@RequestMapping(value = "/getshortansweruseranswer", method = RequestMethod.GET)
-	public ShortAnswerUserAnswer getShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
+	public String getShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
 														  @RequestParam(value = "shortAnsId") Integer shortAnsId){
-		return shortAnswerUserAnsDAO.getUserAnswer(userId, shortAnsId);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(shortAnswerUserAnsDAO.getUserAnswer(userId, shortAnsId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) { 
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@RequestMapping(value = "/issubchapcomplete", method = RequestMethod.GET)
-	public Boolean isSubChapComplete(@RequestParam(value = "userId") Integer userId,
+	public String isSubChapComplete(@RequestParam(value = "userId") Integer userId,
 									 @RequestParam(value = "subChapId") Integer subChapId){
 		
 		Boolean isComplete = multiChoiceUserAnsDAO.isMultiChoiceSubChapComplete(userId, subChapId) ||
 							 shortAnswerUserAnsDAO.isShortAnswerSubChapComplete(userId, subChapId) ||
 							 uploadedAnswerDAO.isUploadedQuestionComplete(userId, subChapId);
 		
-		return isComplete;
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(isComplete);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	/*
@@ -146,7 +231,8 @@ public class StudentCurriculumController {
 	 * - 'u' --> for a single upload file question
 	 */
 	@RequestMapping(value = "/getsubchapform", method = RequestMethod.GET)
-	public ArrayList<Object> getSubChapForm(@RequestParam(value = "subChapId") Integer subChapId) throws SubChapterNotFoundException{
+	public String getSubChapForm(@RequestParam(value = "subChapId") Integer subChapId) throws SubChapterNotFoundException{
+		
 		ArrayList<Object> formArray = new ArrayList<Object>();
 		if(multiChoiceQDAO.getAllMultiChoice(subChapId) != null){
 			formArray.add(multiChoiceQDAO.getAllMultiChoice(subChapId));
@@ -163,16 +249,44 @@ public class StudentCurriculumController {
 			formArray.add('u');
 		}
 		
-		return formArray;
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(formArray);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@RequestMapping(value = "/updatecurrentchapter", method = RequestMethod.GET)
-	public Boolean updateCurrentChapter(@RequestParam(value = "userId") Integer userId,
+	public String updateCurrentChapter(@RequestParam(value = "userId") Integer userId,
 										@RequestParam(value = "chapId") Integer chapId){
+		
+		Boolean isSuccess;
 		if(studentDAO.updateCurrentChapter(userId, chapId) == null)
-			return Boolean.FALSE;
+			isSuccess = Boolean.FALSE;
 		else
-			return studentDAO.updateCurrentChapter(userId, chapId);
+			isSuccess = studentDAO.updateCurrentChapter(userId, chapId);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(isSuccess);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 }

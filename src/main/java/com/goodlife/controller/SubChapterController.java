@@ -1,9 +1,13 @@
 package com.goodlife.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +35,7 @@ public class SubChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/addsubchapter", method = RequestMethod.GET)
-	public Integer addSubChapter(@RequestParam(value="chapId") Integer chapId,
+	public String addSubChapter(@RequestParam(value="chapId") Integer chapId,
 											 @RequestParam(value="subChapTitle") String subChapTitle,
 											 @RequestParam(value="subChapDescr") String subChapDescr,
 											 @RequestParam(value="orderId") Integer orderId) throws SubChapterNotFoundException {
@@ -42,53 +46,118 @@ public class SubChapterController {
 		subChapter.setSubChapDescr(subChapDescr);
 		subChapter.setOrderId(orderId);
 		
-		return subChapterDAO.addSubChapter(subChapter);
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(subChapterDAO.addSubChapter(subChapter));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "deletesubchapter", method = RequestMethod.GET)
-	public Boolean deleteSubChapter(@RequestParam(value="subchapId") Integer subChapId) throws SubChapterNotFoundException {
+	public String deleteSubChapter(@RequestParam(value="subchapId") Integer subChapId) throws SubChapterNotFoundException {
 		
-		Boolean response = subChapterDAO.deleteSubChapter(subChapId);
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
 		
-		return response;
+		try {
+			jsonResp = mapper.writeValueAsString(subChapterDAO.deleteSubChapter(subChapId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "listallsubchaptersbychapter", method = RequestMethod.GET)
-	public List<SubChapter> listAllSubChaptersByChapter(@RequestParam(value="chapId") Integer chapId) throws SubChapterNotFoundException {
+	public String listAllSubChaptersByChapter(@RequestParam(value="chapId") Integer chapId) throws SubChapterNotFoundException {
 		
-		List<SubChapter> response = subChapterDAO.getSubChapListByChapter(chapId);
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
 		
-		return response;
+		try {
+			jsonResp = mapper.writeValueAsString(subChapterDAO.getSubChapListByChapter(chapId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 		
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatesubchapterorder", method = RequestMethod.GET)
-	public Boolean updateSubChapterOrder(@RequestParam(value="newSubChapterOrderList") List<Integer> newSubChapterOrderList) throws SubChapterNotFoundException {
+	public String updateSubChapterOrder(@RequestParam(value="newSubChapterOrderList") List<Integer> newSubChapterOrderList) throws SubChapterNotFoundException {
 		
-		Boolean response = subChapterDAO.updateOrder(newSubChapterOrderList);
-		return response;
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(subChapterDAO.updateOrder(newSubChapterOrderList));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "updatesubchaptertitle", method = RequestMethod.GET)
-	public Boolean updateSubChapterTitle(@RequestParam(value="subChapId") Integer subChapId,
+	public String updateSubChapterTitle(@RequestParam(value="subChapId") Integer subChapId,
 													   @RequestParam(value="subChapTitle") String subChapTitle) throws SubChapterNotFoundException {
 		
-		Boolean response = subChapterDAO.updateTitle(subChapId, subChapTitle);
-		return response;
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(subChapterDAO.updateTitle(subChapId,subChapTitle));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 		
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "updatesubchapterdescr", method = RequestMethod.GET)
-	public Boolean updateSubChapterDescr(@RequestParam(value="subChapId") Integer subChapId,
+	public String updateSubChapterDescr(@RequestParam(value="subChapId") Integer subChapId,
 													   @RequestParam(value="subChapDescr") String subChapDescr) throws SubChapterNotFoundException {
 		
-		Boolean response = subChapterDAO.updateDescription(subChapId, subChapDescr);
-		return response;
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(subChapterDAO.updateDescription(subChapId,subChapDescr));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 		
 	}
 

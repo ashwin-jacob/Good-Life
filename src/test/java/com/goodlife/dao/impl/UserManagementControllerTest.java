@@ -51,25 +51,28 @@ public class UserManagementControllerTest {
 	@Test
 	@Transactional
 	public void testGetList() {
-		List<Users> userList = userManagement.getList("Raj", "lst_nm", 1, 0, 0);
-		assertEquals(userList.get(0).getFirstname(),"Dhaval");
+		String userList = userManagement.getList("Raj", "lst_nm", 1, 0, 0);
+		System.out.println(userList);
+		assertTrue(userList.length() > 0);
 	}
 	
 	@Test
 	@Transactional
 	public void testAddUserStatus() throws UserNotFoundException{
-		userManagement.addUserStatus(USER_ID,'s');
+		Integer success = Integer.valueOf(userManagement.addUserStatus(USER_ID,'s'));
 		List<UserStatus> userList = userStatus.findCurrentSuspendedUsers();
 		for(int i = 0; i< userList.size(); i++)
 			System.out.println(userList.get(i).getEndDate());
 		assertTrue(userList.size() > 0);
+		System.out.println(success);
+		assertTrue(success > 0);
 	}
 	
 	@Test
 	@Transactional
 	public void testSuspendUser() throws UserNotFoundException{
-		assertTrue(userManagement.addUserStatus(USER_ID,'s') > 0);
-		assertTrue(userManagement.addUserStatus(USER_ID,'d') > 0);
+		assertTrue(Integer.valueOf(userManagement.addUserStatus(USER_ID,'s')) > 0);
+		assertTrue(Integer.valueOf(userManagement.addUserStatus(USER_ID,'d')) > 0);
 		List<UserStatus> status = userStatus.findByUserId(USER_ID);
 		assertTrue(status.size() > 2);
 		
@@ -78,14 +81,14 @@ public class UserManagementControllerTest {
 	@Test
 	@Transactional
 	public void testDeleteUserStatus() throws UserNotFoundException {
-		Integer userStatusId = userManagement.addUserStatus(USER_ID, 'd');
-		assertTrue(userManagement.deleteUserStatus(userStatusId));
+		Integer userStatusId = Integer.valueOf(userManagement.addUserStatus(USER_ID, 'd'));
+		assertTrue(Boolean.valueOf(userManagement.deleteUserStatus(userStatusId)));
 	}
 	
 	@Test
 	@Transactional
 	public void testChangeEndDate() throws UserNotFoundException{
-		Integer userStatusId = userManagement.addUserStatus(USER_ID, 's');
+		Integer userStatusId = Integer.valueOf(userManagement.addUserStatus(USER_ID, 's'));
 		Date oldDate = userStatus.findByUserStatusId(userStatusId).getEndDate();
 		userManagement.changeEndDate(userStatusId, new Date());
 		assertTrue(oldDate != userStatus.findByUserStatusId(userStatusId).getEndDate());

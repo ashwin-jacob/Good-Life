@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
+import com.goodlife.model.UploadFileQ;
 import com.goodlife.model.UploadedAnswer;
 
 @Repository
@@ -84,14 +85,14 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 	
 	@Override
 	public Boolean isUploadedQuestionComplete(Integer userId, Integer subChapId){
-		/*Boolean isComplete = Boolean.TRUE;
-		if(uploadFileQDAO.getUploadFileQBySubchapId(subChapId) == null)
+		Boolean isComplete = Boolean.TRUE;
+		UploadFileQ uploadFileQ = uploadFileQDAO.getUploadFileQBySubchapId(subChapId);
+		if(uploadFileQ == null)
 			isComplete = Boolean.FALSE;
 		else if(getUserAnswer(userId,uploadFileQDAO.getUploadFileQBySubchapId(subChapId).getUploadQuesId()) == null ||
 				getUserAnswer(userId,uploadFileQDAO.getUploadFileQBySubchapId(subChapId).getUploadQuesId()).isAprvd() == false)
 			isComplete = Boolean.FALSE;
-		return isComplete;*/
-		return null;
+		return isComplete;
 	}
 
 }

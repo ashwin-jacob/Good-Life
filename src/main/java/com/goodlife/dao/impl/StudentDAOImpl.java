@@ -86,7 +86,7 @@ public class StudentDAOImpl implements StudentDAO  {
 		Student student = findStudentByUserId(userId);
 		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Chapter.class);
-		criteria.add(Restrictions.sqlRestriction("CHAP_ID <= " + student.getCurrentChapterId()));
+		criteria.add(Restrictions.le("chapId", student.getCurrentChapterId()));
 		List<Chapter> chapterList = criteria.list();
 		return chapterList;
 	}

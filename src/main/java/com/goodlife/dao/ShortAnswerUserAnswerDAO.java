@@ -2,6 +2,7 @@ package com.goodlife.dao;
 
 import org.hibernate.ObjectNotFoundException;
 
+import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.ShortAnswerUserAnswer;
 
 public interface ShortAnswerUserAnswerDAO {

@@ -1,5 +1,6 @@
 package com.goodlife.controller;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +10,9 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +53,7 @@ public class UserManagementController {
 	 */
 	@RequestMapping(value="/search", method=RequestMethod.POST)
 	@ResponseBody
-	public List<Users> getList(@RequestParam(value="input") String input, 
+	public String getList(@RequestParam(value="input") String input, 
 				@RequestParam(value="field") String field,
 				@RequestParam(value="sb") Integer sb,
 				@RequestParam(value="mb") Integer mb,
@@ -74,10 +78,19 @@ public class UserManagementController {
 			e.printStackTrace();
 		}
 		
-		if(filteredList == null)
-			return new ArrayList<Users>();
-		else
-			return filteredList;
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(filteredList);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	
@@ -90,7 +103,7 @@ public class UserManagementController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/adduserstatus", method = RequestMethod.GET)
-	public Integer addUserStatus(@RequestParam(value="userId") Integer userId,
+	public String addUserStatus(@RequestParam(value="userId") Integer userId,
 									@RequestParam(value="statusTypeCode") Character statusTypeCode) throws UserNotFoundException {
 
 		UserStatus userStatus = new UserStatus();
@@ -99,9 +112,20 @@ public class UserManagementController {
 		// 604800000 is the amount of milliseconds in 7 days
 		userStatus.setEndDate(new Timestamp(new Date().getTime() + 604800000));	
 		userStatus.setStatusTypeCode(statusTypeCode);
-		Integer result = userStatusDAO.addUserStatus(userStatus);
 		
-		return result;	
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(userStatusDAO.addUserStatus(userStatus));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	/**
@@ -112,9 +136,21 @@ public class UserManagementController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/deleteuserstatus", method = RequestMethod.GET)
-	public Boolean deleteUserStatus(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
-		Boolean result = userStatusDAO.deleteUserStatus(userStatusId);
-		return result;
+	public String deleteUserStatus(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(userStatusDAO.deleteUserStatus(userStatusId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	/**
@@ -125,15 +161,28 @@ public class UserManagementController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/changeenddate", method = RequestMethod.GET)
-	public Boolean changeEndDate(@RequestParam(value="userStatusId") Integer userStatusId, @RequestParam(value="newDate") Date newDate){
+	public String changeEndDate(@RequestParam(value="userStatusId") Integer userStatusId, @RequestParam(value="newDate") Date newDate){
+		
+		Boolean response;
+		try { 
+			response = userStatusDAO.changeEndDate(userStatusId, newDate);
+		} catch (UserNotFoundException e1) {
+			response = false;
+			e1.printStackTrace();
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
 		
 		try {
-			Boolean result = userStatusDAO.changeEndDate(userStatusId, newDate);
-			return result;
-		} catch (UserNotFoundException e) {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
 			e.printStackTrace();
-			return Boolean.FALSE;
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		return jsonResp;
 	}
 	
 	private String cleanInput(String input, String type) {

@@ -45,7 +45,7 @@ public class SubChapterControllerTest {
 	@Test
 	@Transactional
 	public void testAddSubChapter() throws SubChapterNotFoundException {
-		Integer subChapId = subChapterController.addSubChapter(CHAP_ID,SUB_CHAP_TITLE,SUB_CHAP_DESC,ORDER);
+		Integer subChapId = Integer.valueOf(subChapterController.addSubChapter(CHAP_ID,SUB_CHAP_TITLE,SUB_CHAP_DESC,ORDER));
 		assertTrue(subChapId > 0);
 	}
 	
@@ -53,15 +53,16 @@ public class SubChapterControllerTest {
 	@Transactional
 	@Rollback
 	public void testDeleteSubChapter() throws SubChapterNotFoundException{		
-		Boolean success = subChapterController.deleteSubChapter(SUB_CHAP_ID);
+		Boolean success = Boolean.valueOf(subChapterController.deleteSubChapter(SUB_CHAP_ID));
 		assertTrue(success);
 	}
 	
 	@Test
 	@Transactional
 	public void testListAllSubChaptersByChapter() throws SubChapterNotFoundException{
-		List<SubChapter> subChapList = subChapterController.listAllSubChaptersByChapter(CHAP_ID);
-		assertTrue(subChapList.size() > 0);
+		String subChapList = subChapterController.listAllSubChaptersByChapter(CHAP_ID);
+		System.out.println(subChapList);
+		assertTrue(subChapList.length() > 0);
 	}
 	
 	@Test
@@ -70,7 +71,7 @@ public class SubChapterControllerTest {
 		List<Integer> subChapList = new ArrayList<Integer>();
 		subChapList.add(0, Integer.valueOf(2));
 		subChapList.add(1, Integer.valueOf(1));
-		Boolean success = subChapterController.updateSubChapterOrder(subChapList);
+		Boolean success = Boolean.valueOf(subChapterController.updateSubChapterOrder(subChapList));
 		assertTrue(success);
 		int subChapOrder = subChapterDAO.getSubChapterById(2).getOrderId();
 		assertEquals(1,subChapOrder);
@@ -79,7 +80,7 @@ public class SubChapterControllerTest {
 	@Test
 	@Transactional
 	public void testUpdateSubChapterTitle() throws SubChapterNotFoundException{		
-		Boolean success = subChapterController.updateSubChapterTitle(SUB_CHAP_ID,SUB_CHAP_TITLE);
+		Boolean success = Boolean.valueOf(subChapterController.updateSubChapterTitle(SUB_CHAP_ID,SUB_CHAP_TITLE));
 		assertTrue(success);
 		assertEquals(SUB_CHAP_TITLE,subChapterDAO.getSubChapterById(SUB_CHAP_ID).getSubChapTitle());
 	}
@@ -87,7 +88,7 @@ public class SubChapterControllerTest {
 	@Test
 	@Transactional
 	public void testUpdateSubChapterDescr() throws SubChapterNotFoundException{		
-		Boolean success = subChapterController.updateSubChapterDescr(SUB_CHAP_ID,SUB_CHAP_DESC);
+		Boolean success = Boolean.valueOf(subChapterController.updateSubChapterDescr(SUB_CHAP_ID,SUB_CHAP_DESC));
 		assertTrue(success);
 		assertEquals(SUB_CHAP_DESC,subChapterDAO.getSubChapterById(SUB_CHAP_ID).getSubChapDescr());
 	}

@@ -9,7 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "SHORT_ANS_USER_ANS")
+@Table(name = "SHORT_ANS_USER_ANS", catalog = "goodlife")
 public class ShortAnswerUserAnswer implements Serializable{
 	
 	/**
@@ -32,14 +32,14 @@ public class ShortAnswerUserAnswer implements Serializable{
 	private Integer userId;
 	
 	@Column(name = "aprvd", columnDefinition = "TINYINT", length = 1)
-	private boolean aprvd;
+	private Boolean aprvd;
 
 	public ShortAnswerUserAnswer() {
 		super();
 	}
 
 	public ShortAnswerUserAnswer(Integer subChapId, Integer saQId,
-			String userAnswer, Integer userId, boolean aprvd) {
+			String userAnswer, Integer userId, Boolean aprvd) {
 		super();
 		this.subChapId = subChapId;
 		this.saQId = saQId;
@@ -80,11 +80,11 @@ public class ShortAnswerUserAnswer implements Serializable{
 		this.userId = userId;
 	}
 
-	public boolean isAprvd() {
+	public Boolean isAprvd() {
 		return aprvd;
 	}
 
-	public void setAprvd(boolean aprvd) {
+	public void setAprvd(Boolean aprvd) {
 		this.aprvd = aprvd;
 	}
 }
