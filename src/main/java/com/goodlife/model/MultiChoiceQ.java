@@ -38,14 +38,17 @@ public class MultiChoiceQ implements Serializable{
 	
 	@Column(name = "order_id")
 	private Integer orderId;
+	
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	private Boolean published;
 
 	public MultiChoiceQ() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public MultiChoiceQ(Integer multiQuesId, String quesText, String helpText,
-			Integer correctAnswer, Integer subChapId, Integer orderId) {
+			Integer correctAnswer, Integer subChapId, Integer orderId,
+			Boolean published) {
 		super();
 		this.multiQuesId = multiQuesId;
 		this.quesText = quesText;
@@ -53,6 +56,7 @@ public class MultiChoiceQ implements Serializable{
 		this.correctAnswer = correctAnswer;
 		this.subChapId = subChapId;
 		this.orderId = orderId;
+		this.published = published;
 	}
 
 	public Integer getMultiQuesId() {
@@ -102,6 +106,13 @@ public class MultiChoiceQ implements Serializable{
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
 	}
-	
-	
+
+	public Boolean getPublished() {
+		return published;
+	}
+
+	public void setPublished(Boolean published) {
+		this.published = published;
+	}
+		
 }

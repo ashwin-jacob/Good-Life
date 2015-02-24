@@ -32,18 +32,22 @@ public class ChapterPage implements Serializable{
 	
 	@Column(name = "page_url")
 	private String pageUrl;
+	
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	private Boolean published;
 
 	public ChapterPage() {
 		super();
 	}
 
 	public ChapterPage(Integer pageId, Integer chapId, Integer pageNum,
-			String pageUrl) {
+			String pageUrl, Boolean published) {
 		super();
 		this.pageId = pageId;
 		this.chapId = chapId;
 		this.pageNum = pageNum;
 		this.pageUrl = pageUrl;
+		this.published = published;
 	}
 
 	public Integer getPageId() {
@@ -77,4 +81,13 @@ public class ChapterPage implements Serializable{
 	public void setPageUrl(String pageUrl) {
 		this.pageUrl = pageUrl;
 	}
+
+	public Boolean getPublished() {
+		return published;
+	}
+
+	public void setPublished(Boolean published) {
+		this.published = published;
+	}
+	
 }

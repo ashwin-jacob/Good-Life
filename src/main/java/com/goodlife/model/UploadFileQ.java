@@ -31,21 +31,21 @@ public class UploadFileQ implements Serializable{
 	@Column(name = "descr")
 	private String description;
 	
-	/*@Column(name = "order_id")
-	private Integer orderId;*/
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	private Boolean published;
 
 	public UploadFileQ() {
 		super();
 	}
 
-	public UploadFileQ(Integer uploadQuesId, Integer subChapId, String helpText,
-			String description, Integer orderId) {
+	public UploadFileQ(Integer uploadQuesId, Integer subChapId,
+			String helpText, String description, Boolean published) {
 		super();
 		this.uploadQuesId = uploadQuesId;
 		this.subChapId = subChapId;
 		this.helpText = helpText;
 		this.description = description;
-		//this.orderId = orderId;
+		this.published = published;
 	}
 
 	public Integer getUploadQuesId() {
@@ -80,12 +80,11 @@ public class UploadFileQ implements Serializable{
 		this.description = description;
 	}
 
-	/*public Integer getOrderId() {
-		return orderId;
+	public Boolean getPublished() {
+		return published;
 	}
 
-	public void setOrderId(Integer orderId) {
-		this.orderId = orderId;
-	}*/
-	
+	public void setPublished(Boolean published) {
+		this.published = published;
+	}
 }

@@ -36,19 +36,23 @@ public class ShortAnswerQ implements Serializable{
 	
 	@Column(name = "order_id", nullable = false)
 	private Integer orderId;
+	
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	private Boolean published;
 
 	public ShortAnswerQ() {
 		super();
 	}
 
 	public ShortAnswerQ(Integer saQId, Integer subChapId, String question,
-			String helpTxt, Integer orderId) {
+			String helpText, Integer orderId, Boolean published) {
 		super();
 		this.saQId = saQId;
 		this.subChapId = subChapId;
 		this.question = question;
-		this.helpText = helpTxt;
+		this.helpText = helpText;
 		this.orderId = orderId;
+		this.published = published;
 	}
 
 	public Integer getSaQId() {
@@ -90,7 +94,13 @@ public class ShortAnswerQ implements Serializable{
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
 	}
-	
-	
 
+	public Boolean getPublished() {
+		return published;
+	}
+
+	public void setPublished(Boolean published) {
+		this.published = published;
+	}
+	
 }

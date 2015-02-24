@@ -33,20 +33,22 @@ public class SubChapter implements Serializable{
 	@Column(name = "order_id", nullable = false)
 	private Integer orderId;
 	
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	private Boolean published;
+	
 	public SubChapter(){
 		super();
 	}
-	
-	public SubChapter(Integer subChapId,
-					  Integer chapId,
-					  String subChapDescr,
-					  String subChapTitle,
-					  Integer orderId){
-		this.subChapId  = subChapId;
+
+	public SubChapter(Integer subChapId, Integer chapId, String subChapDescr,
+			String subChapTitle, Integer orderId, Boolean published) {
+		super();
+		this.subChapId = subChapId;
 		this.chapId = chapId;
 		this.subChapDescr = subChapDescr;
 		this.subChapTitle = subChapTitle;
 		this.orderId = orderId;
+		this.published = published;
 	}
 
 	public Integer getSubChapId() {
@@ -87,6 +89,14 @@ public class SubChapter implements Serializable{
 
 	public void setOrderId(Integer orderId) {
 		this.orderId = orderId;
+	}
+
+	public Boolean getPublished() {
+		return published;
+	}
+
+	public void setPublished(Boolean published) {
+		this.published = published;
 	}
 	
 	

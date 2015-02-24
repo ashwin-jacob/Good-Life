@@ -29,17 +29,21 @@ public class MultiChoiceOption implements Serializable {
 	
 	@Column(name = "choice_txt")
 	private String choiceText;
+	
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	private Boolean published;
 
 	public MultiChoiceOption() {
 		super();
 	}
 
 	public MultiChoiceOption(Integer optionId, Integer multiQuesId,
-			String choiceText) {
+			String choiceText, Boolean published) {
 		super();
 		this.optionId = optionId;
 		this.multiQuesId = multiQuesId;
 		this.choiceText = choiceText;
+		this.published = published;
 	}
 
 	public Integer getOptionId() {
@@ -65,6 +69,13 @@ public class MultiChoiceOption implements Serializable {
 	public void setChoiceText(String choiceText) {
 		this.choiceText = choiceText;
 	}
-	
+
+	public Boolean getPublished() {
+		return published;
+	}
+
+	public void setPublished(Boolean published) {
+		this.published = published;
+	}
 	
 }
