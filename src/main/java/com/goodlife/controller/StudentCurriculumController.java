@@ -254,9 +254,9 @@ public class StudentCurriculumController {
 			formArray.add(shortAnswerQDAO.getShortAnswerBySubChapter(subChapId));
 			formArray.add('s');
 		}
-		else if(uploadFileQDAO.getUploadFileQuestion(subChapId) != null){
+		else if(uploadFileQDAO.getUploadFileQBySubchapId(subChapId) != null){
 			List<UploadFileQ> uploadList = new ArrayList<UploadFileQ>();
-			uploadList.add(uploadFileQDAO.getUploadFileQuestion(subChapId));
+			uploadList.add(uploadFileQDAO.getUploadFileQBySubchapId(subChapId));
 			formArray.add(uploadList);
 			formArray.add('u');
 		}
