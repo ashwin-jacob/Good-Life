@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,5 +107,20 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 			throw new SubChapterNotFoundException("subChapId: " + subChapId + " not found in the database!");
 		}
 		return subChapter;
+	}
+	@Override
+	public Boolean setPublishSubChapter(Integer subChapId, Boolean published) {
+
+		Boolean isSuccess;
+		try {
+			SubChapter subChapter = getSubChapterById(subChapId);
+			subChapter.setPublished(published);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(subChapter);
+			isSuccess = Boolean.TRUE;
+		} catch (SubChapterNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		return isSuccess;
 	}
 }

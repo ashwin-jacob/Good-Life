@@ -160,5 +160,24 @@ public class SubChapterController {
 		return jsonResp;
 		
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/setsubchapterpublished", method = RequestMethod.GET)
+	public String setSubChapterPublished(@RequestParam(value = "subChapId") Integer subChapId,
+										 @RequestParam(value = "published") Boolean published){
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(subChapterDAO.setPublishSubChapter(subChapId, published));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
 
 }

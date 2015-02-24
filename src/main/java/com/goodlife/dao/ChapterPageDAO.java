@@ -17,4 +17,5 @@ public interface ChapterPageDAO {
 	public Boolean updateChapterPageOrder(List<Integer> chapterPageList) throws ChapterPageNotFoundException;
 	public Boolean updatePageUrl(Integer pageId, String newUrl) throws ChapterPageNotFoundException;
 	public Boolean deleteAllPagesByChapterId(Integer chapterId) throws ChapterPageNotFoundException;
+	public Boolean setPublishChapterPage(Integer pageId, Boolean published);
 }

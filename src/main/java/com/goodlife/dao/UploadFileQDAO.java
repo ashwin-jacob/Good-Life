@@ -11,7 +11,7 @@ public interface UploadFileQDAO {
 	public Boolean deleteUploadFileQuestion(Integer uploadQuesId)throws ObjectNotFoundException;
 	public Boolean updateDescription(Integer uploadQuesId, String description) throws ObjectNotFoundException;
 	public Boolean updateHelpText(Integer uploadQuesId, String helpText) throws ObjectNotFoundException;
-	public UploadFileQ getUploadFileQuestion(Integer subChapId) throws ObjectNotFoundException;
+	public UploadFileQ getUploadFileQuestion(Integer uploadFileQId) throws ObjectNotFoundException;
 	public UploadFileQ getUploadFileQBySubchapId(Integer subChapId);
-	//public Boolean updateOrder(List<Integer> quesIdList) throws ObjectNotFoundException;
+	public Boolean setPublishedUploadFileQ(Integer quesId, Boolean published);
 }

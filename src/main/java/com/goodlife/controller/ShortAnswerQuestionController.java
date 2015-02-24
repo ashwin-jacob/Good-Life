@@ -139,4 +139,23 @@ public class ShortAnswerQuestionController {
 		}
 		return jsonResp;
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/setshortanswerqpublished", method = RequestMethod.GET)
+	public String setShortAnswerQPublished(@RequestParam(value = "saQId") Integer saQId,
+										   @RequestParam(value = "published") Boolean published){
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(shortAnsDAO.setPublishShortAnswer(saQId, published));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
 }

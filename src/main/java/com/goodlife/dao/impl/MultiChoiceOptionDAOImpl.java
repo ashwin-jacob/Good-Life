@@ -70,4 +70,21 @@ public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
 		return mcOpt;
 	}
 
+	@Override
+	public Boolean setPublishMulitChoiceOption(Integer optionId,
+			Boolean published) {
+
+		Boolean isSuccess;
+		try {
+			MultiChoiceOption multiChoiceOption = findMultiChoiceOptionById(optionId);
+			multiChoiceOption.setPublished(published);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoiceOption);
+			isSuccess = Boolean.TRUE;
+		} catch (MultipleChoiceOptionNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		return isSuccess;
+	}
+
 }

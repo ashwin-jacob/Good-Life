@@ -18,4 +18,5 @@ public interface UserStatusDAO{
 	public Boolean changeEndDate(Integer userStatusId, Date newEndDate) throws UserNotFoundException;
 	public Boolean deleteUserStatus(Integer userStatusId) throws UserNotFoundException;
 	public UserStatus findByUserStatusId(Integer userStatusId) throws ObjectNotFoundException;
+	public UserStatus findCurrentStatusByUser(Integer userId);
 }

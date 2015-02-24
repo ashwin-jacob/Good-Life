@@ -105,4 +105,20 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 		return shortAnsList;
 	}
 
+	@Override
+	public Boolean setPublishShortAnswer(Integer saQId, Boolean published) {
+
+		Boolean isSuccess;
+		try {
+			ShortAnswerQ shortAnswerQ = getShortAnswerById(saQId);
+			shortAnswerQ.setPublished(published);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(shortAnswerQ);
+			isSuccess = Boolean.TRUE;
+		} catch (ShortAnswerNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		return isSuccess;
+	}
+
 }

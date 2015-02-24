@@ -110,6 +110,23 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 		
 		return multiChoice;
 	}
+
+	@Override
+	public Boolean setPublishMultiChoiceQ(Integer multiChoiceId,
+			Boolean published) {
+
+		Boolean isSuccess;
+		try {
+			MultiChoiceQ multiChoiceQ = getMultiChoiceQById(multiChoiceId);
+			multiChoiceQ.setPublished(published);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoiceQ);
+			isSuccess = Boolean.TRUE;
+		} catch (MultipleChoiceNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		return isSuccess;
+	}
 	
 
 }

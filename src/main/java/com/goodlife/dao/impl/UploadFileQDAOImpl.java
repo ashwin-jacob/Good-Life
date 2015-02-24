@@ -75,20 +75,17 @@ public class UploadFileQDAOImpl implements UploadFileQDAO{
 		}
 	}
 
-	/*@Override
-	public Boolean updateOrder(List<Integer> quesIdList) throws ObjectNotFoundException {
-		UploadFileQ uploadFileQ = new UploadFileQ();
-		Criteria criteria;
-		for (int i = 0; i < quesIdList.size(); i++){
-			criteria = this.sessionFactory.getCurrentSession().createCriteria(UploadFileQ.class);
-			criteria.add(Restrictions.eqOrIsNull("uploadQuesId", quesIdList.get(i)));
-			uploadFileQ = (UploadFileQ) criteria.uniqueResult();
-			if(uploadFileQ == null)
-				throw new ObjectNotFoundException(null,"Upload Question Id: " + quesIdList.get(i) + " not found.");
-			uploadFileQ.setOrderId(i+1);
-			this.sessionFactory.getCurrentSession().save(uploadFileQ);
+	@Override
+	public Boolean setPublishedUploadFileQ(Integer uploadFileQId, Boolean published){
+		
+		UploadFileQ uploadFileQ = getUploadFileQuestion(uploadFileQId);
+		if(uploadFileQ == null)
+			return Boolean.FALSE;
+		else{
+			uploadFileQ.setPublished(published);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(uploadFileQ);
+			return Boolean.TRUE;
 		}
-		return Boolean.TRUE;
-	}*/
+	}
 
 }

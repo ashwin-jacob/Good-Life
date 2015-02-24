@@ -138,13 +138,23 @@ public class UploadQuestionController {
 		return jsonResp;
 	}
 	
-	/*@ResponseBody
-	@RequestMapping(value = "/updateorder", method = RequestMethod.GET)
-	public Boolean updateOrder(@RequestParam(value="uploadQuesId") List<Integer> quesIdList) 
-			throws ObjectNotFoundException {
-				
-		Boolean response = new Boolean();
-		response = ajaxResponseBuilder.createSuccessResponse(uploadDAO.updateOrder(quesIdList));
-		return response;
-	}*/
+	@ResponseBody
+	@RequestMapping(value = "/setuploadquestionpublished", method = RequestMethod.GET)
+	public String setUploadQuestionPublished(@RequestParam(value="uploadQuesId") Integer uploadQuesId,
+											  @RequestParam(value="published") Boolean published){
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(uploadDAO.setPublishedUploadFileQ(uploadQuesId, published));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+		
+	}
 }

@@ -2,8 +2,6 @@ package com.goodlife.dao;
 
 import java.util.List;
 
-import org.hibernate.ObjectNotFoundException;
-
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
 import com.goodlife.model.MultiChoiceOption;
 
@@ -14,4 +12,5 @@ public interface MultiChoiceOptionDAO {
 	public List<MultiChoiceOption> getMultiChoiceOptions(Integer multiQuesId) throws MultipleChoiceOptionNotFoundException;
 	public Boolean deleteMultiChoiceOption(Integer optionId) throws MultipleChoiceOptionNotFoundException;
 	public MultiChoiceOption findMultiChoiceOptionById(Integer optionId) throws MultipleChoiceOptionNotFoundException;
+	public Boolean setPublishMulitChoiceOption(Integer optionId, Boolean published);
 }

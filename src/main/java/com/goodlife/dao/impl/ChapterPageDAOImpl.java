@@ -104,4 +104,21 @@ public class ChapterPageDAOImpl implements ChapterPageDAO{
 		return Boolean.TRUE;
 	}
 
+	@Override
+	public Boolean setPublishChapterPage(Integer pageId, Boolean published) {
+		
+		Boolean isSuccess;
+		try {
+			ChapterPage chapterPage = findByPageId(pageId);
+			chapterPage.setPublished(published);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(chapterPage);
+			isSuccess = Boolean.TRUE;
+		} catch (ChapterPageNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		
+		return isSuccess;		
+	}
+
 }

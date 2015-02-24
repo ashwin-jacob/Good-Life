@@ -117,6 +117,18 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 				throw new ObjectNotFoundException(null,"User status Id: " + userStatusId + " not found.");
 			return userStatus;
 		}
+
+		@Override
+		public UserStatus findCurrentStatusByUser(Integer userId) {
+			
+			Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UserStatus.class);
+			criteria.add(Restrictions.and(Restrictions.eqOrIsNull("userId", userId), Restrictions.and(Restrictions.ge("endDate", new Date()), Restrictions.le("startDate", new Date()))));
+			UserStatus userStatus = (UserStatus) criteria.uniqueResult();
+			if(userStatus == null)
+				return null;
+			else
+				return userStatus;
+		}
 		
 		
 

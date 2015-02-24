@@ -60,6 +60,9 @@ public class UserManagementController {
 				@RequestParam(value="fb") Integer fb) {
 
 		List<Users> filteredList = new ArrayList<Users>();
+		List<Object> userAndStatusList = new ArrayList<Object>();
+		List<Character> userStatusList = new ArrayList<Character>();
+		UserStatus userStatus;
 		String searchStr = cleanInput(input, field);
 		
 		List<Character> roles = new ArrayList<Character>();
@@ -78,11 +81,23 @@ public class UserManagementController {
 			e.printStackTrace();
 		}
 		
+		for(int i = 0; i < filteredList.size(); i++)
+		{
+			userStatus = userStatusDAO.findCurrentStatusByUser(filteredList.get(i).getUserId());
+			if(userStatus == null)
+				userStatusList.add(Character.valueOf('a'));
+			else
+				userStatusList.add(userStatus.getStatusTypeCode());
+		}
+		
+		userAndStatusList.add(filteredList);
+		userAndStatusList.add(userStatusList);
+		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(filteredList);
+			jsonResp = mapper.writeValueAsString(userAndStatusList);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -127,6 +142,8 @@ public class UserManagementController {
 		}
 		return jsonResp;
 	}
+	
+	
 	
 	/**
 	 * deleteUserStatus - Undo a status

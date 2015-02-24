@@ -14,5 +14,5 @@ public interface ShortAnswerQDAO {
 	public Boolean updateOrderId(List<Integer> saQIdList) throws ShortAnswerNotFoundException;
 	public ShortAnswerQ getShortAnswerById(Integer saQId) throws ShortAnswerNotFoundException;
 	public List<ShortAnswerQ> getShortAnswerBySubChapter(Integer subChapId) throws SubChapterNotFoundException;
-	
+	public Boolean setPublishShortAnswer(Integer saQId, Boolean published);
 }

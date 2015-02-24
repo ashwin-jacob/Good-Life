@@ -1,10 +1,13 @@
 package com.goodlife.controller;
 
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +37,7 @@ public class MultiChoiceController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/addmultichoicequestion", method = RequestMethod.GET)
-	public Integer addMultiChoiceQuestion(@RequestParam(value="questionText") String questionText,
+	public String addMultiChoiceQuestion(@RequestParam(value="questionText") String questionText,
 											 @RequestParam(value="subChapId") Integer subChapId,
 											 @RequestParam(value="helpTxt") String helpTxt,
 											 @RequestParam(value="corrAns") Integer corrAns,
@@ -47,123 +50,257 @@ public class MultiChoiceController {
 		mcQ.setCorrectAnswer(corrAns);
 		mcQ.setOrderId(orderId);
 		
-		return mcQdao.addMultiChoice(mcQ);
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcQdao.addMultiChoice(mcQ));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/addmultichoiceoption", method = RequestMethod.GET)
-	public Integer addMultiChoiceOption(@RequestParam(value="mcQId") Integer mcQId,
+	public String addMultiChoiceOption(@RequestParam(value="mcQId") Integer mcQId,
 											 @RequestParam(value="choiceText") String choiceText) {
 		
 		MultiChoiceOption mcOpt = new MultiChoiceOption();
 		mcOpt.setMultiQuesId(mcQId);
 		mcOpt.setChoiceText(choiceText);
 
-		return mcOptdao.addMultiChoiceOption(mcOpt);
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcOptdao.addMultiChoiceOption(mcOpt));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/deletemultichoiceoption", method = RequestMethod.GET)
-	public Boolean deleteMultiChoiceOption(@RequestParam(value="Id") Integer mcOptId) throws MultipleChoiceOptionNotFoundException {
+	public String deleteMultiChoiceOption(@RequestParam(value="Id") Integer mcOptId) throws MultipleChoiceOptionNotFoundException {
 				
-		Boolean response = mcOptdao.deleteMultiChoiceOption(mcOptId);
-		if(response == null)
-			return Boolean.FALSE;
-		else
-			return response;
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcOptdao.deleteMultiChoiceOption(mcOptId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/deletemultichoiceques", method = RequestMethod.GET)
-	public Boolean deleteMultiChoiceQuestion(@RequestParam(value="Id") Integer mcQId) throws MultipleChoiceNotFoundException {
+	public String deleteMultiChoiceQuestion(@RequestParam(value="Id") Integer mcQId) throws MultipleChoiceNotFoundException {
 		
-		Boolean response = mcQdao.deleteMultiChoice(mcQId);
-		if(response == null)
-			return Boolean.FALSE;
-		else
-			return response;
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcQdao.deleteMultiChoice(mcQId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/listalloptionsbyquestion", method = RequestMethod.GET)
-	public List<MultiChoiceOption> listAllOptionsByQuestion(@RequestParam(value="quesId") Integer quesId) throws MultipleChoiceOptionNotFoundException {
+	public String listAllOptionsByQuestion(@RequestParam(value="quesId") Integer quesId) throws MultipleChoiceOptionNotFoundException {
 		
-		List<MultiChoiceOption> optionList = mcOptdao.getMultiChoiceOptions(quesId);	
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
 		
-		if(optionList == null)
-			return new ArrayList<MultiChoiceOption>();
-		else
-			return optionList;
+		try {
+			jsonResp = mapper.writeValueAsString(mcOptdao.getMultiChoiceOptions(quesId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/updateoptiontext", method = RequestMethod.GET)
-	public Boolean updateOptionText(@RequestParam(value="optionId") Integer optionId, 
+	public String updateOptionText(@RequestParam(value="optionId") Integer optionId, 
 			@RequestParam(value="optionText") String optionText) throws MultipleChoiceOptionNotFoundException {
 		
-		Boolean response = mcOptdao.updateChoiceText(optionId, optionText);
-		if(response == null)
-			return Boolean.FALSE;
-		else
-			return response;
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcOptdao.updateChoiceText(optionId, optionText));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/listallquestionbysubchapter", method = RequestMethod.GET)
-	public List<MultiChoiceQ> listAllQuestionBySubchapter(
+	public String listAllQuestionBySubchapter(
 			@RequestParam(value="subChapId") Integer subChapId) throws ObjectNotFoundException {
 		
-		List<MultiChoiceQ> mcQList = mcQdao.getAllMultiChoice(subChapId);	
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
 		
-		if(mcQList == null)
-			return new ArrayList<MultiChoiceQ>();
-		else
-			return mcQList;
+		try {
+			jsonResp = mapper.writeValueAsString(mcQdao.getAllMultiChoice(subChapId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatequestionorder", method = RequestMethod.GET)
-	public Boolean updateQuestionOrder(
+	public String updateQuestionOrder(
 			@RequestParam(value="multiChoiceIdList") List<Integer> multiChoiceIdList) throws MultipleChoiceNotFoundException {
-				
-		Boolean response = mcQdao.updateOrder(multiChoiceIdList);
-		if(response == null)
-			return Boolean.FALSE;
-		else
-			return response;	}
+
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcQdao.updateOrder(multiChoiceIdList));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatequestiontext", method = RequestMethod.GET)
-	public Boolean updateQuestionText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
+	public String updateQuestionText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
 			@RequestParam(value="quesText") String quesText) throws MultipleChoiceNotFoundException {
-				
-		Boolean response = mcQdao.updateQuestionText(multiChoiceId, quesText);
-		if(response == null)
-			return Boolean.FALSE;
-		else
-			return response;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcQdao.updateQuestionText(multiChoiceId, quesText));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 		}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatehelptext", method = RequestMethod.GET)
-	public Boolean updateHelpText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
+	public String updateHelpText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
 			@RequestParam(value="helpText") String helpText) throws MultipleChoiceNotFoundException {
 				
-		Boolean response = mcQdao.updateQuestionText(multiChoiceId, helpText);
-		if(response == null)
-			return Boolean.FALSE;
-		else
-			return response;	}
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcQdao.updateHelpText(multiChoiceId, helpText));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatecorrectanswer", method = RequestMethod.GET)
-	public Boolean updateCorrectAnswer(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
+	public String updateCorrectAnswer(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
 			@RequestParam(value="quesText") Integer correctAnswer) throws MultipleChoiceNotFoundException {
 				
-		Boolean response = mcQdao.updateCorrectAnswer(multiChoiceId, correctAnswer);
-		if(response == null)
-			return Boolean.FALSE;
-		else
-			return response;
-		}	
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcQdao.updateCorrectAnswer(multiChoiceId, correctAnswer));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/setmultichoiceqpublished", method = RequestMethod.GET)
+	public String setMultiChoiceQPublished(@RequestParam(value = "multiChoiceId") Integer multiChoiceId,
+										   @RequestParam(value = "published") Boolean published){
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcQdao.setPublishMultiChoiceQ(multiChoiceId, published));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/setmultichoiceoptpublished", method = RequestMethod.GET)
+	public String setMultiChoiceOptPublished(@RequestParam(value = "optionId") Integer optionId,
+										   @RequestParam(value = "published") Boolean published){
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcOptdao.setPublishMulitChoiceOption(optionId, published));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
 }
