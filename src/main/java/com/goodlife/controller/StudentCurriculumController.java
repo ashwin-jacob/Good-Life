@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.MultiChoiceOptionDAO;
@@ -68,6 +69,7 @@ public class StudentCurriculumController {
 	@Autowired
 	private UploadFileQDAO uploadFileQDAO;
 	
+	@ResponseBody
 	@RequestMapping(value = "/getallowedchapters", method = RequestMethod.GET)
 	public String getAllowedChapters(@RequestParam(value = "userId") Integer userId){
 		
@@ -86,6 +88,7 @@ public class StudentCurriculumController {
 		return jsonResp;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/getsubchapsbychapter", method = RequestMethod.GET)
 	public String getSubChapsByChapter(@RequestParam(value = "chapId") Integer chapId){
 		
@@ -111,6 +114,7 @@ public class StudentCurriculumController {
 		return jsonResp;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/getmultichoicebysubchap", method = RequestMethod.GET)
 	public String getMultiChoiceBySubChap(@RequestParam(value = "subChapId") Integer subChapId){
 		
@@ -129,6 +133,7 @@ public class StudentCurriculumController {
 		return jsonResp;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/getmultichoiceoptions", method = RequestMethod.GET)
 	public String getMultiChoiceOptions(@RequestParam(value = "multiQuesId") Integer multiQuesId){
 		
@@ -154,6 +159,7 @@ public class StudentCurriculumController {
 		return jsonResp;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/getmultichoiceuseranswer", method = RequestMethod.GET)
 	public String getMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "multiQuesId") Integer multiQuesId){
@@ -173,6 +179,7 @@ public class StudentCurriculumController {
 		return jsonResp;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/getshortansweruseranswer", method = RequestMethod.GET)
 	public String getShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
 														  @RequestParam(value = "shortAnsId") Integer shortAnsId){
@@ -192,6 +199,7 @@ public class StudentCurriculumController {
 		return jsonResp;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/issubchapcomplete", method = RequestMethod.GET)
 	public String isSubChapComplete(@RequestParam(value = "userId") Integer userId,
 									 @RequestParam(value = "subChapId") Integer subChapId){
@@ -230,15 +238,19 @@ public class StudentCurriculumController {
 	 * - 's' --> for list of short answer questions
 	 * - 'u' --> for a single upload file question
 	 */
+	
+	@ResponseBody
 	@RequestMapping(value = "/getsubchapform", method = RequestMethod.GET)
 	public String getSubChapForm(@RequestParam(value = "subChapId") Integer subChapId) throws SubChapterNotFoundException{
 		
 		ArrayList<Object> formArray = new ArrayList<Object>();
-		if(multiChoiceQDAO.getAllMultiChoice(subChapId) != null){
+		if(multiChoiceQDAO.getAllMultiChoice(subChapId) != null &&
+		   multiChoiceQDAO.getAllMultiChoice(subChapId).isEmpty() == false){
 			formArray.add(multiChoiceQDAO.getAllMultiChoice(subChapId));
 			formArray.add('m');
 		}
-		else if(shortAnswerQDAO.getShortAnswerBySubChapter(subChapId) != null){
+		else if(shortAnswerQDAO.getShortAnswerBySubChapter(subChapId) != null &&
+				shortAnswerQDAO.getShortAnswerBySubChapter(subChapId).isEmpty() == false){
 			formArray.add(shortAnswerQDAO.getShortAnswerBySubChapter(subChapId));
 			formArray.add('s');
 		}
@@ -264,6 +276,7 @@ public class StudentCurriculumController {
 		return jsonResp;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/updatecurrentchapter", method = RequestMethod.GET)
 	public String updateCurrentChapter(@RequestParam(value = "userId") Integer userId,
 										@RequestParam(value = "chapId") Integer chapId){
