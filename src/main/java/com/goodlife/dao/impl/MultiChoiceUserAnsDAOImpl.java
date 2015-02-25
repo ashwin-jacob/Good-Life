@@ -82,4 +82,17 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 		return isComplete;
 	}
 
+	@Override
+	public MultiChoiceUserAns getUserAnswerObj(Integer userId,
+			Integer multiQuesId) throws ObjectNotFoundException {
+		
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceUserAns.class);
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("multiQuesId", multiQuesId),Restrictions.eqOrIsNull("userId", userId)));
+		MultiChoiceUserAns multiChoiceAnsObj = (MultiChoiceUserAns) criteria.uniqueResult();
+		if(multiChoiceAnsObj == null)
+			return null;
+		else
+			return multiChoiceAnsObj;
+	}
+
 }

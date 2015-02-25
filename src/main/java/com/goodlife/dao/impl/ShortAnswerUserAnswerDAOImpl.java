@@ -36,6 +36,7 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 		else
 			return Boolean.TRUE;
 	}
+	
 
 	@Override
 	public ShortAnswerUserAnswer getUserAnswer(Integer userId, Integer saQId)

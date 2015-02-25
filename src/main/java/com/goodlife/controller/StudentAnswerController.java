@@ -186,5 +186,97 @@ public class StudentAnswerController {
 		}
 		return jsonResp;
 	}
+	
+	@RequestMapping(value = "/updateshortansweruseranswer", method = RequestMethod.GET)
+	public String updateShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
+											@RequestParam(value = "saQId") Integer saQId,
+											@RequestParam(value = "userAnswer") String userAnswer){
+		
+		ShortAnswerUserAnswer shortAnswerUserAnswer = shortAnswerUserAnsDAO.getUserAnswer(userId, saQId);
+		shortAnswerUserAnswer.setUserAnswer(userAnswer);
+		
+		Boolean isShortAnsUpdated = shortAnswerUserAnsDAO.addUserAnswer(shortAnswerUserAnswer);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(isShortAnsUpdated);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
+	
+	@RequestMapping(value = "/updatemultichoiceuseranswer", method = RequestMethod.GET)
+	public String updateMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
+											@RequestParam(value = "multiQuesId") Integer multiQuesId,
+											@RequestParam(value = "userAnswer") Integer userAnswer){
+		
+		MultiChoiceUserAns multiChoiceUserAns = multiChoiceUserAnsDAO.getUserAnswerObj(userId, multiQuesId);
+		multiChoiceUserAns.setUserAnswer(userAnswer);
+		
+		Boolean isMultiChoiceAnsUpdated = multiChoiceUserAnsDAO.addMultiChoiceAnswer(multiChoiceUserAns);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(isMultiChoiceAnsUpdated);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
+	
+	@RequestMapping(value = "/updateuploadeduseranswer", method = RequestMethod.GET)
+	public String updateUploadedUserAnswer(@RequestParam(value = "userId") Integer userId,
+											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
+											@RequestParam(value = "mediaTypeId") Integer mediaTypeId,
+											@RequestParam(value = "filePath") String filePath){
+		
+		UploadedAnswer uploadedAnswer = uploadedAnswerDAO.getUserAnswer(userId, uploadQuesId);
+		uploadedAnswer.setMediaTypeId(mediaTypeId);
+		uploadedAnswer.setFilePath(filePath);
+		
+		
+		Integer uploadedAnswerId = uploadedAnswerDAO.addUploadedAnswer(uploadedAnswer);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(uploadedAnswerId);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
+	
+	
 }
 
