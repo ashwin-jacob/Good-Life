@@ -71,16 +71,18 @@ public class StudentCurriculumControllerTest {
 	@Transactional
 	public void testGetMultiChoiceUserAnswer(){
 		String userAns = studentCurriculumController.getMultiChoiceUserAnswer(USER_ID, MULTI_QUES_ID);
-		//System.out.println(userAns);
 		assertTrue(userAns.length() > 0);
+		userAns = studentCurriculumController.getMultiChoiceUserAnswer(USER_ID, MULTI_QUES_ID+2);
+		assertEquals(userAns,"null");
 	}
 	
 	@Test
 	@Transactional
 	public void testGetShortAnswerUserAnswer(){
 		String userAns = studentCurriculumController.getShortAnswerUserAnswer(USER_ID, NEW_SA_Q_ID-1);
-		//System.out.println(userAns);
 		assertTrue(userAns.length()>0);
+		userAns = studentCurriculumController.getShortAnswerUserAnswer(USER_ID, NEW_SA_Q_ID);
+		assertEquals(userAns,"null");
 	}
 	
 	@Test

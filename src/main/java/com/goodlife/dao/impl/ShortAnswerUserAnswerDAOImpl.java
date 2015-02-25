@@ -47,10 +47,10 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 		ShortAnswerUserAnswer shortAnswerUA = (ShortAnswerUserAnswer) criteria.uniqueResult();
 		
 		if(null == shortAnswerUA){
-			throw new ObjectNotFoundException(null, "The combination of user Id: " + userId + " and saQId: " + saQId + "were not found in the database!");
+			return null;
 		}
-		
-		return shortAnswerUA;
+		else
+			return shortAnswerUA;
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 	
 	@Override
 	public Boolean isShortAnswerSubChapComplete(Integer userId, Integer subChapId) {
-		System.out.println("Entering isShortAnswerSubChapComplete");
+
 		Boolean isComplete = Boolean.TRUE;
 		List<ShortAnswerQ> questionList = new ArrayList<ShortAnswerQ>();
 		try {
@@ -82,10 +82,8 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 		    for(int i = 0; i < questionList.size(); i++){
 				if(getUserAnswer(userId, questionList.get(i).getSaQId()).isAprvd() == Boolean.FALSE)
 					isComplete = Boolean.FALSE;
-				System.out.println(String.valueOf(isComplete));
 			}
 		}
-		System.out.println("leaving isShortAnswerSubChapComplete");
 		return isComplete;
 	}
 	
