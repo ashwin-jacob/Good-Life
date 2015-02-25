@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.MultiChoiceOptionDAO;
@@ -99,7 +100,7 @@ public class StudentAnswerController {
 	}*/
 	
 	
-	
+	@ResponseBody
 	@RequestMapping(value = "/addorupdateshortansweruseranswer", method = RequestMethod.GET)
 	public String updateShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "saQId") Integer saQId,
@@ -137,6 +138,7 @@ public class StudentAnswerController {
 		return jsonResp;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/addorupdatemultichoiceuseranswer", method = RequestMethod.GET)
 	public String updateMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "multiQuesId") Integer multiQuesId,
@@ -172,6 +174,7 @@ public class StudentAnswerController {
 		return jsonResp;
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/addorupdateuploadeduseranswer", method = RequestMethod.GET)
 	public String updateUploadedUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
