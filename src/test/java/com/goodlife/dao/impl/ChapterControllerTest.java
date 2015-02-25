@@ -57,8 +57,8 @@ public class ChapterControllerTest {
 	@Test
 	@Transactional
 	public void testListAllChapterDrafts() throws ChapterNotFoundException {
-		List<Chapter> chapList = chapterController.listAllChapterDrafts();
-		assertTrue(chapList.size() > 0);
+		String chapList = chapterController.listAllChapterDrafts();
+		assertTrue(chapList.length() > 0);
 	}
 	
 	@Test
@@ -72,7 +72,7 @@ public class ChapterControllerTest {
 	@Transactional
 	@Rollback
 	public void testDeleteChapter() throws ChapterNotFoundException{
-		Integer chapId = chapterController.deleteChapter(CHAP_ID);
+		Integer chapId = Integer.valueOf(chapterController.deleteChapter(CHAP_ID));
 		Integer expectedId = 0;
 		assertEquals(chapId,expectedId);
 	}
@@ -80,7 +80,7 @@ public class ChapterControllerTest {
 	@Test
 	@Transactional
 	public void testpublishChapter() throws ChapterNotFoundException{
-		Boolean isPublished = chapterController.publishChapter(CHAP_ID,true);
+		Boolean isPublished = Boolean.valueOf(chapterController.publishChapter(CHAP_ID,true));
 		assertTrue(isPublished);
 	}
 	
@@ -88,7 +88,7 @@ public class ChapterControllerTest {
 	@Transactional
 	public void testUpdateChapterTitle() throws ChapterNotFoundException{
 		String updatedTitle = "New Title!";
-		Boolean isUpdated = chapterController.updateChapterTitle(CHAP_ID,updatedTitle);
+		Boolean isUpdated = Boolean.valueOf(chapterController.updateChapterTitle(CHAP_ID,updatedTitle));
 		assertTrue(isUpdated);
 	}
 	
@@ -96,7 +96,7 @@ public class ChapterControllerTest {
 	@Transactional
 	public void testUpdateChapterDescr() throws ChapterNotFoundException{
 		String updatedDescr = "New Description!";
-		Boolean isUpdated = chapterController.updateChapterTitle(CHAP_ID,updatedDescr);
+		Boolean isUpdated = Boolean.valueOf(chapterController.updateChapterTitle(CHAP_ID,updatedDescr));
 		assertTrue(isUpdated);
 	}
 	
@@ -106,13 +106,13 @@ public class ChapterControllerTest {
 		List<Integer> chapList = new ArrayList<Integer>();
 		chapList.add(2);
 		chapList.add(1);
-		assertTrue(chapterController.updateChapterOrder(chapList));
+		assertTrue(Boolean.valueOf(chapterController.updateChapterOrder(chapList)));
 	}
 	
 	@Test
 	@Transactional
 	public void testAddChapterPage() throws ChapterNotFoundException, ChapterPageNotFoundException {
-		Integer pageId = chapterController.addChapterPage(CHAP_ID, NEW_PAGE_NUM, NEW_PAGE_URL);
+		Integer pageId = Integer.valueOf(chapterController.addChapterPage(CHAP_ID, NEW_PAGE_NUM, NEW_PAGE_URL));
 		assertEquals(pageId,NEW_PAGE_ID);
 		assertEquals(chapterPageDAO.findByPageId(NEW_PAGE_ID).getChapId(),CHAP_ID);
 		assertEquals(chapterPageDAO.findByPageId(NEW_PAGE_ID).getPageNum(),NEW_PAGE_NUM);
@@ -123,16 +123,16 @@ public class ChapterControllerTest {
 	@Transactional
 	@Rollback
 	public void  testDeleteChapterPage() throws ChapterPageNotFoundException{
-		Integer pageCount = chapterController.listChapterPagesByChapId(CHAP_ID).size();
-		Boolean success = chapterController.deleteChapterPage(PAGE_ID);
+		Integer pageCount = chapterController.listChapterPagesByChapId(CHAP_ID).length();
+		Boolean success = Boolean.valueOf(chapterController.deleteChapterPage(PAGE_ID));
 		assertTrue(success);
-		assertTrue(pageCount > chapterController.listChapterPagesByChapId(CHAP_ID).size());		
+		assertTrue(pageCount > chapterController.listChapterPagesByChapId(CHAP_ID).length());		
 	}
 	
 	@Test
 	@Transactional
 	public void testListChapterPagesByChapId() throws ChapterPageNotFoundException{
-		Integer pageCount = chapterController.listChapterPagesByChapId(CHAP_ID).size();
+		Integer pageCount = chapterController.listChapterPagesByChapId(CHAP_ID).length();
 		assertTrue(pageCount > 0);
 	}
 	
@@ -142,7 +142,7 @@ public class ChapterControllerTest {
 		List<Integer> newOrder = new ArrayList<Integer>();
 		newOrder.add(0,PAGE_ID+1);
 		newOrder.add(1,PAGE_ID);
-		Boolean success = chapterController.updateChapterPageOrder(newOrder);
+		Boolean success = Boolean.valueOf(chapterController.updateChapterPageOrder(newOrder));
 		assertTrue(success);
 		assertEquals(chapterPageDAO.findByPageId(PAGE_ID).getPageNum(),Integer.valueOf(2));
 	}
@@ -150,7 +150,7 @@ public class ChapterControllerTest {
 	@Test
 	@Transactional
 	public void testUpdateChapterPageUrl() throws ChapterPageNotFoundException{
-		Boolean success = chapterController.updateChapterPageUrl(PAGE_ID, NEW_PAGE_URL);
+		Boolean success = Boolean.valueOf(chapterController.updateChapterPageUrl(PAGE_ID, NEW_PAGE_URL));
 		assertTrue(success);
 		assertEquals(chapterPageDAO.findByPageId(PAGE_ID).getPageUrl(),NEW_PAGE_URL);
 	}
@@ -158,10 +158,10 @@ public class ChapterControllerTest {
 	@Test
 	@Transactional
 	public void testDeleteChapterPagesByChapId() throws ChapterPageNotFoundException{
-		Boolean success = chapterController.deleteAllChapterPagesByChapId(CHAP_ID);
+		Boolean success = Boolean.valueOf(chapterController.deleteAllChapterPagesByChapId(CHAP_ID));
 		assertTrue(success);
-		Integer newSize = chapterController.listChapterPagesByChapId(CHAP_ID).size();
-		assertEquals(newSize,Integer.valueOf(0));
+		String newSize = chapterController.listChapterPagesByChapId(CHAP_ID);
+		assertEquals(newSize,"[]");
 	}
 	
 	public static Chapter createChapter() {
