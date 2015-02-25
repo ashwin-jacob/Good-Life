@@ -171,7 +171,7 @@ public class ChapterController {
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(allSavedChapterList);
+			jsonResp = mapper.writeValueAsString(allSavedChapterDraftsList);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
