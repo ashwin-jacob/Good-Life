@@ -24,7 +24,7 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 	@Override
 	public Integer addUploadedAnswer(UploadedAnswer uploadedAnswer) {
 		
-		this.sessionFactory.getCurrentSession().save(uploadedAnswer);
+		this.sessionFactory.getCurrentSession().saveOrUpdate(uploadedAnswer);
 		
 		return uploadedAnswer.getUploadAnswerId();
 	}

@@ -74,7 +74,7 @@ public class StudentAnswerController {
 	@Autowired
 	private UploadFileQDAO uploadFileQDAO;
 	
-	@RequestMapping(value = "/updatecurrentchapter", method = RequestMethod.GET)
+	/*@RequestMapping(value = "/updatecurrentchapter", method = RequestMethod.GET)
 	public String updateStudentChapter(@RequestParam(value = "userId") Integer userId,
 										@RequestParam(value = "chapId") Integer chapId){
 		Boolean isCurrChapAdded = studentDAO.updateCurrentChapter(userId, chapId);
@@ -96,109 +96,25 @@ public class StudentAnswerController {
 			e.printStackTrace();
 		}
 		return jsonResp;
-	}
+	}*/
 	
 	
-	@RequestMapping(value = "/addmultichoiceuseranswer", method = RequestMethod.GET)
-	public String addMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
-											@RequestParam(value = "multiQuesId") Integer multiQuesId,
-											@RequestParam(value = "userAnswer") Integer userAnswer){
-		
-		MultiChoiceUserAns multiChoiceUserAns = new MultiChoiceUserAns(userId, multiQuesId, userAnswer);
-		
-		
-		Boolean isMultiChoiceAnsAdded =  multiChoiceUserAnsDAO.addMultiChoiceAnswer(multiChoiceUserAns);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		
-		String jsonResp ="";
-		
-		try {
-			jsonResp = mapper.writeValueAsString(isMultiChoiceAnsAdded);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return jsonResp;
-	}
 	
-	@RequestMapping(value = "/addshortansweruseranswer", method = RequestMethod.GET)
-	public String addShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
-											@RequestParam(value = "saQId") Integer saQId,
-											@RequestParam(value = "userAnswer") String userAnswer){
-		
-		ShortAnswerUserAnswer shortAnswerUserAnswer = new ShortAnswerUserAnswer();
-		shortAnswerUserAnswer.setUserId(userId);
-		shortAnswerUserAnswer.setSaQId(saQId);
-		shortAnswerUserAnswer.setUserAnswer(userAnswer);
-		
-		Boolean isShortAnsAdded = shortAnswerUserAnsDAO.addUserAnswer(shortAnswerUserAnswer);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		
-		String jsonResp ="";
-		
-		try {
-			jsonResp = mapper.writeValueAsString(isShortAnsAdded);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return jsonResp;
-	}
-	
-	@RequestMapping(value = "/adduploadeduseranswer", method = RequestMethod.GET)
-	public String addUploadedUserAnswer(@RequestParam(value = "userId") Integer userId,
-											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
-											@RequestParam(value = "mediaTypeId") Integer mediaTypeId,
-											@RequestParam(value = "filePath") String filePath){
-		
-		UploadedAnswer uploadedAnswer = new UploadedAnswer();
-		uploadedAnswer.setUserId(userId);
-		uploadedAnswer.setUploadQuesId(uploadQuesId);
-		uploadedAnswer.setMediaTypeId(mediaTypeId);
-		uploadedAnswer.setFilePath(filePath);
-		
-		Integer isUploadedAnswerAdded = uploadedAnswerDAO.addUploadedAnswer(uploadedAnswer);
-		
-		ObjectMapper mapper = new ObjectMapper();
-		
-		String jsonResp ="";
-		
-		try {
-			jsonResp = mapper.writeValueAsString(isUploadedAnswerAdded);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return jsonResp;
-	}
-	
-	@RequestMapping(value = "/updateshortansweruseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/addorupdateshortansweruseranswer", method = RequestMethod.GET)
 	public String updateShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "saQId") Integer saQId,
 											@RequestParam(value = "userAnswer") String userAnswer){
 		
 		ShortAnswerUserAnswer shortAnswerUserAnswer = shortAnswerUserAnsDAO.getUserAnswer(userId, saQId);
-		shortAnswerUserAnswer.setUserAnswer(userAnswer);
+		if(shortAnswerUserAnswer == null){
+			shortAnswerUserAnswer = new ShortAnswerUserAnswer();
+			shortAnswerUserAnswer.setUserId(userId);
+			shortAnswerUserAnswer.setSaQId(saQId);
+			shortAnswerUserAnswer.setUserAnswer(userAnswer);
+		}
+		else{
+			shortAnswerUserAnswer.setUserAnswer(userAnswer);
+		}
 		
 		Boolean isShortAnsUpdated = shortAnswerUserAnsDAO.addUserAnswer(shortAnswerUserAnswer);
 		
@@ -221,13 +137,19 @@ public class StudentAnswerController {
 		return jsonResp;
 	}
 	
-	@RequestMapping(value = "/updatemultichoiceuseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/addorupdatemultichoiceuseranswer", method = RequestMethod.GET)
 	public String updateMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "multiQuesId") Integer multiQuesId,
 											@RequestParam(value = "userAnswer") Integer userAnswer){
 		
 		MultiChoiceUserAns multiChoiceUserAns = multiChoiceUserAnsDAO.getUserAnswerObj(userId, multiQuesId);
-		multiChoiceUserAns.setUserAnswer(userAnswer);
+		
+		if(multiChoiceUserAns == null){
+			multiChoiceUserAns = new MultiChoiceUserAns(userId, multiQuesId, userAnswer);
+		}
+		else{
+			multiChoiceUserAns.setUserAnswer(userAnswer);
+		}
 		
 		Boolean isMultiChoiceAnsUpdated = multiChoiceUserAnsDAO.addMultiChoiceAnswer(multiChoiceUserAns);
 		
@@ -250,15 +172,26 @@ public class StudentAnswerController {
 		return jsonResp;
 	}
 	
-	@RequestMapping(value = "/updateuploadeduseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/addorupdateuploadeduseranswer", method = RequestMethod.GET)
 	public String updateUploadedUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
 											@RequestParam(value = "mediaTypeId") Integer mediaTypeId,
 											@RequestParam(value = "filePath") String filePath){
 		
 		UploadedAnswer uploadedAnswer = uploadedAnswerDAO.getUserAnswer(userId, uploadQuesId);
-		uploadedAnswer.setMediaTypeId(mediaTypeId);
-		uploadedAnswer.setFilePath(filePath);
+
+		
+		if(uploadedAnswer == null){
+			uploadedAnswer = new UploadedAnswer();
+			uploadedAnswer.setUserId(userId);
+			uploadedAnswer.setUploadQuesId(uploadQuesId);
+			uploadedAnswer.setMediaTypeId(mediaTypeId);
+			uploadedAnswer.setFilePath(filePath);
+		}
+		else{
+			uploadedAnswer.setMediaTypeId(mediaTypeId);
+			uploadedAnswer.setFilePath(filePath);
+		}
 		
 		
 		Integer uploadedAnswerId = uploadedAnswerDAO.addUploadedAnswer(uploadedAnswer);

@@ -276,7 +276,7 @@ public class StudentCurriculumController {
 		return jsonResp;
 	}
 	
-	/*@ResponseBody
+	@ResponseBody
 	@RequestMapping(value = "/updatecurrentchapter", method = RequestMethod.GET)
 	public String updateCurrentChapter(@RequestParam(value = "userId") Integer userId,
 										@RequestParam(value = "chapId") Integer chapId){
@@ -300,6 +300,6 @@ public class StudentCurriculumController {
 			e.printStackTrace();
 		}
 		return jsonResp;
-	}*/
+	}
 	
 }

@@ -28,7 +28,7 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 	public Boolean addMultiChoiceAnswer(MultiChoiceUserAns multiChoiceAns) throws ObjectNotFoundException {
 		try {
 			multiChoiceQDAO.getMultiChoiceQById(multiChoiceAns.getMultiQuesId());
-			this.sessionFactory.getCurrentSession().save(multiChoiceAns);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoiceAns);
 			return Boolean.TRUE;
 		} catch (MultipleChoiceNotFoundException e) {
 			e.printStackTrace();

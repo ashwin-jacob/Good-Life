@@ -59,7 +59,7 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 		try{
 			ShortAnswerUserAnswer shortAnswerUA = getUserAnswer(userId, saQId);
 			shortAnswerUA.setAprvd(true);
-			this.sessionFactory.getCurrentSession().save(shortAnswerUA);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(shortAnswerUA);
 			return Boolean.TRUE;
 		}catch(ObjectNotFoundException e){
 			return Boolean.FALSE;
