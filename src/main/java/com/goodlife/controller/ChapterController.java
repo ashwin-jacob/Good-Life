@@ -86,21 +86,53 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/publishchapter", method = RequestMethod.GET)
-	public Boolean publishChapter(@RequestParam(value="chapId") Integer chapId,
+	public String publishChapter(@RequestParam(value="chapId") Integer chapId,
 												@RequestParam(value="published") Boolean published) throws ChapterNotFoundException {
 		
 		Boolean response = chapterDAO.updatePublished(chapId,published);
 		
-		return response;
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/deletechapter", method = RequestMethod.GET)
-	public Integer deleteChapter(@RequestParam(value="chapId") Integer chapId) throws ChapterNotFoundException {
+	public String deleteChapter(@RequestParam(value="chapId") Integer chapId) throws ChapterNotFoundException {
 		
 		Integer response = chapterDAO.deleteChapter(chapId);
 		
-		return response;
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
@@ -130,44 +162,111 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/listsavedchapterdrafts", method = RequestMethod.GET)
-	public List<Chapter> listAllChapterDrafts() throws ChapterNotFoundException {
+	public String listAllChapterDrafts() throws ChapterNotFoundException {
 		
 		List<Chapter> allSavedChapterDraftsList = chapterDAO.listAllChapterDrafts();
 		
-		return allSavedChapterDraftsList;
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(allSavedChapterList);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatechapterorder", method = RequestMethod.GET)
-	public Boolean updateChapterOrder(@RequestParam(value="newChapterOrderList")List<Integer> newChapterOrderList) throws ChapterNotFoundException {
+	public String updateChapterOrder(@RequestParam(value="newChapterOrderList")List<Integer> newChapterOrderList) throws ChapterNotFoundException {
 				
 		Boolean response = chapterDAO.updateOrder(newChapterOrderList);
-		return response;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "updatechaptertitle", method = RequestMethod.GET)
-	public Boolean updateChapterTitle(@RequestParam(value="chapId")Integer chapId,
+	public String updateChapterTitle(@RequestParam(value="chapId")Integer chapId,
 													@RequestParam(value="chapTitle")String chapTitle) throws ChapterNotFoundException {
 		
 		Boolean response = chapterDAO.updateTitle(chapId, chapTitle);
-		return response;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 		
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "updatechapterdescr", method = RequestMethod.GET)
-	public Boolean updateChapterDescr(@RequestParam(value="chapId")Integer chapId,
+	public String updateChapterDescr(@RequestParam(value="chapId")Integer chapId,
 													@RequestParam(value="chapDescr")String chapDescr) throws ChapterNotFoundException {
 		
 		Boolean response = chapterDAO.updateDescr(chapId, chapDescr);
-		return response;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 		
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "addchapterpage", method = RequestMethod.GET)
-	public Integer addChapterPage(@RequestParam(value="chapId") Integer chapId,
+	public String addChapterPage(@RequestParam(value="chapId") Integer chapId,
 			 									@RequestParam(value="pageNum") Integer pageNum,
 			 									@RequestParam(value="pageUrl") String pageUrl) throws ChapterNotFoundException{
 		
@@ -177,52 +276,152 @@ public class ChapterController {
 		chapterPage.setPageUrl(pageUrl);
 		
 		Integer response = chapterPageDAO.addChapterPage(chapterPage);
-		return response;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp = "";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 		
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/deletechapterpage", method = RequestMethod.GET)
-	public Boolean deleteChapterPage(@RequestParam(value="pageId") Integer pageId) throws ChapterPageNotFoundException {
+	public String deleteChapterPage(@RequestParam(value="pageId") Integer pageId) throws ChapterPageNotFoundException {
 		
 		Boolean response = chapterPageDAO.deleteChapterPage(pageId);
 		
-		return response;
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp = "";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/listchapterpagesbychapid", method = RequestMethod.GET)
-	public List<ChapterPage> listChapterPagesByChapId(@RequestParam(value="chapId") Integer chapId) throws ChapterPageNotFoundException {
+	public String listChapterPagesByChapId(@RequestParam(value="chapId") Integer chapId) throws ChapterPageNotFoundException {
 		
 		List<ChapterPage> chapterPagesList = chapterPageDAO.findAllChapterPagesByChapterId(chapId);
 		
-		return chapterPagesList;
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp = "";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(chapterPagesList);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatechapterpageorder", method = RequestMethod.GET)
-	public Boolean updateChapterPageOrder(@RequestParam(value="newChapterPageOrderList")List<Integer> newChapterPageOrderList) throws ChapterPageNotFoundException {
+	public String updateChapterPageOrder(@RequestParam(value="newChapterPageOrderList")List<Integer> newChapterPageOrderList) throws ChapterPageNotFoundException {
 				
 		Boolean response = chapterPageDAO.updateChapterPageOrder(newChapterPageOrderList);
-		return response;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp = "";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "updatechapterpageurl", method = RequestMethod.GET)
-	public Boolean updateChapterPageUrl(@RequestParam(value="pageId")Integer pageId,
+	public String updateChapterPageUrl(@RequestParam(value="pageId")Integer pageId,
 														@RequestParam(value="pageUrl")String pageUrl) throws ChapterPageNotFoundException {
 		
 		Boolean response = chapterPageDAO.updatePageUrl(pageId, pageUrl);
-		return response;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp = "";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 		
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "deletechapterpagesbychapid", method = RequestMethod.GET)
-	public Boolean deleteAllChapterPagesByChapId(@RequestParam(value="chapId") Integer chapId) throws ChapterPageNotFoundException {
+	public String deleteAllChapterPagesByChapId(@RequestParam(value="chapId") Integer chapId) throws ChapterPageNotFoundException {
 		
 		Boolean response = chapterPageDAO.deleteAllPagesByChapterId(chapId);
-		return response;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp = "";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return jsonResp;
 		
 	}
 	
