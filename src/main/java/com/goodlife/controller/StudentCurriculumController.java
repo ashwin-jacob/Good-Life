@@ -27,9 +27,10 @@ import com.goodlife.dao.StudentDAO;
 import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
-import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
 import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.MultiChoiceOption;
+import com.goodlife.model.MultiChoiceQ;
+import com.goodlife.model.ShortAnswerQ;
 import com.goodlife.model.SubChapter;
 import com.goodlife.model.UploadFileQ;
 
@@ -93,11 +94,7 @@ public class StudentCurriculumController {
 	public String getSubChapsByChapter(@RequestParam(value = "chapId") Integer chapId){
 		
 		List<SubChapter> subChapList = new ArrayList<SubChapter>();
-		try {
-			subChapList = subChapDAO.getSubChapListByChapter(chapId);
-		} catch (SubChapterNotFoundException e) {
-			e.printStackTrace();
-		}
+		subChapList = subChapDAO.getPublishedSubChapListByChap(chapId);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -122,7 +119,7 @@ public class StudentCurriculumController {
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(multiChoiceQDAO.getAllMultiChoice(subChapId));
+			jsonResp = mapper.writeValueAsString(multiChoiceQDAO.getAllPublishedMultiChoice(subChapId));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -138,11 +135,7 @@ public class StudentCurriculumController {
 	public String getMultiChoiceOptions(@RequestParam(value = "multiQuesId") Integer multiQuesId){
 		
 		List<MultiChoiceOption> optionList = new ArrayList<MultiChoiceOption>();
-		try {
-			optionList = multiChoiceOptionDAO.getMultiChoiceOptions(multiQuesId);
-		} catch (MultipleChoiceOptionNotFoundException e) {
-			e.printStackTrace();
-		}
+		optionList = multiChoiceOptionDAO.getPublishedMultiChoiceOptions(multiQuesId);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -244,19 +237,21 @@ public class StudentCurriculumController {
 	public String getSubChapForm(@RequestParam(value = "subChapId") Integer subChapId) throws SubChapterNotFoundException{
 		
 		ArrayList<Object> formArray = new ArrayList<Object>();
-		if(multiChoiceQDAO.getAllMultiChoice(subChapId) != null &&
-		   multiChoiceQDAO.getAllMultiChoice(subChapId).isEmpty() == false){
-			formArray.add(multiChoiceQDAO.getAllMultiChoice(subChapId));
+		List<MultiChoiceQ> multiList = multiChoiceQDAO.getAllPublishedMultiChoice(subChapId);
+		List<ShortAnswerQ> shortAnsList = shortAnswerQDAO.getPublishedShortAnswerBySubChapter(subChapId);
+		UploadFileQ uploadQ = uploadFileQDAO.getPublishedUploadFileQBySubchapId(subChapId);
+		
+		if(multiList != null && multiList.isEmpty() == false){
+			formArray.add(multiList);
 			formArray.add('m');
 		}
-		else if(shortAnswerQDAO.getShortAnswerBySubChapter(subChapId) != null &&
-				shortAnswerQDAO.getShortAnswerBySubChapter(subChapId).isEmpty() == false){
-			formArray.add(shortAnswerQDAO.getShortAnswerBySubChapter(subChapId));
+		else if(shortAnsList != null && shortAnsList.isEmpty() == false){
+			formArray.add(shortAnsList);
 			formArray.add('s');
 		}
-		else if(uploadFileQDAO.getUploadFileQBySubchapId(subChapId) != null){
+		else if(uploadQ != null){
 			List<UploadFileQ> uploadList = new ArrayList<UploadFileQ>();
-			uploadList.add(uploadFileQDAO.getUploadFileQBySubchapId(subChapId));
+			uploadList.add(uploadQ);
 			formArray.add(uploadList);
 			formArray.add('u');
 		}

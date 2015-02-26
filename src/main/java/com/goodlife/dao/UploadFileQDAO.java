@@ -14,4 +14,5 @@ public interface UploadFileQDAO {
 	public UploadFileQ getUploadFileQuestion(Integer uploadFileQId) throws ObjectNotFoundException;
 	public UploadFileQ getUploadFileQBySubchapId(Integer subChapId);
 	public Boolean setPublishedUploadFileQ(Integer quesId, Boolean published);
+	public UploadFileQ getPublishedUploadFileQBySubchapId(Integer subChapId);
 }

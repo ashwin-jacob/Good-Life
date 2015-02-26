@@ -24,7 +24,7 @@ import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
 public class MultiChoiceControllerTest {
 
 	private static final Integer MC_Q_ID = 1;
-	private static final Integer NEW_MC_Q_ID = 3;
+	private static final Integer NEW_MC_Q_ID = 4;
 	private static final Integer SUB_CHAP_ID = 1;
 	private static final String HELP_TEXT = "THIS IS HELP TEXT";
 	private static final String QUES_TEXT = "QUESTION 2 TEXT";
@@ -32,7 +32,7 @@ public class MultiChoiceControllerTest {
 	private static final Integer ORDER = 2;
 	private static final String CHOICE_TEXT = "OPTION 1";
 	private static final Integer OPTION_ID = 1;
-	private static final Integer NEW_OPTION_ID = 3;
+	private static final Integer NEW_OPTION_ID = 4;
 	
 	@Autowired
 	private MultiChoiceController multiChoiceController;

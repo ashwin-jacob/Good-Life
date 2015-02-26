@@ -65,6 +65,14 @@ public class UploadFileQDAOImpl implements UploadFileQDAO{
 	}
 
 	@Override
+	public UploadFileQ getPublishedUploadFileQBySubchapId(Integer subChapId) {
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UploadFileQ.class);
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("subChapId", subChapId),Restrictions.eq("pubished", true)));
+		UploadFileQ quesList = (UploadFileQ) criteria.uniqueResult();
+		return quesList;
+	}
+	
+	@Override
 	public Boolean deleteUploadFileQuestion(Integer uploadQuesId) throws ObjectNotFoundException{
 		UploadFileQ uploadFileQ = getUploadFileQuestion(uploadQuesId);
 		if(uploadFileQ == null)

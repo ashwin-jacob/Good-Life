@@ -13,4 +13,5 @@ public interface MultiChoiceOptionDAO {
 	public Boolean deleteMultiChoiceOption(Integer optionId) throws MultipleChoiceOptionNotFoundException;
 	public MultiChoiceOption findMultiChoiceOptionById(Integer optionId) throws MultipleChoiceOptionNotFoundException;
 	public Boolean setPublishMulitChoiceOption(Integer optionId, Boolean published);
+	public List<MultiChoiceOption> getPublishedMultiChoiceOptions(Integer multiQuesId);
 }

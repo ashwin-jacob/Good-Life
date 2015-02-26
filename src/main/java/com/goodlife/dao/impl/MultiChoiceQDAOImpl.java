@@ -98,6 +98,16 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 		return multiChoiceList;
 	}
 	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MultiChoiceQ> getAllPublishedMultiChoice(Integer subChapId) {
+		
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceQ.class);
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("subChapId", subChapId),Restrictions.eq("published", true)));
+		List<MultiChoiceQ> multiChoiceList = criteria.list();
+		return multiChoiceList;
+	}
+	
 	@Override
 	public MultiChoiceQ getMultiChoiceQById(Integer multiChoiceId) throws MultipleChoiceNotFoundException{
 		

@@ -104,6 +104,18 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 		}
 		return shortAnsList;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ShortAnswerQ> getPublishedShortAnswerBySubChapter(Integer subChapId) {
+
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ShortAnswerQ.class);
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("subChapId", subChapId),Restrictions.eq("published", true)));
+		
+		List<ShortAnswerQ> shortAnsList = criteria.list();
+		
+		return shortAnsList;
+	}
 
 	@Override
 	public Boolean setPublishShortAnswer(Integer saQId, Boolean published) {

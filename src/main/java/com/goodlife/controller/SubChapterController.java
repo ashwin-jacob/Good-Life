@@ -25,9 +25,6 @@ import com.goodlife.model.SubChapter;
 @Transactional
 public class SubChapterController {
 	
-	@Autowired
-	private AjaxResponseBuilder ajaxResponseBuilder;
-	
 	static final Logger logger = LogManager.getLogger(SubChapterController.class.getName());
 	
 	@Autowired

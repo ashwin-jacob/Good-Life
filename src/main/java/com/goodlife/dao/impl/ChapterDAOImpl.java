@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.ChapterDAO;
 import com.goodlife.exceptions.ChapterNotFoundException;
-import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Chapter;
-import com.goodlife.model.UserStatus;
-import com.goodlife.model.Users;
 
 @Repository
 public class ChapterDAOImpl implements ChapterDAO{
@@ -114,11 +110,12 @@ public class ChapterDAOImpl implements ChapterDAO{
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Chapter> listAllChapters() throws ChapterNotFoundException {
 		
-		Query query = this.sessionFactory.getCurrentSession().createQuery("from CHAPTER");
-		List<Chapter> allChapterList = query.list();
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Chapter.class);
+		List<Chapter> allChapterList = criteria.list();
 		return allChapterList;
 	}
 

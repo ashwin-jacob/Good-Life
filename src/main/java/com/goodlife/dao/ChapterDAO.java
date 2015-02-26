@@ -1,12 +1,9 @@
 package com.goodlife.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import com.goodlife.exceptions.ChapterNotFoundException;
-import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Chapter;
-import com.goodlife.model.UserStatus;
 
 public interface ChapterDAO {
 

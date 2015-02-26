@@ -48,6 +48,17 @@ public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
 		
 		return multiChoiceList;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<MultiChoiceOption> getPublishedMultiChoiceOptions(Integer multiQuesId){
+
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceOption.class);
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("multiQuesId", multiQuesId),Restrictions.eq("published",true)));
+		List<MultiChoiceOption> multiChoiceList = criteria.list();
+		
+		return multiChoiceList;
+	}
 
 	@Override
 	public Boolean deleteMultiChoiceOption(Integer optionId) throws MultipleChoiceOptionNotFoundException {

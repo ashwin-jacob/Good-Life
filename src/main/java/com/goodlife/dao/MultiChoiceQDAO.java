@@ -16,4 +16,5 @@ public interface MultiChoiceQDAO {
 	public List<MultiChoiceQ> getAllMultiChoice(Integer subChapId);
 	public MultiChoiceQ getMultiChoiceQById(Integer multiChoiceId) throws MultipleChoiceNotFoundException;
 	public Boolean setPublishMultiChoiceQ(Integer multiChoiceId, Boolean published);
+	public List<MultiChoiceQ> getAllPublishedMultiChoice(Integer subChapId);
 }

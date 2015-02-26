@@ -30,9 +30,6 @@ import com.goodlife.model.ChapterPage;
 @Transactional
 public class ChapterController {
 	
-	@Autowired
-	private AjaxResponseBuilder ajaxResponseBuilder;
-	
 	static final Logger logger = LogManager.getLogger(ChapterController.class.getName());
 	
 	@Autowired
@@ -66,13 +63,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -98,13 +92,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -123,13 +114,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -148,13 +136,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(allPublishedChapterList);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -173,13 +158,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(allSavedChapterDraftsList);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -198,13 +180,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -224,13 +203,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -251,13 +227,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -284,13 +257,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -310,13 +280,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -335,13 +302,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(chapterPagesList);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -360,13 +324,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -386,13 +347,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;
@@ -412,13 +370,10 @@ public class ChapterController {
 		try {
 			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonResp;

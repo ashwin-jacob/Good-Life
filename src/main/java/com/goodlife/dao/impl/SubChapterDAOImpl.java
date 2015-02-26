@@ -95,6 +95,16 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 		}
 		return subChapList;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<SubChapter> getPublishedSubChapListByChap(Integer chapId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SubChapter.class);
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("chapId", chapId),Restrictions.eq("published", true)));
+		List<SubChapter> subChapList = criteria.list();
+		return subChapList;
+	}
+	
 	@Override
 	public SubChapter getSubChapterById(Integer subChapId)
 			throws SubChapterNotFoundException {
