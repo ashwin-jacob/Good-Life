@@ -147,16 +147,18 @@ public class StudentAnswerController {
 		
 		MultiChoiceUserAns multiChoiceUserAns = multiChoiceUserAnsDAO.getUserAnswerObj(userId, multiQuesId);
 		Boolean isMultiChoiceAnsUpdated;
+		MultiChoiceOption mcOpt;
 		
 		try {
-			multiChoiceOptionDAO.findMultiChoiceOptionById(userAnswer);
+			mcOpt = multiChoiceOptionDAO.findMultiChoiceOptionById(userAnswer);
 		} catch (MultipleChoiceOptionNotFoundException e1) {
-			isMultiChoiceAnsUpdated = false;
+			mcOpt = null;
 			e1.printStackTrace();
 		}
 			
-		
-		if(multiChoiceUserAns == null){
+		if(mcOpt == null)
+			isMultiChoiceAnsUpdated = false;
+		else if(multiChoiceUserAns == null){
 			multiChoiceUserAns = new MultiChoiceUserAns(userId, multiQuesId, userAnswer);
 			isMultiChoiceAnsUpdated = multiChoiceUserAnsDAO.addMultiChoiceAnswer(multiChoiceUserAns);
 		}
