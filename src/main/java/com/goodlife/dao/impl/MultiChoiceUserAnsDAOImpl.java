@@ -26,14 +26,22 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 	
 	@Override
 	public Boolean addMultiChoiceAnswer(MultiChoiceUserAns multiChoiceAns) throws ObjectNotFoundException {
+		
+		MultiChoiceQ multiQ;
 		try {
-			multiChoiceQDAO.getMultiChoiceQById(multiChoiceAns.getMultiQuesId());
+			multiQ = multiChoiceQDAO.getMultiChoiceQById(multiChoiceAns.getMultiQuesId());
+		} catch (MultipleChoiceNotFoundException e) {
+			multiQ = null;
+			e.printStackTrace();
+		}
+			
+		if(multiQ == null)
+			return Boolean.FALSE;
+		else{
 			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoiceAns);
 			return Boolean.TRUE;
-		} catch (MultipleChoiceNotFoundException e) {
-			e.printStackTrace();
-			return Boolean.FALSE;
 		}
+		
 	}
 
 	@Override
