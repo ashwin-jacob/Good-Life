@@ -28,6 +28,8 @@ import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.exceptions.SubChapterNotFoundException;
+import com.goodlife.model.Chapter;
+import com.goodlife.model.CurriculumTree;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
 import com.goodlife.model.ShortAnswerQ;
@@ -79,6 +81,31 @@ public class StudentCurriculumController {
 		
 		try {
 			jsonResp = mapper.writeValueAsString(studentDAO.getAllowedChapters(userId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getallowedcurriculum", method = RequestMethod.GET)
+	public String getAllowedCurriculum(@RequestParam(value = "userId") Integer userId){
+		
+		List<CurriculumTree> curriculumList = new ArrayList<CurriculumTree>();
+		List<Chapter> chapterList = studentDAO.getAllowedChapters(userId);
+		
+		for(int i = 0; i < chapterList.size(); i++)
+			curriculumList.add(new CurriculumTree(chapterList.get(i),subChapDAO.getSubChapListByChapter(chapterList.get(i).getChapId())));
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(curriculumList);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
