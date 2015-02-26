@@ -143,15 +143,20 @@ public class StudentAnswerController {
 	@RequestMapping(value = "/addorupdatemultichoiceuseranswer", method = RequestMethod.GET)
 	public String updateMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "multiQuesId") Integer multiQuesId,
-											@RequestParam(value = "userAnswer") Integer userAnswer) throws ObjectNotFoundException, MultipleChoiceOptionNotFoundException{
+											@RequestParam(value = "userAnswer") Integer userAnswer){
 		
 		MultiChoiceUserAns multiChoiceUserAns = multiChoiceUserAnsDAO.getUserAnswerObj(userId, multiQuesId);
 		Boolean isMultiChoiceAnsUpdated;
 		
-		if(multiChoiceOptionDAO.findMultiChoiceOptionById(userAnswer) == null){
+		try {
+			multiChoiceOptionDAO.findMultiChoiceOptionById(userAnswer);
+		} catch (MultipleChoiceOptionNotFoundException e1) {
 			isMultiChoiceAnsUpdated = false;
+			e1.printStackTrace();
 		}
-		else if(multiChoiceUserAns == null){
+			
+		
+		if(multiChoiceUserAns == null){
 			multiChoiceUserAns = new MultiChoiceUserAns(userId, multiQuesId, userAnswer);
 			isMultiChoiceAnsUpdated = multiChoiceUserAnsDAO.addMultiChoiceAnswer(multiChoiceUserAns);
 		}
