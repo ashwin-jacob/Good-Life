@@ -85,14 +85,10 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 	}
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<SubChapter> getSubChapListByChapter(Integer chapId)
-			throws SubChapterNotFoundException {
+	public List<SubChapter> getSubChapListByChapter(Integer chapId) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SubChapter.class);
 		criteria.add(Restrictions.eqOrIsNull("chapId", chapId));
 		List<SubChapter> subChapList = criteria.list();
-		if(null == subChapList){
-			throw new SubChapterNotFoundException("subChapId: " + chapId + " not found in the database!");
-		}
 		return subChapList;
 	}
 	

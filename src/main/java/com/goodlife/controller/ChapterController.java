@@ -1,6 +1,7 @@
 package com.goodlife.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.ChapterPageDAO;
+import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.exceptions.ChapterNotFoundException;
 import com.goodlife.exceptions.ChapterPageNotFoundException;
 import com.goodlife.model.Chapter;
 import com.goodlife.model.ChapterPage;
+import com.goodlife.model.CurriculumTree;
 
 
 @Controller
@@ -37,6 +40,9 @@ public class ChapterController {
 	
 	@Autowired
 	private ChapterPageDAO chapterPageDAO;
+	
+	@Autowired
+	private SubChapterDAO subChapterDAO;
 	
 	@ResponseBody
 	@RequestMapping(value = "/addchapter", method = RequestMethod.POST)
@@ -125,7 +131,7 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/listpublishedchapters", method = RequestMethod.GET)
-	public String listPublishedChapters() throws ChapterNotFoundException {
+	public String listPublishedChapters() {
 		
 		List<Chapter> allPublishedChapterList = chapterDAO.listAllPublishedChapters();
 				
@@ -135,6 +141,38 @@ public class ChapterController {
 		
 		try {
 			jsonResp = mapper.writeValueAsString(allPublishedChapterList);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
+	
+	/*
+	 * The JSON response is an array of CurriculumTree objects(which contain a chapter object and its corresponding subchapter list)
+	 * The response first prints off all the subchapter objects in the corresponding chapter and then prints the chapter object
+	 * Example string:
+	 * {"subChapList":[{"subChapId":5,"chapId":2,"subChapDescr":"Sub Chapter 5 Description","subChapTitle":"Sub Chapter 5 Title","orderId":5,"published":true}],
+	 * "chapterList":{"chapId":2,"chapDescr":"CHAPTER 2 DESCRIPTION","chapTitle":"CHAPTER 2 TITLE","orderId":2,"published":true}}
+	 */
+	@ResponseBody
+	@RequestMapping(value ="listcurriculum", method = RequestMethod.GET)
+	public String listCurriculum(){
+		
+		List<CurriculumTree> curriculumTreeList = new ArrayList<CurriculumTree>();
+		List<Chapter> chapterList = chapterDAO.listAllPublishedChapters();
+		
+		for(int i = 0; i < chapterList.size(); i++)
+			curriculumTreeList.add(new CurriculumTree(chapterList.get(i),subChapterDAO.getSubChapListByChapter(chapterList.get(i).getChapId())));
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(curriculumTreeList);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {

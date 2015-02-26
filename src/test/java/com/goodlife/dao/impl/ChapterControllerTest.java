@@ -164,6 +164,13 @@ public class ChapterControllerTest {
 		assertEquals(newSize,"[]");
 	}
 	
+	@Test
+	@Transactional
+	public void testListCurriculum(){
+		System.out.println(chapterController.listCurriculum());
+		assertNotNull(chapterController.listCurriculum());
+	}
+	
 	public static Chapter createChapter() {
 		Chapter chapter = new Chapter();
 		chapter.setChapTitle(CHAP_TITLE);

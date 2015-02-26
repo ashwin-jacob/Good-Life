@@ -12,7 +12,7 @@ public interface SubChapterDAO {
 	public Boolean updateOrder(List<Integer> subChapterIdList) throws SubChapterNotFoundException;
 	public Boolean updateTitle(Integer subChapId, String subChapTitle) throws SubChapterNotFoundException;
 	public Boolean updateDescription(Integer subChapId, String subChapDescr) throws SubChapterNotFoundException;
-	public List<SubChapter> getSubChapListByChapter(Integer chapId) throws SubChapterNotFoundException;
+	public List<SubChapter> getSubChapListByChapter(Integer chapId);
 	public SubChapter getSubChapterById(Integer subChapId) throws SubChapterNotFoundException;
 	public Boolean setPublishSubChapter(Integer subChapId, Boolean published);
 	public List<SubChapter> getPublishedSubChapListByChap(Integer chapId);

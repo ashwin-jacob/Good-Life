@@ -121,8 +121,7 @@ public class ChapterDAOImpl implements ChapterDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Chapter> listAllPublishedChapters()
-			throws ChapterNotFoundException {
+	public List<Chapter> listAllPublishedChapters(){
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				Chapter.class);
 		criteria.add(Restrictions.eqOrIsNull("published", true));
