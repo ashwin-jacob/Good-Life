@@ -7,6 +7,7 @@ import java.util.List;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.hibernate.ObjectNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -142,18 +143,24 @@ public class StudentAnswerController {
 	@RequestMapping(value = "/addorupdatemultichoiceuseranswer", method = RequestMethod.GET)
 	public String updateMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "multiQuesId") Integer multiQuesId,
-											@RequestParam(value = "userAnswer") Integer userAnswer){
+											@RequestParam(value = "userAnswer") Integer userAnswer) throws ObjectNotFoundException, MultipleChoiceOptionNotFoundException{
 		
 		MultiChoiceUserAns multiChoiceUserAns = multiChoiceUserAnsDAO.getUserAnswerObj(userId, multiQuesId);
+		Boolean isMultiChoiceAnsUpdated;
 		
-		if(multiChoiceUserAns == null){
+		if(multiChoiceOptionDAO.findMultiChoiceOptionById(userAnswer) == null){
+			isMultiChoiceAnsUpdated = false;
+		}
+		else if(multiChoiceUserAns == null){
 			multiChoiceUserAns = new MultiChoiceUserAns(userId, multiQuesId, userAnswer);
+			isMultiChoiceAnsUpdated = multiChoiceUserAnsDAO.addMultiChoiceAnswer(multiChoiceUserAns);
 		}
 		else{
 			multiChoiceUserAns.setUserAnswer(userAnswer);
+			isMultiChoiceAnsUpdated = multiChoiceUserAnsDAO.addMultiChoiceAnswer(multiChoiceUserAns);
 		}
 		
-		Boolean isMultiChoiceAnsUpdated = multiChoiceUserAnsDAO.addMultiChoiceAnswer(multiChoiceUserAns);
+		
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
