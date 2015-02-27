@@ -1,9 +1,11 @@
 package com.goodlife.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Query;
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,28 +16,41 @@ import com.goodlife.model.Student;
 
 @Repository
 public class InstructorDAOImpl implements InstructorDAO  {
-
-	private static final String QUERY_ROSTER = 
-			"from USERS user where user.roster_id = :rosterId and user.role_typ_cd = " + 'M' +
-			"OR user.role_typ_cd = " + 'F';
 	
 	@Autowired
     private SessionFactory sessionFactory;
 	
 	@Override
 	public Instructor findInstructorByUserName(String username) throws UserNotFoundException {
-		Instructor user = (Instructor) this.sessionFactory.getCurrentSession().get(Instructor.class, username);
-		if (null == user) {
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Instructor.class);
+		criteria.add(Restrictions.eqOrIsNull("username", username));
+		Instructor instructor = (Instructor) criteria.uniqueResult();
+		if (null == instructor) {
         	throw new UserNotFoundException("Instructor: " + username + ".  Not found in the database!");
         }
-		return user;
+		return instructor;
 	}
 	
 	@Override
-	public List<Instructor> findInstructorByRosterId(Integer rosterId)
+	public Instructor findInstructorByRosterId(Integer rosterId)
 			throws UserNotFoundException {
-		Query query = this.sessionFactory.getCurrentSession().createQuery(QUERY_ROSTER).setParameter("rosterId", rosterId);
-		List<Instructor> userList = query.list();
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Instructor.class);
+		criteria.add(Restrictions.eqOrIsNull("rosterId", rosterId));
+		Instructor userList = (Instructor) criteria.uniqueResult();
+		if(userList == null)
+			throw new UserNotFoundException("Instructor rosterId: " + rosterId + " not found.");
 		return userList;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Student> findStudentsByRosterId(Integer rosterId) {
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Instructor.class);
+		criteria.add(Restrictions.eqOrIsNull("rosterId", rosterId));
+		List<Student> studentList = criteria.list();
+		if(studentList == null)
+			return new ArrayList<Student>();
+		else
+			return studentList;
 	}
 }

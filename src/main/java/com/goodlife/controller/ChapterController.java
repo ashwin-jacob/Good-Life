@@ -24,7 +24,8 @@ import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.exceptions.ChapterPageNotFoundException;
 import com.goodlife.model.Chapter;
 import com.goodlife.model.ChapterPage;
-import com.goodlife.model.CurriculumTree;
+import com.goodlife.model.ObjectPair;
+import com.goodlife.model.SubChapter;
 
 
 @Controller
@@ -151,21 +152,26 @@ public class ChapterController {
 	}
 	
 	/*
-	 * The JSON response is an array of CurriculumTree objects(which contain a chapter object and its corresponding subchapter list)
-	 * The response first prints off all the subchapter objects in the corresponding chapter and then prints the chapter object
+	 * The JSON response is an array of ObjectPair objects(which contain a chapter object and its corresponding subchapter list)
+	 * The response first prints off all the chapter objects and then the corresponding sub chapter list
 	 * Example string:
-	 * {"subChapList":[{"subChapId":5,"chapId":2,"subChapDescr":"Sub Chapter 5 Description","subChapTitle":"Sub Chapter 5 Title","orderId":5,"published":true}],
-	 * "chapterList":{"chapId":2,"chapDescr":"CHAPTER 2 DESCRIPTION","chapTitle":"CHAPTER 2 TITLE","orderId":2,"published":true}}
+	 * {"objR":{"chapId":1,"chapDescr":"CHAPTER 1 DESCRIPTION","chapTitle":"CHAPTER 1 TITLE","orderId":1,"published":true},
+	 * "objL":[{"subChapId":1,"chapId":1,"subChapDescr":"Sub Chapter 1 Description","subChapTitle":"Sub Chapter 1 Title","orderId":1,"published":true}
 	 */
 	@ResponseBody
 	@RequestMapping(value ="listcurriculum", method = RequestMethod.GET)
 	public String listCurriculum(){
 		
-		List<CurriculumTree> curriculumTreeList = new ArrayList<CurriculumTree>();
-		List<Chapter> chapterList = chapterDAO.listAllPublishedChapters();
+		List<ObjectPair> curriculumTreeList = new ArrayList<ObjectPair>();
+		List<Chapter> chapterList = chapterDAO.listAllChapters();
+		List<SubChapter> subChapList;
 		
-		for(int i = 0; i < chapterList.size(); i++)
-			curriculumTreeList.add(new CurriculumTree(chapterList.get(i),subChapterDAO.getSubChapListByChapter(chapterList.get(i).getChapId())));
+		for(int i = 0; i < chapterList.size(); i++){
+			subChapList = subChapterDAO.getSubChapListByChapter(chapterList.get(i).getChapId());
+			if(subChapList == null)
+				subChapList = new ArrayList<SubChapter>();
+			curriculumTreeList.add(new ObjectPair(chapterList.get(i),subChapList));
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		
 		String jsonResp ="";
