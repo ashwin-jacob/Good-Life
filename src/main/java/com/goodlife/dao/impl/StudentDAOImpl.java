@@ -1,5 +1,6 @@
 package com.goodlife.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -96,7 +97,10 @@ public class StudentDAOImpl implements StudentDAO  {
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Chapter.class);
 		criteria.add(Restrictions.and(Restrictions.le("chapId", student.getCurrentChapterId()),Restrictions.eq("published", true)));
 		List<Chapter> chapterList = criteria.list();
-		return chapterList;
+		if(chapterList == null)
+			return new ArrayList<Chapter>();
+		else
+			return chapterList;
 	}
 	
 	@Override

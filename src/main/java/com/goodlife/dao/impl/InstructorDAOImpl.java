@@ -1,6 +1,7 @@
 package com.goodlife.dao.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.InstructorDAO;
+import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Instructor;
 import com.goodlife.model.Student;
@@ -19,6 +21,9 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	
 	@Autowired
     private SessionFactory sessionFactory;
+	
+	@Autowired
+	private UsersDAO usersDAO;
 	
 	@Override
 	public Instructor findInstructorByUserName(String username) throws UserNotFoundException {
@@ -52,5 +57,27 @@ public class InstructorDAOImpl implements InstructorDAO  {
 			return new ArrayList<Student>();
 		else
 			return studentList;
+	}
+	
+	@Override
+	public Student getStudentProgress(Integer userId, Integer rosterId){
+		return null;
+	}
+
+	@Override
+	public Integer addInstructor(Integer userId) {
+		Instructor instructor = new Instructor();
+		try {
+			usersDAO.findByUserId(userId);
+			instructor.setStartDate(new Date());
+			instructor.setUserId(userId);
+			instructor.setNumStudent(0);
+			instructor.setTotalCapacity(0);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(instructor);
+			return instructor.getRosterId();
+		} catch (UserNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
