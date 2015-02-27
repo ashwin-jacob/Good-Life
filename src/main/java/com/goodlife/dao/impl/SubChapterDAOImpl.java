@@ -1,5 +1,6 @@
 package com.goodlife.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -97,7 +98,10 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SubChapter.class);
 		criteria.add(Restrictions.eqOrIsNull("chapId", chapId));
 		List<SubChapter> subChapList = criteria.list();
-		return subChapList;
+		if(subChapList == null)
+			return new ArrayList<SubChapter>();
+		else
+			return subChapList;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -106,7 +110,10 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(SubChapter.class);
 		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("chapId", chapId),Restrictions.eq("published", true)));
 		List<SubChapter> subChapList = criteria.list();
-		return subChapList;
+		if(subChapList == null)
+			return new ArrayList<SubChapter>();
+		else
+			return subChapList;
 	}
 	
 	@Override

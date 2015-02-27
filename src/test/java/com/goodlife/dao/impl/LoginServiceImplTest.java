@@ -1,17 +1,9 @@
 package com.goodlife.dao.impl;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.mockito.Mockito.*;
 
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
-import com.goodlife.model.Student;
-import com.goodlife.model.Users;
 import com.goodlife.service.impl.LoginServiceImpl;
 
 
@@ -37,32 +27,16 @@ public class LoginServiceImplTest {
 	private static final String LNAME = "Raj";
 	
 	@Autowired
-	private static UsersDAO usersDAO;
+	private UsersDAO usersDAO;
 	
 	@Autowired
-	private static LoginServiceImpl loginService;
-	
-	@Before
-	public void setUp() throws UserNotFoundException {
-		Users user = createUser();
-	}
-
+	private LoginServiceImpl loginService;
 
 	@Test
+	@Transactional
 	public void testloadUserByUsername() throws UserNotFoundException {
 		UserDetails userDetails = loginService.loadUserByUsername(USER_NAME);
 		
 	}
 	
-	public static Users createUser() {
-		Users user = new Users();
-		user.setUserId(USER_ID);
-		user.setUsername(USER_NAME);
-		user.setInvitationCode(INV_CD);
-		user.setEmail(EMAIL);
-		user.setFirstname(FNAME);
-		user.setLastname(LNAME);
-		user.setRegistered(true);
-		return user;
-	}
 }
