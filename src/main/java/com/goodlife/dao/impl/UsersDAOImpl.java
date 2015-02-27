@@ -24,10 +24,16 @@ public class UsersDAOImpl implements UsersDAO {
 	}
 
 	@Override
-	public Integer deleteUser(String username) throws UserNotFoundException {
-		Users user = findByUserName(username);
-		this.sessionFactory.getCurrentSession().delete(user);
-		return user.getUserId();
+	public Boolean deleteUser(String username) {
+		Users user;
+		try {
+			user = findByUserName(username);
+			this.sessionFactory.getCurrentSession().delete(user);
+			return Boolean.TRUE;
+		} catch (UserNotFoundException e) {
+			e.printStackTrace();
+			return Boolean.FALSE;
+		}
 	}
 
 	@Override
@@ -45,10 +51,8 @@ public class UsersDAOImpl implements UsersDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Users> findByLastName(String lastname)
-			throws UserNotFoundException {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
-				Users.class);
+	public List<Users> findByLastName(String lastname) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
 		criteria.add(Restrictions.ilike("lastname", lastname));
 		List<Users> userList = criteria.list();
 		return userList;
@@ -56,10 +60,8 @@ public class UsersDAOImpl implements UsersDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Users> findByFirstName(String firstname)
-			throws UserNotFoundException {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
-				Users.class);
+	public List<Users> findByFirstName(String firstname) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
 		criteria.add(Restrictions.ilike("firstname", firstname));
 		List<Users> userList = criteria.list();
 		return userList;
@@ -67,23 +69,30 @@ public class UsersDAOImpl implements UsersDAO {
 
 	@Override
 	public Users findByEmail(String email) throws UserNotFoundException {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
-				Users.class);
-		criteria.add(Restrictions.ilike("email", email));
-		return (Users) criteria.uniqueResult();
+		
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
+		criteria.add(Restrictions.eq("email", email));
+		Users user = (Users) criteria.uniqueResult();
+		if(user == null)
+			throw new UserNotFoundException("User with email: " + email + " not found.");
+		else
+			return user;
 	}
 	
 	@Override
 	public Users findByUserId(Integer userId) throws UserNotFoundException {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
-				Users.class);
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
 		criteria.add(Restrictions.eq("userId", userId));
-		return (Users) criteria.uniqueResult();
+		Users user = (Users) criteria.uniqueResult();
+		if(user == null)
+			throw new UserNotFoundException("User with userId: " + userId + " not found.");
+		else
+			return user;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Users> findByCity(String city) throws UserNotFoundException {
+	public List<Users> findByCity(String city) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				Users.class);
 		criteria.add(Restrictions.ilike("city", city));
@@ -93,7 +102,7 @@ public class UsersDAOImpl implements UsersDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Users> findByState(String state) throws UserNotFoundException {
+	public List<Users> findByState(String state) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				Users.class);
 		criteria.add(Restrictions.ilike("state", state));
@@ -102,23 +111,37 @@ public class UsersDAOImpl implements UsersDAO {
 	}
 
 	@Override
-	public void disableUser(String username) throws UserNotFoundException {
-		Users user = findByUserName(username);
-		user.setRegistered(false);
-		this.sessionFactory.getCurrentSession().save(user);
+	public Boolean disableUser(String username) {
+		Users user;
+		try {
+			user = findByUserName(username);
+			user.setRegistered(Boolean.FALSE);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(user);
+			return Boolean.TRUE;
+		} catch (UserNotFoundException e) {
+			e.printStackTrace();
+			return Boolean.FALSE;
+		}
+		
 	}
 
 	@Override
-	public void enableUser(String username) throws UserNotFoundException {
-		Users user = findByUserName(username);
-		user.setRegistered(true);
-		this.sessionFactory.getCurrentSession().save(user);
+	public Boolean enableUser(String username) {
+		Users user;
+		try {
+			user = findByUserName(username);
+			user.setRegistered(true);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(user);
+			return Boolean.TRUE;
+		} catch (UserNotFoundException e) {
+			e.printStackTrace();
+			return Boolean.FALSE;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Users> findByRoleTypes(List<Character> roles)
-			throws UserNotFoundException {
+	public List<Users> findByRoleTypes(List<Character> roles) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				Users.class);
 		criteria.add(Restrictions.in("roleTypeCode",roles));
@@ -129,35 +152,29 @@ public class UsersDAOImpl implements UsersDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Users> advancedQuery(String input, String field,
-			List<Character> roles) throws UserNotFoundException {
-		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
-				Users.class);
+			List<Character> roles) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
 		if(roles != null)
 			criteria.add(Restrictions.and(Restrictions.sqlRestriction(field + " = '" + input + "'"),
 					 Restrictions.in("roleTypeCode",roles)));
 		else
 			criteria.add(Restrictions.sqlRestriction(field + " = '" + input + "'"));
 		return criteria.list();
-		/*String sql = "from USERS user where user." + field + " = " + input;
-
-		if (roles != null) {
-			for (char role : roles) {
-				sql += " and where user.role_typ_cd = " + role;
-			}
-		}
-
-		Query query = this.sessionFactory.getCurrentSession().createQuery(sql);
-		List<Users> userList = query.list();
-		return userList;*/
+		
 	}
 
 	@Override
-	public Integer promoteUser(String username, char roleTypeCode)
-			throws UserNotFoundException {
-		Users user = findByUserName(username);
-		user.setRoleTypeCode(roleTypeCode);
-		Users saved = (Users) this.sessionFactory.getCurrentSession()
-				.save(user);
-		return saved.getUserId();
+	public Boolean promoteUser(String username, char roleTypeCode) {
+		Users user;
+		try {
+			user = findByUserName(username);
+			user.setRoleTypeCode(roleTypeCode);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(user);
+			return Boolean.TRUE;
+		} catch (UserNotFoundException e) {
+			e.printStackTrace();
+			return Boolean.FALSE;
+		}
+		
 	}
 }

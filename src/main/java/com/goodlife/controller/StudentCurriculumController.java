@@ -27,7 +27,6 @@ import com.goodlife.dao.StudentDAO;
 import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
-import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.Chapter;
 import com.goodlife.model.CurriculumTree;
 import com.goodlife.model.MultiChoiceOption;
@@ -261,7 +260,7 @@ public class StudentCurriculumController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/getsubchapform", method = RequestMethod.GET)
-	public String getSubChapForm(@RequestParam(value = "subChapId") Integer subChapId) throws SubChapterNotFoundException{
+	public String getSubChapForm(@RequestParam(value = "subChapId") Integer subChapId){
 		
 		ArrayList<Object> formArray = new ArrayList<Object>();
 		List<MultiChoiceQ> multiList = multiChoiceQDAO.getAllPublishedMultiChoice(subChapId);

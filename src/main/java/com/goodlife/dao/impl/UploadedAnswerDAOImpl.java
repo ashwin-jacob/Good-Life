@@ -30,56 +30,40 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 	}
 
 	@Override
-	public Boolean setApproveAnswer(Integer uploadAnswerId, Boolean aprvd)
-			throws ObjectNotFoundException {
+	public Boolean setApproveAnswer(Integer uploadAnswerId, Boolean aprvd){
 
-		UploadedAnswer uploadedAnswer;
-		try {
-			uploadedAnswer = (UploadedAnswer)this.sessionFactory.getCurrentSession().load(UploadedAnswer.class, uploadAnswerId);
-		} catch (ObjectNotFoundException e){
-			uploadedAnswer = (UploadedAnswer)this.sessionFactory.getCurrentSession().get(UploadedAnswer.class, uploadAnswerId);
+		UploadedAnswer uploadedAnswer = getUserAnswerByQuesId(uploadAnswerId);
+		if(uploadedAnswer == null)
+			return Boolean.FALSE;
+		else{
+			uploadedAnswer.setAprvd(aprvd);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(uploadedAnswer);
+			return Boolean.TRUE;
 		}
-		
-		if (uploadedAnswer == null) {
-			throw new ObjectNotFoundException(null, "No uploaded answer found with id: " + uploadAnswerId);
-		}
-		
-		uploadedAnswer.setAprvd(aprvd);
-		this.sessionFactory.getCurrentSession().saveOrUpdate(uploadedAnswer);
-		return aprvd;
 	}
 
 	@Override
 	public Boolean setSharedAnswer(Integer uploadAnswerId, Boolean shared)
 			throws ObjectNotFoundException {
 		
-		UploadedAnswer uploadedAnswer;
-		try{
-			uploadedAnswer = (UploadedAnswer)this.sessionFactory.getCurrentSession().load(UploadedAnswer.class, uploadAnswerId);
-		}catch(ObjectNotFoundException e){
-			uploadedAnswer = (UploadedAnswer)this.sessionFactory.getCurrentSession().get(UploadedAnswer.class, uploadAnswerId);
+		UploadedAnswer uploadedAnswer = getUserAnswerByQuesId(uploadAnswerId); 
+		if(uploadedAnswer == null)
+			return Boolean.FALSE;
+		else{
+			uploadedAnswer.setShared(shared);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(uploadedAnswer);
+			return Boolean.TRUE;
 		}
-		if (uploadedAnswer == null) {
-			throw new ObjectNotFoundException(null, "No uploaded answer found with id: " + uploadAnswerId);
-		}
-		
-		uploadedAnswer.setShared(shared);
-		return null;
 	}
 
 	@Override
-	public UploadedAnswer getUserAnswer(Integer userId, Integer uploadQuesId)
-			throws ObjectNotFoundException {
+	public UploadedAnswer getUserAnswer(Integer userId, Integer uploadQuesId){
 		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UploadedAnswer.class);
 		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("userId", userId), Restrictions.eqOrIsNull("uploadQuesId", uploadQuesId)));
 		
 		UploadedAnswer uploadedAnswer = (UploadedAnswer) criteria.uniqueResult();
 		
-		if (uploadedAnswer == null) {
-			throw new ObjectNotFoundException(null, 
-					"User answer for user " + userId + " upload question " + uploadQuesId + " not found.");
-		}
 		return uploadedAnswer;
 	}
 	
@@ -93,6 +77,19 @@ public class UploadedAnswerDAOImpl implements UploadedAnswerDAO{
 				getUserAnswer(userId,uploadFileQDAO.getUploadFileQBySubchapId(subChapId).getUploadQuesId()).isAprvd() == false)
 			isComplete = Boolean.FALSE;
 		return isComplete;
+	}
+
+	@Override
+	public UploadedAnswer getUserAnswerByQuesId(Integer uploadAnswerId){
+
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UploadedAnswer.class);
+		criteria.add(Restrictions.eqOrIsNull("uploadAnswerId", uploadAnswerId));
+		UploadedAnswer uploadAns = (UploadedAnswer) criteria.uniqueResult();
+		
+		if(uploadAns == null)
+			return null;
+		else
+			return uploadAns;
 	}
 
 }

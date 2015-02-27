@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.ShortAnswerQDAO;
+import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.exceptions.ShortAnswerNotFoundException;
-import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.ShortAnswerQ;
 
 @Repository
@@ -19,6 +19,9 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 
 	@Autowired
     private SessionFactory sessionFactory;
+	
+	@Autowired
+	private SubChapterDAO subChapterDAO;
 	
 	@Override
 	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) {
@@ -29,46 +32,49 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 	}
 
 	@Override
-	public Boolean updateQuestionText(Integer saQId, String question)
-			throws ShortAnswerNotFoundException {
-		
-		ShortAnswerQ shortAns = getShortAnswerById(saQId);
-		if(shortAns == null)
-			return Boolean.FALSE;
-		else{
+	public Boolean updateQuestionText(Integer saQId, String question) {
+		Boolean isSuccess = Boolean.TRUE;
+		ShortAnswerQ shortAns;
+		try {
+			shortAns = getShortAnswerById(saQId);
 			shortAns.setQuestion(question);
 			this.sessionFactory.getCurrentSession().save(shortAns);
-			return Boolean.TRUE;
+		} catch (ShortAnswerNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
 		}
+		return isSuccess;
 	}
 
 	@Override
-	public Boolean updateHelpText(Integer saQId, String helpText)
-			throws ShortAnswerNotFoundException {
-		
-		ShortAnswerQ shortAns = getShortAnswerById(saQId);
-		if(shortAns == null)
-			return Boolean.FALSE;
-		else{
+	public Boolean updateHelpText(Integer saQId, String helpText) {
+		Boolean isSuccess = Boolean.TRUE;
+		ShortAnswerQ shortAns;
+		try {
+			shortAns = getShortAnswerById(saQId);
 			shortAns.setHelpText(helpText);
 			this.sessionFactory.getCurrentSession().save(shortAns);
-			return Boolean.TRUE;
+		} catch (ShortAnswerNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
 		}
+		return isSuccess;
 	}
 
 	@Override
-	public Boolean updateOrderId(List<Integer> saQIdList)
-			throws ShortAnswerNotFoundException {
-		
-		ShortAnswerQ shortAns = new ShortAnswerQ();
+	public Boolean updateOrderId(List<Integer> saQIdList) {
 		Boolean isSuccess = Boolean.TRUE;
+		ShortAnswerQ shortAns = new ShortAnswerQ();
 		
 		for(int i = 0; i <saQIdList.size(); i++){
-			shortAns = getShortAnswerById(saQIdList.get(i));
-			if(shortAns == null)
+			try {
+				shortAns = getShortAnswerById(saQIdList.get(i));
+				shortAns.setOrderId(i+1);
+				this.sessionFactory.getCurrentSession().saveOrUpdate(shortAns);
+			} catch (ShortAnswerNotFoundException e) {
 				isSuccess = Boolean.FALSE;
-			shortAns.setOrderId(i+1);
-			this.sessionFactory.getCurrentSession().save(shortAns);
+				e.printStackTrace();
+			}
 		}
 		return isSuccess;
 	}
@@ -91,17 +97,12 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ShortAnswerQ> getShortAnswerBySubChapter(Integer subChapId)
-			throws SubChapterNotFoundException {
-
+	public List<ShortAnswerQ> getShortAnswerBySubChapter(Integer subChapId){
+		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ShortAnswerQ.class);
 		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
 		
 		List<ShortAnswerQ> shortAnsList = criteria.list();
-		
-		if(null == shortAnsList){
-			throw new SubChapterNotFoundException("Sub Chapter Id: " + subChapId + " not found in the database!");
-		}
 		return shortAnsList;
 	}
 	

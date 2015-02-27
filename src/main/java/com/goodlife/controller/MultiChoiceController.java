@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.MultiChoiceOptionDAO;
 import com.goodlife.dao.MultiChoiceQDAO;
-import com.goodlife.exceptions.MultipleChoiceNotFoundException;
-import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
 
@@ -91,7 +88,7 @@ public class MultiChoiceController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/deletemultichoiceoption", method = RequestMethod.GET)
-	public String deleteMultiChoiceOption(@RequestParam(value="Id") Integer mcOptId) throws MultipleChoiceOptionNotFoundException {
+	public String deleteMultiChoiceOption(@RequestParam(value="Id") Integer mcOptId) {
 				
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -110,7 +107,7 @@ public class MultiChoiceController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/deletemultichoiceques", method = RequestMethod.GET)
-	public String deleteMultiChoiceQuestion(@RequestParam(value="Id") Integer mcQId) throws MultipleChoiceNotFoundException {
+	public String deleteMultiChoiceQuestion(@RequestParam(value="Id") Integer mcQId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -129,7 +126,7 @@ public class MultiChoiceController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/listalloptionsbyquestion", method = RequestMethod.GET)
-	public String listAllOptionsByQuestion(@RequestParam(value="quesId") Integer quesId) throws MultipleChoiceOptionNotFoundException {
+	public String listAllOptionsByQuestion(@RequestParam(value="quesId") Integer quesId) {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -149,7 +146,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/updateoptiontext", method = RequestMethod.GET)
 	public String updateOptionText(@RequestParam(value="optionId") Integer optionId, 
-			@RequestParam(value="optionText") String optionText) throws MultipleChoiceOptionNotFoundException {
+			@RequestParam(value="optionText") String optionText) {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -169,7 +166,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/listallquestionbysubchapter", method = RequestMethod.GET)
 	public String listAllQuestionBySubchapter(
-			@RequestParam(value="subChapId") Integer subChapId) throws ObjectNotFoundException {
+			@RequestParam(value="subChapId") Integer subChapId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -189,7 +186,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/updatequestionorder", method = RequestMethod.GET)
 	public String updateQuestionOrder(
-			@RequestParam(value="multiChoiceIdList") List<Integer> multiChoiceIdList) throws MultipleChoiceNotFoundException {
+			@RequestParam(value="multiChoiceIdList") List<Integer> multiChoiceIdList){
 
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -209,7 +206,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/updatequestiontext", method = RequestMethod.GET)
 	public String updateQuestionText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
-			@RequestParam(value="quesText") String quesText) throws MultipleChoiceNotFoundException {
+			@RequestParam(value="quesText") String quesText){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -229,7 +226,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/updatehelptext", method = RequestMethod.GET)
 	public String updateHelpText(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
-			@RequestParam(value="helpText") String helpText) throws MultipleChoiceNotFoundException {
+			@RequestParam(value="helpText") String helpText){
 				
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -249,7 +246,7 @@ public class MultiChoiceController {
 	@ResponseBody
 	@RequestMapping(value = "/updatecorrectanswer", method = RequestMethod.GET)
 	public String updateCorrectAnswer(@RequestParam(value="multiChoiceId") Integer multiChoiceId, 
-			@RequestParam(value="quesText") Integer correctAnswer) throws MultipleChoiceNotFoundException {
+			@RequestParam(value="quesText") Integer correctAnswer){
 				
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
