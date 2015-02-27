@@ -1,5 +1,6 @@
 package com.goodlife.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -119,7 +120,10 @@ public class ChapterDAOImpl implements ChapterDAO{
 		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Chapter.class);
 		List<Chapter> allChapterList = criteria.list();
-		return allChapterList;
+		if(allChapterList == null)
+			return new ArrayList<Chapter>();
+		else
+			return allChapterList;
 	}
 
 	@SuppressWarnings("unchecked")
