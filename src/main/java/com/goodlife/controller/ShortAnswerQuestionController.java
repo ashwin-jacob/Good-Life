@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.ShortAnswerQDAO;
-import com.goodlife.exceptions.ShortAnswerNotFoundException;
-import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.ShortAnswerQ;
 
 @Controller
@@ -61,7 +59,7 @@ public class ShortAnswerQuestionController {
 	@ResponseBody
 	@RequestMapping(value = "/updatequestiontext", method = RequestMethod.GET)
 	public String updateQuestionText(@RequestParam(value="shortAnsQId") Integer shortAnsQId, 
-			@RequestParam(value="quesText") String quesText) throws ShortAnswerNotFoundException {
+			@RequestParam(value="quesText") String quesText)  {
 		
 		shortAnsDAO.updateQuestionText(shortAnsQId, quesText);
 		
@@ -83,7 +81,7 @@ public class ShortAnswerQuestionController {
 	@ResponseBody
 	@RequestMapping(value = "/updatehelptext", method = RequestMethod.GET)
 	public String updateHelpText(@RequestParam(value="shortAnsQId") Integer shortAnsQId, 
-			@RequestParam(value="helpTxt") String helpText) throws ShortAnswerNotFoundException {
+			@RequestParam(value="helpTxt") String helpText)  {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -103,7 +101,7 @@ public class ShortAnswerQuestionController {
 	@ResponseBody
 	@RequestMapping(value = "/allquestionsbysubchapter") 
 	public String allShortAnswerQuestionsBySubchapId(
-			@RequestParam(value="subChapId") Integer subChapId) throws SubChapterNotFoundException {
+			@RequestParam(value="subChapId") Integer subChapId)  {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -123,7 +121,7 @@ public class ShortAnswerQuestionController {
 	@ResponseBody
 	@RequestMapping(value = "/updateorder", method = RequestMethod.GET)
 	public String updateOrder(@RequestParam(value="shortAnsQIdList") 
-			List<Integer> shortAnsQIdList) throws ShortAnswerNotFoundException {
+			List<Integer> shortAnsQIdList)  {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";

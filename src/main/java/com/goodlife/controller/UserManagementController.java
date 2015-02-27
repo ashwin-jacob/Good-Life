@@ -74,12 +74,7 @@ public class UserManagementController {
 			roles.add('F');
 		}
 	
-		try {
-			filteredList = usersDAO.advancedQuery(searchStr, field, roles);
-		} catch (UserNotFoundException e) {
-			logger.debug("No users found.");
-			e.printStackTrace();
-		}
+		filteredList = usersDAO.advancedQuery(searchStr, field, roles);
 		
 		for(int i = 0; i < filteredList.size(); i++)
 		{
@@ -114,12 +109,11 @@ public class UserManagementController {
 	 * @param userId
 	 * @param statusTypeCode - s(suspended), d(deleted)
 	 * @return
-	 * @throws UserNotFoundException
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/adduserstatus", method = RequestMethod.GET)
 	public String addUserStatus(@RequestParam(value="userId") Integer userId,
-									@RequestParam(value="statusTypeCode") Character statusTypeCode) throws UserNotFoundException {
+									@RequestParam(value="statusTypeCode") Character statusTypeCode) {
 
 		UserStatus userStatus = new UserStatus();
 		userStatus.setUserId(userId);
@@ -153,7 +147,7 @@ public class UserManagementController {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/deleteuserstatus", method = RequestMethod.GET)
-	public String deleteUserStatus(@RequestParam(value="userStatusId") Integer userStatusId) throws UserNotFoundException {
+	public String deleteUserStatus(@RequestParam(value="userStatusId") Integer userStatusId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -180,13 +174,7 @@ public class UserManagementController {
 	@RequestMapping(value = "/changeenddate", method = RequestMethod.GET)
 	public String changeEndDate(@RequestParam(value="userStatusId") Integer userStatusId, @RequestParam(value="newDate") Date newDate){
 		
-		Boolean response;
-		try { 
-			response = userStatusDAO.changeEndDate(userStatusId, newDate);
-		} catch (UserNotFoundException e1) {
-			response = false;
-			e1.printStackTrace();
-		}
+		Boolean response = userStatusDAO.changeEndDate(userStatusId, newDate);
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		

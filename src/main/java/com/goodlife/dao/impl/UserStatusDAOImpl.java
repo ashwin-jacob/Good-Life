@@ -27,20 +27,16 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public List<UserStatus> findByUserId(Integer userId) throws UserNotFoundException {
+		public List<UserStatus> findByUserId(Integer userId) {
 			Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UserStatus.class);
 			criteria.add(Restrictions.eqOrIsNull("userId", userId));
 			List<UserStatus> userStatusList = criteria.list();
-			if (null == userId) {
-	        	throw new UserNotFoundException("User: " + userId + ".  Not found in the database!");
-	        }
 			return userStatusList;
 		}
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public List<UserStatus> findByStatusCode(char statusTypeCode)
-				throws UserNotFoundException {
+		public List<UserStatus> findByStatusCode(char statusTypeCode) {
 			Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UserStatus.class);
 			criteria.add(Restrictions.eqOrIsNull("statusTypeCode", statusTypeCode));
 			List<UserStatus> userStatusList = criteria.list();
@@ -49,8 +45,7 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public List<UserStatus> findCurrentSuspendedUsers()
-				throws UserNotFoundException {
+		public List<UserStatus> findCurrentSuspendedUsers() {
 			Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UserStatus.class);
 			criteria.add(Restrictions.and(Restrictions.eqOrIsNull("statusTypeCode", 's'), Restrictions.sqlRestriction("end_dt >= current_date")));
 			List<UserStatus> userStatusList = criteria.list();
@@ -59,8 +54,7 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public Integer findNumberofSuspensionsByUserId(Integer userId)
-				throws UserNotFoundException {
+		public Integer findNumberofSuspensionsByUserId(Integer userId) {
 			Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(UserStatus.class);
 			criteria.add(Restrictions.and(Restrictions.eqOrIsNull("userId", userId),Restrictions.eqOrIsNull("statusTypeCode", 's')));
 			List<Users> userStatusList = criteria.list();
@@ -68,22 +62,20 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 		}
 
 		@Override
-		public Integer addUserStatus(UserStatus userStatus)
-				throws UserNotFoundException {
+		public Integer addUserStatus(UserStatus userStatus) {
 			
-			Users user = usersDAO.findByUserId(userStatus.getUserId());
-			
-			if(user != null)
+			try {
+				usersDAO.findByUserId(userStatus.getUserId());
 				this.sessionFactory.getCurrentSession().save(userStatus);
-			else
-				throw new UserNotFoundException("User Id: " + userStatus.getUserId() + " not found");
-
-			return userStatus.getUserStatusId();
+				return userStatus.getUserStatusId();
+			} catch (UserNotFoundException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 
 		@Override
-		public Boolean changeEndDate(Integer userStatusId, Date newEndDate)
-				throws UserNotFoundException {
+		public Boolean changeEndDate(Integer userStatusId, Date newEndDate){
 			try{
 				UserStatus userStatus = findByUserStatusId(userStatusId);
 				userStatus.setEndDate(newEndDate);
@@ -96,8 +88,7 @@ public class UserStatusDAOImpl implements UserStatusDAO{
 
 
 		@Override
-		public Boolean deleteUserStatus(Integer userStatusId)
-				throws ObjectNotFoundException {
+		public Boolean deleteUserStatus(Integer userStatusId){
 			
 			try{
 				UserStatus userStatus = findByUserStatusId(userStatusId);

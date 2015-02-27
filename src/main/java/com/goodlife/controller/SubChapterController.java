@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.SubChapterDAO;
-import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.SubChapter;
 
 @Controller
@@ -35,7 +34,7 @@ public class SubChapterController {
 	public String addSubChapter(@RequestParam(value="chapId") Integer chapId,
 											 @RequestParam(value="subChapTitle") String subChapTitle,
 											 @RequestParam(value="subChapDescr") String subChapDescr,
-											 @RequestParam(value="orderId") Integer orderId) throws SubChapterNotFoundException {
+											 @RequestParam(value="orderId") Integer orderId){
 		
 		SubChapter subChapter = new SubChapter();
 		subChapter.setChapId(chapId);
@@ -60,7 +59,7 @@ public class SubChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "deletesubchapter", method = RequestMethod.GET)
-	public String deleteSubChapter(@RequestParam(value="subchapId") Integer subChapId) throws SubChapterNotFoundException {
+	public String deleteSubChapter(@RequestParam(value="subchapId") Integer subChapId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -79,7 +78,7 @@ public class SubChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "listallsubchaptersbychapter", method = RequestMethod.GET)
-	public String listAllSubChaptersByChapter(@RequestParam(value="chapId") Integer chapId) throws SubChapterNotFoundException {
+	public String listAllSubChaptersByChapter(@RequestParam(value="chapId") Integer chapId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -99,7 +98,7 @@ public class SubChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatesubchapterorder", method = RequestMethod.GET)
-	public String updateSubChapterOrder(@RequestParam(value="newSubChapterOrderList") List<Integer> newSubChapterOrderList) throws SubChapterNotFoundException {
+	public String updateSubChapterOrder(@RequestParam(value="newSubChapterOrderList") List<Integer> newSubChapterOrderList){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -119,7 +118,7 @@ public class SubChapterController {
 	@ResponseBody
 	@RequestMapping(value = "updatesubchaptertitle", method = RequestMethod.GET)
 	public String updateSubChapterTitle(@RequestParam(value="subChapId") Integer subChapId,
-													   @RequestParam(value="subChapTitle") String subChapTitle) throws SubChapterNotFoundException {
+													   @RequestParam(value="subChapTitle") String subChapTitle) {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -140,7 +139,7 @@ public class SubChapterController {
 	@ResponseBody
 	@RequestMapping(value = "updatesubchapterdescr", method = RequestMethod.GET)
 	public String updateSubChapterDescr(@RequestParam(value="subChapId") Integer subChapId,
-													   @RequestParam(value="subChapDescr") String subChapDescr) throws SubChapterNotFoundException {
+													   @RequestParam(value="subChapDescr") String subChapDescr){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";

@@ -27,20 +27,26 @@ public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
 	}
 
 	@Override
-	public Boolean updateChoiceText(Integer optionId, String text) throws MultipleChoiceOptionNotFoundException {
+	public Boolean updateChoiceText(Integer optionId, String text){
 		
-		MultiChoiceOption multiChoiceOption = findMultiChoiceOptionById(optionId);
-		if(multiChoiceOption == null)
-			throw new MultipleChoiceOptionNotFoundException("Multi Choice Option Id:" + optionId + " not found.");
-		multiChoiceOption.setChoiceText(text);
-		this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoiceOption);
+		Boolean isSuccess = Boolean.TRUE;
+		MultiChoiceOption multiChoiceOption;
 		
-		return Boolean.TRUE;
+		try {
+			multiChoiceOption = findMultiChoiceOptionById(optionId);
+			multiChoiceOption.setChoiceText(text);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoiceOption);
+		} catch (MultipleChoiceOptionNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+			
+		return isSuccess;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<MultiChoiceOption> getMultiChoiceOptions(Integer multiQuesId) throws MultipleChoiceOptionNotFoundException{
+	public List<MultiChoiceOption> getMultiChoiceOptions(Integer multiQuesId){
 
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceOption.class);
 		criteria.add(Restrictions.eqOrIsNull("multiQuesId", multiQuesId));
@@ -61,12 +67,20 @@ public class MultiChoiceOptionDAOImpl implements MultiChoiceOptionDAO {
 	}
 
 	@Override
-	public Boolean deleteMultiChoiceOption(Integer optionId) throws MultipleChoiceOptionNotFoundException {
-		MultiChoiceOption mcOpt = findMultiChoiceOptionById(optionId);
-		if(mcOpt == null)
-			throw new MultipleChoiceOptionNotFoundException("Multi Choice Option Id:" + optionId + " not found."); 
-		this.sessionFactory.getCurrentSession().delete(mcOpt);
-		return Boolean.TRUE;
+	public Boolean deleteMultiChoiceOption(Integer optionId){
+		
+		Boolean isSuccess = Boolean.TRUE;
+		MultiChoiceOption mcOpt;
+		
+		try {
+			mcOpt = findMultiChoiceOptionById(optionId);
+			this.sessionFactory.getCurrentSession().delete(mcOpt);
+		} catch (MultipleChoiceOptionNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		
+		return isSuccess;
 	}
 
 	@Override

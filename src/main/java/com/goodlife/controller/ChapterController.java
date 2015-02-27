@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.ChapterPageDAO;
 import com.goodlife.dao.SubChapterDAO;
-import com.goodlife.exceptions.ChapterNotFoundException;
 import com.goodlife.exceptions.ChapterPageNotFoundException;
 import com.goodlife.model.Chapter;
 import com.goodlife.model.ChapterPage;
@@ -48,7 +47,7 @@ public class ChapterController {
 	@RequestMapping(value = "/addchapter", method = RequestMethod.POST)
 	public String addChapter(@RequestParam(value="chapTitle") String chapTitle,
 											 @RequestParam(value="chapDescr") String chapDescr,
-											 @RequestParam(value="orderId") String orderId) throws ChapterNotFoundException {
+											 @RequestParam(value="orderId") String orderId){
 		logger.debug("inside add chapter");
 
 		Chapter chapter = new Chapter();
@@ -87,7 +86,7 @@ public class ChapterController {
 	@ResponseBody
 	@RequestMapping(value = "/publishchapter", method = RequestMethod.GET)
 	public String publishChapter(@RequestParam(value="chapId") Integer chapId,
-												@RequestParam(value="published") Boolean published) throws ChapterNotFoundException {
+												@RequestParam(value="published") Boolean published){
 		
 		Boolean response = chapterDAO.updatePublished(chapId,published);
 		
@@ -109,9 +108,9 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/deletechapter", method = RequestMethod.GET)
-	public String deleteChapter(@RequestParam(value="chapId") Integer chapId) throws ChapterNotFoundException {
+	public String deleteChapter(@RequestParam(value="chapId") Integer chapId){
 		
-		Integer response = chapterDAO.deleteChapter(chapId);
+		Boolean response = chapterDAO.deleteChapter(chapId);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
@@ -185,7 +184,7 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/listsavedchapterdrafts", method = RequestMethod.GET)
-	public String listAllChapterDrafts() throws ChapterNotFoundException {
+	public String listAllChapterDrafts() {
 		
 		List<Chapter> allSavedChapterDraftsList = chapterDAO.listAllChapterDrafts();
 		
@@ -207,7 +206,7 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatechapterorder", method = RequestMethod.GET)
-	public String updateChapterOrder(@RequestParam(value="newChapterOrderList")List<Integer> newChapterOrderList) throws ChapterNotFoundException {
+	public String updateChapterOrder(@RequestParam(value="newChapterOrderList")List<Integer> newChapterOrderList){
 				
 		Boolean response = chapterDAO.updateOrder(newChapterOrderList);
 		
@@ -230,7 +229,7 @@ public class ChapterController {
 	@ResponseBody
 	@RequestMapping(value = "updatechaptertitle", method = RequestMethod.GET)
 	public String updateChapterTitle(@RequestParam(value="chapId")Integer chapId,
-													@RequestParam(value="chapTitle")String chapTitle) throws ChapterNotFoundException {
+													@RequestParam(value="chapTitle")String chapTitle){
 		
 		Boolean response = chapterDAO.updateTitle(chapId, chapTitle);
 		
@@ -254,7 +253,7 @@ public class ChapterController {
 	@ResponseBody
 	@RequestMapping(value = "updatechapterdescr", method = RequestMethod.GET)
 	public String updateChapterDescr(@RequestParam(value="chapId")Integer chapId,
-													@RequestParam(value="chapDescr")String chapDescr) throws ChapterNotFoundException {
+													@RequestParam(value="chapDescr")String chapDescr){
 		
 		Boolean response = chapterDAO.updateDescr(chapId, chapDescr);
 		
@@ -279,7 +278,7 @@ public class ChapterController {
 	@RequestMapping(value = "addchapterpage", method = RequestMethod.GET)
 	public String addChapterPage(@RequestParam(value="chapId") Integer chapId,
 			 									@RequestParam(value="pageNum") Integer pageNum,
-			 									@RequestParam(value="pageUrl") String pageUrl) throws ChapterNotFoundException{
+			 									@RequestParam(value="pageUrl") String pageUrl){
 		
 		ChapterPage chapterPage = new ChapterPage();
 		chapterPage.setChapId(chapId);
@@ -307,7 +306,7 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/deletechapterpage", method = RequestMethod.GET)
-	public String deleteChapterPage(@RequestParam(value="pageId") Integer pageId) throws ChapterPageNotFoundException {
+	public String deleteChapterPage(@RequestParam(value="pageId") Integer pageId){
 		
 		Boolean response = chapterPageDAO.deleteChapterPage(pageId);
 		
@@ -329,9 +328,14 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/listchapterpagesbychapid", method = RequestMethod.GET)
-	public String listChapterPagesByChapId(@RequestParam(value="chapId") Integer chapId) throws ChapterPageNotFoundException {
+	public String listChapterPagesByChapId(@RequestParam(value="chapId") Integer chapId){
 		
-		List<ChapterPage> chapterPagesList = chapterPageDAO.findAllChapterPagesByChapterId(chapId);
+		List<ChapterPage> chapterPagesList = new ArrayList<ChapterPage>();
+		try {
+			chapterPagesList = chapterPageDAO.findAllChapterPagesByChapterId(chapId);
+		} catch (ChapterPageNotFoundException e1) {
+			e1.printStackTrace();
+		}
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
@@ -351,7 +355,7 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/updatechapterpageorder", method = RequestMethod.GET)
-	public String updateChapterPageOrder(@RequestParam(value="newChapterPageOrderList")List<Integer> newChapterPageOrderList) throws ChapterPageNotFoundException {
+	public String updateChapterPageOrder(@RequestParam(value="newChapterPageOrderList")List<Integer> newChapterPageOrderList){
 				
 		Boolean response = chapterPageDAO.updateChapterPageOrder(newChapterPageOrderList);
 		
@@ -374,7 +378,7 @@ public class ChapterController {
 	@ResponseBody
 	@RequestMapping(value = "updatechapterpageurl", method = RequestMethod.GET)
 	public String updateChapterPageUrl(@RequestParam(value="pageId")Integer pageId,
-														@RequestParam(value="pageUrl")String pageUrl) throws ChapterPageNotFoundException {
+														@RequestParam(value="pageUrl")String pageUrl){
 		
 		Boolean response = chapterPageDAO.updatePageUrl(pageId, pageUrl);
 		
@@ -397,7 +401,7 @@ public class ChapterController {
 	
 	@ResponseBody
 	@RequestMapping(value = "deletechapterpagesbychapid", method = RequestMethod.GET)
-	public String deleteAllChapterPagesByChapId(@RequestParam(value="chapId") Integer chapId) throws ChapterPageNotFoundException {
+	public String deleteAllChapterPagesByChapId(@RequestParam(value="chapId") Integer chapId){
 		
 		Boolean response = chapterPageDAO.deleteAllPagesByChapterId(chapId);
 		
