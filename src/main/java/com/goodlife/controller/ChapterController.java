@@ -108,7 +108,7 @@ public class ChapterController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/deletechapter", method = RequestMethod.GET)
+	@RequestMapping(value = "/deletechapter", method = RequestMethod.POST)
 	public String deleteChapter(@RequestParam(value="chapId") Integer chapId){
 		
 		Boolean response = chapterDAO.deleteChapter(chapId);

@@ -4,7 +4,8 @@ chapterService.factory('listChapters', function( $http, $q, $log ) {
 	
 	return({
 		//APIs
-		search : search
+		search : search,
+		deleteChapter: deleteChapter
 	});
 
 	//Function to return serach
@@ -13,11 +14,24 @@ chapterService.factory('listChapters', function( $http, $q, $log ) {
 		var request = $http({
 			method: 'GET',
 		    dataType: "json",
-			url: 'chapterlookup/listsavedchapterdrafts'
+			url: 'chapterlookup/listcurriculum'
 		});
 
 		// return(request.then( handleSuccess, handleError ));
 		return request;
-	}
+	};
+	
+	function deleteChapter(chapId){
+		
+		var request = $http({
+			method: 'POST',
+			params: {chapId: chapId},
+		    dataType: "json",
+			url: 'chapterlookup/deletechapter'
+		});
+		
+		return request;
+
+	};
 
 });
