@@ -1,57 +1,68 @@
-<!-- Navbar for all admins
- --><nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">
-        <img alt="Brand" width="20" length="20" src="img/GLO_logo_grey.jpg">
-      </a>
-  </div>
-   <ul class="nav navbar-nav">
-   <li><a href="#">Home</a></li>
-   <li><a href="#/chapterBuilder">Curriculum Builder</a></li>
-   <li><a href="#/searchUsers">User Management</a></li>
-   <li><a href="#/adminConsole">Admin Console</a></li>
-   
-   
-   </ul>
-      <p class="navbar-text navbar-right"><a ng-click="" class="navbar-link">Logout</a></p>
-  </div>
-</nav>
+ 
+  <div ng-include="'partials/header.html'"></div>
 
 </div>
 
 <div class="container-fluid">
 
-	<div class="col col-lg-5 ">
+	<div class="col col-lg-4 ">
 		<div class="panel panel-default">
+		  <div class="panel-heading">Curriculum</div>
 			<table ng-table="chapterTable"
-				class="table table-hover table-condensed">
-				<tr ng-repeat="chapter in $data">
-					<td header-class="success" data-title="'ID'">{{chapter.chapId}}
-					</td>
-					<td header-class="success" data-title="'Title'">{{chapter.chapTitle}}
-					</td>
-					<td header-class="success" data-title="'Description'">{{chapter.chapDescr}}</td>
-					<td header-class="success" data-title="'Order'">
-						{{chapter.orderId}}</td>
-					<td header-class="success"><input type="button" value="Remove"
+				class="table table-hover table-condensed" ng-click="tableClick($event)">
+				<tbody ng-repeat="curriculumTreeList in $data">
+				<tr ng-repeat="objR in curriculumTreeList" ng-show="showRow({{objR.chapId}})">
+					<th class="info" data-title="'ID'">
+					       <!--   <button ng-click="showRows()" ng-hide="showButton()"><strong>On</strong></button>  
+        					<button ng-click="hideRows()" ng-show="showButton()"><strong>Off</strong></button> -->
+					{{objR.chapId}}
+					
+					</th>
+					<th class="info" data-title="'Title'">{{objR.chapTitle}}
+					</th>
+					<th class="info" data-title="'Description'">{{objR.chapDescr}}</th>
+
+					<th class="info"><input type="button" value="Remove"
 						class="btn btn-primary btn-sm"
-						ng-click="removeRow(chapter.chapId)" /></td>
+						ng-click="removeRow(objR.chapId)" /></th>
 				</tr>
-				<tr>
-					<td>
-						<button class="btn btn-primary btn-sm" ng-click="addRow()">Add
+						
+				<tr ng-repeat="objL in curriculumTreeList" ng-show="showRow({{objL[$index].subChapId}})">
+					<td header-class="info" >&nbsp;
+					</td>
+										<td header-class="info" >&nbsp;
+					</td>
+							<td header-class="info">{{objL[$index].subChapTitle}}
+					</td>
+							<td header-class="info">{{objL[$index].subChapDescr}}
+													
+					</td>
+
+
+					
+				</tr>
+					</tbody>
+				
+			</table>
+			<div><button class="btn btn-primary btn-sm" ng-click="openDialog('partials/forms/addChapter.html')" >Add Chapter
 						</button>
+						<button class="btn btn-primary btn-sm" ng-click="">Add Subchapter
+						</button>&nbsp;<br /><br />
 							<div collapse="!isCollapsed" name="addForm(collapse)">
 							<div class="well well-lg">Some content</div> 
-							</div>
-					</td>
-					<td></td>
-					<td></td>
-					<td></td>
-				</tr>
-			</table>
+							</div></div>
 		</div>
 	</div>
-	<div class="col col-lg-6"></div>
+	<div class="col col-lg-8">
+			<div class="panel panel-default" ng-show="showChapterPane">
+		  <div class="panel-heading">Chapter</div>
+		  </div>
+	 </div>
+	<div class="col col-lg-8">
+			<div class="panel panel-default" ng-show="showSubChapPane">
+		  <div class="panel-heading">Sub-Chapter</div>
+		  
+		   <iframe src="curriculum/subchapterbuilder.html" frameborder="0"  style="width:60em;height:50em;"></iframe>
+		  </div>
+	 </div>
 </div>
