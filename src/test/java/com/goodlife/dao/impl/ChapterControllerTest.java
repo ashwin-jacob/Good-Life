@@ -5,13 +5,18 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.mock.web.MockHttpSession;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goodlife.controller.ChapterController;
@@ -32,6 +37,7 @@ public class ChapterControllerTest {
 	//private static final Integer PAGE_NUM = 1;
 	private static final Integer NEW_PAGE_NUM = 3;
 	private static final String NEW_PAGE_URL = "HTTP://newpage.com";
+	private static final String PAGE_URL = "/resources/images/chapter_pages/";
 	private static final Integer PAGE_ID = 1;
 	private static final Integer NEW_PAGE_ID = 4;
 	
@@ -112,11 +118,14 @@ public class ChapterControllerTest {
 	@Test
 	@Transactional
 	public void testAddChapterPage() throws ChapterNotFoundException, ChapterPageNotFoundException {
-		Integer pageId = Integer.valueOf(chapterController.addChapterPage(CHAP_ID, NEW_PAGE_NUM, NEW_PAGE_URL));
+		HttpSession session = new MockHttpSession();
+			
+		MultipartFile mpfile = new MockMultipartFile("upload", "myContent".getBytes());
+		Integer pageId = Integer.valueOf(chapterController.addChapterPage(CHAP_ID, NEW_PAGE_NUM, NEW_PAGE_URL, mpfile, session));
 		assertEquals(pageId,NEW_PAGE_ID);
 		assertEquals(chapterPageDAO.findByPageId(NEW_PAGE_ID).getChapId(),CHAP_ID);
 		assertEquals(chapterPageDAO.findByPageId(NEW_PAGE_ID).getPageNum(),NEW_PAGE_NUM);
-		assertEquals(chapterPageDAO.findByPageId(NEW_PAGE_ID).getPageUrl(),NEW_PAGE_URL);
+		assertEquals(PAGE_URL, chapterPageDAO.findByPageId(NEW_PAGE_ID).getPageUrl());
 	}
 	
 	@Test

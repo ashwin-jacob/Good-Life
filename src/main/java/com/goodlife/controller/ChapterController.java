@@ -1,22 +1,28 @@
 package com.goodlife.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.ChapterPageDAO;
@@ -44,6 +50,7 @@ public class ChapterController {
 	@Autowired
 	private SubChapterDAO subChapterDAO;
 	
+	private static final String UPLOAD_DIR = "/resources/images/chapter_pages";
 	@ResponseBody
 	@RequestMapping(value = "/addchapter", method = RequestMethod.POST)
 	public String addChapter(@RequestParam(value="chapTitle") String chapTitle,
@@ -279,12 +286,15 @@ public class ChapterController {
 	@RequestMapping(value = "addchapterpage", method = RequestMethod.GET)
 	public String addChapterPage(@RequestParam(value="chapId") Integer chapId,
 			 									@RequestParam(value="pageNum") Integer pageNum,
-			 									@RequestParam(value="pageUrl") String pageUrl) throws ChapterNotFoundException{
-		
+			 									@RequestParam(value="pageUrl") String pageUrl,
+			 									@RequestParam(value="mpfile") MultipartFile mpfile,
+			 									HttpSession session) throws ChapterNotFoundException{
+		/*
 		ChapterPage chapterPage = new ChapterPage();
 		chapterPage.setChapId(chapId);
 		chapterPage.setPageNum(pageNum);
-		chapterPage.setPageUrl(pageUrl);
+		chapterPage.setPageUrl(pageUrl); */
+		ChapterPage chapterPage = uploadChapterPage(chapId, pageNum, pageUrl, mpfile, session);
 		
 		Integer response = chapterPageDAO.addChapterPage(chapterPage);
 		
@@ -303,6 +313,53 @@ public class ChapterController {
 		}
 		return jsonResp;
 		
+	}
+	// helper method for addChapterPage upload
+	private ChapterPage uploadChapterPage(Integer chapId, Integer pageNum, String pageUrl, MultipartFile mpfile, HttpSession session) {
+		ChapterPage chapterPage = null;
+		
+		if (mpfile != null && mpfile.getSize() > 0) {
+			Boolean uploadSuccess = false;
+			String fileName = null;
+			
+			// Create upload directory 
+			String uploadDirPath = session.getServletContext().getRealPath(UPLOAD_DIR);
+			if (uploadDirPath == null) {
+				uploadDirPath = "/resources/images/chapter_pages";
+			}
+			File uploadDir = new File(uploadDirPath);
+			if(!uploadDir.exists()) {
+				uploadDir.mkdirs();
+			}
+				
+			//String fileExt = FilenameUtils.getExtension(mpfile.getOriginalFilename());
+			//if(!fileExt.isEmpty()) fileExt = "." + fileExt;
+			fileName = mpfile.getOriginalFilename();
+				
+			String uploadFilePath = session.getServletContext().getRealPath(UPLOAD_DIR + "/" + fileName);
+			if (uploadFilePath == null) {
+				uploadFilePath = "testFile.pdf";
+			}
+			File uploadFile = new File(uploadFilePath);
+			
+			try {
+				mpfile.transferTo(uploadFile);
+				uploadSuccess = true;
+			} catch(IOException e) {
+			}
+		
+			if (uploadSuccess) {
+				chapterPage = new ChapterPage();
+				chapterPage.setChapId(chapId);
+				chapterPage.setPageNum(pageNum);
+				chapterPage.setPageUrl("" + uploadDir + "/" + fileName);
+			}
+		}
+		
+		if (chapterPage == null) {
+			return null;
+		}
+		return chapterPage;
 	}
 	
 	@ResponseBody
