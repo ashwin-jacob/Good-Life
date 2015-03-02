@@ -288,7 +288,7 @@ public class ChapterController {
 			 									@RequestParam(value="pageNum") Integer pageNum,
 			 									@RequestParam(value="pageUrl") String pageUrl,
 			 									@RequestParam(value="mpfile") MultipartFile mpfile,
-			 									HttpSession session) throws ChapterNotFoundException{
+			 									HttpSession session) throws ChapterNotFoundException, ChapterPageNotFoundException{
 		/*
 		ChapterPage chapterPage = new ChapterPage();
 		chapterPage.setChapId(chapId);
@@ -315,7 +315,7 @@ public class ChapterController {
 		
 	}
 	// helper method for addChapterPage upload
-	private ChapterPage uploadChapterPage(Integer chapId, Integer pageNum, String pageUrl, MultipartFile mpfile, HttpSession session) {
+	private ChapterPage uploadChapterPage(Integer chapId, Integer pageNum, String pageUrl, MultipartFile mpfile, HttpSession session) throws ChapterPageNotFoundException{
 		ChapterPage chapterPage = null;
 		
 		if (mpfile != null && mpfile.getSize() > 0) {
@@ -326,6 +326,7 @@ public class ChapterController {
 			String uploadDirPath = session.getServletContext().getRealPath(UPLOAD_DIR);
 			if (uploadDirPath == null) {
 				uploadDirPath = "/resources/images/chapter_pages";
+				//throw new ChapterPageNotFoundException("upload directory is null");
 			}
 			File uploadDir = new File(uploadDirPath);
 			if(!uploadDir.exists()) {
@@ -339,6 +340,7 @@ public class ChapterController {
 			String uploadFilePath = session.getServletContext().getRealPath(UPLOAD_DIR + "/" + fileName);
 			if (uploadFilePath == null) {
 				uploadFilePath = "testFile.pdf";
+				//throw new ChapterPageNotFoundException("upload file path is null");
 			}
 			File uploadFile = new File(uploadFilePath);
 			
