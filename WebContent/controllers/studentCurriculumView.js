@@ -15,7 +15,7 @@ forceForGood.controller('studentCurriculumView', ['$scope', '$log', 'student',
 							subChapQues.options=result;
 						});
 						student.getMultiUserAnswer($scope.userId, subChapQues.multiQuesId).$promise.then(function(result) {
-							subChapQues.userAnswer = result[0];
+							subChapQues.userAnswer = result.userAnswer;
 							$log.log("result of multi answer");
 							$log.log(result);
 						});
