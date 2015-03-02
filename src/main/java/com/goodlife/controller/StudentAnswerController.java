@@ -94,7 +94,7 @@ public class StudentAnswerController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "/addorupdateshortansweruseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/updateshortanswer", method = RequestMethod.GET)
 	public String updateShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "saQId") Integer saQId,
 											@RequestParam(value = "userAnswer") String userAnswer){
@@ -132,7 +132,7 @@ public class StudentAnswerController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/addorupdatemultichoiceuseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/updatemultichoice", method = RequestMethod.GET)
 	public String updateMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "multiQuesId") Integer multiQuesId,
 											@RequestParam(value = "userAnswer") Integer userAnswer){

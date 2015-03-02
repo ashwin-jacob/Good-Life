@@ -76,7 +76,7 @@ studentServices.factory('student', ['$http', '$log', '$resource', function($http
 	/**
 	Get the user answer for multiple choice
 	*/
-	function getMultiUserAnswer(multiQuestId, userId) {
+	function getMultiUserAnswer(userId, multiQuestId) {
 		// if(multiQuestId == 1)
 		// 	var data = 1;
 		// else
@@ -107,18 +107,27 @@ studentServices.factory('student', ['$http', '$log', '$resource', function($http
 	Update user multi answer
 	*/
 	function updateMultiChoice(userId, multiQuesId, userAnswer) {
+		$log.log("Got to get updateMultiChoice");
 		$log.log("Userid: "+userId);
 		$log.log("MultiQuestId: "+multiQuesId);
 		$log.log("UserAnswer: "+userAnswer);
+		return $resource('student/updatemultichoice', {userId:userId, multiQuesId:multiQuesId, userAnswer:userAnswer}, {
+			updateMultiChoice:{method:'GET'}
+		}).updateMultiChoice();
+
 	}
 
 	/**
 	Update user short answer
 	*/
 	function updateShortAns(userId, shortAnswerId, userAnswer) {
+		$log.log("Got to get updateShortAns");
 		$log.log("Userid: "+userId);
 		$log.log("Short Answer Id: "+shortAnswerId);
 		$log.log("UserAnswer: "+userAnswer);
+		return $resource('student/updateshortanswer', {userId:userId, saQId:shortAnswerId, userAnswer:userAnswer}, {
+			updateShortAns:{method:'GET'}
+		}).updateShortAns();
 	}
 
 }]);
