@@ -84,10 +84,7 @@ studentServices.factory('student', ['$http', '$log', '$resource', function($http
 		// return data;
 		$log.log("Got to get getMultiUserAnswer");
 		return $resource('student/getmultichoiceuseranswer', {userId:userId, multiQuesId:multiQuestId}, {
-			queryMultiUserAns:{method:'GET', isArray:false,
-			transformResponse: function(data, headers){
-                return data;
-            }}
+			queryMultiUserAns:{method:'GET', isArray:false}
 		}).queryMultiUserAns();
 	}
 
