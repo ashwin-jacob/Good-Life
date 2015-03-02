@@ -60,7 +60,10 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 		Integer userAns = getUserAnswer(userId,multiQuesId);
 		try {
 			Integer corrAns = multiChoiceQDAO.getMultiChoiceQById(multiQuesId).getCorrectAnswer();
-			return Boolean.valueOf(userAns == corrAns);
+			if(userAns == null)
+				return Boolean.FALSE;
+			else
+				return Boolean.valueOf(userAns == corrAns);
 		} catch (MultipleChoiceNotFoundException e) {
 			e.printStackTrace();
 			return Boolean.FALSE;
@@ -70,19 +73,22 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 
 	@Override
 	public Boolean isMultiChoiceSubChapComplete(Integer userId, Integer subChapId) {
-		Integer userAns;
+		Double correct = 0.0;
+		Double total = 0.0;
 		Boolean isComplete = Boolean.TRUE;
 		List<MultiChoiceQ> multiChoiceQList = multiChoiceQDAO.getAllMultiChoice(subChapId);
-		if(multiChoiceQList == null || multiChoiceQList.isEmpty())
+		if(multiChoiceQList == null || multiChoiceQList.isEmpty() == true)
 			isComplete = Boolean.FALSE;
 		else{
 			for(int i = 0; i < multiChoiceQList.size(); i++){
-				userAns = getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId());
-				if(userAns == null)
-					isComplete =  Boolean.FALSE;
+				total += 1.0;
+				//userAns = getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId());
+				if(isMultiChoiceCorrect(userId,multiChoiceQList.get(i).getMultiQuesId()) == Boolean.TRUE)
+					correct += 1.0;
 			}
+			if((correct/total) < 0.5)
+				isComplete =  Boolean.FALSE;
 		}
-		
 		return isComplete;
 	}
 
