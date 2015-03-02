@@ -30,7 +30,7 @@ public class MultiChoiceOption implements Serializable {
 	@Column(name = "choice_txt")
 	private String choiceText;
 	
-	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 
 	public MultiChoiceOption() {

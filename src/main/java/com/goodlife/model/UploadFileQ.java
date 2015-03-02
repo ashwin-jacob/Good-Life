@@ -31,7 +31,7 @@ public class UploadFileQ implements Serializable{
 	@Column(name = "descr")
 	private String description;
 	
-	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 
 	public UploadFileQ() {

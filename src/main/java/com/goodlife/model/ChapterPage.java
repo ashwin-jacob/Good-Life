@@ -33,7 +33,7 @@ public class ChapterPage implements Serializable{
 	@Column(name = "page_url")
 	private String pageUrl;
 	
-	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 
 	public ChapterPage() {

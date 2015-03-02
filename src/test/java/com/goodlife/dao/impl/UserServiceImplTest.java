@@ -42,12 +42,12 @@ public class UserServiceImplTest {
 	@Autowired
 	private UserServiceImpl userService;
 	
-	@Before
+	/*@Before
 	public void setUp() throws UserNotFoundException {
 		Users user = createUser();
 		UsersDAO usersDao = Mockito.mock(UsersDAO.class);
 		when(usersDao.findByUserName(USER_NAME)).thenReturn(user);
-	}
+	}*/
 
 
 	@Test

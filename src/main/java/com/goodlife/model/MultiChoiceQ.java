@@ -39,7 +39,7 @@ public class MultiChoiceQ implements Serializable{
 	@Column(name = "order_id")
 	private Integer orderId;
 	
-	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 
 	public MultiChoiceQ() {

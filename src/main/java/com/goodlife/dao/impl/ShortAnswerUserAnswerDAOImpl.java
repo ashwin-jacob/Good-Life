@@ -75,7 +75,7 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 			isComplete = Boolean.FALSE;
 		else{
 		    for(int i = 0; i < questionList.size(); i++){
-				if(getUserAnswer(userId, questionList.get(i).getSaQId()).isAprvd() == Boolean.FALSE)
+				if(getUserAnswer(userId, questionList.get(i).getSaQId()).isAprvd().equals(Boolean.FALSE))
 					isComplete = Boolean.FALSE;
 			}
 		}
