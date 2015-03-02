@@ -198,7 +198,7 @@ public class StudentCurriculumController {
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(multiChoiceUserAnsDAO.getUserAnswer(userId, multiQuesId));
+			jsonResp = mapper.writeValueAsString(multiChoiceUserAnsDAO.getUserAnswerObj(userId, multiQuesId));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
