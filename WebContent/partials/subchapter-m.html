@@ -1,0 +1,19 @@
+<h1>{{subchapter.subChapTitle}}</h1>
+<h2>{{subchapter.subChapDescr}}</h2>
+
+<ol>
+	<li ng-repeat="form in subchapterForm">
+		{{form.quesText}}
+		<br>
+		{{form.helpText}}
+		<form name="opForm">
+			<div class="radio" ng-repeat="optionForm in form.options" ng-init="form.userAnswer">
+				<label>
+					<input type="radio" name="pageSet" ng-model="form.userAnswer" ng-value="{{optionForm.optionId}}" /><span ng-bind="optionForm.choiceText"></span>
+				</label>
+			</div>
+		</form>
+	</li>
+</ol>
+<button type="button" class="btn btn-primary" ng-click="submitPostMultiChoice()" >Submit </button>
+

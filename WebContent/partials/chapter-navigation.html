@@ -1,0 +1,14 @@
+<span class="dropdown" dropdown ng-repeat="chapter in chapterInfo">
+	<a href class="dropdown-toggle" dropdown-toggle>
+		{{chapter.chapTitle}}
+	</a>
+	<br>
+	{{chapter.chapDescr}}
+	<ul class="dropdown-menu">
+		<li ng-repeat="subChapters in chapter.subchapters">
+			<a href ng-click="passSubChapter(subChapters)">{{subChapters.subChapTitle}}</a>
+		</li>
+	</ul>
+	<br>
+</span>
+
