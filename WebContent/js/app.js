@@ -11,7 +11,8 @@ var forceForGood = angular.module('forceForGood', [
 	'adminFilter',
 	'adminService',
 	'chapterServices',
-	'studentServices']);
+	'studentServices',
+	'angularFileUpload']);
 
 forceForGood.config(['$routeProvider',
 	function($routeProvider) {
