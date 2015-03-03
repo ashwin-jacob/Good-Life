@@ -31,6 +31,7 @@ import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
 import com.goodlife.exceptions.UploadPathException;
+import com.goodlife.model.MediaType;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceUserAns;
 import com.goodlife.model.ShortAnswerUserAnswer;
@@ -204,7 +205,7 @@ public class StudentAnswerController {
 			uploadedAnswer.setUploadQuesId(uploadQuesId);
 			uploadedAnswer.setMediaTypeId(mediaTypeId);
 			uploadedAnswer.setFilePath(filePath);*/
-			uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
+			uploadedAnswer = uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
 			
 		}
 		else{
@@ -293,14 +294,21 @@ public class StudentAnswerController {
 	
 	// helper method to store different media types in different directories.
 	private String findDir(MultipartFile file) {
-		String dir = "";
+		String dir = null;
+		Integer mediaType = null;
 		if (file.getContentType().startsWith("image")) {
 			dir = "/img";
+			mediaType = MediaType.IMAGE.getMediaType();
 		} if (file.getContentType().startsWith("text")) {
 			dir = "/text";
+			mediaType = MediaType.TEXT.getMediaType();
 		} if (file.getContentType().startsWith("video")) {
 			dir = "/video";
-		} 
+			mediaType = MediaType.VIDEO.getMediaType();
+		} if (file.getContentType().startsWith("audio")) {
+			dir = "/audio";
+			mediaType = MediaType.AUDIO.getMediaType();
+		}
 		return dir;
 	}
 }
