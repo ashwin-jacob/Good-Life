@@ -192,7 +192,6 @@ public class StudentAnswerController {
 	public String updateUploadedUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
 											@RequestParam(value = "mediaTypeId") Integer mediaTypeId,
-											@RequestParam(value = "filePath") String filePath,
 											@RequestParam(value = "mpfile") MultipartFile mpfile,
 											HttpSession session) throws UploadPathException {
 		
@@ -205,12 +204,12 @@ public class StudentAnswerController {
 			uploadedAnswer.setUploadQuesId(uploadQuesId);
 			uploadedAnswer.setMediaTypeId(mediaTypeId);
 			uploadedAnswer.setFilePath(filePath);*/
-			uploadStudentAnswer(userId, uploadQuesId, filePath, mpfile, mediaTypeId, session);
+			uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
 			
 		}
 		else{
 			uploadedAnswer.setMediaTypeId(mediaTypeId);
-			uploadedAnswer.setFilePath(filePath);
+			//uploadedAnswer.setFilePath(filePath);
 		}
 		
 		
@@ -236,7 +235,7 @@ public class StudentAnswerController {
 	}
 	
 	// helper method for updateUploadedUserAnswer upload
-	private UploadedAnswer uploadStudentAnswer(Integer userId, Integer uploadQuesId, String filePath, MultipartFile mpfile, 
+	private UploadedAnswer uploadStudentAnswer(Integer userId, Integer uploadQuesId, MultipartFile mpfile, 
 			Integer mediaTypeId, HttpSession session) throws UploadPathException {
 		
 		UploadedAnswer uploadedAnswer = null;
@@ -283,6 +282,7 @@ public class StudentAnswerController {
 				uploadedAnswer.setMediaTypeId(mediaTypeId);
 				uploadedAnswer.setFilePath("" + UPLOAD_DIR + "/" + fileName);
 			}
+			System.out.println("************ " + uploadFilePath);
 		}
 		
 		if (uploadedAnswer== null) {
