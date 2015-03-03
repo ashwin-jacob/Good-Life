@@ -30,7 +30,7 @@ public class Chapter implements Serializable{
 	@Column(name = "order_id", nullable = false)
 	private Integer orderId;
 	
-	@Column(name = "published", nullable = true, columnDefinition = "default = FALSE")
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 
 	public Chapter() {
