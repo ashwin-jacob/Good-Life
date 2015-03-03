@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -29,6 +30,7 @@ import com.goodlife.dao.ChapterPageDAO;
 import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.exceptions.ChapterNotFoundException;
 import com.goodlife.exceptions.ChapterPageNotFoundException;
+import com.goodlife.exceptions.UploadPathException;
 import com.goodlife.model.Chapter;
 import com.goodlife.model.ChapterPage;
 import com.goodlife.model.CurriculumTree;
@@ -288,7 +290,7 @@ public class ChapterController {
 			 									@RequestParam(value="pageNum") Integer pageNum,
 			 									@RequestParam(value="pageUrl") String pageUrl,
 			 									@RequestParam(value="mpfile") MultipartFile mpfile,
-			 									HttpSession session) throws ChapterNotFoundException, ChapterPageNotFoundException{
+			 									HttpSession session) throws ChapterNotFoundException, UploadPathException{
 		/*
 		ChapterPage chapterPage = new ChapterPage();
 		chapterPage.setChapId(chapId);
@@ -315,7 +317,7 @@ public class ChapterController {
 		
 	}
 	// helper method for addChapterPage upload
-	private ChapterPage uploadChapterPage(Integer chapId, Integer pageNum, String pageUrl, MultipartFile mpfile, HttpSession session) throws ChapterPageNotFoundException{
+	private ChapterPage uploadChapterPage(Integer chapId, Integer pageNum, String pageUrl, MultipartFile mpfile, HttpSession session) throws UploadPathException {
 		ChapterPage chapterPage = null;
 		
 		if (mpfile != null && mpfile.getSize() > 0) {
@@ -354,7 +356,7 @@ public class ChapterController {
 				chapterPage = new ChapterPage();
 				chapterPage.setChapId(chapId);
 				chapterPage.setPageNum(pageNum);
-				chapterPage.setPageUrl("" + uploadDir + "/" + fileName);
+				chapterPage.setPageUrl("" + UPLOAD_DIR + "/" + fileName);
 			}
 		}
 		

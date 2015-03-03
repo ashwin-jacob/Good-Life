@@ -23,6 +23,7 @@ import com.goodlife.controller.ChapterController;
 import com.goodlife.dao.ChapterPageDAO;
 import com.goodlife.exceptions.ChapterNotFoundException;
 import com.goodlife.exceptions.ChapterPageNotFoundException;
+import com.goodlife.exceptions.UploadPathException;
 import com.goodlife.model.Chapter;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -117,9 +118,10 @@ public class ChapterControllerTest {
 	
 	@Test
 	@Transactional
-	public void testAddChapterPage() throws ChapterNotFoundException, ChapterPageNotFoundException {
-		HttpSession session = new MockHttpSession();
-			
+	public void testAddChapterPage() throws ChapterNotFoundException, ChapterPageNotFoundException,
+		NumberFormatException, UploadPathException {
+		
+		HttpSession session = new MockHttpSession();	
 		MultipartFile mpfile = new MockMultipartFile("upload", "myContent".getBytes());
 		Integer pageId = Integer.valueOf(chapterController.addChapterPage(CHAP_ID, NEW_PAGE_NUM, NEW_PAGE_URL, mpfile, session));
 		assertEquals(pageId,NEW_PAGE_ID);
