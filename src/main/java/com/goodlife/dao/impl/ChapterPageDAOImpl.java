@@ -25,20 +25,31 @@ public class ChapterPageDAOImpl implements ChapterPageDAO{
 	private ChapterDAO chapterDAO;
 	
 	@Override
-	public Integer addChapterPage(ChapterPage chapterPage) throws ChapterNotFoundException {
-		if(chapterDAO.findByChapterId(chapterPage.getChapId()) == null)
-			throw new ChapterNotFoundException("Chapter Id: " + chapterPage.getChapId() + " not found.");
-		this.sessionFactory.getCurrentSession().save(chapterPage);
-		return chapterPage.getPageId();
+	public Integer addChapterPage(ChapterPage chapterPage) {
+		try {
+			chapterDAO.findByChapterId(chapterPage.getChapId());
+			this.sessionFactory.getCurrentSession().save(chapterPage);
+			return chapterPage.getPageId();
+		} catch (ChapterNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	@Override
-	public Boolean deleteChapterPage(Integer pageId)
-			throws ChapterPageNotFoundException {
-
-		ChapterPage chapterPage = findByPageId(pageId);
-        this.sessionFactory.getCurrentSession().delete(chapterPage);
-		return Boolean.TRUE;
+	public Boolean deleteChapterPage(Integer pageId) {
+		
+		Boolean isSuccess = Boolean.TRUE;
+		ChapterPage chapterPage;
+		try {
+			chapterPage = findByPageId(pageId);
+			this.sessionFactory.getCurrentSession().delete(chapterPage);
+			
+		} catch (ChapterPageNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		return isSuccess;
 	}
 
 	@Override
@@ -66,8 +77,7 @@ public class ChapterPageDAOImpl implements ChapterPageDAO{
 	}
 
 	@Override
-	public Boolean updateChapterPageOrder(List<Integer> chapterPageList)
-			throws ChapterPageNotFoundException {
+	public Boolean updateChapterPageOrder(List<Integer> chapterPageList) {
 		ChapterPage chapterPage = new ChapterPage();
 		try{
 			for(int i=0; i<chapterPageList.size(); i++){
@@ -82,26 +92,35 @@ public class ChapterPageDAOImpl implements ChapterPageDAO{
 	}
 
 	@Override
-	public Boolean updatePageUrl(Integer pageId, String newUrl)
-			throws ChapterPageNotFoundException {
-
-		ChapterPage chapterPage = findByPageId(pageId);
-		chapterPage.setPageUrl(newUrl);
-		this.sessionFactory.getCurrentSession().save(chapterPage);
-		return Boolean.TRUE;
+	public Boolean updatePageUrl(Integer pageId, String newUrl) {
+		Boolean isSuccess = Boolean.TRUE;
+		ChapterPage chapterPage;
+		try {
+			chapterPage = findByPageId(pageId);
+			chapterPage.setPageUrl(newUrl);
+			this.sessionFactory.getCurrentSession().save(chapterPage);
+		} catch (ChapterPageNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		
+		return isSuccess;
 	}
 
 	@Override
-	public Boolean deleteAllPagesByChapterId(Integer chapterId)
-			throws ChapterPageNotFoundException {
+	public Boolean deleteAllPagesByChapterId(Integer chapterId) {
 
-		List<ChapterPage> chapterPageDeleteList = findAllChapterPagesByChapterId(chapterId);
-		
-		for(int i = 0; i < chapterPageDeleteList.size(); i++){
-			deleteChapterPage(chapterPageDeleteList.get(i).getPageId());
-		}
-		
-		return Boolean.TRUE;
+		List<ChapterPage> chapterPageDeleteList;
+		try {
+			chapterPageDeleteList = findAllChapterPagesByChapterId(chapterId);
+			for(int i = 0; i < chapterPageDeleteList.size(); i++){
+				deleteChapterPage(chapterPageDeleteList.get(i).getPageId());
+			}
+			return Boolean.TRUE;
+		} catch (ChapterPageNotFoundException e) {
+			e.printStackTrace();
+			return Boolean.FALSE;
+		}		
 	}
 
 	@Override

@@ -72,7 +72,7 @@ public class StudentCurriculumControllerTest {
 	public void testGetMultiChoiceUserAnswer(){
 		String userAns = studentCurriculumController.getMultiChoiceUserAnswer(USER_ID, MULTI_QUES_ID);
 		assertTrue(userAns.length() > 0);
-		userAns = studentCurriculumController.getMultiChoiceUserAnswer(USER_ID, MULTI_QUES_ID+2);
+		userAns = studentCurriculumController.getMultiChoiceUserAnswer(USER_ID, MULTI_QUES_ID+3);
 		assertEquals(userAns,"null");
 	}
 	
@@ -89,13 +89,13 @@ public class StudentCurriculumControllerTest {
 	@Transactional
 	public void testIsSubChapComplete(){
 		Boolean isComplete = Boolean.valueOf(studentCurriculumController.isSubChapComplete(USER_ID, SUBCHAPID));
-		assertEquals(isComplete,Boolean.FALSE);
+		assertEquals(isComplete,Boolean.TRUE);
 		isComplete = Boolean.valueOf(studentCurriculumController.isSubChapComplete(USER_ID, SUBCHAPID-1));
 		assertEquals(isComplete,Boolean.TRUE);
 		isComplete = Boolean.valueOf(studentCurriculumController.isSubChapComplete(USER_ID, SUBCHAPID-2));
 		assertEquals(isComplete,Boolean.TRUE);
 		isComplete = Boolean.valueOf(studentCurriculumController.isSubChapComplete(USER_ID, SUBCHAPID-3));
-		assertEquals(isComplete,Boolean.FALSE);
+		assertEquals(isComplete,Boolean.TRUE);
 		isComplete = Boolean.valueOf(studentCurriculumController.isSubChapComplete(USER_ID, SUBCHAPID-4));
 		assertEquals(isComplete,Boolean.TRUE);
 	}

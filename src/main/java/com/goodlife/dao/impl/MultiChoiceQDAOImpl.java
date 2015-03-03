@@ -1,5 +1,6 @@
 package com.goodlife.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -26,66 +27,80 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 	}
 
 	@Override
-	public Boolean deleteMultiChoice(Integer multiChoiceId) throws MultipleChoiceNotFoundException {
-
-		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
-		if(multiChoice != null)
-			this.sessionFactory.getCurrentSession().delete(multiChoice);
-		else
-			throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + multiChoiceId + " not found.");
-		return Boolean.TRUE;
+	public Boolean deleteMultiChoice(Integer multiChoiceId) {
+		Boolean isSuccess = Boolean.TRUE;
+		try {
+			MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
+		} catch (MultipleChoiceNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		return isSuccess;
 	}
 
 	@Override
-	public Boolean updateOrder(List<Integer> multiChoiceIdList)
-			throws MultipleChoiceNotFoundException {
-
+	public Boolean updateOrder(List<Integer> multiChoiceIdList) {
+		Boolean isSuccess = Boolean.TRUE;
 		MultiChoiceQ multiChoice = new MultiChoiceQ();
 		for (int i = 0; i < multiChoiceIdList.size(); i++){
-			multiChoice = getMultiChoiceQById(multiChoiceIdList.get(i));
-			if(multiChoice == null)
-				throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + multiChoiceIdList.get(i) + " not found.");
-			multiChoice.setOrderId(i+1);
-			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
+			try {
+				multiChoice = getMultiChoiceQById(multiChoiceIdList.get(i));
+				multiChoice.setOrderId(i+1);
+				this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
+			} catch (MultipleChoiceNotFoundException e) {
+				isSuccess = Boolean.FALSE;
+				e.printStackTrace();
+			}
 		}
-		return Boolean.TRUE;
+		return isSuccess;
 	}
 
 	@Override
-	public Boolean updateQuestionText(Integer multiChoiceId, String quesText)
-			throws MultipleChoiceNotFoundException {
-		
-		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
-		if(multiChoice == null)
-			throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + multiChoiceId + " not found.");
-		multiChoice.setQuesText(quesText);
-		this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
-		return Boolean.TRUE;
+	public Boolean updateQuestionText(Integer multiChoiceId, String quesText) {
+		Boolean isSuccess = Boolean.TRUE;
+		MultiChoiceQ multiChoice;
+		try {
+			multiChoice = getMultiChoiceQById(multiChoiceId);
+			multiChoice.setQuesText(quesText);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
+		} catch (MultipleChoiceNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		return isSuccess;
 	}
 
 	@Override
-	public Boolean updateHelpText(Integer multiChoiceId, String helpText)
-			throws MultipleChoiceNotFoundException {
+	public Boolean updateHelpText(Integer multiChoiceId, String helpText){
+		Boolean isSuccess = Boolean.TRUE;
+		MultiChoiceQ multiChoice;
+		try {
+			multiChoice = getMultiChoiceQById(multiChoiceId);
+			multiChoice.setHelpText(helpText);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
+		} catch (MultipleChoiceNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
 		
-		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
-		if(multiChoice == null)
-			throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + multiChoiceId + " not found.");
-		multiChoice.setHelpText(helpText);
-		this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
-		
-		return Boolean.TRUE;
+		return isSuccess;
 	}
 
 	@Override
-	public Boolean updateCorrectAnswer(Integer multiChoiceId, Integer correctAnswer)
-			throws MultipleChoiceNotFoundException {
+	public Boolean updateCorrectAnswer(Integer multiChoiceId, Integer correctAnswer) {
+		Boolean isSuccess = Boolean.TRUE;
+		MultiChoiceQ multiChoice;
+		try {
+			multiChoice = getMultiChoiceQById(multiChoiceId);
+			multiChoice.setCorrectAnswer(correctAnswer);
+			this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
+		} catch (MultipleChoiceNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
 		
-		MultiChoiceQ multiChoice = getMultiChoiceQById(multiChoiceId);
-		if(multiChoice == null)
-			throw new MultipleChoiceNotFoundException("MultiChoice Question Id: " + multiChoiceId + " not found.");
-		multiChoice.setCorrectAnswer(correctAnswer);
-		this.sessionFactory.getCurrentSession().saveOrUpdate(multiChoice);
-		return Boolean.TRUE;
+		return isSuccess;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -95,6 +110,8 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceQ.class);
 		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
 		List<MultiChoiceQ> multiChoiceList = criteria.list();
+		if(multiChoiceList == null)
+			return new ArrayList<MultiChoiceQ>();
 		return multiChoiceList;
 	}
 	

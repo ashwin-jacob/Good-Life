@@ -19,29 +19,34 @@ public class UploadFileQDAOImpl implements UploadFileQDAO{
 	@Override
 	public Integer addUploadFileQuestion(UploadFileQ uploadFileQ) {
 
-		this.sessionFactory.getCurrentSession().save(uploadFileQ);
-		
+		this.sessionFactory.getCurrentSession().saveOrUpdate(uploadFileQ);
 		return uploadFileQ.getUploadQuesId();
 	}
 	
 	@Override
-	public Boolean updateDescription(Integer uploadQuesId, String description) throws ObjectNotFoundException {
+	public Boolean updateDescription(Integer uploadQuesId, String description){
 
-		UploadFileQ uploadFileQ = getUploadFileQuestion(uploadQuesId);
-		if(uploadFileQ == null)
-			throw new ObjectNotFoundException(null,"Upload Question Id: " + uploadQuesId + " not found.");
-		uploadFileQ.setDescription(description);
-		return Boolean.TRUE;
+		try{
+			UploadFileQ uploadFileQ = getUploadFileQuestion(uploadQuesId);
+			uploadFileQ.setDescription(description);
+			return Boolean.TRUE;
+		}catch(ObjectNotFoundException e){
+			e.printStackTrace();
+			return Boolean.FALSE;
+		}
 	}
 
 	@Override
-	public Boolean updateHelpText(Integer uploadQuesId, String helpText) throws ObjectNotFoundException {
+	public Boolean updateHelpText(Integer uploadQuesId, String helpText){
 
-		UploadFileQ uploadFileQ = getUploadFileQuestion(uploadQuesId);
-		if(uploadFileQ == null)
-			throw new ObjectNotFoundException(null,"Upload Question Id: " + uploadQuesId + " not found.");
-		uploadFileQ.setHelpText(helpText);
-		return Boolean.TRUE;
+		try{
+			UploadFileQ uploadFileQ = getUploadFileQuestion(uploadQuesId);
+			uploadFileQ.setHelpText(helpText);
+			return Boolean.TRUE;
+		}catch(ObjectNotFoundException e){
+			e.printStackTrace();
+			return Boolean.FALSE;
+		}
 	}
 
 	@Override
@@ -73,26 +78,28 @@ public class UploadFileQDAOImpl implements UploadFileQDAO{
 	}
 	
 	@Override
-	public Boolean deleteUploadFileQuestion(Integer uploadQuesId) throws ObjectNotFoundException{
-		UploadFileQ uploadFileQ = getUploadFileQuestion(uploadQuesId);
-		if(uploadFileQ == null)
-			return Boolean.FALSE;
-		else{
+	public Boolean deleteUploadFileQuestion(Integer uploadQuesId){
+		try{
+			UploadFileQ uploadFileQ = getUploadFileQuestion(uploadQuesId);
 			this.sessionFactory.getCurrentSession().delete(uploadFileQ);
 			return Boolean.TRUE;
+		}catch(ObjectNotFoundException e){
+			e.printStackTrace();
+			return Boolean.FALSE;
 		}
 	}
 
 	@Override
 	public Boolean setPublishedUploadFileQ(Integer uploadFileQId, Boolean published){
 		
-		UploadFileQ uploadFileQ = getUploadFileQuestion(uploadFileQId);
-		if(uploadFileQ == null)
-			return Boolean.FALSE;
-		else{
+		try{
+			UploadFileQ uploadFileQ = getUploadFileQuestion(uploadFileQId);
 			uploadFileQ.setPublished(published);
 			this.sessionFactory.getCurrentSession().saveOrUpdate(uploadFileQ);
 			return Boolean.TRUE;
+		}catch(ObjectNotFoundException e){
+			e.printStackTrace();
+			return Boolean.FALSE;
 		}
 	}
 

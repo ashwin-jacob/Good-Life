@@ -27,11 +27,10 @@ import com.goodlife.dao.StudentDAO;
 import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
-import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.Chapter;
-import com.goodlife.model.CurriculumTree;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
+import com.goodlife.model.ObjectPair;
 import com.goodlife.model.ShortAnswerQ;
 import com.goodlife.model.SubChapter;
 import com.goodlife.model.UploadFileQ;
@@ -91,16 +90,27 @@ public class StudentCurriculumController {
 		return jsonResp;
 	}
 	
+	/*
+	 * The JSON response is an array of ObjectPair objects(which contain a chapter object and its corresponding subchapter list)
+	 * The response first prints off all the chapter objects and then the corresponding sub chapter list
+	 * Example string:
+	 * {"objR":{"chapId":1,"chapDescr":"CHAPTER 1 DESCRIPTION","chapTitle":"CHAPTER 1 TITLE","orderId":1,"published":true},
+	 * "objL":[{"subChapId":1,"chapId":1,"subChapDescr":"Sub Chapter 1 Description","subChapTitle":"Sub Chapter 1 Title","orderId":1,"published":true}
+	 */
 	@ResponseBody
 	@RequestMapping(value = "/getallowedcurriculum", method = RequestMethod.GET)
 	public String getAllowedCurriculum(@RequestParam(value = "userId") Integer userId){
 		
-		List<CurriculumTree> curriculumList = new ArrayList<CurriculumTree>();
+		List<ObjectPair> curriculumList = new ArrayList<ObjectPair>();
 		List<Chapter> chapterList = studentDAO.getAllowedChapters(userId);
+		List<SubChapter> subChapList;
 		
-		for(int i = 0; i < chapterList.size(); i++)
-			curriculumList.add(new CurriculumTree(chapterList.get(i),subChapDAO.getSubChapListByChapter(chapterList.get(i).getChapId())));
-		
+		for(int i = 0; i < chapterList.size(); i++){
+			subChapList = subChapDAO.getPublishedSubChapListByChap(chapterList.get(i).getChapId());
+			if(subChapList == null)
+				subChapList = new ArrayList<SubChapter>();
+			curriculumList.add(new ObjectPair(chapterList.get(i),subChapList));
+		}
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		
@@ -188,7 +198,7 @@ public class StudentCurriculumController {
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(multiChoiceUserAnsDAO.getUserAnswer(userId, multiQuesId));
+			jsonResp = mapper.writeValueAsString(multiChoiceUserAnsDAO.getUserAnswerObj(userId, multiQuesId));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -261,7 +271,7 @@ public class StudentCurriculumController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/getsubchapform", method = RequestMethod.GET)
-	public String getSubChapForm(@RequestParam(value = "subChapId") Integer subChapId) throws SubChapterNotFoundException{
+	public String getSubChapForm(@RequestParam(value = "subChapId") Integer subChapId){
 		
 		ArrayList<Object> formArray = new ArrayList<Object>();
 		List<MultiChoiceQ> multiList = multiChoiceQDAO.getAllPublishedMultiChoice(subChapId);

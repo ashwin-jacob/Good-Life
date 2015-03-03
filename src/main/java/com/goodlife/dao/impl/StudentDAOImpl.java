@@ -1,5 +1,6 @@
 package com.goodlife.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -26,69 +27,80 @@ public class StudentDAOImpl implements StudentDAO  {
 	private UsersDAO userDAO;
 
 	@Override
-	public Student findStudentByUserId(Integer userId)
-			throws ObjectNotFoundException {
+	public Student findStudentByUserId(Integer userId) throws ObjectNotFoundException{
+		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Student.class);
 		criteria.add(Restrictions.eqOrIsNull("userId", userId));
 		Student student = (Student) criteria.uniqueResult();
+		if(student == null)
+			throw new ObjectNotFoundException(null,"Student with userId: " + userId + " not found.");
 		return student;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Student> findStudentByRosterId(Integer rosterId)
-			throws ObjectNotFoundException {
+			throws ObjectNotFoundException{
+		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Student.class);
 		criteria.add(Restrictions.eqOrIsNull("rosterId", rosterId));
 		List<Student> studentList = criteria.list();
 		return studentList;
 	}
 
+	@SuppressWarnings("unused")
 	@Override
-	public Boolean addStudent(Student user) throws UserNotFoundException {
-		Users student = userDAO.findByUserId(user.getUserId());
-		if(student == null)
-			throw new UserNotFoundException("User Id: " + user.getUserId() + " not found.");
-		this.sessionFactory.getCurrentSession().save(user);
-		return Boolean.TRUE;
+	public Boolean addStudent(Student user){
+		Boolean isSuccess = Boolean.TRUE;
+		try {
+			Users student = userDAO.findByUserId(user.getUserId());
+			this.sessionFactory.getCurrentSession().save(user);
+		} catch (UserNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		
+		return isSuccess;
 	}
 
 	@Override
-	public Boolean deleteStudent(Integer userId)
-			throws ObjectNotFoundException {
+	public Boolean deleteStudent(Integer userId){
 		try{
 			Student student = findStudentByUserId(userId);
 			this.sessionFactory.getCurrentSession().delete(student);
 			return Boolean.TRUE;
 		}catch(ObjectNotFoundException e){
+			e.printStackTrace();
 			return Boolean.FALSE;
 		}
 	}
 
 	@Override
-	public Boolean addExistingStudentToRoster(Integer userId, Integer rosterId)
-			throws ObjectNotFoundException {
+	public Boolean addExistingStudentToRoster(Integer userId, Integer rosterId){
 		try{
 			Student student = findStudentByUserId(userId);
 			student.setRosterId(rosterId);
 			this.sessionFactory.getCurrentSession().saveOrUpdate(student);
 			return Boolean.TRUE;
 		}catch(ObjectNotFoundException e){
+			e.printStackTrace();
 			return Boolean.FALSE;
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Chapter> getAllowedChapters(Integer userId)
-			throws ObjectNotFoundException {
+	public List<Chapter> getAllowedChapters(Integer userId){
 		
 		Student student = findStudentByUserId(userId);
 		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Chapter.class);
 		criteria.add(Restrictions.and(Restrictions.le("chapId", student.getCurrentChapterId()),Restrictions.eq("published", true)));
 		List<Chapter> chapterList = criteria.list();
-		return chapterList;
+		if(chapterList == null)
+			return new ArrayList<Chapter>();
+		else
+			return chapterList;
 	}
 	
 	@Override
@@ -100,6 +112,7 @@ public class StudentDAOImpl implements StudentDAO  {
 			this.sessionFactory.getCurrentSession().saveOrUpdate(student);
 			return Boolean.TRUE;
 		}catch(ObjectNotFoundException e){
+			e.printStackTrace();
 			return Boolean.FALSE;
 		}
 	}

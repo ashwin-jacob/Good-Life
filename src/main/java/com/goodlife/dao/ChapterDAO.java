@@ -8,14 +8,14 @@ import com.goodlife.model.Chapter;
 public interface ChapterDAO {
 
 	public Integer addChapter(Chapter chapter);
-	public Integer deleteChapter(Integer chapterId) throws ChapterNotFoundException;
+	public Boolean deleteChapter(Integer chapterId);
 	public Chapter findByChapterId(Integer chapterId) throws ChapterNotFoundException;
-	public Boolean updateOrder(List<Integer> chapterList) throws ChapterNotFoundException;
-	public Boolean updateTitle(Integer chapterId, String newChapterTitle) throws ChapterNotFoundException;
-	public Boolean updateDescr(Integer chapterId, String newChapterDescr) throws ChapterNotFoundException;
-	public List<Chapter> listAllChapters() throws ChapterNotFoundException;
+	public Boolean updateOrder(List<Integer> chapterList);
+	public Boolean updateTitle(Integer chapterId, String newChapterTitle);
+	public Boolean updateDescr(Integer chapterId, String newChapterDescr);
+	public List<Chapter> listAllChapters();
 	public List<Chapter> listAllPublishedChapters();
-	public List<Chapter> listAllChapterDrafts() throws ChapterNotFoundException;
-	public Boolean updatePublished(Integer chapterId, Boolean published) throws ChapterNotFoundException;
+	public List<Chapter> listAllChapterDrafts();
+	public Boolean updatePublished(Integer chapterId, Boolean published);
 	
 }

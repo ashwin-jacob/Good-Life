@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.ObjectNotFoundException;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.ShortAnswerQDAO;
 import com.goodlife.dao.ShortAnswerUserAnswerDAO;
-import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.model.ShortAnswerQ;
 import com.goodlife.model.ShortAnswerUserAnswer;
 
@@ -26,10 +24,9 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 	private ShortAnswerQDAO shortAnswerQDAO;
 	
 	@Override
-	public Boolean addUserAnswer(ShortAnswerUserAnswer shortAnswerUA)
-			throws ObjectNotFoundException {
+	public Boolean addUserAnswer(ShortAnswerUserAnswer shortAnswerUA){
 		
-		this.sessionFactory.getCurrentSession().save(shortAnswerUA);
+		this.sessionFactory.getCurrentSession().saveOrUpdate(shortAnswerUA);
 		
 		if(getUserAnswer(shortAnswerUA.getUserId(), shortAnswerUA.getSaQId()) == null)
 			return Boolean.FALSE;
@@ -39,8 +36,7 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 	
 
 	@Override
-	public ShortAnswerUserAnswer getUserAnswer(Integer userId, Integer saQId)
-			throws ObjectNotFoundException {
+	public ShortAnswerUserAnswer getUserAnswer(Integer userId, Integer saQId) {
 		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ShortAnswerUserAnswer.class);
 		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("userId", userId),Restrictions.eqOrIsNull("saQId", saQId)));
@@ -56,13 +52,15 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 
 	@Override
 	public Boolean approveAnswer(Integer userId, Integer saQId) {
-		try{
-			ShortAnswerUserAnswer shortAnswerUA = getUserAnswer(userId, saQId);
+		
+		ShortAnswerUserAnswer shortAnswerUA = getUserAnswer(userId, saQId);
+			
+		if(shortAnswerUA == null)
+			return Boolean.FALSE;
+		else{
 			shortAnswerUA.setAprvd(true);
 			this.sessionFactory.getCurrentSession().saveOrUpdate(shortAnswerUA);
 			return Boolean.TRUE;
-		}catch(ObjectNotFoundException e){
-			return Boolean.FALSE;
 		}
 	}
 	
@@ -71,17 +69,13 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 
 		Boolean isComplete = Boolean.TRUE;
 		List<ShortAnswerQ> questionList = new ArrayList<ShortAnswerQ>();
-		try {
-			questionList = shortAnswerQDAO.getShortAnswerBySubChapter(subChapId);
-		} catch (SubChapterNotFoundException e) {
-			e.printStackTrace();
-			isComplete = Boolean.FALSE;
-		}
+		questionList = shortAnswerQDAO.getShortAnswerBySubChapter(subChapId);
+		
 		if(questionList == null || questionList.isEmpty())
 			isComplete = Boolean.FALSE;
 		else{
 		    for(int i = 0; i < questionList.size(); i++){
-				if(getUserAnswer(userId, questionList.get(i).getSaQId()).isAprvd() == Boolean.FALSE)
+				if(getUserAnswer(userId, questionList.get(i).getSaQId()).isAprvd().equals(Boolean.FALSE))
 					isComplete = Boolean.FALSE;
 			}
 		}

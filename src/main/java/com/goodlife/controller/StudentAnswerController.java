@@ -2,15 +2,12 @@ package com.goodlife.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.hibernate.ObjectNotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +29,11 @@ import com.goodlife.dao.StudentDAO;
 import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
-import com.goodlife.exceptions.ChapterPageNotFoundException;
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
-import com.goodlife.exceptions.SubChapterNotFoundException;
 import com.goodlife.exceptions.UploadPathException;
-import com.goodlife.model.Chapter;
-import com.goodlife.model.ChapterPage;
 import com.goodlife.model.MultiChoiceOption;
-import com.goodlife.model.MultiChoiceQ;
 import com.goodlife.model.MultiChoiceUserAns;
 import com.goodlife.model.ShortAnswerUserAnswer;
-import com.goodlife.model.SubChapter;
-import com.goodlife.model.UploadFileQ;
 import com.goodlife.model.UploadedAnswer;
 
 @Controller

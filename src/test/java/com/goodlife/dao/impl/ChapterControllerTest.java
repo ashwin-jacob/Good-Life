@@ -79,9 +79,8 @@ public class ChapterControllerTest {
 	@Transactional
 	@Rollback
 	public void testDeleteChapter() throws ChapterNotFoundException{
-		Integer chapId = Integer.valueOf(chapterController.deleteChapter(CHAP_ID));
-		Integer expectedId = 0;
-		assertEquals(chapId,expectedId);
+		Boolean isSuccess = Boolean.valueOf(chapterController.deleteChapter(CHAP_ID));
+		assertTrue(isSuccess);
 	}
 	
 	@Test

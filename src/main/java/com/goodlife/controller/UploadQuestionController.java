@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,8 +58,7 @@ public class UploadQuestionController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/deleteuploadfilequestion", method = RequestMethod.GET)
-	public String deleteUploadFileQuestion(@RequestParam(value="uploadQuesId") Integer uploadQuesId) 
-			throws ObjectNotFoundException {
+	public String deleteUploadFileQuestion(@RequestParam(value="uploadQuesId") Integer uploadQuesId){
 				
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -80,8 +78,7 @@ public class UploadQuestionController {
 	@ResponseBody
 	@RequestMapping(value = "/updatedescription", method = RequestMethod.GET)
 	public String updateDescription(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
-			@RequestParam(value="descr") String descr) 
-			throws ObjectNotFoundException {
+			@RequestParam(value="descr") String descr){
 						
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -101,7 +98,7 @@ public class UploadQuestionController {
 	@ResponseBody
 	@RequestMapping(value = "/updatehelptext", method = RequestMethod.GET)
 	public String updateHelpText(@RequestParam(value="uploadQuesId") Integer uploadQuesId, 
-			@RequestParam(value="helpTxt") String helpText) throws ObjectNotFoundException {
+			@RequestParam(value="helpTxt") String helpText){
 				
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -120,8 +117,7 @@ public class UploadQuestionController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/getuploadquestionbysubchapter") 
-	public String getUploadQuestionBySubchapId(@RequestParam(value="subChapId") Integer subChapId)
-			throws ObjectNotFoundException {
+	public String getUploadQuestionBySubchapId(@RequestParam(value="subChapId") Integer subChapId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -142,6 +138,7 @@ public class UploadQuestionController {
 	@RequestMapping(value = "/setuploadquestionpublished", method = RequestMethod.GET)
 	public String setUploadQuestionPublished(@RequestParam(value="uploadQuesId") Integer uploadQuesId,
 											  @RequestParam(value="published") Boolean published){
+		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		
