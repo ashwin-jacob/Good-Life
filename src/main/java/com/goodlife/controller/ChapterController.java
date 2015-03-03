@@ -28,7 +28,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.ChapterPageDAO;
 import com.goodlife.dao.SubChapterDAO;
-import com.goodlife.exceptions.ChapterNotFoundException;
 import com.goodlife.exceptions.ChapterPageNotFoundException;
 import com.goodlife.exceptions.UploadPathException;
 import com.goodlife.model.Chapter;

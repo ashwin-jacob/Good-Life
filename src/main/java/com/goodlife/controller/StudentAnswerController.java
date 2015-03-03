@@ -2,9 +2,7 @@ package com.goodlife.controller;
 
 import java.io.File;
 import java.io.IOException;
-
 import javax.servlet.http.HttpSession;
-
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -30,7 +28,10 @@ import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
+<<<<<<< HEAD
 import com.goodlife.exceptions.UploadPathException;
+=======
+>>>>>>> origin/Curriculum-View
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceUserAns;
 import com.goodlife.model.ShortAnswerUserAnswer;
