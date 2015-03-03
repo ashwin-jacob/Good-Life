@@ -46,14 +46,20 @@ forceForGood.directive('subchapterView', ['$log', 'student', '$compile', '$http'
 				});
 			};
 
-			$scope.upload = function(files) {
+			$scope.uploadQues = function() {
+				angular.forEach($scope.subchapterForm, function(subChapterElement) {
+					$scope.upload($scope.userId, subChapterElement.uploadQuesId, $scope.files);
+				});
+			}
+
+			$scope.upload = function(user, questId, files) {
 				if (files && files.length) {
 					for (var i = 0; i < files.length; i++) {
 						var file = files[i];
 						$upload.upload({
-							url: "/",//URL needed
-							fields: { userId:userId }, //chapter id and upload id,
-							file:file,
+							url: "/student/updateuploadeduseranswer",//URL needed
+							fields: { userId:user, uploadQuesId:questId , mediaTypeId: , filePath: }, //chapter id and upload id,
+							mpfile:file,
 						}).progress(function(evt) {
 							var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
 							$log.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);

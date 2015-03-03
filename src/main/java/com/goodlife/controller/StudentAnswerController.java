@@ -28,10 +28,7 @@ import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
-<<<<<<< HEAD
 import com.goodlife.exceptions.UploadPathException;
-=======
->>>>>>> origin/Curriculum-View
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceUserAns;
 import com.goodlife.model.ShortAnswerUserAnswer;
@@ -189,7 +186,7 @@ public class StudentAnswerController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/addorupdateuploadeduseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/updateuploadeduseranswer", method = RequestMethod.GET)
 	public String updateUploadedUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
 											@RequestParam(value = "mediaTypeId") Integer mediaTypeId,
