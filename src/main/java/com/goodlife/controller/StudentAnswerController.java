@@ -2,7 +2,9 @@ package com.goodlife.controller;
 
 import java.io.File;
 import java.io.IOException;
+
 import javax.servlet.http.HttpSession;
+
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.goodlife.dao.ChapterDAO;
@@ -184,14 +187,16 @@ public class StudentAnswerController {
 		}
 		return jsonResp;
 	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/updateuploadeduseranswer", method = RequestMethod.GET)
+		
+    @ResponseBody
+	@RequestMapping(value = "/updateuploadeduseranswer", method = RequestMethod.POST)
 	public String updateUploadedUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
 											@RequestParam(value = "mediaTypeId") Integer mediaTypeId,
-											@RequestParam(value = "mpfile") MultipartFile mpfile,
+											@RequestParam(value = "file") MultipartFile mpfile,
 											HttpSession session) throws UploadPathException {
+		
+		System.out.println("Got to update upload");
 		
 		UploadedAnswer uploadedAnswer = uploadedAnswerDAO.getUserAnswer(userId, uploadQuesId);
 		
@@ -202,7 +207,8 @@ public class StudentAnswerController {
 			uploadedAnswer.setUploadQuesId(uploadQuesId);
 			uploadedAnswer.setMediaTypeId(mediaTypeId);
 			uploadedAnswer.setFilePath(filePath);*/
-			uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
+			uploadedAnswer = uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
+			System.out.println("Got to upload student answer");
 			
 		}
 		else{
