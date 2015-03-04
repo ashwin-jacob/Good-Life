@@ -2,9 +2,7 @@ package com.goodlife.controller;
 
 import java.io.File;
 import java.io.IOException;
-
 import javax.servlet.http.HttpSession;
-
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -102,7 +100,7 @@ public class StudentAnswerController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "/addorupdateshortansweruseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/updateshortanswer", method = RequestMethod.GET)
 	public String updateShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "saQId") Integer saQId,
 											@RequestParam(value = "userAnswer") String userAnswer){
@@ -140,7 +138,7 @@ public class StudentAnswerController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/addorupdatemultichoiceuseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/updatemultichoice", method = RequestMethod.GET)
 	public String updateMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "multiQuesId") Integer multiQuesId,
 											@RequestParam(value = "userAnswer") Integer userAnswer){
@@ -189,7 +187,7 @@ public class StudentAnswerController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/addorupdateuploadeduseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/updateuploadeduseranswer", method = RequestMethod.POST)
 	public String updateUploadedUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
 											@RequestParam(value = "mediaTypeId") Integer mediaTypeId,
