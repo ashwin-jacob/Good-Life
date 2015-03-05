@@ -1,6 +1,8 @@
 package com.goodlife.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -295,7 +297,7 @@ public class ChapterController {
 	public String addChapterPage(@RequestParam(value="chapId") Integer chapId,
 			 									@RequestParam(value="pageNum") Integer pageNum,
 			 									@RequestParam(value="pageUrl") String pageUrl,
-			 									@RequestParam(value="mpfile") MultipartFile mpfile,
+			 									@RequestParam(value="file") MultipartFile mpfile,
 			 									HttpSession session) throws ChapterNotFoundException, UploadPathException{
 
 		/*ChapterPage chapterPage = new ChapterPage();
@@ -340,9 +342,7 @@ public class ChapterController {
 			if(!uploadDir.exists()) {
 				uploadDir.mkdirs();
 			}
-				
-			//String fileExt = FilenameUtils.getExtension(mpfile.getOriginalFilename());
-			//if(!fileExt.isEmpty()) fileExt = "." + fileExt;
+
 			fileName = mpfile.getOriginalFilename();
 				
 			String uploadFilePath = session.getServletContext().getRealPath(UPLOAD_DIR + "/" + fileName);
@@ -353,7 +353,12 @@ public class ChapterController {
 			File uploadFile = new File(uploadFilePath);
 			
 			try {
-				mpfile.transferTo(uploadFile);
+				byte[] bytes = mpfile.getBytes();
+				BufferedOutputStream stream = 
+					new BufferedOutputStream(new FileOutputStream(new File(uploadFilePath)));
+                stream.write(bytes);
+                stream.close();
+				
 				uploadSuccess = true;
 			} catch(IOException e) {
 			}

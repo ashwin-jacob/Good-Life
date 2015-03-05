@@ -33,14 +33,14 @@ import com.goodlife.model.Chapter;
 public class StudentAnswerControllerTest {
 
 	private static final Integer USER_ID = 1;
-	private static final Integer UPLOAD_QUES_ID = 1;
+	private static final Integer UPLOAD_QUES_ID = 15;
 	private static final String CHAP_TITLE = "CHAPTER 1 TITLE";
 	private static final Integer ORDER = 1;
 	private static final String CHAP_DESC = "CHAPTER 1 DESCRIPTION";
 	private static final Boolean PUBLISHED = true;
 	//private static final Integer PAGE_NUM = 1;
 	private static final Integer NEW_PAGE_NUM = 3;
-	private static final String FILE_PATH = "/resources/usr_ans";
+	private static final String FILE_PATH = "/WebContent/resources";
 	private static final Integer PAGE_ID = 1;
 	private static final Integer NEW_PAGE_ID = 4;
 	private static final Integer MEDIA_TYPE_ID = 1;
@@ -59,13 +59,12 @@ public class StudentAnswerControllerTest {
 	
 	@Test
 	@Transactional
-	//userId, uploadQuesId, filePath, mpfile, mediaTypeId, session
 	public void testUpdateUploadedUserAnswer() throws NumberFormatException, UploadPathException {
 		
 		HttpSession session = new MockHttpSession();	
-		MultipartFile mpfile = new MockMultipartFile("upload", "myContent".getBytes());
+		MultipartFile mpfile = new MockMultipartFile("upload.txt", "upload.txt", "text", "myContent".getBytes());
 		Integer uploadAnsId = Integer.valueOf(
-				studentAnswerController.updateUploadedUserAnswer(USER_ID, UPLOAD_QUES_ID, MEDIA_TYPE_ID, FILE_PATH, mpfile, session));
+				studentAnswerController.updateUploadedUserAnswer(USER_ID, UPLOAD_QUES_ID, MEDIA_TYPE_ID, mpfile, session));
 		assertNotNull(uploadAnsId);
 		assertEquals(uploadedAnswerDAO.getUserAnswer(USER_ID, UPLOAD_QUES_ID).getUserId(), USER_ID);
 		assertEquals(FILE_PATH, uploadedAnswerDAO.getUserAnswer(USER_ID, UPLOAD_QUES_ID).getFilePath());

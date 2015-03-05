@@ -1,6 +1,8 @@
 package com.goodlife.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.servlet.http.HttpSession;
@@ -75,7 +77,7 @@ public class StudentAnswerController {
 	@Autowired
 	private UploadFileQDAO uploadFileQDAO;
 	
-	private static final String UPLOAD_DIR = "/resources/usr_ans";
+	private static final String UPLOAD_DIR = "/WebContent/resources";
 	
 	/*@RequestMapping(value = "/updatecurrentchapter", method = RequestMethod.GET)
 	public String updateStudentChapter(@RequestParam(value = "userId") Integer userId,
@@ -199,6 +201,7 @@ public class StudentAnswerController {
 		System.out.println("Got to update upload");
 		
 		UploadedAnswer uploadedAnswer = uploadedAnswerDAO.getUserAnswer(userId, uploadQuesId);
+		//System.out.println("" + uploadedAnswer.getUserId() + ", " + uploadedAnswer.getFilePath());
 		
 		if(uploadedAnswer == null){
 			
@@ -215,6 +218,9 @@ public class StudentAnswerController {
 		else{
 			uploadedAnswer.setMediaTypeId(mediaTypeId);
 			//uploadedAnswer.setFilePath(filePath);
+			//uploadedAnswer = uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
+			System.out.println("Got to else case");
+			
 		}
 		
 		
@@ -252,9 +258,10 @@ public class StudentAnswerController {
 			// Create upload directory 
 			String uploadDirPath = session.getServletContext().getRealPath(UPLOAD_DIR);
 			if (uploadDirPath == null) {
-				uploadDirPath = "/resources/usr_ans";
+				uploadDirPath = "/WebContent/resources";
 				//throw new UploadPathException("upload directory is null");
 			}
+			
 			// different media types are stored in different directories.
 			uploadDirPath += findDir(mpfile);
 			
@@ -263,19 +270,22 @@ public class StudentAnswerController {
 				uploadDir.mkdirs();
 			}
 				
-			//String fileExt = FilenameUtils.getExtension(mpfile.getOriginalFilename());
-			//if(!fileExt.isEmpty()) fileExt = "." + fileExt;
 			fileName = mpfile.getOriginalFilename();
 				
 			String uploadFilePath = session.getServletContext().getRealPath(UPLOAD_DIR + "/" + fileName);
 			if (uploadFilePath == null) {
-				uploadFilePath = uploadDirPath + "test.jpg";
+				uploadFilePath = uploadDirPath + "/" + fileName;
 				//throw new UploadPathException("upload file path is null");
 			}
-			File uploadFile = new File(uploadFilePath);
+			//File uploadFile = new File(uploadFilePath);
 			
 			try {
-				mpfile.transferTo(uploadFile);
+				byte[] bytes = mpfile.getBytes();
+				BufferedOutputStream stream = 
+					new BufferedOutputStream(new FileOutputStream(new File(uploadFilePath)));
+                stream.write(bytes);
+                stream.close();
+				
 				uploadSuccess = true;
 			} catch(IOException e) {
 			}
@@ -286,8 +296,8 @@ public class StudentAnswerController {
 				uploadedAnswer.setUploadQuesId(uploadQuesId);
 				uploadedAnswer.setMediaTypeId(mediaTypeId);
 				uploadedAnswer.setFilePath("" + UPLOAD_DIR + "/" + fileName);
+				System.out.println(uploadFilePath);
 			}
-			System.out.println("************ " + uploadFilePath);
 		}
 		
 		if (uploadedAnswer== null) {
