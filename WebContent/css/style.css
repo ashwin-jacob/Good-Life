@@ -86,85 +86,96 @@
 
 #login {
 }
- .form-signin
-{
-    max-width: 300px;
-    padding: 15px;
-    margin: 0 auto;
-}
-.form-signin .form-signin-heading, .form-signin .checkbox
-{
-    margin-bottom: 10px;
-}
-.form-signin .checkbox
-{
-    font-weight: normal;
-}
-.form-signin .form-control
-{
-    position: relative;
-    font-size: 16px;
-    height: auto;
-    padding: 10px;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-.form-signin .form-control:focus
-{
-	z-index: 2;
-	background-color: #FFFFFF;
-	-webkit-box-shadow: 0px 0px;
-	box-shadow: 0px 0px;
-}
-.form-signin input[type="text"]
-{
+body {
 	background-color: #000000;
-	margin-bottom: -1px;
-	border-bottom-left-radius: 0;
-	border-bottom-right-radius: 0;
+	font-family: "Times New Roman";
+	color: #808080;
 }
-.form-signin input[type="password"]
-{
+.logo img{
+	margin-bottom: 30px;
+	width: 100%;
+}
+.wrap {
+	width: 250px;
+	height: auto;
+	margin: auto;
+	margin-top: 10%;
+}
+.avatar {
+	width: 100%;
+	margin: auto;
+	width: 65px;
+	border-radius: 100px;
+	height: 65px;
+	background: #448ed3;
+	position: relative;
+	bottom: -15px;
 	background-color: #000000;
-	margin-bottom: 10px;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
 }
-.account-wall
-{
-	margin-top: 20px;
-	padding: 40px 0px 20px 0px;
-	background-color: #9A9A9A;
-	border: 5px solid #1B1B1B;
-	opacity: 1;
-}
-.login-title
-{
-	font-family: "Trebuchet MS";
-    color: #c0c0c0;
-    font-size: 25px;
-    font-weight: 400;
-    display: block;
-}
-.profile-img
-{
-	width: 150px;
-	height: 150px;
-	margin: 0 auto 10px;
+.avatar img {
+	width: 60px;
+	height: 60px;
+	border-radius: 100px;
+	margin: auto;
+	
 	display: block;
-	-moz-border-radius: 50%;
-	-webkit-border-radius: 50%;
-	border-radius: 50%;
 }
-.need-help
-{
-    margin-top: 10px;
+.wrap input {
+	border: none;
+	background: #fff;
+  font-family:"Times New Roman" ;
+  font-weight:700 ;
+	display: block;
+	height: 50px;
+	outline: none;
+	width: calc(100% - 24px);
+	margin: auto;
+	padding: 6px 12px 0px 12px;
 }
-.new-account
-{
-    display: block;
-    margin-top: 10px;
+.bar {
+	width: 100%;
+	height: 1px;
+	background: #ACACAC ;
+}
+.bar i {
+	width: 95%;
+	margin: auto;
+	height: 1px ;
+	display: block;
+	background: #ACACAC;
+}
+.wrap input[type="text"] {
+	border-radius: 7px 7px 0px 0px;
+	color: #515151;
+}
+.wrap input[type="password"] {
+	border-radius: 0px 0px 7px 7px;
+	color: #515151;
+}
+.forgot_link {
+	color: #83afdf ;
+	color: #83afdf;
+	text-decoration: none;
+	font-family: "Times New Roman";
+	font-size: 11px;
+	position: relative;
+	left: 193px;
+	top: -36px;
+}
+.wrap button {
+	width: 100%;
+	border-radius: 7px;
+	background-color: #ACACAC;
+	text-decoration: center;
+	border: 1px solid;
+	color: #000000;
+	margin-top: 0px;
+	padding-top: 14px;
+	padding-bottom: 14px;
+	outline: none;
+	font-family: "Lato";
+	font-size: 13px;
+	cursor: pointer;
 }
  
   /* ====================================================
