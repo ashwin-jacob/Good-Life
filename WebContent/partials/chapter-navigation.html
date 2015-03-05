@@ -1,14 +1,14 @@
-<span class="dropdown" dropdown ng-repeat="chapter in chapterInfo">
-	<a href class="dropdown-toggle" dropdown-toggle>
-		{{chapter.chapTitle}}
-	</a>
-	<br>
-	{{chapter.chapDescr}}
-	<ul class="dropdown-menu">
-		<li ng-repeat="subChapters in chapter.subchapters">
-			<a href ng-click="passSubChapter(subChapters)">{{subChapters.subChapTitle}}</a>
+<div class="center-block">
+	<h3>Welcome User. Please select your chapter</h3>
+	<ul ng-repeat="chapter in chapterInfo" ng-click="expand(chapter)">
+		<li>
+			{{chapter.chapTitle}}
 		</li>
+		<li class="nga-default nga-stagger nga-slide-left" ng-show="chapter.show" ng-animate-children>
+		<ul>
+			<li ng-repeat="subChapters in chapter.subchapters">
+				<a href ng-click="passSubChapter(subChapters)">{{subChapters.subChapTitle}}</a>
+			</li>
+		</ul>
 	</ul>
-	<br>
-</span>
-
+</div>

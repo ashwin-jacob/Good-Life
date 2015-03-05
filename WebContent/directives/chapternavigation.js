@@ -41,6 +41,11 @@ forceForGood.directive('chapterNavigation', [ '$log', 'student', '$compile',
 				$scope.returnValue(subChapter);
 			};
 
+			//expand view
+			$scope.expand = function(chapter) {
+				chapter.show = !chapter.show;
+			};
+
 
 		},
 		link: function($scope, elm, attr) {
