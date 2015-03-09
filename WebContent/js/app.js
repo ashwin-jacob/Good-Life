@@ -1,6 +1,6 @@
 'use strict';
 
-var curriculumMakerApp = angular.module('curriculumMakerApp', [
+var forceForGood = angular.module('forceForGood', [
 	'ngRoute',
 	'ui.bootstrap',
 	'userManagement',
@@ -10,9 +10,12 @@ var curriculumMakerApp = angular.module('curriculumMakerApp', [
 	'multi-select',
 	'adminFilter',
 	'adminService',
-	'chapterServices']);
+	'chapterServices',
+	'studentServices',
+	'angularFileUpload',
+	'ngAnimate']);
 
-curriculumMakerApp.config(['$routeProvider',
+forceForGood.config(['$routeProvider',
 	function($routeProvider) {
 		$routeProvider.
 			when('/searchUsers', {
@@ -26,8 +29,12 @@ curriculumMakerApp.config(['$routeProvider',
 			when('/chapterBuilder', {
 				templateUrl: 'partials/chapterBuilder.html',
 				controller: 'ChapterBuilder'
+			}).
+			when('/curriculum', {
+				templateUrl: 'partials/curriculum.html',
+				controller: 'studentCurriculumView'
 			}). 
 			otherwise({
-				redirectTo: '/searchUsers'
+				redirectTo: '/curriculum'
 			});
 	}]);

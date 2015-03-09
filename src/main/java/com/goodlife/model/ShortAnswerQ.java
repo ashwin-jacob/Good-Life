@@ -37,7 +37,7 @@ public class ShortAnswerQ implements Serializable{
 	@Column(name = "order_id", nullable = false)
 	private Integer orderId;
 	
-	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT = 0")
+	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 
 	public ShortAnswerQ() {

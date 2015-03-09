@@ -133,7 +133,10 @@ public class ChapterDAOImpl implements ChapterDAO{
 				Chapter.class);
 		criteria.add(Restrictions.eqOrIsNull("published", true));
 		List<Chapter> publishedChapterList = criteria.list();
-		return publishedChapterList;
+		if(publishedChapterList == null)
+			return new ArrayList<Chapter>();
+		else
+			return publishedChapterList;
 	}
 
 	@SuppressWarnings("unchecked")

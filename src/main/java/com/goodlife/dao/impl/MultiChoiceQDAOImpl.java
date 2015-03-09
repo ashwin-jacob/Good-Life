@@ -1,5 +1,6 @@
 package com.goodlife.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -109,6 +110,8 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceQ.class);
 		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
 		List<MultiChoiceQ> multiChoiceList = criteria.list();
+		if(multiChoiceList == null)
+			return new ArrayList<MultiChoiceQ>();
 		return multiChoiceList;
 	}
 	

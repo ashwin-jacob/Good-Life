@@ -1,6 +1,11 @@
 package com.goodlife.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+
+import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -14,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.MultiChoiceOptionDAO;
@@ -26,6 +33,8 @@ import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
+import com.goodlife.exceptions.UploadPathException;
+import com.goodlife.model.MediaType;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceUserAns;
 import com.goodlife.model.ShortAnswerUserAnswer;
@@ -68,6 +77,8 @@ public class StudentAnswerController {
 	@Autowired
 	private UploadFileQDAO uploadFileQDAO;
 	
+	private static final String UPLOAD_DIR = "/WebContent/resources";
+	
 	/*@RequestMapping(value = "/updatecurrentchapter", method = RequestMethod.GET)
 	public String updateStudentChapter(@RequestParam(value = "userId") Integer userId,
 										@RequestParam(value = "chapId") Integer chapId){
@@ -94,7 +105,7 @@ public class StudentAnswerController {
 	
 	
 	@ResponseBody
-	@RequestMapping(value = "/addorupdateshortansweruseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/updateshortanswer", method = RequestMethod.GET)
 	public String updateShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "saQId") Integer saQId,
 											@RequestParam(value = "userAnswer") String userAnswer){
@@ -132,7 +143,7 @@ public class StudentAnswerController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/addorupdatemultichoiceuseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/updatemultichoice", method = RequestMethod.GET)
 	public String updateMultiChoiceUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "multiQuesId") Integer multiQuesId,
 											@RequestParam(value = "userAnswer") Integer userAnswer){
@@ -179,27 +190,37 @@ public class StudentAnswerController {
 		}
 		return jsonResp;
 	}
-	
-	@ResponseBody
-	@RequestMapping(value = "/addorupdateuploadeduseranswer", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/updateuploadeduseranswer", method = RequestMethod.POST)
 	public String updateUploadedUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
 											@RequestParam(value = "mediaTypeId") Integer mediaTypeId,
-											@RequestParam(value = "filePath") String filePath){
+											@RequestParam(value = "file") MultipartFile mpfile,
+											HttpSession session) throws UploadPathException {
+		
+		System.out.println("Got to update upload");
 		
 		UploadedAnswer uploadedAnswer = uploadedAnswerDAO.getUserAnswer(userId, uploadQuesId);
-
+		//System.out.println("" + uploadedAnswer.getUserId() + ", " + uploadedAnswer.getFilePath());
 		
 		if(uploadedAnswer == null){
-			uploadedAnswer = new UploadedAnswer();
+			
+			/*uploadedAnswer = new UploadedAnswer();
 			uploadedAnswer.setUserId(userId);
 			uploadedAnswer.setUploadQuesId(uploadQuesId);
 			uploadedAnswer.setMediaTypeId(mediaTypeId);
-			uploadedAnswer.setFilePath(filePath);
+			uploadedAnswer.setFilePath(filePath);*/
+			uploadedAnswer = uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
+
+			System.out.println("Got to upload student answer");
+			
 		}
 		else{
 			uploadedAnswer.setMediaTypeId(mediaTypeId);
-			uploadedAnswer.setFilePath(filePath);
+			//uploadedAnswer.setFilePath(filePath);
+			//uploadedAnswer = uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
+			System.out.println("Got to else case");
+			
 		}
 		
 		
@@ -224,6 +245,85 @@ public class StudentAnswerController {
 		return jsonResp;
 	}
 	
+	// helper method for updateUploadedUserAnswer upload
+	private UploadedAnswer uploadStudentAnswer(Integer userId, Integer uploadQuesId, MultipartFile mpfile, 
+			Integer mediaTypeId, HttpSession session) throws UploadPathException {
+		
+		UploadedAnswer uploadedAnswer = null;
+		
+		if (mpfile != null && mpfile.getSize() > 0) {
+			Boolean uploadSuccess = false;
+			String fileName = null;
+			
+			// Create upload directory 
+			String uploadDirPath = session.getServletContext().getRealPath(UPLOAD_DIR);
+			if (uploadDirPath == null) {
+				uploadDirPath = "/WebContent/resources";
+				//throw new UploadPathException("upload directory is null");
+			}
+			
+			// different media types are stored in different directories.
+			uploadDirPath += findDir(mpfile);
+			
+			File uploadDir = new File(uploadDirPath);
+			if(!uploadDir.exists()) {
+				uploadDir.mkdirs();
+			}
+				
+			fileName = mpfile.getOriginalFilename();
+				
+			String uploadFilePath = session.getServletContext().getRealPath(UPLOAD_DIR + "/" + fileName);
+			if (uploadFilePath == null) {
+				uploadFilePath = uploadDirPath + "/" + fileName;
+				//throw new UploadPathException("upload file path is null");
+			}
+			//File uploadFile = new File(uploadFilePath);
+			
+			try {
+				byte[] bytes = mpfile.getBytes();
+				BufferedOutputStream stream = 
+					new BufferedOutputStream(new FileOutputStream(new File(uploadFilePath)));
+                stream.write(bytes);
+                stream.close();
+				
+				uploadSuccess = true;
+			} catch(IOException e) {
+			}
+		
+			if (uploadSuccess) {
+				uploadedAnswer = new UploadedAnswer();
+				uploadedAnswer.setUserId(userId);
+				uploadedAnswer.setUploadQuesId(uploadQuesId);
+				uploadedAnswer.setMediaTypeId(mediaTypeId);
+				uploadedAnswer.setFilePath("" + UPLOAD_DIR + "/" + fileName);
+				System.out.println(uploadFilePath);
+			}
+		}
+		
+		if (uploadedAnswer== null) {
+			return null;
+		}
+		return uploadedAnswer;
+	}
 	
+	// helper method to store different media types in different directories.
+	private String findDir(MultipartFile file) {
+		String dir = null;
+		Integer mediaType = null;
+		if (file.getContentType().startsWith("image")) {
+			dir = "/img";
+			mediaType = MediaType.IMAGE.getMediaType();
+		} if (file.getContentType().startsWith("text")) {
+			dir = "/text";
+			mediaType = MediaType.TEXT.getMediaType();
+		} if (file.getContentType().startsWith("video")) {
+			dir = "/video";
+			mediaType = MediaType.VIDEO.getMediaType();
+		} if (file.getContentType().startsWith("audio")) {
+			dir = "/audio";
+			mediaType = MediaType.AUDIO.getMediaType();
+		}
+		return dir;
+	}
 }
 
