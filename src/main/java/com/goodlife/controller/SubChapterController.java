@@ -30,7 +30,7 @@ public class SubChapterController {
 	private SubChapterDAO subChapterDAO;
 	
 	@ResponseBody
-	@RequestMapping(value = "/addsubchapter", method = RequestMethod.GET)
+	@RequestMapping(value = "/addsubchapter", method = RequestMethod.POST)
 	public String addSubChapter(@RequestParam(value="chapId") Integer chapId,
 											 @RequestParam(value="subChapTitle") String subChapTitle,
 											 @RequestParam(value="subChapDescr") String subChapDescr,

@@ -13,26 +13,28 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 			//Settings
 			page: 1,
 			count: 10,
-			sorting: {
-				name: 'asc'
-			}
+	        filter: {
+
+	            chapTitle: ''       // initial filter
+
+	        }
 		}, {
 			total: data.length,
 	        //groupBy: 'data.curriculumTreeList.objR.chapId',
-			getData: function($defer, params) {
-	            var orderedData = params.sorting() ?
+		       getData: function($defer, params) {
 
-	                    $filter('orderBy')(data, $scope.chapterTable.orderBy()) :
-
-	                    data;
-
-	            $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));			}
+		            var page = data.slice((params.page() - 1) * params.count(), params.page() * params.count());
+		            $scope.data=page;
+                    $defer.resolve(page);
+		            
+		        }
 		});
+		
 
 		var handleSuccess = function (response) {
-			$log.log("Succesful");
+			$log.log("Successful");
 			data = response.data;
-			//alert(JSON.stringify(data));
+			//alert(JSON.stringify(data[1]));
 			$scope.chapterTable .reload();
 		};
 
@@ -42,13 +44,26 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 			$scope.chapterTable .reload();
 		};
 		
-	    $scope.addRow = function() {
-	    	$close();
-	    	alert("hello");
-	        data.push({chapTitle: 'Empty', orderId: 0, chapDescr:'sd'});
-			$scope.chapterTable .reload();
-	      };
-	      
+		//Add Chapter
+		$scope.addRow = function(title, desc, id, addChapterFm) {
+
+			var confirmAdd = function (response) {
+				$scope.data.push({"objR":{"chapId":response.data,"chapDescr":desc,"chapTitle":title,"orderId":id,"published":false},"objL":[]});
+				$scope.showConfirmation("success", "Chapter titled " + "'"+title +"' was added!");
+
+			} 
+
+			var failAdd = function (response) {
+				$scope.showConfirmation("fail", "Chapter titled " + "'"+title +"' was not added! Please try again" );
+			} 
+
+			if (addChapterFm.$valid){
+				listChapters.addChapter(title, desc, id).then(confirmAdd, failAdd);
+			}
+
+		};
+
+		//Delete Chapter
 	    $scope.removeRow = function(chapId){		
 	  		var index = -1;		
 	  		var comArr = eval( data );
@@ -61,17 +76,18 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	  		}
 
 	  		if( index === -1 ) {
-	  			alert( "Cannot Delete Chapter" );
+				$scope.showConfirmation("fail", "Chapter" + "#"+chapId +" was not deleted!");
 	  		}
 	  		data.splice( index, 1 );		
 			listChapters.deleteChapter(chapId).then( handleSuccess, handleError );
-			listChapters.search().then( handleSuccess, handleError );
+			$scope.showConfirmation("success", "Chapter" + " #"+chapId +" has been deleted!");
 			$scope.chapterTable .reload();
+			init();
 
 	  	};
 	  	
 	    var show = false;
-
+	    //Expand Collapse -WIP
 	    $scope.showButton = function(val){
 	    if(angular.isUndefined(val)){
 	 	    	 return false;
@@ -101,6 +117,7 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	     }
 	    };
 	    
+	    // Dialog Modal
 	    var myModal;
 	    
 	    $scope.openDialog = function(url){
@@ -111,30 +128,76 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    	myModal.close();
 	    }
 	    
-	    $scope.tableClick = function(event){
+	    // View Row Details from Table
+	    $scope.chapterClick = function(rowData){
 	    	
-	    	if (event.target.nodeName == "TD"){
-		    	$scope.showPane("subchapter");
-	    	}
-	    	else if (event.target.nodeName == "TH"){
-		    	$scope.showPane("chapter");
-	    	}
+	    	var chapTitle = rowData.chapTitle;
+	    	$scope.showPane("chapter", chapTitle, "");
+
 	    }
 	    
+	    $scope.exerciseClick = function(rowData){
+	    	
+	 	   var title = rowData.subChapTitle;
+	 	   var chapId = rowData.chapId;
+	 	   var chapTitle = "";
+	    	
+	  		var comArr = eval( data );
+		  		for( var i = 0; i < comArr.length; i++ ) {
+		  			if( comArr[i].objR.chapId === chapId ) {
+		  				chapTitle = comArr[i].objR.chapTitle;
+		  			}
+		  		}
+	    	
+	    	
+	    	$scope.showPane("subchapter", chapTitle, title);
+
+	    }
+	    
+	    //Show Chapter vs. Exercise (Subchapter) View
 	    $scope.showChapterPane = false;
 	    $scope.showSubChapPane = false;
+	    $scope.chapName = "";
+	    $scope.subChapName = "";
 	    
-	    $scope.showPane = function(paneType){
+	    $scope.showPane = function(paneType, chap, subChap){
 	    	if (paneType == "subchapter"){
 		    	  $scope.showChapterPane = false;
 		          $scope.showSubChapPane = true;
+		          $scope.chapName = chap;
+		          $scope.subChapName = subChap;
 	    	}
 	    	else if (paneType == "chapter"){
 		    	  $scope.showChapterPane = true;
 		          $scope.showSubChapPane = false;
+		          $scope.chapName = chap;
 	    	}
 
 	    };
+	    
+	    $scope.showSuccess = false;
+	    $scope.showFailure = false;
+	    $scope.confirmMsg = "";
+	    
+	    $scope.showConfirmation = function(flag, message){
+	    	if (flag == "success"){
+		    	  $scope.showSuccess = true;
+		          $scope.showFailure = false;
+	    	}
+	    	else if (flag == "fail"){
+		    	  $scope.showFailure = true;
+		          $scope.showSuccess = false;
+	    	}
+	    	
+	          $scope.confirmMsg = message;
+
+
+	    };
+	    $scope.submitSubchapter = function(subTitle, chapId){
+			listChapters.addSubChapter(chapId, subTitle, 'some desc', '1').then( handleSuccess, handleError );
+			$scope.showConfirmation("success", "SubChapter" + " titled '"+subTitle +"' has been created!");
+			init();
+	    }
 	    
 		var init = function () {
 			listChapters.search().then( handleSuccess, handleError );
