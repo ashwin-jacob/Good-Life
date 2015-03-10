@@ -38,3 +38,7 @@ div.adminSearchText {
 ul.navview {
 	color: #0066FF;
 }
+.ng-table tr.emphasis td {
+	background-color: #DDD;
+	font-weight: bold;
+}

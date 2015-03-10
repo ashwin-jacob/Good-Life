@@ -73,7 +73,8 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 
 		var handleSuccess = function (response) {
 			$log.log("Succesful search");
-			data = response.data;
+			data = response.data[0];
+			$scope.status = response.data[1];
 			$scope.userTable .reload();
 		};
 

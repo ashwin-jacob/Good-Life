@@ -41,7 +41,7 @@
 	</accordion-group>
 </accordion>
 <table ng-table="userTable" class="table">
-	<tr ng-repeat="user in $data">
+	<tr ng-repeat="user in $data" ng-class="{ 'emphasis': status[$index] == 's', 'emphasis': status[$index] == 'd'  }">
 		<td data-title="'User ID'" sortable="'userId'">
 			{{user.userId}}
 		</td>
