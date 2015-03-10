@@ -24,6 +24,7 @@ public class StudentCurriculumControllerTest {
 	private static final Integer MULTI_QUES_ID = 1;
 	private static final Integer SUBCHAPID = 5;
 	private static final Integer USER_ID = 1;
+	private static final Integer UPLOAD_Q_ID = 1;
 	
 	@Autowired
 	private StudentCurriculumController studentCurriculumController;
@@ -69,6 +70,14 @@ public class StudentCurriculumControllerTest {
 	
 	@Test
 	@Transactional
+	public void testGetUploadFileQBySubChap(){
+		String uploadQList = studentCurriculumController.getUploadFileQBySubChap(SUBCHAPID);
+		//System.out.println(optionList);
+		assertTrue(uploadQList.length() > 0);
+	}
+	
+	@Test
+	@Transactional
 	public void testGetMultiChoiceUserAnswer(){
 		String userAns = studentCurriculumController.getMultiChoiceUserAnswer(USER_ID, MULTI_QUES_ID);
 		assertTrue(userAns.length() > 0);
@@ -82,6 +91,15 @@ public class StudentCurriculumControllerTest {
 		String userAns = studentCurriculumController.getShortAnswerUserAnswer(USER_ID, NEW_SA_Q_ID-1);
 		assertTrue(userAns.length()>0);
 		userAns = studentCurriculumController.getShortAnswerUserAnswer(USER_ID, NEW_SA_Q_ID);
+		assertEquals(userAns,"null");
+	}
+	
+	@Test
+	@Transactional
+	public void testGetUploadedAnswerUserAnswer(){
+		String userAns = studentCurriculumController.getUploadedAnswerUserAnswer(USER_ID, UPLOAD_Q_ID);
+		assertTrue(userAns.length()>0);
+		userAns = studentCurriculumController.getUploadedAnswerUserAnswer(USER_ID, UPLOAD_Q_ID+2);
 		assertEquals(userAns,"null");
 	}
 	
