@@ -17,24 +17,24 @@ div.adminSearchText {
     background-color: #FA787E;
 }
 
-.test {
-	background-color: #FA787E;
+.test input[type="radio"] {
+  display:none;
 }
 
-/**
-Animation
-*/
-.my-show-hide-animation.ng-hide-add,
-.my-show-hide-animation.ng-hide-remove {
-  -webkit-transition: all linear all;
-  transition:all linear all;
-
-  /* remember to add this */
-  display:block!important;
-  opacity:1;
-  animation:0.5s lightSpeedOut ease;
+.test input[type="radio"] + label {
+  display:none;
+  background: url(./img/5_knowledge.png);
 }
-.my-show-hide-animation.ng-hide {
-  opacity:0;
-  background-color: #FA787E;
+
+/*h1,h2,h3,h4,h5,span.chapter {
+	color: #B0B0B0;
+}*/
+
+.bookImage {
+	background-color:black;
+	color: #B0B0B0;
+}
+
+ul.navview {
+	color: #0066FF;
 }

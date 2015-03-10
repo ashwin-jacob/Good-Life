@@ -2,6 +2,7 @@ forceForGood.controller('studentCurriculumView', ['$scope', '$log', 'student',
 	function($scope, $log, student) {
 		//Preset Values
 		$scope.userId = 1;	
+		$scope.studentview = true;
 
 
 		//Update form content
