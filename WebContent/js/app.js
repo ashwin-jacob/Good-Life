@@ -30,7 +30,7 @@ forceForGood.config(['$routeProvider',
 				templateUrl: 'partials/chapterBuilder.html',
 				controller: 'ChapterBuilder'
 			}).
-			when('/curriculum', {
+			when('/curriculum/:userId', {
 				templateUrl: 'partials/curriculum.html',
 				controller: 'studentCurriculumView'
 			}). 
