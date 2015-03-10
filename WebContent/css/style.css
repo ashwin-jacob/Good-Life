@@ -123,12 +123,11 @@ body {
 .wrap input {
 	border: none;
 	background: #fff;
-  font-family:"Times New Roman" ;
-  font-weight:700 ;
+  	font-family:"Times New Roman" ;
+  	font-weight:700 ;
 	display: block;
 	height: 50px;
 	outline: none;
-	width: calc(100% - 24px);
 	margin: auto;
 	padding: 6px 12px 0px 12px;
 }
@@ -145,11 +144,33 @@ body {
 	background: #ACACAC;
 }
 .wrap input[type="text"] {
+	width: calc(100% - 24px);
 	border-radius: 7px 7px 0px 0px;
 	color: #515151;
 }
 .wrap input[type="password"] {
+	width: calc(100% - 24px);
 	border-radius: 0px 0px 7px 7px;
+	color: #515151;
+}
+.wrap input[type="Email"] {
+	width: calc(100% - 24px);
+	border-radius: 7px 7px 0px 0px;
+	color: #515151;
+}
+.wrap input[type="New Password"] {
+	width: calc(100% - 24px);
+	color: #515151;
+}
+.wrap input[type="Token"] {
+	width: calc(100% - 24px);
+	border-radius: 0px 0px 7px 7px;
+	color: #515151;
+}
+.wrap input[type="lookup"] {
+	width: calc(100% - 24px);
+	border-radius: 7px 7px 7px 7px;
+	margin-bottom: 10px;
 	color: #515151;
 }
 .forgot_link {
@@ -173,9 +194,18 @@ body {
 	padding-top: 14px;
 	padding-bottom: 14px;
 	outline: none;
-	font-family: "Lato";
+	font-family: "Times New Roman";
 	font-size: 13px;
 	cursor: pointer;
+}
+.wrap button:hover{
+	color: #ffffff;
+}
+.errorblock{
+	font-size: 16px;
+	border: 1px solid;
+	color: #FF0004;
+	text-align: center;
 }
  
   /* ====================================================

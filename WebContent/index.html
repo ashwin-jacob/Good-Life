@@ -18,20 +18,19 @@
   <link rel="stylesheet" href="css/nga.min.css">
   <link rel="stylesheet" href="bower_components/angular-multi-select/angular-multi-select.css">
   <link rel="stylesheet" href="css/font-awesome.min.css">
-<body>
+  <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
+</head>
+<body ng-view ng-init="studentview=false" ng-class="{bookImage: studentview}">
 
   <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
   <![endif]-->
 
-  <div ng-view></div>
-
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
-  <script src="bower_components/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js"></script>
-  <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   <script src="bower_components/ng-table/dist/ng-table.js"></script>
   <script src="bower_components/angular-route/angular-route.js"></script>

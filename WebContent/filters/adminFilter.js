@@ -1,16 +1,16 @@
 angular.module('adminFilter', [])
 	.filter('roleType', function() {
 		return function(input) {
-			if(input == "s") {
+			if(input.toLowerCase() == "s") {
 				return "Student";
 			}
-			if(input == "a") {
+			if(input.toLowerCase() == "a") {
 				return "Admin";
 			}
-			if(input == "f") {
+			if(input.toLowerCase() == "f") {
 				return "Facilitator";
 			}
-			if(input == "m") {
+			if(input.toLowerCase() == "m") {
 				return "Moderator";
 			}
 			

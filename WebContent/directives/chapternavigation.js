@@ -16,6 +16,7 @@ forceForGood.directive('chapterNavigation', [ '$log', 'student', '$compile',
 
 			//Initalized Variables
 			$scope.chapterInfo = [];
+			$scope.chapterexpanded = false;
 
 
 			//Update chapters for the user
@@ -38,12 +39,14 @@ forceForGood.directive('chapterNavigation', [ '$log', 'student', '$compile',
 
 			//Pass the clicked value to the form
 			$scope.passSubChapter = function(subChapter) {
+				$scope.chapterexpanded = false;
 				$scope.returnValue(subChapter);
 			};
 
 			//expand view
 			$scope.expand = function(chapter) {
 				chapter.show = !chapter.show;
+				$scope.chapterexpanded = true;
 			};
 
 
