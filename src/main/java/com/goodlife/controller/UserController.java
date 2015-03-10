@@ -30,7 +30,7 @@ public class UserController {
 
 	@RequestMapping(value = "requestInvitationCode", method = RequestMethod.GET)
 	public String sendNewInvitationCode(ModelMap model, Principal principal) {
-		return "landing/requestInviteCode";
+		return "requestInviteCode.jsp";
 	}
 
 	@RequestMapping(value = "resendInvitationCode", method = RequestMethod.POST)
@@ -41,15 +41,15 @@ public class UserController {
 		} catch (Exception e) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", e.getMessage());
-			return "landing/requestInviteCode";
+			return "requestInviteCode.jsp";
 		}
 		logger.debug("Resending invitation Code");
-		return "landing/inviteSent";
+		return "inviteSent.jsp";
 	}
 	
 	@RequestMapping(value = "userSignUp", method = RequestMethod.GET)
 	public String userSignup(ModelMap model, Principal principal) {
-		return "landing/signup";
+		return "signup.jsp";
 	}
 	
 	@RequestMapping(value = "finishUserSignUp", method = RequestMethod.POST)
@@ -63,7 +63,7 @@ public class UserController {
 		if (!password1.equals(password2)) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", "Password does not match with the confirm password field!!");
-			return "landing/signup";
+			return "signup.jsp";
 		} 
 		
 		try {
@@ -72,16 +72,16 @@ public class UserController {
 		} catch (Exception e) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", e.getMessage());
-			return "landing/signup";
+			return "signup.jsp";
 		}
 		logger.debug("User Activated and password updated.");
-		return "landing/login";
+		return "login.jsp";
 	}
 	
 	// Implement Reset Password
 	@RequestMapping(value = "resetPwdStepOne", method = RequestMethod.GET)
 	public String resetPwdStepOne(ModelMap model, Principal principal) {
-		return "landing/resetPasswdCode";
+		return "resetPasswdCode.jsp";
 	}
 	
 	// Implement Reset Password
@@ -95,7 +95,7 @@ public class UserController {
 			//return "landing/resetPasswdCode";
 		}
 		logger.debug("Resending invitation Code");
-		return "landing/resetPwdLastStep";
+		return "resetPwdLastStep.jsp";
 	}
 	
 
@@ -110,7 +110,7 @@ public class UserController {
 		if (!password1.equals(password2)) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", "Password does not match with the confirm password field!!");
-			return "landing/resetPwdLastStep";
+			return "resetPwdLastStep.jsp";
 		} 
 		
 		try {
@@ -119,10 +119,10 @@ public class UserController {
 		} catch (Exception e) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", e.getMessage());
-			return "landing/resetPwdLastStep";
+			return "resetPwdLastStep.jsp";
 		}
 		logger.debug("User Activated and password updated.");
-		return "landing/login";
+		return "login.jsp";
 	}
 	
 }
