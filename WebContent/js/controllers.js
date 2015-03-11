@@ -7,3 +7,12 @@ adminCenter.controller('AdminConsole', ['$scope',
 	function($scope) {
 		
 	}]);
+
+/*
+Controller for Student Home
+*/
+
+adminCenter.controller('StudentHome', ['$scope', 
+     function($scope) {
+                                    		
+     }]);
