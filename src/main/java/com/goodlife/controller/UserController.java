@@ -1,12 +1,19 @@
 package com.goodlife.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -15,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.goodlife.dao.UsersDAO;
+import com.goodlife.exceptions.UserNotFoundException;
+import com.goodlife.model.Users;
 import com.goodlife.service.InvitationService;
 import com.goodlife.service.UserService;
 
@@ -24,6 +34,9 @@ public class UserController {
 
 	@Autowired
 	InvitationService invitationService;
+	
+	@Autowired
+	UsersDAO usersDAO;
 	
 	@Autowired
 	UserService userService;
@@ -123,6 +136,32 @@ public class UserController {
 		}
 		logger.debug("User Activated and password updated.");
 		return "login.jsp";
+	}
+	@RequestMapping(value = "getRole", method = RequestMethod.POST)
+	public String getRole(){
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
+		Users user;
+		try {
+			user = usersDAO.findByUserName(userDetails.getUsername());
+		} catch (UserNotFoundException e) {
+			user = null;
+			e.printStackTrace();
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(user.getRoleTypeCode());
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
 	}
 	
 }
