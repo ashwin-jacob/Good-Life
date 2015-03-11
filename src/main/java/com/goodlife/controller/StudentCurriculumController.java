@@ -188,6 +188,25 @@ public class StudentCurriculumController {
 		}
 		return jsonResp;
 	}
+
+	@ResponseBody
+	@RequestMapping(value = "/getuploadquesbysubchap", method = RequestMethod.GET)
+	public String getUploadFileQBySubChap(@RequestParam(value = "subChapId") Integer subChapId){
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(uploadFileQDAO.getPublishedUploadFileQBySubchapId(subChapId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/getmultichoiceuseranswer", method = RequestMethod.GET)
@@ -219,6 +238,26 @@ public class StudentCurriculumController {
 		
 		try {
 			jsonResp = mapper.writeValueAsString(shortAnswerUserAnsDAO.getUserAnswer(userId, shortAnsId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) { 
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getuploadedansweruseranswer", method = RequestMethod.GET)
+	public String getUploadedAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
+											  @RequestParam(value = "uploadQuesId") Integer uploadQuesId){
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(uploadedAnswerDAO.getUserAnswer(userId, uploadQuesId));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {

@@ -34,35 +34,44 @@
 
   <meta charset="UTF-8">
 
-	<title>The Good Life</title>
-
+	<title>The Good Life - Reset Password</title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.ico">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     
 </head>
-<body onload='document.f.j_username.focus();'>
+<body>
 	
+	<c:if test="${not empty error}">
+		<div class="errorblock">
+			Your signup attempt was not successful, try again.<br /> Cause:
+			${exceptionMessage}
+		</div>
+	</c:if>
+
 	<form class="wrap" action="<c:url value='resetPasswdComplete' />" method='POST'>
   		<div class="logo">
   			<img src="${pageContext.request.contextPath}/img/goodlifelogo.png">
   		</div>
-  		<c:if test="${not empty error}">
-			<div class="errorblock">
-				Your signup attempt was not successful, try again.<br /> Cause:
-				${exceptionMessage}
-			</div>
-		</c:if>
 		<div class="avatar">
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_grey.jpg">
 		</div>
-			<input type="text" name="pass1" id="pass1" placeholder="Password" required >
+		<input type="Email" name="email" placeholder="Email" required>
+		<div class="bar">
+			<i></i>
+		</div>
+		<input type="New Password" name="pass1" id="pass1" placeholder="Password" required >
         <div class="bar">
 			<i></i>
 		</div>
-        <input type="password" name="pass2" id="pass2" placeholder="Confirm Password" required onkeyup="checkPass(); return false;"> 
-					    <span id="confirmMessage" class="confirmMessage"></span>
-		<button type="submit">Submit</button>
+        <input type="New Password" name="pass2" id="pass2" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
+        <div class="bar">
+			<i></i>
+		</div>
+        <input type="Token" name="token" id="token" placeholder="Email Token" required>
+		<a href="resetPwdStepOne" class="forgot_link">Misplaced?</a>
+		<button type="submit">Reset Password</button>
 	</form>
-				
+	
 </body>
 </html>

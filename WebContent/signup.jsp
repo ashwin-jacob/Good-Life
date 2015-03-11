@@ -34,13 +34,13 @@
 
   <meta charset="UTF-8">
 
-	<title>The Good Life</title>
-
+	<title>The Good Life - Register</title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.ico">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     
 </head>
-<body onload='document.f.j_username.focus();'>
+<body>
 	
 	<c:if test="${not empty error}">
 		<div class="errorblock">
@@ -64,8 +64,7 @@
         <div class="bar">
 			<i></i>
 		</div>
-        <input type="New Password" name="pass2" id="pass2" placeholder="Confirm Password" required onkeyup="checkPass(); return false;"> 
-					    <span id="confirmMessage" class="confirmMessage"></span>
+        <input type="New Password" name="pass2" id="pass2" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
         <div class="bar">
 			<i></i>
 		</div>

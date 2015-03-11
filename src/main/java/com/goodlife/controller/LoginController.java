@@ -29,18 +29,17 @@ public class LoginController {
 	private UsersDAO usersDAO;
 	
 	@Transactional
-	@RequestMapping(value = "welcome", method = RequestMethod.GET)
+	@RequestMapping(value = "/index.html", method = RequestMethod.GET)
 	public String printWelcome(ModelMap model, Principal principal) {
 		String name = principal.getName();
 		model.addAttribute("username", name);
 		logger.warn("Landing on the hello page");
 		try {
 			Users user = usersDAO.findByUserName(name);
-			if(user.getRoleTypeCode() == Character.valueOf('A')){
-				logger.warn("Landing on the hello page");
-				return "index.html#/adminConsole";}
+			if(user.getRoleTypeCode() == Character.valueOf('A'))
+				return "index.html#/adminConsole";
 			else
-				return "index.html";
+				return "index.html#/curriculum/1";// + user.getUserId();
 		} catch (UserNotFoundException e) {
 			e.printStackTrace();
 			return "login.jsp";
