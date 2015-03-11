@@ -5,8 +5,8 @@
 
   <meta charset="UTF-8">
 
-	<title>The Good Life</title>
-
+	<title>The Good Life - Reset Password</title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.ico">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     
@@ -28,7 +28,7 @@
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_grey.jpg">
 		</div>
 		
-		<input type="lookup" name="username" placeholder="username" required>
+		<input type="lookup" name="username" placeholder="Username" required>
 		<button type="submit">Submit</button>
     	
 	</form>

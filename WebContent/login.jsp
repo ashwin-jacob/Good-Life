@@ -7,7 +7,7 @@
 	<meta charset="UTF-8">
 
 	<title>The Good Life</title>
-
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.ico">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
 </head>
@@ -31,15 +31,15 @@
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_grey.jpg">
 		</div>
 		
-		<input type="text" name="j_username" placeholder="username" required>
+		<input type="text" name="j_username" placeholder="Username" required>
 		
 		<div class="bar">
 			<i></i>
 		</div>
 		
-		<input type="password" name="j_password" placeholder="password" required>
+		<input type="password" name="j_password" placeholder="Password" required>
 		
-		<a href="resetPwdStepOne" class="forgot_link">forgot?</a>
+		<a href="resetPwdStepOne" class="forgot_link">Forgot?</a>
 		<button type="submit">Sign in</button>
     	<button onclick="location.href='signup.jsp'">Register</button>
     	

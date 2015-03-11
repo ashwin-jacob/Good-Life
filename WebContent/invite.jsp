@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
 
 	<title>The Good Life</title>
-
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.ico">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     
