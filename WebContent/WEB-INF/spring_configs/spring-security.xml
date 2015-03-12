@@ -17,7 +17,7 @@
 		<intercept-url pattern="/secured/facilitator/*"
 			access="ROLE_FACILITATOR,ROLE_SUPERADMIN,ROLE_MODERATOR,ROLE_TRAINER" />
 		<intercept-url pattern="/secured/su/*" access="ROLE_SUPERADMIN" />
-		<form-login login-page="/login.jsp" default-target-url="/index.html"
+		<form-login login-page="/login.jsp" default-target-url="/welcome"
 		authentication-failure-url="/loginfailed" />
 		<logout logout-success-url="/logout" />
 	</http>

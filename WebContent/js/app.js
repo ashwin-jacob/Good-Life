@@ -38,7 +38,11 @@ forceForGood.config(['$routeProvider',
 				templateUrl: 'partials/studentHome.html',
 				controller: 'StudentHome'
 			}).
+			when('/home', {
+				templateUrl: 'partials/selectFromMany.html',
+				controller: 'RedirectController'
+			}). 
 			otherwise({
-				redirectTo: '/curriculum'
+				redirectTo: '/home'
 			});
 	}]);

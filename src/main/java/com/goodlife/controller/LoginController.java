@@ -7,6 +7,9 @@ import java.security.Principal;
 
 
 
+
+import javax.servlet.http.HttpServletRequest;
+
 //Import log4j classes.
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,17 +32,18 @@ public class LoginController {
 	private UsersDAO usersDAO;
 	
 	@Transactional
-	@RequestMapping(value = "/index.html", method = RequestMethod.GET)
-	public String printWelcome(ModelMap model, Principal principal) {
+	@RequestMapping(value = "/welcome")
+	public String printWelcome(HttpServletRequest httpRequest, ModelMap model, Principal principal) {
 		String name = principal.getName();
 		model.addAttribute("username", name);
+		model.addAttribute("test", "blank");
 		logger.warn("Landing on the hello page");
 		try {
 			Users user = usersDAO.findByUserName(name);
 			if(user.getRoleTypeCode() == Character.valueOf('A'))
-				return "index.html#/adminConsole";
+				return "/index.html";
 			else
-				return "index.html#/curriculum/1";// + user.getUserId();
+				return "/index.html";// + user.getUserId();
 		} catch (UserNotFoundException e) {
 			e.printStackTrace();
 			return "login.jsp";

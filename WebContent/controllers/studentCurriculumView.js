@@ -1,5 +1,5 @@
-forceForGood.controller('studentCurriculumView', ['$scope', '$log', 'student', '$routeParams',
-	function($scope, $log, student, $routeParams) {
+forceForGood.controller('StudentCurriculumView', ['$scope', '$log', 'student', '$routeParams', '$location',
+	function($scope, $log, student, $routeParams, $location) {
 		//Preset Values
 		$scope.userId = $routeParams.userId;	
 		$scope.studentview = true;
