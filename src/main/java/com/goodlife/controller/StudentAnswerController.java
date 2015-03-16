@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -191,6 +193,12 @@ public class StudentAnswerController {
 		return jsonResp;
 	}
 
+	/*
+	 * { userId : Integer
+	 * uploadQuesId : the question student is answering
+	 * mediaTypeId : Integer, refer to MediaType.java enum for the mapping.
+	 * file : MultipartFile, the file to upload }
+	 */
 	@RequestMapping(value = "/updateuploadeduseranswer", method = RequestMethod.POST)
 	public String updateUploadedUserAnswer(@RequestParam(value = "userId") Integer userId,
 											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
