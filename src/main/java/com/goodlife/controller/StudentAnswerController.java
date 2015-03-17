@@ -225,7 +225,7 @@ public class StudentAnswerController {
 		}
 		else{
 			UploadedAnswer uploadedAnswerPull = uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
-			uploadedAnswer.setMediaTypeId(uploadedAnswerPull.getMediaTypeId());
+			uploadedAnswer.setMediaTypeId(mediaTypeId);
 			uploadedAnswer.setFilePath(uploadedAnswerPull.getFilePath());		
 			
 			System.out.println("Got to else case");
@@ -297,6 +297,7 @@ public class StudentAnswerController {
 				
 				uploadSuccess = true;
 			} catch(IOException e) {
+				logger.error("File Save Problem", e);
 			}
 		
 			if (uploadSuccess) {
@@ -306,6 +307,8 @@ public class StudentAnswerController {
 				uploadedAnswer.setMediaTypeId(mediaTypeId);
 				uploadedAnswer.setFilePath("" + UPLOAD_DIR + "/" + fileName);
 				System.out.println(uploadFilePath);
+			} else {
+				System.out.println("Upload success failed");
 			}
 		}
 		
