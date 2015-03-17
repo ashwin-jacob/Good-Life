@@ -224,9 +224,10 @@ public class StudentAnswerController {
 			
 		}
 		else{
-			uploadedAnswer.setMediaTypeId(mediaTypeId);
-			//uploadedAnswer.setFilePath(filePath);
-			//uploadedAnswer = uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
+			UploadedAnswer uploadedAnswerPull = uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
+			uploadedAnswer.setMediaTypeId(uploadedAnswerPull.getMediaTypeId());
+			uploadedAnswer.setFilePath(uploadedAnswerPull.getFilePath());		
+			
 			System.out.println("Got to else case");
 			
 		}
