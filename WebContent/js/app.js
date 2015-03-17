@@ -32,7 +32,7 @@ forceForGood.config(['$routeProvider',
 			}).
 			when('/curriculum/:userId', {
 				templateUrl: 'partials/curriculum.html',
-				controller: 'studentCurriculumView'
+				controller: 'StudentCurriculumView'
 			}).
 			when('/studentHome', {
 				templateUrl: 'partials/studentHome.html',

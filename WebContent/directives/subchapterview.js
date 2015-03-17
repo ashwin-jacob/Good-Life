@@ -61,7 +61,7 @@ forceForGood.directive('subchapterView', ['$log', 'student', '$compile', '$http'
 						$log.log("Uploading");
 						$upload.upload({
 							url: "student/updateuploadeduseranswer",
-							fields: {'userId': 1, 'uploadQuesId': 1, 'mediaTypeId': 1},
+							fields: {'userId': user, 'uploadQuesId': questId, 'mediaTypeId': 1},
 							file:file,
 							headers: {'enctype': 'multipart/form-data'} // only for html5
 						}).progress(function(evt) {
