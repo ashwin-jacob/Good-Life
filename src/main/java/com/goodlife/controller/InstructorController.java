@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.InstructorDAO;
+import com.goodlife.dao.ShortAnswerUserAnswerDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Instructor;
 
@@ -28,6 +29,9 @@ public class InstructorController {
 	
 	@Autowired
 	private InstructorDAO instructorDAO;
+	
+	@Autowired
+	private ShortAnswerUserAnswerDAO shortAnswerUserAnswerDAO;
 	
 	@ResponseBody
 	@RequestMapping(value = "/findinstructorbyuserid", method = RequestMethod.GET)
@@ -182,5 +186,46 @@ public class InstructorController {
 			e.printStackTrace();
 		}
 		return jsonResp;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/approveshortanswer", method = RequestMethod.GET)
+	public String approveUserAnswer(@RequestParam("userId") Integer userId,
+									 @RequestParam("saQId") Integer saQId){
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp = "";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(shortAnswerUserAnswerDAO.approveAnswer(userId,saQId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/listallshortansbysubchap", method = RequestMethod.GET)
+	public String listAllShortAnsBySubChap(@RequestParam("userId") Integer userId,
+										   @RequestParam("subChapId") Integer subChapId){
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp = "";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(shortAnswerUserAnswerDAO.listAllUserShortAnsBySubChap(userId,subChapId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+		
 	}
 }

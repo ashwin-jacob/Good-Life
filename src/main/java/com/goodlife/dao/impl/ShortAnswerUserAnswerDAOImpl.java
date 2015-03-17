@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.ShortAnswerQDAO;
 import com.goodlife.dao.ShortAnswerUserAnswerDAO;
+import com.goodlife.model.Chapter;
 import com.goodlife.model.ShortAnswerQ;
 import com.goodlife.model.ShortAnswerUserAnswer;
 
@@ -80,6 +81,21 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 			}
 		}
 		return isComplete;
+	}
+
+
+	@Override
+	public List<ShortAnswerUserAnswer> listAllUserShortAnsBySubChap(Integer userId,
+			Integer subChapId) {
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				ShortAnswerUserAnswer.class);
+		criteria.add(Restrictions.eqOrIsNull("userId", userId));
+		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
+		List<ShortAnswerUserAnswer> shortAnsBySubChapterList = criteria.list();
+		if(shortAnsBySubChapterList == null)
+			return new ArrayList<ShortAnswerUserAnswer>();
+		else
+			return shortAnsBySubChapterList;
 	}
 	
 }
