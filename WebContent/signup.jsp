@@ -60,7 +60,7 @@
 		<div class="bar">
 			<i></i>
 		</div>
-		<input type="New Password" name="pass1" id="pass1" placeholder="Password" required >
+		<input type="New Password" name="pass1" id="pass1" placeholder="Password" required onkeyup="checkPass(); return false;">
         <div class="bar">
 			<i></i>
 		</div>
