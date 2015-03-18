@@ -209,30 +209,24 @@ public class StudentAnswerController {
 		System.out.println("Got to update upload");
 		
 		UploadedAnswer uploadedAnswer = uploadedAnswerDAO.getUserAnswer(userId, uploadQuesId);
-		//System.out.println("" + uploadedAnswer.getUserId() + ", " + uploadedAnswer.getFilePath());
 		
 		if(uploadedAnswer == null){
-			
-			/*uploadedAnswer = new UploadedAnswer();
+			uploadedAnswer = new UploadedAnswer();
 			uploadedAnswer.setUserId(userId);
-			uploadedAnswer.setUploadQuesId(uploadQuesId);
 			uploadedAnswer.setMediaTypeId(mediaTypeId);
-			uploadedAnswer.setFilePath(filePath);*/
-			uploadedAnswer = uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
+			uploadedAnswer.setUploadQuesId(uploadQuesId);
+			uploadStudentAnswer(uploadedAnswer, mpfile, session);
 
 			System.out.println("Got to upload student answer");
-			
 		}
 		else{
-			UploadedAnswer uploadedAnswerPull = uploadStudentAnswer(userId, uploadQuesId, mpfile, mediaTypeId, session);
-			uploadedAnswer.setMediaTypeId(uploadedAnswerPull.getMediaTypeId());
-			uploadedAnswer.setFilePath(uploadedAnswerPull.getFilePath());		
+			uploadedAnswer.setMediaTypeId(mediaTypeId);
+			uploadStudentAnswer(uploadedAnswer, mpfile, session);
 			
 			System.out.println("Got to else case");
-			
 		}
 		
-		
+		//TODO What if file was unable to save?
 		Integer uploadedAnswerId = uploadedAnswerDAO.addUploadedAnswer(uploadedAnswer);
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -255,83 +249,59 @@ public class StudentAnswerController {
 	}
 	
 	// helper method for updateUploadedUserAnswer upload
-	private UploadedAnswer uploadStudentAnswer(Integer userId, Integer uploadQuesId, MultipartFile mpfile, 
-			Integer mediaTypeId, HttpSession session) throws UploadPathException {
-		
-		UploadedAnswer uploadedAnswer = null;
+	private void uploadStudentAnswer(UploadedAnswer uploadedAnswer, MultipartFile mpfile, HttpSession session) throws UploadPathException {
 		
 		if (mpfile != null && mpfile.getSize() > 0) {
 			Boolean uploadSuccess = false;
-			String fileName = null;
+			String fileName = mpfile.getOriginalFilename();
 			
 			// Create upload directory 
-			String uploadDirPath = session.getServletContext().getRealPath(UPLOAD_DIR);
-			if (uploadDirPath == null) {
-				uploadDirPath = "/WebContent/resources";
-				//throw new UploadPathException("upload directory is null");
-			}
+			String uploadDirPath = session.getServletContext().getRealPath(UPLOAD_DIR); //TODO What if folder can't be found?
 			
 			// different media types are stored in different directories.
 			uploadDirPath += findDir(mpfile);
 			
+			//Creating path for directory if it doesn't exist
 			File uploadDir = new File(uploadDirPath);
+			boolean directoryMade = false;
 			if(!uploadDir.exists()) {
-				uploadDir.mkdirs();
+				directoryMade = uploadDir.mkdirs();
 			}
-				
-			fileName = mpfile.getOriginalFilename();
-				
-			String uploadFilePath = session.getServletContext().getRealPath(UPLOAD_DIR + "/" + fileName);
-			if (uploadFilePath == null) {
-				uploadFilePath = uploadDirPath + "/" + fileName;
-				//throw new UploadPathException("upload file path is null");
-			}
-			//File uploadFile = new File(uploadFilePath);
+			System.out.println("dir is made: "+directoryMade); //TODO What if directory unable to be made?
+			System.out.println("directory: "+uploadDir.getPath());
 			
+			//Create Path for file
+			String uploadFilePath = uploadDir.getPath()+"//"+fileName;
+			FileOutputStream fos = null;
 			try {
 				byte[] bytes = mpfile.getBytes();
-				BufferedOutputStream stream = 
-					new BufferedOutputStream(new FileOutputStream(new File(uploadFilePath)));
-                stream.write(bytes);
-                stream.close();
-				
+				File fileInfo = new File(uploadFilePath);
+				fos = new FileOutputStream(fileInfo);
+				fos.write(bytes);
 				uploadSuccess = true;
 			} catch(IOException e) {
+				logger.error("File Save Problem", e);
 			}
 		
 			if (uploadSuccess) {
-				uploadedAnswer = new UploadedAnswer();
-				uploadedAnswer.setUserId(userId);
-				uploadedAnswer.setUploadQuesId(uploadQuesId);
-				uploadedAnswer.setMediaTypeId(mediaTypeId);
-				uploadedAnswer.setFilePath("" + UPLOAD_DIR + "/" + fileName);
-				System.out.println(uploadFilePath);
+				uploadedAnswer.setFilePath(uploadFilePath);
+				System.out.println("File Path of Uploaded File: "+uploadFilePath);
+			} else {
+				System.out.println("Upload success failed");
 			}
 		}
-		
-		if (uploadedAnswer== null) {
-			return null;
-		}
-		return uploadedAnswer;
 	}
 	
-	// helper method to store different media types in different directories.
+	/**
+	 * Creates a directory based on the file type
+	 * @param file
+	 * @return
+	 */
 	private String findDir(MultipartFile file) {
+		//TODO Add the rest of the file types in there
 		String dir = null;
-		Integer mediaType = null;
-		if (file.getContentType().startsWith("image")) {
-			dir = "/img";
-			mediaType = MediaType.IMAGE.getMediaType();
-		} if (file.getContentType().startsWith("text")) {
-			dir = "/text";
-			mediaType = MediaType.TEXT.getMediaType();
-		} if (file.getContentType().startsWith("video")) {
-			dir = "/video";
-			mediaType = MediaType.VIDEO.getMediaType();
-		} if (file.getContentType().startsWith("audio")) {
-			dir = "/audio";
-			mediaType = MediaType.AUDIO.getMediaType();
-		}
+		dir = "/resources/";
+		System.out.println("Multipart type: "+file.getContentType());
 		return dir;
 	}
 }
