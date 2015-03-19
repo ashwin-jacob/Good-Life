@@ -25,6 +25,14 @@ div.adminSearchText {
   display:none;
   background: url(./img/5_knowledge.png);
 }
+/* ====================================================
+   IMAGE/ICON STYLES
+   ==================================================== */  
+   
+.deleteIcon {
+	background-image: url('../resources/images/Delete_Icon.png');
+	background-repeat: no-repeat;
+}	
 
 /*h1,h2,h3,h4,h5,span.chapter {
 	color: #B0B0B0;

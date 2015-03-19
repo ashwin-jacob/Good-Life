@@ -34,7 +34,7 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 		var handleSuccess = function (response) {
 			$log.log("Successful");
 			data = response.data;
-			//alert(JSON.stringify(data[1]));
+			//alert(JSON.stringify(data));
 			$scope.chapterTable .reload();
 		};
 
@@ -64,7 +64,8 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 		};
 
 		//Delete Chapter
-	    $scope.removeRow = function(chapId){		
+	    $scope.removeRow = function(){		
+	    	var chapId = $scope.chapIdNum;
 	  		var index = -1;		
 	  		var comArr = eval( data );
 		//	alert(JSON.stringify(comArr[0].objR));
@@ -119,9 +120,14 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    
 	    // Dialog Modal
 	    var myModal;
+	    $scope.addExerciseData = {};
 	    
-	    $scope.openDialog = function(url){
-	    	myModal = modal.open({templateUrl: url});
+	    $scope.openDialog = function(url, formData){
+	    	$scope.addExerciseData = formData;
+	    	myModal = modal.open({templateUrl: url, scope: $scope
+	    		
+	    	
+	    	});
 	    }
 	    
 	    $scope.closeDialog = function(){
@@ -132,7 +138,9 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    $scope.chapterClick = function(rowData){
 	    	
 	    	var chapTitle = rowData.chapTitle;
-	    	$scope.showPane("chapter", chapTitle, "");
+	    	var chapDesc = rowData.chapDescr;
+	    	$scope.chapIdNum = rowData.chapId;
+	    	$scope.showPane("chapter", chapTitle, "", chapDesc);
 
 	    }
 	    
@@ -140,6 +148,7 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    	
 	 	   var title = rowData.subChapTitle;
 	 	   var chapId = rowData.chapId;
+	       $scope.chapIdNum = chapId;
 	 	   var chapTitle = "";
 	    	
 	  		var comArr = eval( data );
@@ -150,31 +159,72 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 		  		}
 	    	
 	    	
-	    	$scope.showPane("subchapter", chapTitle, title);
+	    	$scope.showPane("subchapter", chapTitle, title, "");
 
 	    }
 	    
-	    //Show Chapter vs. Exercise (Subchapter) View
+	    //Show Chapter and Exercise (Subchapter) View
 	    $scope.showChapterPane = false;
 	    $scope.showSubChapPane = false;
-	    $scope.chapName = "";
-	    $scope.subChapName = "";
+	    $scope.chapIdNum = "";
+	    $scope.chapTitle = "";
+	    $scope.chapDescr = "";
+	    $scope.exTitle = "";
+	    $scope.exDescr = "";
+
+	    $scope.resetPaneValues = function(){
+		    $scope.chapIdNum = "";
+		    $scope.chapTitle = "";
+		    $scope.chapDescr = "";
+		    $scope.exTitle = "";
+		    $scope.exDescr = "";
+	    }
 	    
-	    $scope.showPane = function(paneType, chap, subChap){
+	    //Get Row Data
+	    $scope.getRowByID = function(chapID){
+	  		var comArr = eval( data );
+	  		
+	  		var row;
+	  		
+	  		for( var i = 0; i < comArr.length; i++ ) {
+	  			if( comArr[i].objR.chapId === chapID ) {
+	  				row = comArr[i];
+	  				break;
+	  			}
+	  		}
+	  		
+//	  		alert(JSON.stringify(comArr[0].objR));
+	  		
+	  		return row;
+	  		
+			
+	    }
+	    
+	    $scope.showPane = function(paneType, chap, subChap, chapDesc){
+	    	//  $scope.resetPaneValues();
+	    	  
 	    	if (paneType == "subchapter"){
+	    		
+
 		    	  $scope.showChapterPane = false;
 		          $scope.showSubChapPane = true;
-		          $scope.chapName = chap;
-		          $scope.subChapName = subChap;
+		          $scope.chapTitle = chap;
+		          $scope.exTitle = subChap;
+
+				
 	    	}
 	    	else if (paneType == "chapter"){
+	    		
+	    		
 		    	  $scope.showChapterPane = true;
 		          $scope.showSubChapPane = false;
-		          $scope.chapName = chap;
+		          $scope.chapTitle = chap;
+		          $scope.chapDescr = chapDesc;
+
 	    	}
 
 	    };
-	    
+
 	    $scope.showSuccess = false;
 	    $scope.showFailure = false;
 	    $scope.confirmMsg = "";
@@ -193,12 +243,133 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 
 
 	    };
-	    $scope.submitSubchapter = function(subTitle, chapId){
-			listChapters.addSubChapter(chapId, subTitle, 'some desc', '1').then( handleSuccess, handleError );
-			$scope.showConfirmation("success", "SubChapter" + " titled '"+subTitle +"' has been created!");
+	    //Add Exercise
+	    $scope.submitExercise = function(exerciseFm){
+	    	
+	    	alert(JSON.stringify($scope.chapIdNum));
+	    	var chapId = $scope.chapIdNum;
+	    	var title = exerciseFm.exTitle.$viewValue;
+	    	var exDesc = exerciseFm.exDescr.$viewValue;
+	    	var orderId = exerciseFm.exOrder.$viewValue;
+	    	var published = exerciseFm.chapPub.$viewValue;
+	    	
+	    	var confirmAdd = function (response) {
+	    		
+		  	var position = 0;
+	    		var comArr = eval( data );
+		  		for( var i = 0; i < comArr.length; i++ ) {
+		  			if( comArr[i].objR.chapId === chapId ) {
+		  				position = i;
+		  			}
+		  		}
+	    				  		
+				$scope.data.splice(position, 0, {"objL":[{"subChapId":response.data,"chapId":chapId,"subChapDescr":exDesc,"subChapTitle":title,"orderId":orderId,"published":published}]});
+				$scope.showConfirmation("success", "Exercise titled " + "'"+title +"' was added!");
+
+			} 
+
+   		    var failAdd = function (response) {
+				$scope.showConfirmation("fail", "Exercise titled " + "'"+title +"' was not added! Please try again" );
+			} 
+
+			if (exerciseFm.$valid){
+				
+				listChapters.addSubChapter(chapId, title, exDesc, orderId).then( confirmAdd, failAdd );
+			}
+
+			
+			
+	    }
+
+	    // Add Questions to Exercise
+	    var questions = {};
+	    questions.data = [{
+	        id: "1",
+	        text: "How has the Good Life impacted you?"
+	    },
+	    {
+	        id: "2",
+	        text: "Where do you plan to be in 5 years?"
+	    }];
+	    
+	    $scope.questions = questions;
+	    
+	    $scope.deleteItem = function (index) {
+	    	questions.data.splice(index, 1);
+	    }
+	    $scope.addItem = function (question) {
+	    	questions.data.push({
+	            id: questions.data.length + 1,
+	            text: question
+	        });
+	    }
+	    //Delete Exercise
+	    $scope.deleteExercise = function(){
+	    	var row = $scope.getRowByID($scope.chapIdNum);
+	    	alert(JSON.stringify(row.objL[0].subChapId));
+	    	
+	  		var index = -1;		
+	  		var comArr = eval( data );
+	  		for( var i = 0; i < comArr.length; i++ ) {
+	  			if( comArr[i].objR.chapId === row.objL[0].subChapId ) {
+	  				index = i;
+	  				break;
+	  			}
+	  		}
+
+	  		if( index === -1 ) {
+				$scope.showConfirmation("fail", "Chapter" + "#"+row.objL[0].subChapId +" was not deleted!");
+	  		}
+	  		data.splice( index, 1 );		
+			listChapters.deleteExercise(row.objL[0].subChapId).then( handleSuccess, handleError );
+			$scope.showConfirmation("success", "Exercise" + " #"+row.objL[0].subChapId +" has been deleted!");
+			$scope.chapterTable .reload();
 			init();
 	    }
 	    
+	    //Carousel
+	    $scope.myInterval = 5000;
+	    var slides = $scope.slides = [];
+	    $scope.addSlide = function() {
+	      var newWidth = 600 + slides.length + 1;
+	      slides.push({
+	        image: 'http://placekitten.com/' + newWidth + '/300',
+	        text: ['More','Extra','Lots of','Surplus'][slides.length % 4] + ' ' +
+	          ['Cats', 'Kittys', 'Felines', 'Cutes'][slides.length % 4]
+	      });
+	    };
+	    for (var i=0; i<4; i++) {
+	      $scope.addSlide();
+	    }
+	    
+	    $scope.fileURL = "";
+	    $scope.openCarousel = function(url, pdf){
+	    	//alert(pdf);
+		    $scope.fileURL = pdf;
+		    $scope.viewPage(url, pdf);
+	    }
+	    //View Page Request
+	    
+		$scope.viewPage = function(url, pdf){
+			
+			var confirmAdd = function (response) {
+				/*var file = new Blob([response], {type: 'application/pdf'});
+			    var fileURL = URL.createObjectURL(file);
+			    $scope.content = $sce.trustAsResourceUrl(fileURL);*/
+
+		    	myModal = modal.open({templateUrl: url, scope: $scope
+		    		
+		    	});
+			} 
+
+			var failAdd = function (response) {
+				$scope.showConfirmation("fail", "Please try again" );
+			} 
+			
+			listChapters.viewPage(pdf).then( confirmAdd, failAdd );
+		}
+
+	    //Initial Home Search
 		var init = function () {
 			listChapters.search().then( handleSuccess, handleError );
 

@@ -29,18 +29,17 @@
 				<tbody ng-repeat="curriculumTreeList in $data"
 					class="table table-condensed">
 					<tr ng-repeat="objR in curriculumTreeList"
-						ng-show="showRow({{objR.chapId}})" ng-click="chapterClick(objR)">
-						<th class="info" data-title="'ID'">
+						ng-show="showRow({{objR.chapId}})" ng-click="chapterClick(objR)" >
+						<th class="info" data-title="'ID'" ng-class="{'text-primary': chapIdNum == objR.chapId}">
 							<!--   <button ng-click="showRows()" ng-hide="showButton()"><strong>On</strong></button>  
         					<button ng-click="hideRows()" ng-show="showButton()"><strong>Off</strong></button> -->
 							{{objR.chapId}}
 
 						</th>
-						<th class="info" data-title="'Title'">{{objR.chapTitle}}</th>
-						<th class="info" data-title="'Description'">{{objR.chapDescr}}</th>
+						<th class="info" data-title="'Title'" ng-class="{'text-primary': chapIdNum == objR.chapId}">{{objR.chapTitle}}</th>
+						<th class="info" data-title="'Description'" ng-class="{'text-primary': chapIdNum == objR.chapId}">{{objR.chapDescr}}</th>
 
-						<th class="info">
-						<img src="resources/images/Delete_Icon.png" ng-click="removeRow(objR.chapId)"/>
+						<th class="info" >
 						
 <!-- 						<input type="button" value="Remove"
 							class="btn btn-primary btn-sm" ng-click="removeRow(objR.chapId)" /> -->
@@ -76,7 +75,7 @@
 	<div class="col col-lg-8">
 		<div class="panel panel-default" ng-show="showChapterPane">
 				<div class="panel-heading breadcrumb">
-					<li><a ng-click="showPane('chapter', chapName)">{{chapName}}</a></li>
+					<li><a ng-click="showPane('chapter', chapTitle, '', chapDescr)">{{chapTitle}}</a></li>
 					<li class="active"></li>
 									<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close" ng-click="showChapterPane = false">
@@ -90,8 +89,8 @@
 	<div class="col col-lg-8">
 		<div class="panel panel-default" ng-show="showSubChapPane">
 				<div class="panel-heading breadcrumb">
-					<li><a ng-click="showPane('chapter', chapName)">{{chapName}}</a></li>
-					<li class="active">{{subChapName}}</li>
+					<li><a ng-click="showPane('chapter', chapTitle, '', chapDescr)">{{chapTitle}}</a></li>
+					<li class="active">{{exTitle}}</li>
 									<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close" ng-click="showSubChapPane = false">
 					<span aria-hidden="true">&times;</span>

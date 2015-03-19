@@ -4,22 +4,22 @@
 <meta charset="UTF-8">
 </head>
 <body>
- <div class="modal-header">
-       <!--   <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$close()"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Add New Chapter</h4>-->
-      </div>
+<!--  <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$close()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Add New Chapter</h4>
+      </div>-->
             <div class="modal-body">
       <form class="form-horizontal ng-pristine ng-valid" name="addChapterFm">
 							<div class="form-group">
 								<label class="col-md-2 ">Chapter Title</label>
 								<div class="col-md-4">
-									<input type="text" ng-model="chapTitle" name="chapTitle" class="form-control ng-pristine ng-valid" required placeholder={{chapName}}>
+									<input type="text" ng-model="chapTitle" name="chapTitle" class="form-control ng-pristine ng-valid" required>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-2">Chapter Description</label>
 								<div class="col-md-4">
-									<input type="text" ng-model="chapDescr" name="chapDescr" class="form-control ng-pristine ng-valid">
+									<input type="text" ng-model="chapDescr" name="chapDescr" class="form-control ng-pristine ng-valid" >
 								</div>
 							</div>
 							<div class="form-group">
@@ -28,17 +28,25 @@
 									<input type="text" ng-model="chapId" name="chapId" class="form-control ng-pristine ng-valid">
 								</div>
 							</div>
+							<div class="form-group">
+								<label class="col-md-2">Published</label>
+								<div class="col-md-1">
+									<input type="checkbox" ng-model="exPub" name="exPub" class="ng-pristine ng-valid">
+								</div>
+							</div>
 							<div class="modal-footer">
   							<div class="form-group">
-                  <label class="col-md-1 control-label">Pages</label><br />	
-                  					
-								  </div>
+                  <label class="col-md-1 control-label"><a ng-click="openCarousel('partials/forms/pdfViewer.html', 'partials/forms/deleteConfirm.html')">Pages</a></label><br />
+  					
+				</div>
 								</div>
 							      <div class="modal-footer">
 							<div class="form-group">								
 								<div style="padding-left:110px">
 									<button class="btn btn-primary btn-sm" ng-click="addRow(chapTitle, chapDescr, chapId, addChapterFm)">Save</button>
-									<button class="btn btn-primary btn-sm" ng-click="showPane('subchapter')">Add Exercise</button>
+									<button class="btn btn-primary btn-sm" ng-click="showPane('subchapter', chapTitle, '', chapDescr)">Add Exercise</button>
+									<button class="btn btn-sm btn-info deleteIcon"
+										ng-click="removeRow()">&nbsp;&nbsp;&nbsp;&nbsp;Delete</button>
 								</div>
 								</div>
 							</div>

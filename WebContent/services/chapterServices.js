@@ -7,7 +7,9 @@ chapterService.factory('listChapters', function( $http, $q, $log ) {
 		search : search,
 		deleteChapter: deleteChapter,
 		addChapter: addChapter,
-		addSubChapter: addSubChapter
+		addSubChapter: addSubChapter,
+		viewPage: viewPage,
+		deleteExercise: deleteExercise
 	});
 
 	//Function to return serach
@@ -61,6 +63,34 @@ chapterService.factory('listChapters', function( $http, $q, $log ) {
 		return request;
 
 	};
+	
+	function deleteExercise(chapId){
+		
+		var request = $http({
+			method: 'POST',
+			params: {subchapId: chapId},
+		    dataType: "json",
+			url: 'subchapterlookup/deletesubchapter'
+		});
+		
+		return request;
+
+	};
+	
+	
+	function viewPage(url){
+		
+		var request = $http({
+			method: 'GET',
+		    dataType: "json",
+		    //responseType: 'arraybuffer',
+			url: url
+		});
+		
+		return request;
+
+	};
+
 
 
 });

@@ -10,13 +10,25 @@
 							<div class="form-group">
 								<label class="col-md-2">Exercise Title</label>
 								<div class="col-md-4">
-									<input type="text" ng-model="chapTitle" name="chapTitle" class="form-control ng-pristine ng-valid" required>
+									<input type="text" ng-model="exTitle" name="exTitle" class="form-control ng-pristine ng-valid" placeholder={{subChapName}} required>
 								</div>
 							</div>
 							<div class="form-group">
 								<label class="col-md-2">Exercise Description</label>
 								<div class="col-md-4">
-									<input type="text" ng-model="chapDescr" name="chapDescr" class="form-control ng-pristine ng-valid">
+									<input type="text" ng-model="exDescr" name="exDescr" class="form-control ng-pristine ng-valid">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2">Exercise Order</label>
+								<div class="col-md-4">
+									<input type="text" ng-model="exOrder" name="exOrder" class="form-control ng-pristine ng-valid">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-2">Published</label>
+								<div class="col-md-1">
+									<input type="checkbox" ng-model="chapPub" name="chapPub" class="ng-pristine ng-valid">
 								</div>
 							</div>
 							<div class="form-group">
@@ -24,22 +36,23 @@
 							<div class="col-md-4">
 						
 								<select  class="form-control">
-									<option id="Select" selected="selected"></option>
+									<option id="Select" ></option>
 									<option id="1">Multiple Choice</option>
-									<option id="2">Short Answer</option>
+									<option id="2" selected="selected">Short Answer</option>
 									<option id="3">Upload File</option>
 								</select>
 							</div>
 							</div>
+							
 						<div class="modal-footer">
 							<div class="row-fluid" style="margin-left: 40px;">
 								<div class="span12">
 									<input type="button" class="btn btn-sm btn-info" value="Preview"
-										ng-click="openDialog('partials/forms/previewExercise.html')"></input>
+										ng-click="openDialog('partials/forms/previewExercise.html', addExerciseFm)"></input>
 									<button class="btn btn-primary btn-sm"
-										ng-click="submitSubchapter(chapSubTitle, chapIdS)">Save</button>
-									<input type="button" class="btn btn-sm btn-info" value="Publish"
-										ng-click="preview();"></input>
+										ng-click="submitExercise(addExerciseFm)">Save</button>
+								<button class="btn btn-sm btn-info deleteIcon"
+										ng-click="deleteExercise()">&nbsp;&nbsp;&nbsp;&nbsp;Delete</button>
 								</div>
 							</div>
 						</div>
@@ -52,14 +65,27 @@
 								<label>Questions</label>
 								</div>
 								<div class="form-group">
-										<div class="col-md-11">
-									<input type="text" ng-model="questionText" name="questionText" class="form-control ng-pristine ng-valid" required placeholder="Enter Question Here...">
+									<input type="text" ng-model="questionText" name="questionText" class="form-control ng-pristine ng-valid" placeholder="Enter Question Here...">
+
 
 								</div>
-								<div class="col-md-1">
-										<input type="button" class="btn btn-sm btn-info" value="Add"
-										onclick="preview();"></input>
+								<div class="form-group">
+									<div class="pull-right">
+											<input type="button" class="btn btn-sm btn-info" value="Add"
+											ng-click="addItem(questionText)"></input>
+									</div>
 								</div>
+																<div class="form-group list-group">
+																
+								<div class="col-md-11 list-group-item"  ng-repeat="question in questions.data" id="question{{question.id}}">
+            					       						  <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="deleteItem($index)"><span aria-hidden="true">&times;</span></button>
+            					<div class="panel	"> {{question.text}}  
+            					</div>
+								<input type="text" name="answer" class="form-control ng-pristine ng-valid" placeholder="Short Answer">
+								
+									<br />
+      							
+       							 </div>
 								</div>
 							
 								</div>
