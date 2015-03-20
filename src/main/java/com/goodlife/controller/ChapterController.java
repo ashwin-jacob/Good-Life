@@ -35,9 +35,10 @@ import com.goodlife.exceptions.ChapterPageNotFoundException;
 import com.goodlife.exceptions.UploadPathException;
 import com.goodlife.model.Chapter;
 import com.goodlife.model.ChapterPage;
+import com.goodlife.model.Node;
 import com.goodlife.model.ObjectPair;
 import com.goodlife.model.SubChapter;
-
+import com.goodlife.model.Tree;
 
 @Controller
 @RequestMapping(value = "/chapterlookup")
@@ -164,32 +165,39 @@ public class ChapterController {
 	}
 	
 	/*
-	 * The JSON response is an array of ObjectPair objects(which contain a chapter object and its corresponding subchapter list)
-	 * The response first prints off all the chapter objects and then the corresponding sub chapter list
-	 * Example string:
-	 * {"objR":{"chapId":1,"chapDescr":"CHAPTER 1 DESCRIPTION","chapTitle":"CHAPTER 1 TITLE","orderId":1,"published":true},
-	 * "objL":[{"subChapId":1,"chapId":1,"subChapDescr":"Sub Chapter 1 Description","subChapTitle":"Sub Chapter 1 Title","orderId":1,"published":true}
+	 * 
 	 */
 	@ResponseBody
 	@RequestMapping(value ="listcurriculum", method = RequestMethod.GET)
 	public String listCurriculum(){
 		
-		List<ObjectPair> curriculumTreeList = new ArrayList<ObjectPair>();
+		List<Tree<Object>> treeList = new ArrayList<Tree<Object>>();
 		List<Chapter> chapterList = chapterDAO.listAllChapters();
 		List<SubChapter> subChapList;
+		Tree<Object> tree;
+		Node<Object> node;
+		Node<Object> child;
 		
 		for(int i = 0; i < chapterList.size(); i++){
 			subChapList = subChapterDAO.getSubChapListByChapter(chapterList.get(i).getChapId());
 			if(subChapList == null)
 				subChapList = new ArrayList<SubChapter>();
-			curriculumTreeList.add(new ObjectPair(chapterList.get(i),subChapList));
+			tree = new Tree<Object>();
+			node = new Node<Object>(chapterList.get(i));
+			tree.setRoot(node);
+			
+			for(int j = 0; j < subChapList.size(); j++){
+				child = new Node<Object>(subChapList.get(j));
+				node.addChild(child);
+			}
+			treeList.add(tree);
 		}
 		ObjectMapper mapper = new ObjectMapper();
 		
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(curriculumTreeList);
+			jsonResp = mapper.writeValueAsString(treeList);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
