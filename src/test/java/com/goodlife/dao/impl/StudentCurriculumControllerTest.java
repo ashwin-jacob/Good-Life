@@ -117,5 +117,16 @@ public class StudentCurriculumControllerTest {
 		isComplete = Boolean.valueOf(studentCurriculumController.isSubChapComplete(USER_ID, SUBCHAPID-4));
 		assertEquals(isComplete,Boolean.TRUE);
 	}
+	
+	@Test
+	@Transactional
+	public void testGetForm(){
+		String form;
+		for(int i = 1; i <= 5; i++){
+			form = studentCurriculumController.getSubChapForm(i);
+			System.out.println(form);
+			assertTrue(form.length() > 0);
+		}
+	}
 		
 }

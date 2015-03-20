@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.goodlife.dao.MultiChoiceListDAO;
 import com.goodlife.dao.MultiChoiceOptionDAO;
 import com.goodlife.dao.MultiChoiceQDAO;
+import com.goodlife.exceptions.MultipleChoiceNotFoundException;
+import com.goodlife.model.MultiChoiceList;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
 
@@ -30,21 +33,58 @@ public class MultiChoiceController {
 	private MultiChoiceQDAO mcQdao;
 	
 	@Autowired
+	private MultiChoiceListDAO mcLdao;
+	
+	@Autowired
 	private MultiChoiceOptionDAO mcOptdao;
+	
+	@Autowired
+	private MultiChoiceListDAO mcListdao;
+	
+	@ResponseBody
+	@RequestMapping(value = "/addmultichoicelist", method = RequestMethod.GET)
+	public String addMultiChoiceList(@RequestParam(value="description") String description,
+											 @RequestParam(value="graded") Boolean graded,
+											 @RequestParam(value="orderId") Integer orderId,
+											 @RequestParam(value="subChapId") Integer subChapId,
+											 @RequestParam(value="title") String title) {
+		
+		MultiChoiceList mcL = new MultiChoiceList();
+		mcL.setDescription(description);
+		mcL.setGraded(graded);
+		mcL.setOrderId(orderId);
+		mcL.setPublished(Boolean.FALSE);
+		mcL.setSubChapId(subChapId);
+		mcL.setTitle(title);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(mcLdao.addMultiChoiceList(mcL));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+	}
 	
 	@ResponseBody
 	@RequestMapping(value = "/addmultichoicequestion", method = RequestMethod.GET)
 	public String addMultiChoiceQuestion(@RequestParam(value="questionText") String questionText,
-											 @RequestParam(value="subChapId") Integer subChapId,
+											 @RequestParam(value="multiChoiceListId") Integer multiChoiceListId,
 											 @RequestParam(value="helpTxt") String helpTxt,
-											 @RequestParam(value="corrAns") Integer corrAns,
+											 @RequestParam(value="corrAns", required = false) Integer corrAns,
 											 @RequestParam(value="orderId") Integer orderId) {
 		
 		MultiChoiceQ mcQ = new MultiChoiceQ();
 		mcQ.setQuesText(questionText);
-		mcQ.setSubChapId(subChapId);
+		mcQ.setMultiChoiceListId(multiChoiceListId);
 		mcQ.setHelpText(helpTxt);
-		mcQ.setCorrectAnswer(corrAns);
+		if(corrAns != null) mcQ.setCorrectAnswer(corrAns);
 		mcQ.setOrderId(orderId);
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -164,15 +204,15 @@ public class MultiChoiceController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/listallquestionbysubchapter", method = RequestMethod.GET)
+	@RequestMapping(value = "/listallquestionbylistid", method = RequestMethod.GET)
 	public String listAllQuestionBySubchapter(
-			@RequestParam(value="subChapId") Integer subChapId){
+			@RequestParam(value="multiChoiceListId") Integer multiChoiceListId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(mcQdao.getAllMultiChoice(subChapId));
+			jsonResp = mapper.writeValueAsString(mcQdao.getAllMultiChoice(multiChoiceListId));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -181,6 +221,52 @@ public class MultiChoiceController {
 			e.printStackTrace();
 		}
 		return jsonResp;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/updatemultichoicelist", method = RequestMethod.GET)
+	public String updateMultiChoiceList(@RequestParam(value = "multiChoiceListId") Integer multiChoiceListId,
+										@RequestParam(value = "description") String description,
+										@RequestParam(value = "graded") Boolean graded,
+										@RequestParam(value = "orderId") Integer orderId,
+										@RequestParam(value = "published") Boolean published,
+										@RequestParam(value = "subChapId") Integer subChapId,
+										@RequestParam(value = "title") String title){
+		
+		Boolean response = Boolean.TRUE;
+		MultiChoiceList mcList;
+		try {
+			mcList = mcListdao.getMultiChoiceListById(multiChoiceListId);
+			mcList.setDescription(description);
+			mcList.setGraded(graded);
+			mcList.setOrderId(orderId);
+			mcList.setPublished(published);
+			mcList.setSubChapId(subChapId);
+			mcList.setTitle(title);
+			
+			if(mcListdao.addMultiChoiceList(mcList) == null)
+				response = Boolean.FALSE;
+			
+		} catch (MultipleChoiceNotFoundException e1) {
+			response = Boolean.FALSE;
+			e1.printStackTrace();
+		}
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+		
 	}
 	
 	@ResponseBody

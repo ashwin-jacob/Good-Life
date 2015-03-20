@@ -38,6 +38,22 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 		}
 		return isSuccess;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Boolean deleteAllMultiChoiceByList(Integer multiChoiceListId){
+		Boolean isSuccess = Boolean.TRUE;
+		
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceQ.class);
+		criteria.add(Restrictions.eq("multiChoiceListId", multiChoiceListId));
+		List<MultiChoiceQ> multiQList = criteria.list();
+		
+		for(int i = 0; i < multiQList.size(); i++){
+			if(deleteMultiChoice(multiQList.get(i).getMultiQuesId()) == Boolean.FALSE)
+				isSuccess = Boolean.FALSE;
+		}
+		return isSuccess;
+	}
 
 	@Override
 	public Boolean updateOrder(List<Integer> multiChoiceIdList) {
@@ -105,10 +121,10 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<MultiChoiceQ> getAllMultiChoice(Integer subChapId) {
+	public List<MultiChoiceQ> getAllMultiChoice(Integer multiChoiceListId) {
 		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceQ.class);
-		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
+		criteria.add(Restrictions.eqOrIsNull("multiChoiceListId", multiChoiceListId));
 		List<MultiChoiceQ> multiChoiceList = criteria.list();
 		if(multiChoiceList == null)
 			return new ArrayList<MultiChoiceQ>();
@@ -117,10 +133,10 @@ public class MultiChoiceQDAOImpl implements MultiChoiceQDAO{
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<MultiChoiceQ> getAllPublishedMultiChoice(Integer subChapId) {
+	public List<MultiChoiceQ> getAllPublishedMultiChoice(Integer multiChoiceListId) {
 		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(MultiChoiceQ.class);
-		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("subChapId", subChapId),Restrictions.eq("published", true)));
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("multiChoiceListId", multiChoiceListId),Restrictions.eq("published", true)));
 		List<MultiChoiceQ> multiChoiceList = criteria.list();
 		return multiChoiceList;
 	}

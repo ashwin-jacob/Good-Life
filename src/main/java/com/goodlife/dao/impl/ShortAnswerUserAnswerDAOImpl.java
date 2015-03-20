@@ -84,6 +84,7 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<ShortAnswerUserAnswer> listAllUserShortAnsBySubChap(Integer userId,
 			Integer subChapId) {

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.ChapterDAO;
+import com.goodlife.dao.MultiChoiceListDAO;
 import com.goodlife.dao.MultiChoiceOptionDAO;
 import com.goodlife.dao.MultiChoiceQDAO;
 import com.goodlife.dao.MultiChoiceUserAnsDAO;
@@ -28,11 +29,14 @@ import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.model.Chapter;
+import com.goodlife.model.MultiChoiceList;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceQ;
+import com.goodlife.model.Node;
 import com.goodlife.model.ObjectPair;
 import com.goodlife.model.ShortAnswerQ;
 import com.goodlife.model.SubChapter;
+import com.goodlife.model.Tree;
 import com.goodlife.model.UploadFileQ;
 
 @Controller
@@ -43,31 +47,24 @@ public class StudentCurriculumController {
 
 	@Autowired
 	private StudentDAO studentDAO;
-	
 	@Autowired
-	private ChapterDAO chapterDAO;
-	
+	private ChapterDAO chapterDAO;	
 	@Autowired
 	private SubChapterDAO subChapDAO;
-	
 	@Autowired
 	private MultiChoiceQDAO multiChoiceQDAO;
-
 	@Autowired
 	private MultiChoiceOptionDAO multiChoiceOptionDAO;
-	
 	@Autowired
 	private MultiChoiceUserAnsDAO multiChoiceUserAnsDAO;
-	
+	@Autowired
+	private MultiChoiceListDAO multiChoiceListDAO;
 	@Autowired
 	private ShortAnswerUserAnswerDAO shortAnswerUserAnsDAO;
-	
 	@Autowired
 	private ShortAnswerQDAO shortAnswerQDAO;
-	
 	@Autowired
 	private UploadedAnswerDAO uploadedAnswerDAO;
-	
 	@Autowired
 	private UploadFileQDAO uploadFileQDAO;
 	
@@ -149,14 +146,14 @@ public class StudentCurriculumController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getmultichoicebysubchap", method = RequestMethod.GET)
-	public String getMultiChoiceBySubChap(@RequestParam(value = "subChapId") Integer subChapId){
+	@RequestMapping(value = "/getmultichoicebylist", method = RequestMethod.GET)
+	public String getMultiChoiceBySubChap(@RequestParam(value = "multiChoiceListId") Integer multiChoiceListId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(multiChoiceQDAO.getAllPublishedMultiChoice(subChapId));
+			jsonResp = mapper.writeValueAsString(multiChoiceQDAO.getAllPublishedMultiChoice(multiChoiceListId));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -298,27 +295,43 @@ public class StudentCurriculumController {
 	 * The array is always of size 2 or null.
 	 * 
 	 * Return types for index 1
-	 * - List<MultipleChoiceQ>
+	 * - List<Tree<Object>> --> has multiple choice list and question objects
 	 * - List<ShortAnswerQ>
 	 * - List<UploadFileQ> --> always size = 1
 	 * 
 	 * Return types for index 2
-	 * - 'm' --> for list of multiple choice questions
+	 * - 'm' --> for list of multiple choice list
 	 * - 's' --> for list of short answer questions
 	 * - 'u' --> for a single upload file question
 	 */
-	
+	// TODO multi choice list
 	@ResponseBody
 	@RequestMapping(value = "/getsubchapform", method = RequestMethod.GET)
 	public String getSubChapForm(@RequestParam(value = "subChapId") Integer subChapId){
 		
 		ArrayList<Object> formArray = new ArrayList<Object>();
-		List<MultiChoiceQ> multiList = multiChoiceQDAO.getAllPublishedMultiChoice(subChapId);
+		List<MultiChoiceList> multiList = multiChoiceListDAO.getAllPublishedMultiChoiceLists(subChapId);
 		List<ShortAnswerQ> shortAnsList = shortAnswerQDAO.getPublishedShortAnswerBySubChapter(subChapId);
 		UploadFileQ uploadQ = uploadFileQDAO.getPublishedUploadFileQBySubchapId(subChapId);
 		
 		if(multiList != null && multiList.isEmpty() == false){
-			formArray.add(multiList);
+			
+			Tree<Object> tree;
+			Node<Object> mcList;
+			List<MultiChoiceQ> mcQList;
+			List<Tree<Object>> treeList = new ArrayList<Tree<Object>>();
+			
+			for(int i = 0; i < multiList.size(); i++){
+				tree = new Tree<Object>();
+				mcList = new Node<Object>(multiList.get(i));
+				mcQList = multiChoiceQDAO.getAllPublishedMultiChoice(multiList.get(i).getMultiChoiceListId());
+				for(int j = 0; j < mcQList.size(); j++)
+					mcList.addChild(new Node<Object>(mcQList.get(j)));
+				tree.setRoot(mcList);
+				treeList.add(tree);
+			}
+			
+			formArray.add(treeList);
 			formArray.add('m');
 		}
 		else if(shortAnsList != null && shortAnsList.isEmpty() == false){

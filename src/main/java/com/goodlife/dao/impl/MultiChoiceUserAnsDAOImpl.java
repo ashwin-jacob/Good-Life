@@ -1,5 +1,6 @@
 package com.goodlife.dao.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -8,9 +9,11 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.goodlife.dao.MultiChoiceListDAO;
 import com.goodlife.dao.MultiChoiceQDAO;
 import com.goodlife.dao.MultiChoiceUserAnsDAO;
 import com.goodlife.exceptions.MultipleChoiceNotFoundException;
+import com.goodlife.model.MultiChoiceList;
 import com.goodlife.model.MultiChoiceQ;
 import com.goodlife.model.MultiChoiceUserAns;
 
@@ -22,6 +25,9 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 	
 	@Autowired
 	private MultiChoiceQDAO multiChoiceQDAO;
+	
+	@Autowired
+	private MultiChoiceListDAO multiChoiceListDAO;
 	
 	@Override
 	public Boolean addMultiChoiceAnswer(MultiChoiceUserAns multiChoiceAns){
@@ -72,22 +78,55 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 	}
 
 	@Override
-	public Boolean isMultiChoiceSubChapComplete(Integer userId, Integer subChapId) {
+	public Boolean isMultiChoiceListComplete(Integer userId, Integer multiChoiceListId) {
 		Double correct = 0.0;
 		Double total = 0.0;
 		Boolean isComplete = Boolean.TRUE;
-		List<MultiChoiceQ> multiChoiceQList = multiChoiceQDAO.getAllMultiChoice(subChapId);
+		MultiChoiceList multiList;
+		try {
+			multiList = multiChoiceListDAO.getMultiChoiceListById(multiChoiceListId);
+		} catch (MultipleChoiceNotFoundException e) {
+			multiList = null;
+			e.printStackTrace();
+		}
+		List<MultiChoiceQ> multiChoiceQList = new ArrayList<MultiChoiceQ>();
+		if(multiList != null)
+			multiChoiceQList = multiChoiceQDAO.getAllPublishedMultiChoice(multiChoiceListId);
+		
 		if(multiChoiceQList == null || multiChoiceQList.isEmpty() == true)
 			isComplete = Boolean.FALSE;
-		else{
+		else if(multiList.getGraded() == Boolean.TRUE){
 			for(int i = 0; i < multiChoiceQList.size(); i++){
 				total += 1.0;
 				//userAns = getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId());
 				if(isMultiChoiceCorrect(userId,multiChoiceQList.get(i).getMultiQuesId()) == Boolean.TRUE)
 					correct += 1.0;
+				if(getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId()) == null)
+					isComplete = Boolean.FALSE;
 			}
 			if((correct/total) < 0.5)
 				isComplete =  Boolean.FALSE;
+		}
+		else{
+			for(int i = 0; i < multiChoiceQList.size(); i++){
+				if(getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId()) == null)
+					isComplete = Boolean.FALSE;
+			}
+		}
+		return isComplete;
+	}
+	
+	@Override
+	public Boolean isMultiChoiceSubChapComplete(Integer userId, Integer subChapId){
+		Boolean isComplete = Boolean.TRUE;
+		List<MultiChoiceList> multiList = multiChoiceListDAO.getAllPublishedMultiChoiceLists(subChapId);
+		if(multiList.isEmpty() || multiList == null)
+			isComplete = Boolean.FALSE;
+		else{
+			for(int i = 0; i < multiList.size(); i++){
+				if(isMultiChoiceListComplete(userId, multiList.get(i).getMultiChoiceListId()) == Boolean.FALSE)
+					isComplete = Boolean.FALSE;
+			}
 		}
 		return isComplete;
 	}

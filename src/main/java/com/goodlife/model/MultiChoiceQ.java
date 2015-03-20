@@ -33,9 +33,10 @@ public class MultiChoiceQ implements Serializable{
 	@Column(name = "corr_ans")
 	private Integer correctAnswer;
 	
-	@JoinColumn(name = "sub_chap_id", nullable = false)
-	private Integer subChapId;
+	@JoinColumn(name = "mc_list_id", nullable = false)
+	private Integer multiChoiceListId;
 	
+	@Id
 	@Column(name = "order_id")
 	private Integer orderId;
 	
@@ -47,14 +48,14 @@ public class MultiChoiceQ implements Serializable{
 	}
 
 	public MultiChoiceQ(Integer multiQuesId, String quesText, String helpText,
-			Integer correctAnswer, Integer subChapId, Integer orderId,
+			Integer correctAnswer, Integer multiChoiceListId, Integer orderId,
 			Boolean published) {
 		super();
 		this.multiQuesId = multiQuesId;
 		this.quesText = quesText;
 		this.helpText = helpText;
 		this.correctAnswer = correctAnswer;
-		this.subChapId = subChapId;
+		this.multiChoiceListId = multiChoiceListId;
 		this.orderId = orderId;
 		this.published = published;
 	}
@@ -91,12 +92,12 @@ public class MultiChoiceQ implements Serializable{
 		this.correctAnswer = correctAnswer;
 	}
 
-	public Integer getSubChapId() {
-		return subChapId;
+	public Integer getMultiChoiceListId() {
+		return multiChoiceListId;
 	}
 
-	public void setSubChapId(Integer subChapId) {
-		this.subChapId = subChapId;
+	public void setMultiChoiceListId(Integer multiChoiceListId) {
+		this.multiChoiceListId = multiChoiceListId;
 	}
 
 	public Integer getOrderId() {
