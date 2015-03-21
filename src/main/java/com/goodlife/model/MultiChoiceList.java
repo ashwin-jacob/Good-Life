@@ -33,7 +33,6 @@ public class MultiChoiceList implements Serializable{
 	@JoinColumn(name = "sub_chap_id", nullable = false)
 	private Integer subChapId;
 	
-	@Id
 	@Column(name = "order_id")
 	private Integer orderId;
 	

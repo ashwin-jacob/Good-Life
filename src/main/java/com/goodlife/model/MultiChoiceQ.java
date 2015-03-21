@@ -35,8 +35,7 @@ public class MultiChoiceQ implements Serializable{
 	
 	@JoinColumn(name = "mc_list_id", nullable = false)
 	private Integer multiChoiceListId;
-	
-	@Id
+
 	@Column(name = "order_id")
 	private Integer orderId;
 	
