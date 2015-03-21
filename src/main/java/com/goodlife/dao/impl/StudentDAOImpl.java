@@ -45,7 +45,10 @@ public class StudentDAOImpl implements StudentDAO  {
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Student.class);
 		criteria.add(Restrictions.eqOrIsNull("rosterId", rosterId));
 		List<Student> studentList = criteria.list();
-		return studentList;
+		if(studentList == null)
+			return new ArrayList<Student>();
+		else
+			return studentList;
 	}
 
 	@SuppressWarnings("unused")

@@ -1,6 +1,8 @@
 package com.goodlife.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,8 +19,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.dao.InstructorDAO;
 import com.goodlife.dao.ShortAnswerUserAnswerDAO;
+import com.goodlife.dao.StudentDAO;
+import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Instructor;
+import com.goodlife.model.ObjectPair;
+import com.goodlife.model.Student;
+import com.goodlife.model.Users;
 
 @Controller
 @Transactional
@@ -29,7 +36,10 @@ public class InstructorController {
 	
 	@Autowired
 	private InstructorDAO instructorDAO;
-	
+	@Autowired
+	private StudentDAO studentDAO;
+	@Autowired
+	private UsersDAO usersDAO;
 	@Autowired
 	private ShortAnswerUserAnswerDAO shortAnswerUserAnswerDAO;
 	
@@ -218,6 +228,86 @@ public class InstructorController {
 		
 		try {
 			jsonResp = mapper.writeValueAsString(shortAnswerUserAnswerDAO.listAllUserShortAnsBySubChap(userId,subChapId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/liststudentsbyroster", method = RequestMethod.GET)
+	public String listStudentsByRoster(@RequestParam("rosterId") Integer rosterId){
+		
+		List<ObjectPair> studentInfoList = new ArrayList<ObjectPair>();
+		List<Student> studentList = studentDAO.findStudentByRosterId(rosterId);
+		
+		for(int i = 0; i < studentList.size(); i++){	
+			Users user;
+			try {
+				user = usersDAO.findByUserId(studentList.get(i).getUserId());
+			} catch (UserNotFoundException e) {
+				user = new Users();
+				e.printStackTrace();
+			}
+			studentInfoList.add(new ObjectPair(studentList.get(i),user));
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp = "";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(studentInfoList);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/editinstructorprofile", method = RequestMethod.GET)
+	public String editInstructorProfile(@RequestParam("userId") Integer userId,
+										@RequestParam("aboutMe") String aboutMe,
+										@RequestParam("city") String city,
+										@RequestParam("email") String email,
+										@RequestParam("firstname") String firstname,
+										@RequestParam("lastname") String lastname,
+										@RequestParam("state") String state){
+		
+		Boolean response = Boolean.TRUE;
+		try {
+			Users user = usersDAO.findByUserId(userId);
+			//Instructor instructor = instructorDAO.findInstructorByUserId(userId);
+			
+			user.setAboutMe(aboutMe);
+			user.setCity(city);
+			user.setEmail(email);
+			user.setFirstname(firstname);
+			user.setLastname(lastname);
+			user.setState(state);
+			
+			if(usersDAO.addUser(user) == null)
+				response = Boolean.FALSE;
+			
+		} catch (UserNotFoundException e1) {
+			response = Boolean.FALSE;
+			e1.printStackTrace();
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp = "";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {

@@ -18,9 +18,8 @@ public class UsersDAOImpl implements UsersDAO {
 
 	@Override
 	public Integer addUser(Users user) {
-		Users savedUser = (Users) this.sessionFactory.getCurrentSession().save(
-				user);
-		return savedUser.getUserId();
+		this.sessionFactory.getCurrentSession().saveOrUpdate(user);
+		return user.getUserId();
 	}
 
 	@Override
