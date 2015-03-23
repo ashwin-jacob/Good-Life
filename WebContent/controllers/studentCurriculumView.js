@@ -11,6 +11,14 @@ forceForGood.controller('StudentCurriculumView', ['$scope', '$log', 'student', '
 				subChapterFormTemp = subChapterFormList[0];
 				subChapterTypeTemp  = subChapterFormList[1];
 				if ( subChapterTypeTemp == 'm' ) {
+					//Read in each multiple choice question
+					listMultipleChoiceQuest = [];
+					angular.forEach(subChapterFormTemp[0].root.children, function(multiQuestObj) {
+						listMultipleChoiceQuest.push(multiQuestObj.data);
+					});
+					subChapterFormTemp = listMultipleChoiceQuest;
+					$log.log("SubChapter List for MC");
+					$log.log(subChapterFormTemp);
 					angular.forEach(subChapterFormTemp, function(subChapQues) {
 						student.getMultChoiceOption(subChapQues.multiQuesId).$promise.then(function(result) {
 							subChapQues.options=result;
