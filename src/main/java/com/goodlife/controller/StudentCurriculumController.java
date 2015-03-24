@@ -24,6 +24,7 @@ import com.goodlife.dao.MultiChoiceQDAO;
 import com.goodlife.dao.MultiChoiceUserAnsDAO;
 import com.goodlife.dao.ShortAnswerQDAO;
 import com.goodlife.dao.ShortAnswerUserAnswerDAO;
+import com.goodlife.dao.InstructorDAO;
 import com.goodlife.dao.StudentDAO;
 import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
@@ -67,6 +68,8 @@ public class StudentCurriculumController {
 	private UploadedAnswerDAO uploadedAnswerDAO;
 	@Autowired
 	private UploadFileQDAO uploadFileQDAO;
+	@Autowired
+	private InstructorDAO instructorDAO;
 	
 	@ResponseBody
 	@RequestMapping(value = "/getallowedchapters", method = RequestMethod.GET)
@@ -85,6 +88,27 @@ public class StudentCurriculumController {
 			e.printStackTrace();
 		}
 		return jsonResp;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/getprogress", method = RequestMethod.GET)
+	public String getProgress(@RequestParam(value = "userId") Integer userId,
+									 @RequestParam(value = "rosterId") Integer rosterId){
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(instructorDAO.getStudentProgress(userId, rosterId));
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+		
 	}
 	
 	/*

@@ -101,7 +101,7 @@ public class InstructorController {
 	@ResponseBody
 	@RequestMapping(value = "/getstudentprogress", method = RequestMethod.GET)
 	public String getStudentProgress(@RequestParam(value = "userId") Integer userId,
-									 @RequestParam(value = "roserId") Integer rosterId){
+									 @RequestParam(value = "rosterId") Integer rosterId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
