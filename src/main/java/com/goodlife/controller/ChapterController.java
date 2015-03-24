@@ -58,7 +58,7 @@ public class ChapterController {
 	
 	private static final String UPLOAD_DIR = "/resources/images/chapter_pages";
 	@ResponseBody
-	@RequestMapping(value = "/addchapter", method = RequestMethod.GET)
+	@RequestMapping(value = "/addchapter", method = RequestMethod.POST)
 	public String addChapter(@RequestParam(value="chapTitle") String chapTitle,
 											 @RequestParam(value="chapDescr") String chapDescr,
 											 @RequestParam(value="orderId") String orderId){

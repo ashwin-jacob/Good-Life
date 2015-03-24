@@ -1,4 +1,3 @@
- 
   <div ng-include="'partials/header.html'"></div>
 
 </div>
@@ -21,7 +20,7 @@
 		</button>
 	</div>
 	<div class="col col-lg-4 ">
-		<div class="panel panel-default">
+		<div class="panel panel-primary" >
 			<div class="panel-heading">Curriculum</div>
 			<table ng-table="chapterTable"
 				class="table table-hover table-condensed"
@@ -36,8 +35,8 @@
 							{{objR.chapId}}
 
 						</th>
-						<th class="info" data-title="'Title'" ng-class="{'text-primary': chapIdNum == objR.chapId}">{{objR.chapTitle}}</th>
-						<th class="info" data-title="'Description'" ng-class="{'text-primary': chapIdNum == objR.chapId}">{{objR.chapDescr}}</th>
+						<th class="info"  data-title="'Title'" ng-class="{'text-primary': chapIdNum == objR.chapId}">{{objR.chapTitle}}</th>
+						<th class="info"  data-title="'Description'" style="font-weight:normal;" ng-class="{'text-primary': chapIdNum == objR.chapId}" colspan="3">{{objR.chapDescr}}</th>
 
 						<th class="info" >
 						
@@ -46,12 +45,11 @@
 							</th>
 					</tr>
 
-					<tr ng-repeat="objL in curriculumTreeList"
+					<tr ng-repeat="objL in curriculumTreeList" 
 						ng-show="showRow({{objL[$index].subChapId}})" ng-click="exerciseClick(objL[$index])">
-						<td>&nbsp;</td>
-						<td header-class="info">&nbsp;</td>
+						<td >&nbsp;</td>
 						<td style="font-size: .8em;">{{objL[$index].subChapTitle}}</td>
-						<td style="font-size: .8em;">{{objL[$index].subChapDescr}}</td>
+						<td style="font-size: .8em;" colspan="4">{{objL[$index].subChapDescr}}</td>
 
 
 
@@ -60,11 +58,11 @@
 				</tbody>
 
 			</table>
-			<div class="panel panel-footer">
+			<div class="panel-footer">
 				<div>
-					<button class="btn btn-primary btn-sm"
+					<button class="btn btn-success btn-sm"
 						ng-click="showPane('chapter')">
-						Add Chapter
+						+ Add Chapter
 						<!-- openDialog('partials/forms/addChapter.html') -->
 					</button>
 				</div>
@@ -97,8 +95,8 @@
 				</button>
 				</div>
 
-
-			<div ng-include="'partials/forms/addExercise.html'"></div>
+			
+			<div ng-include="'partials/forms/addExercise.html'" ></div>
 
 
 		</div>

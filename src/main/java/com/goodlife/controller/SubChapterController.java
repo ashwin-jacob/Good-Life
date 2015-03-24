@@ -58,7 +58,7 @@ public class SubChapterController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "deletesubchapter", method = RequestMethod.GET)
+	@RequestMapping(value = "deletesubchapter", method = RequestMethod.POST)
 	public String deleteSubChapter(@RequestParam(value="subchapId") Integer subChapId){
 		
 		ObjectMapper mapper = new ObjectMapper();
