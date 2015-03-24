@@ -29,6 +29,7 @@ import com.goodlife.dao.StudentDAO;
 import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
+import com.goodlife.dao.UsersDAO;
 import com.goodlife.model.Chapter;
 import com.goodlife.model.MultiChoiceList;
 import com.goodlife.model.MultiChoiceOption;
@@ -36,6 +37,7 @@ import com.goodlife.model.MultiChoiceQ;
 import com.goodlife.model.Node;
 import com.goodlife.model.ObjectPair;
 import com.goodlife.model.ShortAnswerQ;
+import com.goodlife.model.Student;
 import com.goodlife.model.SubChapter;
 import com.goodlife.model.Tree;
 import com.goodlife.model.UploadFileQ;
@@ -70,6 +72,8 @@ public class StudentCurriculumController {
 	private UploadFileQDAO uploadFileQDAO;
 	@Autowired
 	private InstructorDAO instructorDAO;
+	@Autowired
+	private UsersDAO usersDAO;
 	
 	@ResponseBody
 	@RequestMapping(value = "/getallowedchapters", method = RequestMethod.GET)
@@ -92,14 +96,14 @@ public class StudentCurriculumController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/getprogress", method = RequestMethod.GET)
-	public String getProgress(@RequestParam(value = "userId") Integer userId,
-									 @RequestParam(value = "rosterId") Integer rosterId){
+	public String getProgress(@RequestParam(value = "userId") Integer userId){
 		
+		Student student = studentDAO.findStudentByUserId(userId);
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(instructorDAO.getStudentProgress(userId, rosterId));
+			jsonResp = mapper.writeValueAsString(instructorDAO.getStudentProgress(userId, student.getRosterId()));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
