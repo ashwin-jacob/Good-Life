@@ -10,6 +10,7 @@ public interface ChapterDAO {
 	public Integer addChapter(Chapter chapter);
 	public Boolean deleteChapter(Integer chapterId);
 	public Chapter findByChapterId(Integer chapterId) throws ChapterNotFoundException;
+	public Boolean updateChapter(Chapter updatedChapter);
 	public Boolean updateOrder(List<Integer> chapterList);
 	public Boolean updateTitle(Integer chapterId, String newChapterTitle);
 	public Boolean updateDescr(Integer chapterId, String newChapterDescr);

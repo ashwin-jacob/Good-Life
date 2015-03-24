@@ -67,6 +67,20 @@ public class SubChapterControllerTest {
 	
 	@Test
 	@Transactional
+	public void testUpdateSubChapter() throws SubChapterNotFoundException{
+		Integer newChapId = 3;
+		Integer newSubChapId = 2;
+		String newSubChapDescr = "New SubChapter Description";
+		String newSubChapTitle = "New SubChapter Title";
+		Integer newOrderId = 2;
+		Boolean newPublished = true;
+		
+		Boolean isUpdated = Boolean.valueOf(subChapterController.updateSubChapter(newSubChapId, newChapId, newSubChapDescr, newSubChapTitle, newOrderId, newPublished));
+		assertTrue(isUpdated);
+	}
+	
+	@Test
+	@Transactional
 	public void testUpdateSubChapterOrder() throws SubChapterNotFoundException{		
 		List<Integer> subChapList = new ArrayList<Integer>();
 		subChapList.add(0, Integer.valueOf(2));

@@ -116,6 +116,38 @@ public class SubChapterController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "updatesubchapter", method = RequestMethod.GET)
+	public String updateSubChapter(@RequestParam("subChapId") Integer subChapId,
+									@RequestParam("chapId") Integer chapId,
+									@RequestParam("subChapDescr") String subChapDescr,
+									@RequestParam("subChapTitle") String subChapTitle,
+									@RequestParam("orderId") Integer orderId,
+									@RequestParam("published") Boolean published){
+		
+		SubChapter updatedSubChapter = new SubChapter(subChapId, chapId, subChapDescr, subChapTitle, orderId, published);
+		
+		Boolean response = subChapterDAO.updateSubChapter(updatedSubChapter);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+		
+	}
+									
+									
+	
+	@ResponseBody
 	@RequestMapping(value = "updatesubchaptertitle", method = RequestMethod.GET)
 	public String updateSubChapterTitle(@RequestParam(value="subChapId") Integer subChapId,
 													   @RequestParam(value="subChapTitle") String subChapTitle) {

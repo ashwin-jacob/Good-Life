@@ -231,6 +231,35 @@ public class ChapterController {
 	}
 	
 	@ResponseBody
+	@RequestMapping(value = "/updatechapter", method = RequestMethod.GET)
+	public String updateChapter(@RequestParam(value="chapId") Integer chapId,
+								@RequestParam(value="chapDescr") String chapDescr,
+								@RequestParam(value="chapTitle") String chapTitle,
+								@RequestParam(value="orderId") Integer orderId,
+								@RequestParam(value="published") Boolean published){
+		
+		Chapter updatedChapter = new Chapter(chapId, chapDescr, chapTitle, orderId, published);
+		
+		Boolean response = chapterDAO.updateChapter(updatedChapter);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		String jsonResp ="";
+		
+		try {
+			jsonResp = mapper.writeValueAsString(response);
+		} catch (JsonGenerationException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonResp;
+		
+	}
+	
+	@ResponseBody
 	@RequestMapping(value = "/updatechapterorder", method = RequestMethod.GET)
 	public String updateChapterOrder(@RequestParam(value="newChapterOrderList")List<Integer> newChapterOrderList){
 				

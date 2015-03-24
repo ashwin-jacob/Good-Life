@@ -10,6 +10,7 @@ public interface SubChapterDAO {
 	public Integer addSubChapter(SubChapter subChapter);
 	public Boolean deleteSubChapter(Integer subChapId);
 	public Boolean updateOrder(List<Integer> subChapterIdList);
+	public Boolean updateSubChapter(SubChapter updatedSubChapter);
 	public Boolean updateTitle(Integer subChapId, String subChapTitle);
 	public Boolean updateDescription(Integer subChapId, String subChapDescr);
 	public List<SubChapter> getSubChapListByChapter(Integer chapId);

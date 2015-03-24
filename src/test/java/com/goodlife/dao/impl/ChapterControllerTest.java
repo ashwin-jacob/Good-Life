@@ -92,6 +92,19 @@ public class ChapterControllerTest {
 	
 	@Test
 	@Transactional
+	public void testUpdateChapter() throws ChapterNotFoundException{
+		Integer newChapId = 1;
+		String newChapDescr = "New Chapter 1 Description";
+		String newChapTitle = "New Chapter 1 Title";
+		Integer newOrderId = 3;
+		Boolean newPublished = false;
+		
+		Boolean isUpdated = Boolean.valueOf(chapterController.updateChapter(newChapId, newChapDescr, newChapTitle, newOrderId, newPublished));
+		assertTrue(isUpdated);
+	}
+	
+	@Test
+	@Transactional
 	public void testUpdateChapterTitle() throws ChapterNotFoundException{
 		String updatedTitle = "New Title!";
 		Boolean isUpdated = Boolean.valueOf(chapterController.updateChapterTitle(CHAP_ID,updatedTitle));

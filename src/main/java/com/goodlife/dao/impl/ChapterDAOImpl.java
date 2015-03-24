@@ -69,6 +69,24 @@ public class ChapterDAOImpl implements ChapterDAO{
 		}
 		return isSuccess;
 	}
+	
+	@Override
+	public Boolean updateChapter(Chapter updatedChapter) {
+		
+		try{
+			Chapter chapter = findByChapterId(updatedChapter.getChapId());
+			chapter.setChapDescr(updatedChapter.getChapDescr());
+			chapter.setChapTitle(updatedChapter.getChapTitle());
+			chapter.setOrderId(updatedChapter.getOrderId());
+			chapter.setPublished(updatedChapter.getPublished());
+			this.sessionFactory.getCurrentSession().saveOrUpdate(chapter);
+			
+			return Boolean.TRUE;
+			
+		}catch(ChapterNotFoundException e){
+			return Boolean.FALSE;
+		}
+	}
 
 	@Override
 	public Boolean updateTitle(Integer chapterId, String newChapterTitle) {

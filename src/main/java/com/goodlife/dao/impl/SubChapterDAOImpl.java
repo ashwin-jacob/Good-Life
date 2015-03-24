@@ -13,6 +13,7 @@ import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.exceptions.ChapterNotFoundException;
 import com.goodlife.exceptions.SubChapterNotFoundException;
+import com.goodlife.model.Chapter;
 import com.goodlife.model.SubChapter;
 
 @Repository
@@ -66,6 +67,25 @@ public class SubChapterDAOImpl implements SubChapterDAO {
 		}
 		return isSuccess;
 	}
+	
+	@Override
+	public Boolean updateSubChapter(SubChapter updatedSubChapter){
+		try{
+			SubChapter subChapter = getSubChapterById(updatedSubChapter.getSubChapId());
+			subChapter.setChapId(updatedSubChapter.getChapId());
+			subChapter.setSubChapDescr(updatedSubChapter.getSubChapDescr());
+			subChapter.setSubChapTitle(updatedSubChapter.getSubChapTitle());
+			subChapter.setOrderId(updatedSubChapter.getOrderId());
+			subChapter.setPublished(updatedSubChapter.getPublished());
+			this.sessionFactory.getCurrentSession().saveOrUpdate(subChapter);
+			
+			return Boolean.TRUE;
+			
+		}catch(SubChapterNotFoundException e){
+			return Boolean.FALSE;
+		}
+	}
+	
 	@Override
 	public Boolean updateTitle(Integer subChapId, String subChapTitle){
 		
