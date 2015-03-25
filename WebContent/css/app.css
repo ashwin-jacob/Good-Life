@@ -64,7 +64,7 @@ ul.navview li {
 	text-decoration: none;
 	color: #FFF;
 }
-a:hover, ul#navlink:hover, li#navlink:hover {
+a:hover, ul#navlink:hover, li#navlink:hover, #navlink>a:hover {
 	text-decoration: none;
 	font-weight: bold;
 	color: #FFF;
