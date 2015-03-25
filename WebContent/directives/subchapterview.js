@@ -37,6 +37,8 @@ forceForGood.directive('subchapterView', ['$log', 'student', '$compile', '$http'
 				angular.forEach($scope.subchapterForm, function(subChapterElement) {
 					student.updateShortAns($scope.userId, subChapterElement.saQId, subChapterElement.userAnswer)
 				});
+				$scope.showConfirmation("success", "shortanswer");
+				$("#confirmation-success-s").show().delay(4000).fadeOut(200);
 			};
 
 			$scope.submitPostMultiChoice = function() {
@@ -44,6 +46,8 @@ forceForGood.directive('subchapterView', ['$log', 'student', '$compile', '$http'
 				angular.forEach($scope.subchapterForm, function(subChapterElement) {
 					student.updateMultiChoice($scope.userId, subChapterElement.multiQuesId, subChapterElement.userAnswer)
 				});
+				$scope.showConfirmation("success", "multichoice");
+				$("#confirmation-success-m").show().delay(4000).fadeOut(200);
 			};
 
 			$scope.uploadQues = function() {
@@ -71,8 +75,53 @@ forceForGood.directive('subchapterView', ['$log', 'student', '$compile', '$http'
 							$log.log('file ' + config.file.name + 'uploaded. Response: ' + data);
 						});
 					}
+					$scope.showConfirmation("success", "upload");
+					$("#confirmation-success-u").show().delay(4000).fadeOut(200);
+				} else {
+					$log.log("no file selected");					
+				    $scope.showConfirmation("fail", "upload");
+				    $("#confirmation-fail-u").show().delay(4000).fadeOut(200);
 				}
 			};
+			
+			// show confirmation per type of question
+		    $scope.showConfirmation = function(flag, quesType){
+		    	$scope.successM = false;
+		    	$scope.successS = false;
+		    	$scope.successU = false;
+			    $scope.failureM = false;
+			    $scope.failureS = false;
+			    $scope.failureU = false;
+			    
+			    if (quesType == "multichoice") {
+			    	if (flag == "success"){
+				    	  $scope.successM = true;
+				          $scope.failureM = false;
+			    	}
+			    	else if (flag == "fail"){
+				    	  $scope.failureM = true;
+				          $scope.successM = false;
+			    	}
+			    } else if (quesType == "shortanswer") {
+			    	if (flag == "success"){
+				    	  $scope.successS = true;
+				          $scope.failureS = false;
+			    	}
+			    	else if (flag == "fail"){
+				    	  $scope.failureS = true;
+				          $scope.successS = false;
+			    	}
+			    } else if (quesType == "upload") {
+			    	if (flag == "success"){
+				    	  $scope.successU = true;
+				          $scope.failureU = false;
+			    	}
+			    	else if (flag == "fail"){
+				    	  $scope.failureU = true;
+				          $scope.successU = false;
+			    	}
+			    }
+		    };
 		};
 
 		return {

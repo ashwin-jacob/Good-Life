@@ -1,9 +1,19 @@
-<h1 class="chapter text-center">{{subchapter.subChapTitle}}</h1>
-<h2 class="chapter text-center"><em>{{subchapter.subChapDescr}}</em></h2>
+<h2 class="chapter text-center">{{subchapter.subChapTitle}}</h2>
+<h4 class="chapter text-center"><em>{{subchapter.subChapDescr}}</em></h4>
 
 <div ng-repeat="form in subchapterForm">
-	<h3>{{form.question}}</h3>
+	<h4><b>{{form.question}}</b></h4>
 	<h4>{{form.helpText}}</h4>
 	<textarea class="form-control" rows="10"  ng-model="form.userAnswer"></textarea>
 </div>
 <button type="button" class="btn btn-primary" ng-click="submitPostShortAns()" >Submit </button>
+
+<!-- Alert success/failure message -->
+<div class="alert alert-success alert-dismissible" id="confirmation-success-s" role="alert"
+	ng-show="successS">
+	<strong>Success:&nbsp;</strong> Your answers were submitted.
+</div>
+<div class="alert alert-danger alert-dismissible" id="confirmation-fail-s" role="alert"
+	ng-show="failureS">
+	<strong>Failure:&nbsp;</strong> Error in submit.
+</div>
