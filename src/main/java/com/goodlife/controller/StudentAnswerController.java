@@ -256,10 +256,13 @@ public class StudentAnswerController {
 			String fileName = mpfile.getOriginalFilename();
 			
 			// Create upload directory 
-			String uploadDirPath = session.getServletContext().getRealPath(UPLOAD_DIR); //TODO What if folder can't be found?
+			String uploadDirPath = session.getServletContext().getRealPath(UPLOAD_DIR);
+			if (uploadDirPath == null) {
+				uploadDirPath = UPLOAD_DIR;
+			}
 			
 			// different media types are stored in different directories.
-			uploadDirPath += findDir(mpfile);
+			uploadDirPath += findDir(mpfile, uploadedAnswer);
 			
 			//Creating path for directory if it doesn't exist
 			File uploadDir = new File(uploadDirPath);
@@ -267,7 +270,7 @@ public class StudentAnswerController {
 			if(!uploadDir.exists()) {
 				directoryMade = uploadDir.mkdirs();
 			}
-			System.out.println("dir is made: "+directoryMade); //TODO What if directory unable to be made?
+			System.out.println("dir is made: "+directoryMade);
 			System.out.println("directory: "+uploadDir.getPath());
 			
 			//Create Path for file
@@ -293,15 +296,34 @@ public class StudentAnswerController {
 	}
 	
 	/**
-	 * Creates a directory based on the file type
+	 * Creates a directory based on the file type. Sets mediaTypeId for uploadedAnswer.
 	 * @param file
+	 * @param uploadedAnswer
 	 * @return
 	 */
-	private String findDir(MultipartFile file) {
-		//TODO Add the rest of the file types in there
+	private String findDir(MultipartFile file, UploadedAnswer uploadedAnswer) {
 		String dir = null;
-		dir = "/resources/";
+		//dir = "/resources/";
 		System.out.println("Multipart type: "+file.getContentType());
+		Integer mediaType = null;
+		if (file.getContentType().startsWith("image")) {
+			dir = "/img";
+			mediaType = MediaType.IMAGE.getMediaType();		
+		} if (file.getContentType().startsWith("text")) {
+			dir = "/text";
+			mediaType = MediaType.TEXT.getMediaType();
+		} if (file.getContentType().startsWith("video")) {
+			dir = "/video";
+			mediaType = MediaType.VIDEO.getMediaType();
+		} if (file.getContentType().startsWith("audio")) {
+			dir = "/audio";
+			mediaType = MediaType.AUDIO.getMediaType();
+		} if (file.getContentType().startsWith("application")) {
+			dir = "/pdf";
+			mediaType = MediaType.PDF.getMediaType();
+		}
+		
+		uploadedAnswer.setMediaTypeId(mediaType);
 		return dir;
 	}
 }
