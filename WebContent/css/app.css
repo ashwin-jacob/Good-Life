@@ -92,3 +92,12 @@ textarea.form-control {
 	margin: 20px;
 	padding: 5px;
 }
+#maxLen {
+	width: 500px;
+	height: 30px;
+	padding: 5px;
+}
+#charCount {
+	font-size: 12px;
+	margin: 0px;
+}

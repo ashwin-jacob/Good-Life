@@ -4,7 +4,15 @@
 <div ng-repeat="form in subchapterForm">
 	<h4><b>{{form.question}}</b></h4>
 	<h4>{{form.helpText}}</h4>
-	<textarea class="form-control" rows="10"  ng-model="form.userAnswer"></textarea>
+	<form name="myForm">
+		<textarea class="form-control" name="myText" rows="3" maxlength="255"
+				  ng-maxlength="255" ng-model="form.userAnswer"></textarea>
+		<p id="charCount">character count: {{myForm.myText.$viewValue.length}}</p>
+		<div class="alert alert-danger alert-dismissible" role="alert" id="maxLen"
+			ng-show="myForm.myText.$viewValue.length >=255">
+			<strong>Max Length:&nbsp;</strong> Reached maximum 255 characters !
+		</div>
+    </form>
 </div>
 <button type="button" class="btn btn-primary" ng-click="submitPostShortAns()" >Submit </button>
 
