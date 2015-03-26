@@ -60,21 +60,21 @@ ul.navview li {
 	border-radius:5px;
 }
 
-.navlink, a:link, a:visited {
+.navlink, ul.navlink>li>a {
 	text-decoration: none;
 	color: #FFF;
 }
-a:hover, ul#navlink:hover, li#navlink:hover, #navlink>a:hover {
+ul#navlink:hover, li#navlink:hover, #navlink>a:hover, ul.navlink>li>a:hover, a.navlink:hover {
 	text-decoration: none;
-	font-weight: bold;
-	color: #FFF;
+	/*font-weight: bold;*/
+	color: #155183;
 	background-color: transparent;
 }
 .v-navbar {
 	height: 100%;
 	overflow:hidden;
 }
-button[type="button"] {
+button#submit {
 	padding: 5px;
 	margin: 20px 0px;
 	float: left;
