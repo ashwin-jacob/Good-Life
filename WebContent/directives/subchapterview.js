@@ -52,7 +52,14 @@ forceForGood.directive('subchapterView', ['$log', 'student', '$compile', '$http'
 
 			$scope.uploadQues = function() {
 				angular.forEach($scope.subchapterForm, function(subChapterElement) {
-					$scope.upload($scope.userId, subChapterElement.uploadQuesId, subChapterElement.files);
+					if (subChapterElement.files && subChapterElement.files.length) {
+						$scope.upload($scope.userId, subChapterElement.uploadQuesId, subChapterElement.files);
+					} else {
+						$log.log("no file selected");					
+					    $scope.showConfirmation("fail", "upload");
+					    $("#confirmation-fail-u").show().delay(4000).fadeOut(200);
+					}
+					
 				});
 			}
 
@@ -77,10 +84,6 @@ forceForGood.directive('subchapterView', ['$log', 'student', '$compile', '$http'
 					}
 					$scope.showConfirmation("success", "upload");
 					$("#confirmation-success-u").show().delay(4000).fadeOut(200);
-				} else {
-					$log.log("no file selected");					
-				    $scope.showConfirmation("fail", "upload");
-				    $("#confirmation-fail-u").show().delay(4000).fadeOut(200);
 				}
 			};
 			
