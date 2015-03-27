@@ -6,6 +6,9 @@ import java.security.Principal;
 
 
 
+import java.util.List;
+
+
 //Import log4j classes.
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,6 +43,11 @@ public class SuperAdminController {
 	@ResponseBody
 	public String addUserAndInvite(@RequestParam(value = "email") String email){
 			//,BindingResult result) {
+		email = email.replace("}", "");
+		email = email.replace("{", "");
+		email = email.replace("\"", "");
+		String[] temp = email.split(":");
+		email = temp[1];
 		Boolean isAdded = Boolean.TRUE;
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
