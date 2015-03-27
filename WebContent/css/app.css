@@ -50,3 +50,10 @@ ul.navview {
 	background-color: #DDD;
 	font-weight: bold;
 }
+
+/*
+Usersignup CSS
+*/
+.usersignup input.ng-invalid.ng-touched {
+	background-color: #FA787E;
+}

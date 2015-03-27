@@ -19,12 +19,16 @@ forceForGood.config(['$routeProvider',
 	function($routeProvider) {
 		$routeProvider.
 			when('/searchUsers', {
-				templateUrl:'partials/search.html',
+				templateUrl:'admin/search.html',
 				controller: 'AdminSearch'
 			}).
 			when('/adminConsole', {
-				templateUrl: 'partials/adminConsole.html',
+				templateUrl: 'admin/adminConsole.html',
 				controller: 'AdminConsole'
+			}).
+			when('/userinvite', {
+				templateUrl: 'admin/userinvite.html',
+				controller: 'UserInvite'
 			}). 
 			when('/chapterBuilder', {
 				templateUrl: 'partials/chapterBuilder.html',
