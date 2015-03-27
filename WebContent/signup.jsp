@@ -60,6 +60,18 @@
 		<div class="bar">
 			<i></i>
 		</div>
+		<input type="New Password" name="firstname" id="firstname" placeholder="First Name" required>
+        <div class="bar">
+			<i></i>
+		</div>
+		<input type="New Password" name="lastname" id="lastname" placeholder="Last Name" required>
+        <div class="bar">
+			<i></i>
+		</div>
+		<input type="New Password" name="username" id="username" placeholder="User Name" required>
+        <div class="bar">
+			<i></i>
+		</div>
 		<input type="New Password" name="pass1" id="pass1" placeholder="Password" required onkeyup="checkPass(); return false;">
         <div class="bar">
 			<i></i>

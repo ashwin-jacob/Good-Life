@@ -31,19 +31,19 @@ public class InvitationServiceImpl implements InvitationService {
 	private int RandomMin = 100001;
 	private int RandomMax = 999999;
 
-	public void inviteUserByUsername(String username, String loggedInUser)
+	public void inviteUserByEmail(String email, String loggedInUser)
 			throws UserAlreadyExistsException, UserNotFoundException {
 		Integer randomNumber;
-		Users user = usersDao.findByUserName(username);
-		if (user != null) {
-			throw new UserAlreadyExistsException("User " + username
+		Users newUser = usersDao.findByEmail(email);
+		if (newUser != null) {
+			throw new UserAlreadyExistsException("Email " + email
 					+ " already exists!  Ask user to signup if not already done.  If invitation code has been misplaced, a new one can be requested.");
 		}
 
 		randomNumber = generateRandomNumber(RandomMin, RandomMax);
 
-		Users newUser = new Users();
-		newUser.setUsername(username);
+		newUser = new Users();
+		newUser.setEmail(email);
 		newUser.setRegistered(false);
 		newUser.setPassword(tempPassword);
 		newUser.setInvitedBy(loggedInUser);
@@ -64,7 +64,7 @@ public class InvitationServiceImpl implements InvitationService {
 
 		String subject = "creating account";
 		String body = "random number is " + randomNumber;
-		mailer.sendMail(username, subject, body);
+		mailer.sendMail(email, subject, body);
 
 	}
 
@@ -109,11 +109,11 @@ public class InvitationServiceImpl implements InvitationService {
 	}
 
 	@Override
-	public void resendInvitation(String username, boolean resetPassword) throws UserAlreadyExistsException, UserNotFoundException {
-		Users user = usersDao.findByUserName(username);
+	public void resendInvitation(String email, boolean resetPassword) throws UserAlreadyExistsException, UserNotFoundException {
+		Users user = usersDao.findByEmail(email);
 		
 		if (user==null) {
-			throw new UserNotFoundException("Username entered does not exist in our database.");
+			throw new UserNotFoundException("Email entered does not exist in our database.");
 		}
 		
 		if (!resetPassword && user.isRegistered()) {

@@ -51,10 +51,10 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "resendInvitationCode", method = RequestMethod.POST)
-	public String addUserAndInvite(@ModelAttribute(value = "username") String username,
+	public String addUserAndInvite(@ModelAttribute(value = "email") String email,
 			BindingResult result, ModelMap model) {
 		try {
-			invitationService.resendInvitation(username, false);
+			invitationService.resendInvitation(email, false);
 		} catch (Exception e) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", e.getMessage());
@@ -70,11 +70,15 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "finishUserSignUp", method = RequestMethod.POST)
+	@Transactional
 	public String finishuserSignup(HttpServletRequest request, 
-	        @RequestParam(value="email", required=false) String email, 
-	        @RequestParam(value="pass1", required=false) String password1, 
+	        @RequestParam(value="email", required=true) String email,
+	        @RequestParam(value="firstname", required=true) String firstname,
+	        @RequestParam(value="lastname", required=true) String lastname,
+	        @RequestParam(value="username", required=true) String username,
+	        @RequestParam(value="pass1", required=true) String password1, 
 	        @RequestParam(value="pass2", required=false) String password2, 
-	        @RequestParam(value="token", required=false) String token, ModelMap model) throws Exception {
+	        @RequestParam(value="token", required=true) String token, ModelMap model) throws Exception {
 		
 		//If the password does not match, return invalid token exception
 		if (!password1.equals(password2)) {
@@ -84,8 +88,9 @@ public class UserController {
 		} 
 		
 		try {
+			Users user = usersDAO.findByEmail(email);
 			logger.debug("Details: " + email + ":" + password1 + ":" + password2 + ":" + token);
-			userService.activateAndUpdateUser(email, password1, token, false);
+			userService.activateAndUpdateUser(email, user.getFirstname(), user.getLastname(), user.getUsername(), password1, token, true);
 		} catch (Exception e) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", e.getMessage());
@@ -131,8 +136,9 @@ public class UserController {
 		} 
 		
 		try {
+			Users user = usersDAO.findByEmail(email);
 			logger.debug("Details: " + email + ":" + password1 + ":" + password2 + ":" + token);
-			userService.activateAndUpdateUser(email, password1, token, true);
+			userService.activateAndUpdateUser(email, user.getFirstname(), user.getLastname(), user.getUsername(), password1, token, true);
 		} catch (Exception e) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", e.getMessage());

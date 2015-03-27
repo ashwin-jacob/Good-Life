@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
 
 
-	public void activateAndUpdateUser(String email, String passwd, String token, boolean resetPassword) 
+	public void activateAndUpdateUser(String email, String firstname, String lastname, String username, String passwd, String token, boolean resetPassword) 
 			throws InvalidEmailToken, UserAlreadyExistsException, UserNotFoundException {
 		Users user = usersDao.findByEmail(email);
 		if (!user.getInvitationCode().toString().equals(token)) {
@@ -58,6 +58,9 @@ public class UserServiceImpl implements UserService {
 			throw new UserAlreadyExistsException("The user you are trying to signup with already exists and is active.  If you forgot your password, we recommend using the reset password link.");
 		}
 		user.setRegistered(true);
+		user.setFirstname(firstname);
+		user.setLastname(lastname);
+		user.setUsername(username);
 		user.setPassword(passwdEncoder.encodePassword(passwd));
 		usersDao.addUser(user);
 	}

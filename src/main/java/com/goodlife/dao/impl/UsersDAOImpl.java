@@ -67,13 +67,13 @@ public class UsersDAOImpl implements UsersDAO {
 	}
 
 	@Override
-	public Users findByEmail(String email) throws UserNotFoundException {
+	public Users findByEmail(String email) {
 		
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
 		criteria.add(Restrictions.eq("email", email));
 		Users user = (Users) criteria.uniqueResult();
 		if(user == null)
-			throw new UserNotFoundException("User with email: " + email + " not found.");
+			return null;
 		else
 			return user;
 	}
