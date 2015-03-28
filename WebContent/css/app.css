@@ -60,11 +60,12 @@ ul.navview li {
 	border-radius:5px;
 }
 
-.navlink, ul.navlink>li>a {
+.navlink, ul.navlink>li>a, a#navlink {
 	text-decoration: none;
 	color: #FFF;
 }
-ul#navlink:hover, li#navlink:hover, #navlink>a:hover, ul.navlink>li>a:hover, a.navlink:hover {
+ul#navlink:hover, li#navlink:hover, #navlink>a:hover, ul.navlink>li>a:hover, a.navlink:hover,
+a#navlink:hover {
 	text-decoration: none;
 	/*font-weight: bold;*/
 	color: #155183;
@@ -74,7 +75,7 @@ ul#navlink:hover, li#navlink:hover, #navlink>a:hover, ul.navlink>li>a:hover, a.n
 	height: 100%;
 	overflow:hidden;
 }
-button#submit {
+button#submit, input#upload {
 	padding: 5px;
 	margin: 20px 0px;
 	float: left;
@@ -100,4 +101,7 @@ textarea.form-control {
 #charCount {
 	font-size: 12px;
 	margin: 0px;
+}
+#chapterPage {
+	padding-left: 20px;
 }
