@@ -34,7 +34,10 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 		var handleSuccess = function (response) {
 			$log.log("Successful");
 			data = response.data;
-			//alert(JSON.stringify(data));
+		//	alert(JSON.stringify(data));
+			$scope.structureData(data);
+			//alert(JSON.stringify($scope.chapterData[0].exer[0]));
+			data = $scope.chapterData;
 			$scope.chapterTable .reload();
 		};
 
@@ -44,11 +47,40 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 			$scope.chapterTable .reload();
 		};
 		
-		//Add Chapter
-		$scope.addRow = function(title, desc, id, addChapterFm) {
+		// Structure Table Data	
+		$scope.structureData  = function(data){
+			$scope.chapterData = [];
+			var count = 0;
+			angular.forEach(data, function(root) {
+				angular.forEach(root, function(item) {
+					$scope.chapterData.push( {"chap": item.data, "exer": null});
+					$scope.exerciseData = [];
 
+					count++;
+					if (item.numberOfChildren > 0){
+
+						angular.forEach(item.children, function(exercise) {
+
+							$scope.exerciseData.push(exercise.data);
+							//alert(JSON.stringify($scope.exerciseData));
+							$scope.chapterData[count-1].exer = $scope.exerciseData;
+
+						});
+						
+						
+					}
+					//alert(JSON.stringify($scope.chapterData[count-1]));
+
+				});
+			});
+		}
+		
+		//Add Chapter
+		$scope.addRow = function(title, desc, addChapterFm) {
+			
+			var id = addChapterFm.chapId.$viewValue;
 			var confirmAdd = function (response) {
-				$scope.data.push({"objR":{"chapId":response.data,"chapDescr":desc,"chapTitle":title,"orderId":id,"published":false},"objL":[]});
+				$scope.chapterData.push({"chap":{"chapId":response.data,"chapDescr":desc,"chapTitle":title,"orderId":id,"published":false},"exer":[]});
 				$scope.showConfirmation("success", "Chapter titled " + "'"+title +"' was added!");
 
 			} 
@@ -70,7 +102,7 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	  		var comArr = eval( data );
 		//	alert(JSON.stringify(comArr[0].objR));
 	  		for( var i = 0; i < comArr.length; i++ ) {
-	  			if( comArr[i].objR.chapId === chapId ) {
+	  			if( comArr[i].chap.chapId === chapId ) {
 	  				index = i;
 	  				break;
 	  			}
@@ -134,6 +166,19 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    	myModal.close();
 	    }
 	    
+	    $scope.listClick = function(event, rowInfo){
+	    	
+	    	if(event.target.className.indexOf("exerciseTitle") > 0){
+	    		$scope.exerciseClick(rowInfo);
+
+	    	}
+	    	else{
+	    		$scope.chapterClick(rowInfo);
+	    	}
+	    	//alert("check"+JSON.stringify(rowInfo));
+
+	    }
+	    
 	    // View Row Details from Table
 	    $scope.chapterClick = function(rowData){
 	    	
@@ -145,20 +190,22 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    }
 	    
 	    $scope.exerciseClick = function(rowData){
-	    	
-	 	   var title = rowData.subChapTitle;
+
+	       //alert(JSON.stringify(rowData));
+	 	   var title = rowData[0].subChapTitle;
 	 	   var chapId = rowData.chapId;
 	       $scope.chapIdNum = chapId;
 	 	   var chapTitle = "";
 	    	
 	  		var comArr = eval( data );
+	  		
+
 		  		for( var i = 0; i < comArr.length; i++ ) {
-		  			if( comArr[i].objR.chapId === chapId ) {
-		  				chapTitle = comArr[i].objR.chapTitle;
+		  			if( comArr[i].chap.chapId === chapId ) {
+		  				chapTitle = comArr[i].chap.chapTitle;
 		  			}
 		  		}
-	    	
-	    	
+		    
 	    	$scope.showPane("subchapter", chapTitle, title, "");
 
 	    }
@@ -182,12 +229,13 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    
 	    //Get Row Data
 	    $scope.getRowByID = function(chapID){
+	    	alert(chapID);
 	  		var comArr = eval( data );
 	  		
 	  		var row;
 	  		
 	  		for( var i = 0; i < comArr.length; i++ ) {
-	  			if( comArr[i].objR.chapId === chapID ) {
+	  			if( comArr[i].chap.chapId === chapID ) {
 	  				row = comArr[i];
 	  				break;
 	  			}
@@ -205,7 +253,6 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    	  
 	    	if (paneType == "subchapter"){
 	    		
-
 		    	  $scope.showChapterPane = false;
 		          $scope.showSubChapPane = true;
 		          $scope.chapTitle = chap;
@@ -258,13 +305,12 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 		  	var position = 0;
 	    		var comArr = eval( data );
 		  		for( var i = 0; i < comArr.length; i++ ) {
-		  			if( comArr[i].objR.chapId === chapId ) {
+		  			if( comArr[i].chap.chapId === chapId ) {
 		  				position = i+1;
 		  			}
 		  		}
 	    		
-		  		alert(position);
-				$scope.data.splice(position, 0, {"objL":[{"subChapId":response.data,"chapId":chapId,"subChapDescr":exDesc,"subChapTitle":title,"orderId":orderId,"published":published}]});
+				$scope.chapterData.splice(position, 0, {"exer":[{"subChapId":response.data,"chapId":chapId,"subChapDescr":exDesc,"subChapTitle":title,"orderId":orderId,"published":published}]});
 				$scope.showConfirmation("success", "Exercise titled " + "'"+title +"' was added!");
 
 			} 
@@ -310,24 +356,26 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    //Delete Exercise
 	    $scope.deleteExercise = function(){
 	    	var row = $scope.getRowByID($scope.chapIdNum);
+	    	
+	    	alert(JSON.stringify(row));
 	    	//alert(JSON.stringify(row.objL[0].subChapId));
 	    	
 	  		var index = -1;		
 	  		var comArr = eval( data );
 	  		for( var i = 0; i < comArr.length; i++ ) {
-	  			if( comArr[i].objR.chapId === row.objR.chapId ) {
+	  			if( comArr[i].chap.chapId === row.chap.chapId ) {
 	  				index = i;
 	  				break;
 	  			}
 	  		}
 
 	  		if( index === -1 ) {
-				$scope.showConfirmation("fail", "Chapter" + "#"+row.objL[0].subChapId +" was not deleted!");
+				$scope.showConfirmation("fail", "Chapter" + "#"+row.exer[0].subChapId +" was not deleted!");
 	  		}
 	  		alert("delete index"+index)
 	  		//only removing first exercise for now
-	  		var itemToDelete = row.objL[0];
-	  		data[index].objL.splice(0, 1);		
+	  		var itemToDelete = row.exer[0];
+	  		data[index].exer.splice(0, 1);		
 			listChapters.deleteExercise(itemToDelete.subChapId).then( handleSuccess, handleError );
 			$scope.showConfirmation("success", "Exercise" + " titled '"+ itemToDelete.subChapTitle +"' has been deleted!");
 			$scope.chapterTable .reload();

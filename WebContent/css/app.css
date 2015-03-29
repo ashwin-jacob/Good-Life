@@ -105,3 +105,15 @@ textarea.form-control {
 #chapterPage {
 	padding-left: 20px;
 }
+
+/* ====================================================
+   CURRICULUM BUILDER
+   ==================================================== */ 
+   
+.chapTitle {
+	font-weight: bold;
+}
+
+.exerciseTitle {
+	font-weight: normal;
+}
