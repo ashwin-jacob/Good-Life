@@ -22,12 +22,16 @@
 	<div class="col col-lg-3 ">
 		<div class="panel panel-primary" >
 			<div class="panel-heading">Curriculum</div>
-			<div class="list-group" ng-repeat="chap in chapterData">
-				<div class="list-group-item chapTitle" ng-repeat="chap in chap" ng-show="showRow({{chap}})"  ng-click="listClick($event, chap)" ng-class="{'text-primary': chapIdNum == chap.chapId}">
+			<div class="list-group" ng-repeat="chap in chapterData" ng-click="listClick($event, chap)">
+			
+				<div class="list-group-item chapTitle" ng-repeat="chap in chap" ng-show="showRow({{chap}})"  ng-class="{'text-primary': chapIdNum == chap.chapId}">
+<!-- 				 							 				<button ng-click="showRows = !showRows" ng-hide=" $middle">+</button>  
+ -->				 
 				  {{chap.chapTitle}}
-					<div class="list-group" ng-show="showRow({{chap[0]}})">
-					<div class="panel panel-default">
-						<div class="list-group-item exerciseTitle" ng-repeat="exer in chap" ng-click="listClick($event, exer)">{{exer.subChapTitle}}</div>
+				  
+					<div class="list-group">
+					<div class="panel panel-default" ng-show=" (showRow({{chap[0]}}))">  <!--  ng-show=" (showRow({{chap[0]}}) && showRows)"-->
+						<div class="list-group-item exerciseTitle" ng-repeat="exer in chap">{{exer.subChapTitle}}</div>
 					</div>
 					</div>
 				</div>
