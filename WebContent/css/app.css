@@ -117,3 +117,9 @@ textarea.form-control {
 .exerciseTitle {
 	font-weight: normal;
 }
+/*
+Usersignup CSS
+*/
+.usersignup input.ng-invalid.ng-touched {
+	background-color: #FA787E;
+}

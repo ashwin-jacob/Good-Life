@@ -4,7 +4,8 @@ adminService.factory('userService', function( $http, $q, $log ) {
 	
 	return({
 		//APIs
-		search : search
+		search : search,
+		inviteuser: inviteuser
 	});
 
 	//Function to return serach
@@ -17,6 +18,17 @@ adminService.factory('userService', function( $http, $q, $log ) {
 		});
 
 		// return(request.then( handleSuccess, handleError ));
+		return request;
+	}
+
+	function inviteuser(email) {
+
+		var request = $http({
+			method: 'POST',
+			url: 'su/inviteuser',
+			params: {email:email}
+		});
+		
 		return request;
 	}
 

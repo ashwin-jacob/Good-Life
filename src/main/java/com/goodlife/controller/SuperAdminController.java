@@ -4,6 +4,11 @@ import java.security.Principal;
 
 
 
+
+
+import java.util.List;
+
+
 //Import log4j classes.
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,6 +21,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.goodlife.service.InvitationService;
 
@@ -31,19 +38,28 @@ public class SuperAdminController {
 	public String sentNewInvitation(ModelMap model, Principal principal) {
 		return "landing/invite";
 	}
-
-	@RequestMapping(value = "secured/su/addUser", method = RequestMethod.POST)
-	public String addUserAndInvite(@ModelAttribute(value = "username") String username,
-			BindingResult result) {
+	
+	@RequestMapping(value = "su/inviteuser", method = RequestMethod.POST)
+	@ResponseBody
+	public String addUserAndInvite(@RequestParam(value = "email") String email){
+			//,BindingResult result) {
+		email = email.replace("}", "");
+		email = email.replace("{", "");
+		email = email.replace("\"", "");
+		String[] temp = email.split(":");
+		email = temp[1];
+		Boolean isAdded = Boolean.TRUE;
 		try {
 			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 			String loggedInUser = authentication.getName();
-			invitationService.inviteUserByUsername(username, loggedInUser);
+			logger.debug(loggedInUser);
+			invitationService.inviteUserByEmail(email, loggedInUser);
 		} catch (Exception e) {
-			//need to do something if we get an exception.
+			logger.debug("invite not sent");
+			isAdded = Boolean.FALSE;
 		}
 		logger.debug("Adding User");
-		return "landing/inviteSent";
+		return String.valueOf(isAdded);
 	}
 
 	@RequestMapping(value = "secured/su/delete", method = RequestMethod.GET)

@@ -34,9 +34,11 @@ import com.goodlife.dao.ChapterDAO;
 import com.goodlife.dao.UserStatusDAO;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.ChapterNotFoundException;
+import com.goodlife.exceptions.UserAlreadyExistsException;
 import com.goodlife.exceptions.UserNotFoundException;
 import com.goodlife.model.Chapter;
 import com.goodlife.model.Users;
+import com.goodlife.service.InvitationService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,19 +56,38 @@ public class SuperAdminControllerTest {
 	@Autowired
 	private SuperAdminController superAdminController;
 	
-	@Mock
-	private BindingResult mockResult;
+	@Autowired
+	private UsersDAO usersDAO;
 	
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this);
-		Mockito.when(mockResult.hasErrors()).thenReturn(false);
-	}
+	@Autowired
+	private InvitationService invitationService;
 
 	@Test
 	@Transactional
+	public void addUser(){
+		Users newUser = new Users();
+		newUser.setEmail("thomascfuentes@gmail.com");
+		newUser.setRegistered(false);
+		newUser.setPassword("asdadfsesa");
+		newUser.setInvitedBy("Admin");
+		newUser.setInvitedDate(new Date());
+		newUser.setInvitationCode(100009);
+		assertNotNull(usersDAO.addUser(newUser));
+	}
+	
+	@Test
+	@Transactional
 	public void addUserAndInvite(){
-		String pageUrl = superAdminController.addUserAndInvite(USER_NAME, mockResult);
-		assertEquals(pageUrl,"landing/inviteSent");
+		Boolean isSuccess = Boolean.TRUE;
+		try {
+			invitationService.inviteUserByEmail("thomas.fuentes@tsgforce.com", "Tom");
+		} catch (UserAlreadyExistsException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		} catch (UserNotFoundException e) {
+			isSuccess = Boolean.FALSE;
+			e.printStackTrace();
+		}
+		assertTrue(isSuccess);
 	}
 }

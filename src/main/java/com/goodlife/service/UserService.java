@@ -11,8 +11,11 @@ import com.goodlife.model.Users;
 
 public interface UserService {
 
-	public void activateAndUpdateUser(String email, String passwd, String token, boolean resetPassword)
+	public void activateAndUpdateUser(String email, String firstname, String lastname, String username,
+									  String passwd, String token, boolean resetPassword)
 			throws InvalidEmailToken, UserAlreadyExistsException, UserNotFoundException;
+	
+	public void resetPassword(String email, String passwd, String token) throws InvalidEmailToken, UserNotFoundException;
 	
 	public Users findByUserName(String username) throws UserNotFoundException;
 	
