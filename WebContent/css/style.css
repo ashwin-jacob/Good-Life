@@ -64,35 +64,35 @@ body {
 .wrap input[type="text"] {
 	width: calc(100% - 24px);
 	border-radius: 7px 7px 0px 0px;
-	color: #D9EDF7;
+	color: #000000;
 	border-bottom-style: none;
 }
 .wrap input[type="password"] {
 	width: calc(100% - 24px);
 	border-radius: 0px 0px 7px 7px;
-	color: #D9EDF7;
+	color: #000000;
 }
 .wrap input[type="Email"] {
 	width: calc(100% - 24px);
 	border-radius: 7px 7px 0px 0px;
-	color: #D9EDF7;
+	color: #000000;
 	border-bottom-style: none;
 }
 .wrap input[type="New Password"] {
 	width: calc(100% - 24px);
-	color: #D9EDF7;
+	color: #000000;
 	border-bottom-style: none;
 }
 .wrap input[type="Token"] {
 	width: calc(100% - 24px);
 	border-radius: 0px 0px 7px 7px;
-	color: #D9EDF7;
+	color: #000000;
 }
 .wrap input[type="lookup"] {
 	width: calc(100% - 24px);
 	border-radius: 7px 7px 7px 7px;
 	margin-bottom: 10px;
-	color: #D9EDF7;
+	color: #000000;
 }
 .forgot_link {
 	color: #0000ff;

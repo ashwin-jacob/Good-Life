@@ -57,6 +57,9 @@
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
 		<input type="Email" name="email" placeholder="Email" required>
+		<input type="New Password" name="firstname" placeholder="First Name" required>
+		<input type="New Password" name="lastname" placeholder="Last Name" required>
+		<input type="New Password" name="username" placeholder="User Name" required>
 <!-- 		<div class="bar"> -->
 <!-- 			<i></i> -->
 <!-- 		</div> -->
