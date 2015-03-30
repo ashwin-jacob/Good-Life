@@ -26,7 +26,7 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 	@Override
 	public Integer addShortAnswerQuestion(ShortAnswerQ shortAnswerQ) {
 		
-		this.sessionFactory.getCurrentSession().save(shortAnswerQ);
+		this.sessionFactory.getCurrentSession().saveOrUpdate(shortAnswerQ);
 		
 		return shortAnswerQ.getSaQId();
 	}
@@ -133,5 +133,4 @@ public class ShortAnswerQDAOImpl implements ShortAnswerQDAO{
 		}
 		return isSuccess;
 	}
-
 }

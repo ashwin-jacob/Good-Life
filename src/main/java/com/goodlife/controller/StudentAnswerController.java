@@ -1,12 +1,9 @@
 package com.goodlife.controller;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpSession;
 
 import org.codehaus.jackson.JsonGenerationException;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.goodlife.dao.ChapterDAO;
@@ -51,31 +47,22 @@ public class StudentAnswerController {
 
 	@Autowired
 	private StudentDAO studentDAO;
-	
 	@Autowired
 	private ChapterDAO chapterDAO;
-	
 	@Autowired
 	private SubChapterDAO subChapDAO;
-	
 	@Autowired
 	private MultiChoiceQDAO multiChoiceQDAO;
-
 	@Autowired
 	private MultiChoiceOptionDAO multiChoiceOptionDAO;
-	
 	@Autowired
 	private MultiChoiceUserAnsDAO multiChoiceUserAnsDAO;
-	
 	@Autowired
 	private ShortAnswerUserAnswerDAO shortAnswerUserAnsDAO;
-	
 	@Autowired
 	private ShortAnswerQDAO shortAnswerQDAO;
-	
 	@Autowired
 	private UploadedAnswerDAO uploadedAnswerDAO;
-	
 	@Autowired
 	private UploadFileQDAO uploadFileQDAO;
 	
@@ -109,8 +96,10 @@ public class StudentAnswerController {
 	@ResponseBody
 	@RequestMapping(value = "/updateshortanswer", method = RequestMethod.GET)
 	public String updateShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
-											@RequestParam(value = "saQId") Integer saQId,
-											@RequestParam(value = "userAnswer") String userAnswer){
+											  @RequestParam(value = "saQId") Integer saQId,
+											  @RequestParam(value = "userAnswer") String userAnswer,
+											  @RequestParam(value = "approved") String approved,
+											  @RequestParam(value = "submitted") String submitted){
 		
 		ShortAnswerUserAnswer shortAnswerUserAnswer = shortAnswerUserAnsDAO.getUserAnswer(userId, saQId);
 		if(shortAnswerUserAnswer == null){
@@ -118,9 +107,12 @@ public class StudentAnswerController {
 			shortAnswerUserAnswer.setUserId(userId);
 			shortAnswerUserAnswer.setSaQId(saQId);
 			shortAnswerUserAnswer.setUserAnswer(userAnswer);
+			shortAnswerUserAnswer.setSubmitted(Boolean.valueOf(submitted));
 		}
 		else{
 			shortAnswerUserAnswer.setUserAnswer(userAnswer);
+			shortAnswerUserAnswer.setAprvd(Boolean.valueOf(approved));
+			shortAnswerUserAnswer.setSubmitted(Boolean.valueOf(submitted));
 		}
 		
 		Boolean isShortAnsUpdated = shortAnswerUserAnsDAO.addUserAnswer(shortAnswerUserAnswer);

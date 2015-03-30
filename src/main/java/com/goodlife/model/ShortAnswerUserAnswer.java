@@ -31,21 +31,26 @@ public class ShortAnswerUserAnswer implements Serializable{
 	@JoinColumn(name = "usr_id", nullable = false)
 	private Integer userId;
 	
-	@Column(name = "aprvd", columnDefinition = "TINYINT", length = 1)
+	@Column(name = "aprvd", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean aprvd;
+	
+	@Column(name = "submitted", columnDefinition = "TINYINT(1) DEFAULT 0")
+	private Boolean submitted;
 
 	public ShortAnswerUserAnswer() {
 		super();
 	}
 
 	public ShortAnswerUserAnswer(Integer subChapId, Integer saQId,
-			String userAnswer, Integer userId, Boolean aprvd) {
+								 String userAnswer, Integer userId,
+								 Boolean aprvd, Boolean submitted) {
 		super();
 		this.subChapId = subChapId;
 		this.saQId = saQId;
 		this.userAnswer = userAnswer;
 		this.userId = userId;
 		this.aprvd = aprvd;
+		this.submitted = submitted;
 	}
 
 	public Integer getSubChapId() {
@@ -87,4 +92,13 @@ public class ShortAnswerUserAnswer implements Serializable{
 	public void setAprvd(Boolean aprvd) {
 		this.aprvd = aprvd;
 	}
+
+	public Boolean getSubmitted() {
+		return submitted;
+	}
+
+	public void setSubmitted(Boolean submitted) {
+		this.submitted = submitted;
+	}
+	
 }

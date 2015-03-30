@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import com.goodlife.dao.ShortAnswerQDAO;
 import com.goodlife.dao.ShortAnswerUserAnswerDAO;
-import com.goodlife.model.Chapter;
 import com.goodlife.model.ShortAnswerQ;
 import com.goodlife.model.ShortAnswerUserAnswer;
 
@@ -90,8 +89,23 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 			Integer subChapId) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
 				ShortAnswerUserAnswer.class);
-		criteria.add(Restrictions.eqOrIsNull("userId", userId));
-		criteria.add(Restrictions.eqOrIsNull("subChapId", subChapId));
+		criteria.add(Restrictions.and(Restrictions.eqOrIsNull("userId", userId),Restrictions.eqOrIsNull("subChapId", subChapId)));
+		List<ShortAnswerUserAnswer> shortAnsBySubChapterList = criteria.list();
+		if(shortAnsBySubChapterList == null)
+			return new ArrayList<ShortAnswerUserAnswer>();
+		else
+			return shortAnsBySubChapterList;
+	}
+
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ShortAnswerUserAnswer> listSubmittedShortAnsBySubChap(Integer userId, Integer subChapId) {
+
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(ShortAnswerUserAnswer.class);
+		criteria.add(Restrictions.and(Restrictions.and(Restrictions.eqOrIsNull("userId", userId),
+									  				   Restrictions.eqOrIsNull("subChapId", subChapId)),
+									  				   Restrictions.eqOrIsNull("submitted", Boolean.TRUE)));
 		List<ShortAnswerUserAnswer> shortAnsBySubChapterList = criteria.list();
 		if(shortAnsBySubChapterList == null)
 			return new ArrayList<ShortAnswerUserAnswer>();
