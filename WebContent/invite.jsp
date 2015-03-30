@@ -25,7 +25,7 @@
 			</div>
 		</c:if>
 		<div class="avatar">
-      		<img src="${pageContext.request.contextPath}/img/GLO_logo_grey.jpg">
+      		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
 		
 		<input type="lookup" name="username" placeholder="username" required>
