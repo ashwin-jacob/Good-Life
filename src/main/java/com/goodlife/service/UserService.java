@@ -15,6 +15,8 @@ public interface UserService {
 									  String passwd, String token, boolean resetPassword)
 			throws InvalidEmailToken, UserAlreadyExistsException, UserNotFoundException;
 	
+	public void resetPassword(String email, String passwd, String token) throws InvalidEmailToken, UserNotFoundException;
+	
 	public Users findByUserName(String username) throws UserNotFoundException;
 	
 	public List<Users> findByFirstName(String firstname) throws UserNotFoundException;

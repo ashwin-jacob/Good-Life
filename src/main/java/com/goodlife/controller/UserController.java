@@ -108,10 +108,11 @@ public class UserController {
 	
 	// Implement Reset Password
 	@RequestMapping(value = "resetPwdStepTwo", method = RequestMethod.POST)
-	public String resetPwdStepTwo(@ModelAttribute(value = "username") String username, ModelMap model, Principal principal) {
+	public String resetPwdStepTwo(@ModelAttribute(value = "email") String email, ModelMap model, Principal principal) {
 		try {
-			invitationService.resendInvitation(username, true);
+			invitationService.resendInvitation(email, true);
 		} catch (Exception e) {
+			logger.debug("Reset token not sent to " + email + ".");
 			//model.addAttribute("error", "true");
 			//model.addAttribute("exceptionMessage", e.getMessage());
 			//return "landing/resetPasswdCode";
@@ -122,7 +123,6 @@ public class UserController {
 	
 
 	@RequestMapping(value = "resetPasswdComplete", method = RequestMethod.POST)
-	@Transactional
 	public String resetPasswdComplete(HttpServletRequest request, 
 	        @RequestParam(value="email", required=false) String email, 
 	        @RequestParam(value="pass1", required=false) String password1, 
@@ -137,9 +137,8 @@ public class UserController {
 		} 
 		
 		try {
-			Users user = usersDAO.findByEmail(email);
 			logger.debug("Details: " + email + ":" + password1 + ":" + password2 + ":" + token);
-			userService.activateAndUpdateUser(email, user.getFirstname(), user.getLastname(), user.getUsername(), password1, token, true);
+			userService.resetPassword(email, password1, token);
 		} catch (Exception e) {
 			model.addAttribute("error", "true");
 			model.addAttribute("exceptionMessage", e.getMessage());

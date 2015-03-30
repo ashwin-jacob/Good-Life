@@ -64,6 +64,15 @@ public class UserServiceImpl implements UserService {
 		user.setPassword(passwdEncoder.encodePassword(passwd));
 		usersDao.addUser(user);
 	}
+	
+	public void resetPassword(String email, String passwd, String token) throws InvalidEmailToken, UserNotFoundException{
+		Users user = usersDao.findByEmail(email);
+		if(user == null)
+			throw new UserNotFoundException("Email does not match any records!");
+		if(!user.getInvitationCode().toString().equals(token))
+			throw new InvalidEmailToken("Email token does not match1!");
+		user.setPassword(passwdEncoder.encodePassword(passwd));		
+	}
 
 	
 	public Users findByUserName(String username) throws UserNotFoundException {
