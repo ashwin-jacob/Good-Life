@@ -11,8 +11,20 @@ studentServices.factory('student', ['$http', '$log', '$resource', function($http
 		getShortAnsUserAnswer : getShortAnsUserAnswer,
 		updateMultiChoice : updateMultiChoice,
 		updateShortAns : updateShortAns,
-		getAllowedCurriculum : getAllowedCurriculum
+		getAllowedCurriculum : getAllowedCurriculum,
+		getProgress : getProgress
 	});
+	
+	/**
+	Get student progress
+	*/
+	function getProgress(userId) {
+		$log.log("Got to get student progress");
+		$log.log("Userid: "+userId);
+		return $resource('student/getprogress', {userId:userId}, {
+			getProgress:{method:'GET'}
+		}).getProgress();
+	}
 
 	/**
 	Get allowed curriculum
@@ -117,14 +129,18 @@ studentServices.factory('student', ['$http', '$log', '$resource', function($http
 	/**
 	Update user short answer
 	*/
-	function updateShortAns(userId, shortAnswerId, userAnswer, submitted) {
+	function updateShortAns(userId, shortAnswerId, userAnswer) {
 		$log.log("Got to get updateShortAns");
 		$log.log("Userid: "+userId);
 		$log.log("Short Answer Id: "+shortAnswerId);
 		$log.log("UserAnswer: "+userAnswer);
-		return $resource('student/updateshortanswer', {userId:userId, saQId:shortAnswerId, userAnswer:userAnswer, submitted:submitted}, {
+		return $resource('student/updateshortanswer', {userId:userId, saQId:shortAnswerId, userAnswer:userAnswer}, {
 			updateShortAns:{method:'GET'}
 		}).updateShortAns();
 	}
+	
+	
+	
+	
 
 }]);
