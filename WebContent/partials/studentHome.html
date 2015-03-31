@@ -25,11 +25,10 @@
 <!-- center pane -->
 <div class="col-md-8" >
 <h3 class="text-center leftmargin">Keep up the good work, John!</h3>
-<div class="progress" id="progress" >
-  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-    40%
+<div class="progress col-md-6">
+  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{progressValue}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progressValue}}%">
+    {{progressValue}}
   </div>
-</div>
 
 <div class="jumbotron">
 	<dl class="dl-horizontal">
