@@ -25,10 +25,10 @@
 			</div>
 		</c:if>
 		<div class="avatar">
-      		<img src="${pageContext.request.contextPath}/img/GLO_logo_grey.jpg">
+      		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
 		
-		<input type="lookup" name="username" placeholder="Username" required>
+		<input type="lookup" name="email" placeholder="Email" required>
 		<button type="submit">Submit</button>
     	
 	</form>

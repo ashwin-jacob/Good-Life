@@ -28,14 +28,14 @@
 		</c:if>
 		
 		<div class="avatar">
-      		<img src="${pageContext.request.contextPath}/img/GLO_logo_grey.jpg">
+      		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
 		
 		<input type="text" name="j_username" placeholder="Username" required>
 		
-		<div class="bar">
-			<i></i>
-		</div>
+<!-- 		<div class="bar"> -->
+<!-- 			<i></i> -->
+<!-- 		</div> -->
 		
 		<input type="password" name="j_password" placeholder="Password" required>
 		

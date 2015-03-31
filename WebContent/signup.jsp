@@ -54,20 +54,23 @@
   			<img src="${pageContext.request.contextPath}/img/goodlifelogo.png">
   		</div>
 		<div class="avatar">
-      		<img src="${pageContext.request.contextPath}/img/GLO_logo_grey.jpg">
+      		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
 		<input type="Email" name="email" placeholder="Email" required>
-		<div class="bar">
-			<i></i>
-		</div>
+		<input type="New Password" name="firstname" placeholder="First Name" required>
+		<input type="New Password" name="lastname" placeholder="Last Name" required>
+		<input type="New Password" name="username" placeholder="User Name" required>
+<!-- 		<div class="bar"> -->
+<!-- 			<i></i> -->
+<!-- 		</div> -->
 		<input type="New Password" name="pass1" id="pass1" placeholder="Password" required onkeyup="checkPass(); return false;">
-        <div class="bar">
-			<i></i>
-		</div>
+<!--         <div class="bar"> -->
+<!-- 			<i></i> -->
+<!-- 		</div> -->
         <input type="New Password" name="pass2" id="pass2" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
-        <div class="bar">
-			<i></i>
-		</div>
+<!--         <div class="bar"> -->
+<!-- 			<i></i> -->
+<!-- 		</div> -->
         <input type="Token" name="token" id="token" placeholder="Email Token" required>
 		<a href="requestInvitationCode" class="forgot_link">misplaced?</a>
 		<button type="submit">Sign Up</button>

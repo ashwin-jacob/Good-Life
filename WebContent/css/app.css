@@ -126,3 +126,19 @@ textarea.form-control {
     padding:0; 
     margin:0;
 }
+
+/* ====================================================
+	CURRICULUM BUILDER
+	==================================================== */
+.chapTitle {
+	font-weight: bold;
+}
+.exerciseTitle {
+	font-weight: normal;
+}
+/*
+Usersignup CSS
+*/
+.usersignup input.ng-invalid.ng-touched {
+	background-color: #FA787E;
+}

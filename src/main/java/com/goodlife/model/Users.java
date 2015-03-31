@@ -8,14 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
 import javax.persistence.Table;
-
-
 
 @Entity
 @Table(name = "USERS", catalog = "goodlife")
-@Inheritance
 public class Users implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -25,7 +21,6 @@ public class Users implements Serializable {
 	@Column(name = "usr_id", unique = true, nullable = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer userId;
 	
-	@Id
 	@Column(name = "email", unique = true, nullable = false, length = 50)
 	private String email;
 	

@@ -19,45 +19,59 @@
 			<span aria-hidden="true">&times;</span>
 		</button>
 	</div>
-	<div class="col col-lg-4 ">
+	<div class="col col-lg-3 ">
 		<div class="panel panel-primary" >
 			<div class="panel-heading">Curriculum</div>
-			<table ng-table="chapterTable"
+			<div class="list-group" ng-repeat="chap in chapterData" ng-click="listClick($event, chap)">
+			
+				<div class="list-group-item chapTitle" ng-repeat="chap in chap" ng-show="showRow({{chap}})"  ng-class="{'text-primary': chapIdNum == chap.chapId}">
+<!-- 				 							 				<button ng-click="showRows = !showRows" ng-hide=" $middle">+</button>  
+ -->				 
+				  {{chap.chapTitle}}
+				  
+					<div class="list-group">
+					<div class="panel panel-default" ng-show=" (showRow({{chap[0]}}))">  <!--  ng-show=" (showRow({{chap[0]}}) && showRows)"-->
+						<div class="list-group-item exerciseTitle" ng-repeat="exer in chap">{{exer.subChapTitle}}</div>
+					</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 			 			<table ng-table="chapterTable" 
 				class="table table-hover table-condensed"
 				>
-				<tbody ng-repeat="curriculumTreeList in $data"
+				<tbody ng-repeat="chapterData in $data"
 					class="table table-condensed">
-					<tr ng-repeat="objR in curriculumTreeList"
-						ng-show="showRow({{objR.chapId}})" ng-click="chapterClick(objR)" >
-						<th class="info" data-title="'ID'" ng-class="{'text-primary': chapIdNum == objR.chapId}">
-							<!--   <button ng-click="showRows()" ng-hide="showButton()"><strong>On</strong></button>  
-        					<button ng-click="hideRows()" ng-show="showButton()"><strong>Off</strong></button> -->
-							{{objR.chapId}}
+					<tr ng-repeat="chap in chapterData"
+						ng-show="showRow({{chap.chapId}})" ng-click="chapterClick(chap)" >
+						<th class="info" data-title="'ID'" ng-class="{'text-primary': chapIdNum == chap.chapId}">
+							  <button ng-click="showRows()" ng-hide="showButton()"><strong>On</strong></button>  
+        					<button ng-click="hideRows()" ng-show="showButton()"><strong>Off</strong></button>
+							{{chap.chapId}}
 
 						</th>
-						<th class="info"  data-title="'Title'" ng-class="{'text-primary': chapIdNum == objR.chapId}">{{objR.chapTitle}}</th>
-						<th class="info"  data-title="'Description'" style="font-weight:normal;" ng-class="{'text-primary': chapIdNum == objR.chapId}" colspan="3">{{objR.chapDescr}}</th>
+						<th class="info"  data-title="'Title'" ng-class="{'text-primary': chapIdNum == chap.chapId}">{{chap.chapTitle}}</th>
+						<th class="info"  data-title="'Description'" style="font-weight:normal;" ng-class="{'text-primary': chapIdNum == chap.chapId}" colspan="3">{{chap.chapDescr}}</th>
 
 						<th class="info" >
 						
-<!-- 						<input type="button" value="Remove"
-							class="btn btn-primary btn-sm" ng-click="removeRow(objR.chapId)" /> -->
-							</th>
 					</tr>
 
-					<tr ng-repeat="objL in curriculumTreeList" 
-						ng-show="showRow({{objL[$index].subChapId}})" ng-click="exerciseClick(objL[$index])">
+ 					<tr ng-repeat="exer in chapterData" 
+						ng-show="showRow({{exer[$index].subChapId}})" ng-click="exerciseClick(exer[$index])">
+						
 						<td >&nbsp;</td>
-						<td style="font-size: .8em;">{{objL[$index].subChapTitle}}</td>
-						<td style="font-size: .8em;" colspan="4">{{objL[$index].subChapDescr}}</td>
+						<td style="font-size: .8em;" ng-repeat="subChapDescr in exer">{{subChapDescr}}</td>
+						<td style="font-size: .8em;" colspan="4">{{exer[$index].subChapDescr}}</td>
 
-
-
+						
+					</tr> 
+					<tr>
+					
 					</tr>
-
 				</tbody>
 
-			</table>
+			</table>  -->  
 			<div class="panel-footer">
 				<div>
 					<button class="btn btn-success btn-sm"
@@ -70,7 +84,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col col-lg-8">
+	<div class="col col-lg-9">
 		<div class="panel panel-default" ng-show="showChapterPane">
 				<div class="panel-heading breadcrumb">
 					<li><a ng-click="showPane('chapter', chapTitle, '', chapDescr)">{{chapTitle}}</a></li>
@@ -84,7 +98,7 @@
 
 		</div>
 	</div>
-	<div class="col col-lg-8">
+	<div class="col col-lg-9">
 		<div class="panel panel-default" ng-show="showSubChapPane">
 				<div class="panel-heading breadcrumb">
 					<li><a ng-click="showPane('chapter', chapTitle, '', chapDescr)">{{chapTitle}}</a></li>

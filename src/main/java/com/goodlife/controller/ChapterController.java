@@ -231,7 +231,7 @@ public class ChapterController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/updatechapter", method = RequestMethod.GET)
+	@RequestMapping(value = "/updatechapter", method = RequestMethod.POST)
 	public String updateChapter(@RequestParam(value="chapId") Integer chapId,
 								@RequestParam(value="chapDescr") String chapDescr,
 								@RequestParam(value="chapTitle") String chapTitle,

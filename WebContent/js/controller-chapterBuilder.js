@@ -34,7 +34,10 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 		var handleSuccess = function (response) {
 			$log.log("Successful");
 			data = response.data;
-			//alert(JSON.stringify(data));
+		//	alert(JSON.stringify(data));
+			$scope.structureData(data);
+			//alert(JSON.stringify($scope.chapterData[0].exer[0]));
+			data = $scope.chapterData;
 			$scope.chapterTable .reload();
 		};
 
@@ -44,11 +47,44 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 			$scope.chapterTable .reload();
 		};
 		
+		// Structure Table Data	
+		$scope.structureData  = function(data){
+			$scope.chapterData = [];
+			var count = 0;
+			angular.forEach(data, function(root) {
+				angular.forEach(root, function(item) {
+					$scope.chapterData.push( {"chap": item.data, "exer": null});
+					$scope.exerciseData = [];
+
+					count++;
+					if (item.numberOfChildren > 0){
+
+						angular.forEach(item.children, function(exercise) {
+
+							$scope.exerciseData.push(exercise.data);
+							//alert(JSON.stringify($scope.exerciseData));
+							$scope.chapterData[count-1].exer = $scope.exerciseData;
+
+						});
+						
+						
+					}
+					//alert(JSON.stringify($scope.chapterData[count-1]));
+
+				});
+			});
+		}
+		
 		//Add Chapter
-		$scope.addRow = function(title, desc, id, addChapterFm) {
+		$scope.addRow = function(title, desc, addChapterFm) {
+			
+			var id = addChapterFm.chapId.$viewValue;
+			var title = addChapterFm.chapTitle.$viewValue;
+			var desc = addChapterFm.chapDescr.$viewValue;
+
 
 			var confirmAdd = function (response) {
-				$scope.data.push({"objR":{"chapId":response.data,"chapDescr":desc,"chapTitle":title,"orderId":id,"published":false},"objL":[]});
+				$scope.chapterData.push({"chap":{"chapId":response.data,"chapDescr":desc,"chapTitle":title,"orderId":id,"published":false},"exer":[]});
 				$scope.showConfirmation("success", "Chapter titled " + "'"+title +"' was added!");
 
 			} 
@@ -70,7 +106,7 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	  		var comArr = eval( data );
 		//	alert(JSON.stringify(comArr[0].objR));
 	  		for( var i = 0; i < comArr.length; i++ ) {
-	  			if( comArr[i].objR.chapId === chapId ) {
+	  			if( comArr[i].chap.chapId === chapId ) {
 	  				index = i;
 	  				break;
 	  			}
@@ -102,9 +138,7 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    	show = false;
 	    };
 	  	
-	    $scope.showRows = function(){
-	    	show = true;
-	    };
+	    $scope.showRows = false;
   	
 	    $scope.showRow = function(val){
 
@@ -134,31 +168,44 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    	myModal.close();
 	    }
 	    
+	    $scope.listClick = function(event, rowInfo){
+	    	
+	    	if(event.target.className.indexOf("exerciseTitle") > 0){
+	    		$scope.exerciseClick(rowInfo, event);
+
+	    	}
+	    	else{
+	    		$scope.chapterClick(rowInfo);
+	    	}
+	    	//alert("check"+JSON.stringify(rowInfo));
+
+	    }
+	    
 	    // View Row Details from Table
 	    $scope.chapterClick = function(rowData){
 	    	
-	    	var chapTitle = rowData.chapTitle;
-	    	var chapDesc = rowData.chapDescr;
-	    	$scope.chapIdNum = rowData.chapId;
+	    	var chapTitle = rowData.chap.chapTitle;
+	    	var chapDesc = rowData.chap.chapDescr;
+	    	$scope.chapIdNum = rowData.chap.chapId;
 	    	$scope.showPane("chapter", chapTitle, "", chapDesc);
 
 	    }
 	    
-	    $scope.exerciseClick = function(rowData){
-	    	
-	 	   var title = rowData.subChapTitle;
-	 	   var chapId = rowData.chapId;
+	    $scope.exerciseClick = function(rowData, event){
+
+	 	   var title = event.target.textContent;
+	 	   var chapId = rowData.chap.chapId;
 	       $scope.chapIdNum = chapId;
 	 	   var chapTitle = "";
 	    	
 	  		var comArr = eval( data );
+	  		
+
 		  		for( var i = 0; i < comArr.length; i++ ) {
-		  			if( comArr[i].objR.chapId === chapId ) {
-		  				chapTitle = comArr[i].objR.chapTitle;
+		  			if( comArr[i].chap.chapId === chapId ) {
+		  				chapTitle = comArr[i].chap.chapTitle;
 		  			}
 		  		}
-	    	
-	    	
 	    	$scope.showPane("subchapter", chapTitle, title, "");
 
 	    }
@@ -187,13 +234,11 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	  		var row;
 	  		
 	  		for( var i = 0; i < comArr.length; i++ ) {
-	  			if( comArr[i].objR.chapId === chapID ) {
+	  			if( comArr[i].chap.chapId === chapID ) {
 	  				row = comArr[i];
 	  				break;
 	  			}
 	  		}
-	  		
-//	  		alert(JSON.stringify(comArr[0].objR));
 	  		
 	  		return row;
 	  		
@@ -205,13 +250,10 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    	  
 	    	if (paneType == "subchapter"){
 	    		
-
 		    	  $scope.showChapterPane = false;
 		          $scope.showSubChapPane = true;
 		          $scope.chapTitle = chap;
 		          $scope.exTitle = subChap;
-
-				
 	    	}
 	    	else if (paneType == "chapter"){
 	    		
@@ -246,7 +288,6 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    //Add Exercise
 	    $scope.submitExercise = function(exerciseFm){
 	    	
-	    	//alert(JSON.stringify($scope.chapIdNum));
 	    	var chapId = $scope.chapIdNum;
 	    	var title = exerciseFm.exTitle.$viewValue;
 	    	var exDesc = exerciseFm.exDescr.$viewValue;
@@ -258,13 +299,13 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 		  	var position = 0;
 	    		var comArr = eval( data );
 		  		for( var i = 0; i < comArr.length; i++ ) {
-		  			if( comArr[i].objR.chapId === chapId ) {
+		  			if( comArr[i].chap.chapId === chapId ) {
 		  				position = i+1;
 		  			}
 		  		}
 	    		
-		  		alert(position);
-				$scope.data.splice(position, 0, {"objL":[{"subChapId":response.data,"chapId":chapId,"subChapDescr":exDesc,"subChapTitle":title,"orderId":orderId,"published":published}]});
+		  		//alert(position + comArr[position-1].chap.chapTitle);
+				$scope.chapterData.splice(position, 0, { "chap ":{"exer":[{"subChapId":response.data,"chapId":chapId,"subChapDescr":exDesc,"subChapTitle":title,"orderId":orderId,"published":published}]}});
 				$scope.showConfirmation("success", "Exercise titled " + "'"+title +"' was added!");
 
 			} 
@@ -308,28 +349,38 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	        });
 	    }
 	    //Delete Exercise
-	    $scope.deleteExercise = function(){
-	    	var row = $scope.getRowByID($scope.chapIdNum);
-	    	//alert(JSON.stringify(row.objL[0].subChapId));
+	    $scope.deleteExercise = function(exTitle){
+	    	var row = $scope.getRowByID($scope.chapIdNum);	    	
 	    	
-	  		var index = -1;		
+	  		var chapindex = -1;		
 	  		var comArr = eval( data );
 	  		for( var i = 0; i < comArr.length; i++ ) {
-	  			if( comArr[i].objR.chapId === row.objR.chapId ) {
-	  				index = i;
+	  			if( comArr[i].chap.chapId === row.chap.chapId ) {
+	  				chapindex = i;
 	  				break;
 	  			}
 	  		}
+	  		
+	  		
+	  		var exindex = -1;		
 
-	  		if( index === -1 ) {
-				$scope.showConfirmation("fail", "Chapter" + "#"+row.objL[0].subChapId +" was not deleted!");
+	  		for( var i = 0; i < row.exer.length; i++ ) {
+	  			if( row.exer[i].subChapTitle === exTitle) {
+	  				exindex = i;
+	  				break;
+	  			}
 	  		}
-	  		alert("delete index"+index)
+	  		
+	  		if( chapindex === -1 || exindex === -1) {
+				$scope.showConfirmation("fail", "Chapter" + "#"+row.exer[0].subChapId +" was not deleted!");
+	  		}
 	  		//only removing first exercise for now
-	  		var itemToDelete = row.objL[0];
-	  		data[index].objL.splice(0, 1);		
+	  		var itemToDelete = row.exer[exindex];
+	  		//alert(JSON.stringify(data[chapindex].exer[exindex]));
+	  		data[chapindex].exer.splice(exindex, 1);		
 			listChapters.deleteExercise(itemToDelete.subChapId).then( handleSuccess, handleError );
 			$scope.showConfirmation("success", "Exercise" + " titled '"+ itemToDelete.subChapTitle +"' has been deleted!");
+			$scope.showChapterPane = false;
 			$scope.chapterTable .reload();
 			init();
 	    }
