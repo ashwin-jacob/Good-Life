@@ -81,10 +81,13 @@ a#navlink:hover {
 	height: 100%;
 	overflow:hidden;
 }
-button#submit, input#upload {
+button#submit, button#save, input#upload {
 	padding: 5px;
 	margin: 20px 0px;
 	float: left;
+}
+button#save {
+	margin-right: 20px;
 }
 textarea.form-control {
 	margin: 20px 0px;

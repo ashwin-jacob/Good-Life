@@ -38,7 +38,15 @@ forceForGood.directive('subchapterView', ['$log', 'student', '$compile', '$http'
 					student.updateShortAns($scope.userId, subChapterElement.saQId, subChapterElement.userAnswer, submitWork);
 				});
 				$scope.showConfirmation("success", "shortanswer");
-				$("#confirmation-success-s").show().delay(4000).fadeOut(200);
+				if (submitWork) {
+					$("#confirmation-success-s").get(0).innerHTML = 
+						$("#confirmation-success-s").get(0).innerHTML.replace("saved", "submitted");
+					$("#confirmation-success-s").show().delay(4000).fadeOut(200);
+				} else {
+					$("#confirmation-success-s").get(0).innerHTML = 
+						$("#confirmation-success-s").get(0).innerHTML.replace("submitted", "saved");
+					$("#confirmation-success-s").show().delay(4000).fadeOut(200);
+				}
 			};
 
 			$scope.submitPostMultiChoice = function() {
