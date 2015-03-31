@@ -29,8 +29,11 @@
 			<div class="form-group">
 				<label class="col-md-2">Order</label>
 				<div class="col-md-4">
-					<input type="text" ng-model="exOrder" name="exOrder"
-						class="form-control ng-pristine ng-valid">
+					<select ng-model="exOrder" name="exOrder" ng-init="exOrder = orderOptions[0]"
+					class="form-control" ng-options="orderOption.id for orderOption in orderOptions">
+					
+				
+					</select>
 				</div>
 			</div>
 			<div class="form-group">
@@ -100,19 +103,22 @@
 			<div class="panel-footer">
 				<div>
 					<div>
-					<span class="col-md-11">
-						<input type="button" class="btn btn-sm btn-info" value="Preview"
-							ng-click="openDialog('partials/forms/previewExercise.html', addExerciseFm)"></input>
-						<button class="btn btn-primary btn-sm"
-							ng-click="submitExercise(addExerciseFm)">Save</button>
+					<span class="col-md-10">
+					<button class="btn btn-success btn-sm"
+							ng-click="submitExercise(addExerciseFm)" ng-show="addExFlag">Add</button>
+							
+				<button class="btn btn-success btn-sm"
+							ng-click="updateExercise(addExerciseFm)" ng-show="editExFlag">Update</button>
+
+						
 					</span>
-					<span>		
+					<span>	
+											<input type="button" class="btn btn-sm btn-info" value="Preview"
+							ng-click="openDialog('partials/forms/previewExercise.html', addExerciseFm)"></input>	
 							<button class="btn btn-sm btn-danger deleteIcon"
-							ng-click="deleteExercise(exTitle)">&nbsp;&nbsp;&nbsp;&nbsp;Delete</button>
+							ng-click="openDialog('partials/forms/deleteConfirm.html', addExerciseFm)" ng-show="editExFlag">&nbsp;&nbsp;&nbsp;&nbsp;Delete</button>
 					</span>
 					</div>
-
-					
 				</div>
 			</div>
 

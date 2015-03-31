@@ -6,8 +6,10 @@ chapterService.factory('listChapters', function( $http, $q, $log ) {
 		//APIs
 		search : search,
 		deleteChapter: deleteChapter,
+		updateChapter: updateChapter,
 		addChapter: addChapter,
 		addSubChapter: addSubChapter,
+		updateExercise: updateExercise,
 		viewPage: viewPage,
 		deleteExercise: deleteExercise
 	});
@@ -37,6 +39,19 @@ chapterService.factory('listChapters', function( $http, $q, $log ) {
 		return request;
 
 	};
+
+	function updateChapter(chapId, chapTitle, chapDesc, orderId, pub){
+		
+		var request = $http({
+			method: 'POST',
+			params: {chapId: chapId, chapTitle: chapTitle, chapDescr: chapDesc, orderId: orderId, published: pub},
+		    dataType: "json",
+			url: 'chapterlookup/updatechapter'
+		});
+		
+		return request;
+
+	};
 	
 	function addChapter(chapTitle, chapDesc, orderId){
 		
@@ -50,7 +65,6 @@ chapterService.factory('listChapters', function( $http, $q, $log ) {
 		return request;
 
 	};
-	
 	function addSubChapter(chapId, title, chapDesc, orderId){
 		
 		var request = $http({
@@ -63,7 +77,18 @@ chapterService.factory('listChapters', function( $http, $q, $log ) {
 		return request;
 
 	};
-	
+	function updateExercise(subId, chapId, title, chapDesc, orderId, pub){
+		
+		var request = $http({
+			method: 'POST',
+			params: {subChapId: subId, chapId: chapId, subChapTitle: title, subChapDescr: chapDesc, orderId: orderId, published: pub },
+		    dataType: "json",
+			url: 'subchapterlookup/updatesubchapter'
+		});
+		
+		return request;
+
+	};
 	function deleteExercise(chapId){
 		
 		var request = $http({

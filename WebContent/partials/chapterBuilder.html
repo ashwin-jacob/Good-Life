@@ -21,7 +21,14 @@
 	</div>
 	<div class="col col-lg-3 ">
 		<div class="panel panel-primary" >
-			<div class="panel-heading">Curriculum</div>
+			<div class="panel-heading">Curriculum
+<!-- 					<button type="button" ng-click="refresh()" class="close"
+			data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button> -->
+			<button class="btn btn-lg btn-info refreshIcon pull-right" style="width:.75em;" ng-click="refresh()"></button>
+		
+		</div>
 			<div class="list-group" ng-repeat="chap in chapterData" ng-click="listClick($event, chap)">
 			
 				<div class="list-group-item chapTitle" ng-repeat="chap in chap" ng-show="showRow({{chap}})"  ng-class="{'text-primary': chapIdNum == chap.chapId}">
@@ -75,7 +82,7 @@
 			<div class="panel-footer">
 				<div>
 					<button class="btn btn-success btn-sm"
-						ng-click="showPane('chapter')">
+						ng-click="addChapterFlag = true; editChapterFlag = false; showPane('chapter')">
 						+ Add Chapter
 						<!-- openDialog('partials/forms/addChapter.html') -->
 					</button>
