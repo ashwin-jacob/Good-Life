@@ -32,10 +32,10 @@ forceForGood.directive('subchapterView', ['$log', 'student', '$compile', '$http'
 		};
 
 		var controllerFunc = function($scope) {
-			$scope.submitPostShortAns = function() {
+			$scope.postShortAns = function(submitWork) {
 				$log.log("Got Here to submitPost for Short Answer");
 				angular.forEach($scope.subchapterForm, function(subChapterElement) {
-					student.updateShortAns($scope.userId, subChapterElement.saQId, subChapterElement.userAnswer)
+					student.updateShortAns($scope.userId, subChapterElement.saQId, subChapterElement.userAnswer, submitWork);
 				});
 				$scope.showConfirmation("success", "shortanswer");
 				$("#confirmation-success-s").show().delay(4000).fadeOut(200);

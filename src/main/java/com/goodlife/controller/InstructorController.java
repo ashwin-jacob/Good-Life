@@ -227,7 +227,7 @@ public class InstructorController {
 		String jsonResp = "";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(shortAnswerUserAnswerDAO.listAllUserShortAnsBySubChap(userId,subChapId));
+			jsonResp = mapper.writeValueAsString(shortAnswerUserAnswerDAO.listSubmittedShortAnsBySubChap(userId,subChapId));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
