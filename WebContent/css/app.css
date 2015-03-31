@@ -42,10 +42,11 @@ div.adminSearchText {
 	background-color:#FFF;
 	color: #000;
 }
-
-ul.navview li {
+ul.navview>li, ul.navview>li>ul {
 	color: #FFF;
 	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
 }
 .ng-table tr.emphasis td {
 	background-color: #DDD;
@@ -104,4 +105,24 @@ textarea.form-control {
 }
 #chapterPage {
 	padding-left: 20px;
+}
+.leftmargin {
+	padding-left: 20px;
+}
+#progress {
+	height: 50px;
+}
+#notifications {
+	margin-top: 30px;
+	padding: 2px;
+	border: 1px solid #888;
+}
+#notifications>legend {
+	font-size: 16px;
+	width: 70%;
+}
+#notifications>ul {
+    list-style-type: none;
+    padding:0; 
+    margin:0;
 }
