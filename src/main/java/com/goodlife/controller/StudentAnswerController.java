@@ -98,7 +98,6 @@ public class StudentAnswerController {
 	public String updateShortAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
 											  @RequestParam(value = "saQId") Integer saQId,
 											  @RequestParam(value = "userAnswer") String userAnswer,
-											  @RequestParam(value = "approved") String approved,
 											  @RequestParam(value = "submitted") String submitted){
 		
 		ShortAnswerUserAnswer shortAnswerUserAnswer = shortAnswerUserAnsDAO.getUserAnswer(userId, saQId);
@@ -111,7 +110,6 @@ public class StudentAnswerController {
 		}
 		else{
 			shortAnswerUserAnswer.setUserAnswer(userAnswer);
-			shortAnswerUserAnswer.setAprvd(Boolean.valueOf(approved));
 			shortAnswerUserAnswer.setSubmitted(Boolean.valueOf(submitted));
 		}
 		
