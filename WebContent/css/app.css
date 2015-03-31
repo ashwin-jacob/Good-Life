@@ -34,6 +34,11 @@ div.adminSearchText {
 	background-repeat: no-repeat;
 }	
 
+.refreshIcon {
+	background-image: url('../resources/images/refresh.png');
+	background-repeat: no-repeat;
+}
+
 /*h1,h2,h3,h4,h5,span.chapter {
 	color: #B0B0B0;
 }*/

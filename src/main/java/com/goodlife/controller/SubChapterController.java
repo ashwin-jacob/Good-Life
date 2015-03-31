@@ -116,7 +116,7 @@ public class SubChapterController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "updatesubchapter", method = RequestMethod.GET)
+	@RequestMapping(value = "updatesubchapter", method = RequestMethod.POST)
 	public String updateSubChapter(@RequestParam("subChapId") Integer subChapId,
 									@RequestParam("chapId") Integer chapId,
 									@RequestParam("subChapDescr") String subChapDescr,
