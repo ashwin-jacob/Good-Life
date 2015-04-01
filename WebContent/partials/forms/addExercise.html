@@ -15,8 +15,7 @@
 				<label class="col-md-2">Title</label>
 				<div class="col-md-4">
 					<input type="text" ng-model="exTitle" name="exTitle"
-						class="form-control ng-pristine ng-valid"
-						placeholder={{subChapName}} required>
+						class="form-control ng-pristine ng-valid" required />
 				</div>
 			</div>
 			<div class="form-group">
@@ -64,21 +63,19 @@
 			</div>
 				<div class="form-group">
 
-					<label>Enter Question Here:</label>
-				</div>
-				<div class="form-group">
-					<input type="text" ng-model="questionText" name="questionText"
-						class="form-control ng-pristine ng-valid"
-						>
+					<label class="col-md-2">Question:</label>
+					<div class="col-md-9">
+						<input type="text"
+							class="form-control ng-pristine ng-valid ng-touched"
+							name="questionText" ng-model="questionText">
+					</div>
+					<div class="col-md-1">
+						<input type="button" ng-click="addItem(questionText)" value="Add"
+							class="btn btn-sm btn-info">
 
-
-				</div>
-				<div class="form-group">
-					<div class="pull-right">
-						<input type="button" class="btn btn-sm btn-info" value="Add"
-							ng-click="addItem(questionText)"></input>
 					</div>
 				</div>
+
 				<div class="form-group list-group">
 
 					<div class="col-md-11 list-group-item"
