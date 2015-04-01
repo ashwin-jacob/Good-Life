@@ -131,13 +131,14 @@ studentServices.factory('student', ['$http', '$log', '$resource', function($http
 	/**
 	Update user short answer
 	*/
-	function updateShortAns(userId, shortAnswerId, userAnswer) {
+	function updateShortAns(userId, shortAnswerId, userAnswer, submitted) {
 		$log.log("Got to get updateShortAns");
 		$log.log("Userid: "+userId);
 		$log.log("Short Answer Id: "+shortAnswerId);
 		$log.log("UserAnswer: "+userAnswer);
-		return $resource('student/updateshortanswer', {userId:userId, saQId:shortAnswerId, userAnswer:userAnswer}, {
-			updateShortAns:{method:'GET'}
+		return $resource('student/updateshortanswer', {userId:userId, saQId:shortAnswerId, 
+			userAnswer:userAnswer, submitted:submitted}, 
+			{updateShortAns:{method:'GET'}
 		}).updateShortAns();
 	}
 	
