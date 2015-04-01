@@ -1,6 +1,7 @@
 package com.goodlife.service.impl;
 
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 
 
 
@@ -63,6 +65,17 @@ public class UserServiceImpl implements UserService {
 		user.setUsername(username);
 		user.setPassword(passwdEncoder.encodePassword(passwd));
 		usersDao.addUser(user);
+		
+		if(Character.toUpperCase(user.getRoleTypeCode()) == 'I'){
+			instructorDao.addInstructor(user.getUserId());
+		}
+		else{
+			Student student = new Student();
+			student.setCurrentChapterId(1);
+			student.setStartDate(new Date());
+			student.setUserId(user.getUserId());
+			studentDao.addStudent(student);
+		}
 	}
 	
 	public void resetPassword(String email, String passwd, String token) throws InvalidEmailToken, UserNotFoundException{

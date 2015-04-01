@@ -24,7 +24,7 @@ public class MultiChoiceQ implements Serializable{
 	@Column(name = "mc_q_id", nullable = true, unique = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
 	private Integer multiQuesId;
 	
-	@Column(name = "q_txt")
+	@Column(name = "q_txt", columnDefinition = "BLOB")
 	private String quesText;
 	
 	@Column(name = "help_txt")

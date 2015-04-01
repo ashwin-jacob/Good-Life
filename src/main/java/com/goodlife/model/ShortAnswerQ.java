@@ -28,7 +28,7 @@ public class ShortAnswerQ implements Serializable{
 	@JoinColumn(name = "sub_chap_id", nullable = false)
 	private Integer subChapId;
 	
-	@Column(name = "question")
+	@Column(name = "question", columnDefinition = "BLOB")
 	private String question;
 	
 	@Column(name = "help_txt")

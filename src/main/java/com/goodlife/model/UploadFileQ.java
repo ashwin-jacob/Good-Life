@@ -28,7 +28,7 @@ public class UploadFileQ implements Serializable{
 	@Column(name = "help_txt")
 	private String helpText;
 	
-	@Column(name = "descr")
+	@Column(name = "descr", columnDefinition = "BLOB")
 	private String description;
 	
 	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
