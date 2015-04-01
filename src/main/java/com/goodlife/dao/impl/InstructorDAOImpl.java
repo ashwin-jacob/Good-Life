@@ -108,7 +108,7 @@ public class InstructorDAOImpl implements InstructorDAO  {
 					   uploadAnsDAO.isUploadedQuestionComplete(userId, subChapId))
 						completeSubChaps += 1;
 				}
-			else if(currChap > chapList.get(i).getChapId())
+			else if(currChap > chapList.get(i).getOrderId())
 				completeSubChaps += subChapList.size();
 			
 		}

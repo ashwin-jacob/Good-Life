@@ -56,19 +56,19 @@
 		<div class="avatar">
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
-		<input type="Email" name="email" placeholder="Email" required>
+		<input type="Email" name="email" id="top" placeholder="Email" required>
 <!-- 		<div class="bar"> -->
 <!-- 			<i></i> -->
 <!-- 		</div> -->
-		<input type="New Password" name="pass1" id="pass1" placeholder="Password" required  onkeyup="checkPass(); return false;">
+		<input type="password" name="pass1" id="mid" placeholder="Password" required  onkeyup="checkPass(); return false;">
 <!--         <div class="bar"> -->
 <!-- 			<i></i> -->
 <!-- 		</div> -->
-        <input type="New Password" name="pass2" id="pass2" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
+        <input type="password" name="pass2" id="mid" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
 <!--         <div class="bar"> -->
 <!-- 			<i></i> -->
 <!-- 		</div> -->
-        <input type="Token" name="token" id="token" placeholder="Email Token" required>
+        <input type="number" name="token" id="bot" placeholder="Email Token" required>
 		<a href="resetPwdStepOne" class="forgot_link">Misplaced?</a>
 		<button type="submit">Reset Password</button>
 	</form>

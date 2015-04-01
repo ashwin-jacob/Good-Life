@@ -4,8 +4,8 @@
 <script>
 	function checkPass() {
 		//Store the password field objects into variables ...
-		var pass1 = document.getElementById('pass1');
-		var pass2 = document.getElementById('pass2');
+		var pass1 = document.getElementByName("pass1");
+		var pass2 = document.getElementByName("pass2");
 		//Store the Confimation Message Object ...
 		var message = document.getElementById('confirmMessage');
 		//Set the colors we will be using ...
@@ -56,22 +56,22 @@
 		<div class="avatar">
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
-		<input type="Email" name="email" placeholder="Email" required>
-		<input type="New Password" name="firstname" placeholder="First Name" required>
-		<input type="New Password" name="lastname" placeholder="Last Name" required>
-		<input type="New Password" name="username" placeholder="User Name" required>
+		<input type="Email" name="email" id="top" placeholder="Email" required>
+		<input type="text" name="firstname" id="mid" placeholder="First Name" required>
+		<input type="text" name="lastname" id="mid" placeholder="Last Name" required>
+		<input type="text" name="username" id="mid" placeholder="User Name" required>
 <!-- 		<div class="bar"> -->
 <!-- 			<i></i> -->
 <!-- 		</div> -->
-		<input type="New Password" name="pass1" id="pass1" placeholder="Password" required onkeyup="checkPass(); return false;">
+		<input type="password" name="pass1" id="mid" placeholder="Password" required onkeyup="checkPass(); return false;">
 <!--         <div class="bar"> -->
 <!-- 			<i></i> -->
 <!-- 		</div> -->
-        <input type="New Password" name="pass2" id="pass2" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
+        <input type="password" name="pass2" id="mid" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
 <!--         <div class="bar"> -->
 <!-- 			<i></i> -->
 <!-- 		</div> -->
-        <input type="Token" name="token" id="token" placeholder="Email Token" required>
+        <input type="Token" name="token" id="bot" placeholder="Email Token" required>
 		<a href="requestInvitationCode" class="forgot_link">misplaced?</a>
 		<button type="submit">Sign Up</button>
 	</form>

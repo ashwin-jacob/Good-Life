@@ -38,7 +38,7 @@ body {
 	
 	display: block;
 }
-.wrap input {
+#top {
 	border: thin solid #428BCA;
 	background: #D9EDF7;
   	font-family:"Times New Roman" ;
@@ -48,47 +48,50 @@ body {
 	outline: none;
 	margin: auto;
 	padding: 6px 12px 0px 12px;
+	width: calc(100% - 24px);
+	border-radius: 7px 7px 0px 0px;
+	color: #000000;
+	border-bottom-style: none;
 }
-.bar {
-	width: 100%;
-	height: 1px;
-	background: #ACACAC ;
-}
-.bar i {
-	width: 95%;
-	margin: auto;
-	height: 1px ;
+
+#mid {
+	border: thin solid #428BCA;
+	background: #D9EDF7;
+  	font-family:"Times New Roman" ;
+  	font-weight:700 ;
 	display: block;
-	background: #ACACAC;
-}
-.wrap input[type="text"] {
+	height: 50px;
+	outline: none;
+	margin: auto;
+	padding: 6px 12px 0px 12px;
 	width: calc(100% - 24px);
-	border-radius: 7px 7px 0px 0px;
 	color: #000000;
 	border-bottom-style: none;
 }
-.wrap input[type="password"] {
+#bot {
+	border: thin solid #428BCA;
+	background: #D9EDF7;
+  	font-family:"Times New Roman" ;
+  	font-weight:700 ;
+	display: block;
+	height: 50px;
+	outline: none;
+	margin: auto;
+	padding: 6px 12px 0px 12px;
 	width: calc(100% - 24px);
 	border-radius: 0px 0px 7px 7px;
 	color: #000000;
 }
-.wrap input[type="Email"] {
-	width: calc(100% - 24px);
-	border-radius: 7px 7px 0px 0px;
-	color: #000000;
-	border-bottom-style: none;
-}
-.wrap input[type="New Password"] {
-	width: calc(100% - 24px);
-	color: #000000;
-	border-bottom-style: none;
-}
-.wrap input[type="Token"] {
-	width: calc(100% - 24px);
-	border-radius: 0px 0px 7px 7px;
-	color: #000000;
-}
-.wrap input[type="lookup"] {
+#solo {
+	border: thin solid #428BCA;
+	background: #D9EDF7;
+  	font-family:"Times New Roman" ;
+  	font-weight:700 ;
+	display: block;
+	height: 50px;
+	outline: none;
+	margin: auto;
+	padding: 6px 12px 0px 12px;
 	width: calc(100% - 24px);
 	border-radius: 7px 7px 7px 7px;
 	margin-bottom: 10px;

@@ -81,6 +81,9 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 		    		if(shortAnsUA.isAprvd().equals(Boolean.FALSE))
 		    			isComplete = Boolean.FALSE;
 		    	}
+		    	else{
+		    		isComplete = Boolean.FALSE;
+		    	}
 			}
 		}
 		return isComplete;

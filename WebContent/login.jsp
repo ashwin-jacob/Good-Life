@@ -31,13 +31,13 @@
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
 		
-		<input type="text" name="j_username" placeholder="Username" required>
+		<input type="text" name="j_username" id="top" placeholder="Username" required>
 		
 <!-- 		<div class="bar"> -->
 <!-- 			<i></i> -->
 <!-- 		</div> -->
 		
-		<input type="password" name="j_password" placeholder="Password" required>
+		<input type="password" name="j_password" id="bot" placeholder="Password" required>
 		
 		<a href="resetPwdStepOne" class="forgot_link">Forgot?</a>
 		<button type="submit">Sign in</button>

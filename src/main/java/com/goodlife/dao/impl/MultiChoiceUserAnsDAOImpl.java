@@ -90,27 +90,30 @@ public class MultiChoiceUserAnsDAOImpl implements MultiChoiceUserAnsDAO{
 			e.printStackTrace();
 		}
 		List<MultiChoiceQ> multiChoiceQList = new ArrayList<MultiChoiceQ>();
-		if(multiList != null)
+		if(multiList == null)
+			isComplete = Boolean.FALSE;
+		else{
 			multiChoiceQList = multiChoiceQDAO.getAllPublishedMultiChoice(multiChoiceListId);
 		
-		if(multiChoiceQList == null || multiChoiceQList.isEmpty() == true)
-			isComplete = Boolean.FALSE;
-		else if(multiList.getGraded() == Boolean.TRUE){
-			for(int i = 0; i < multiChoiceQList.size(); i++){
-				total += 1.0;
-				//userAns = getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId());
-				if(isMultiChoiceCorrect(userId,multiChoiceQList.get(i).getMultiQuesId()) == Boolean.TRUE)
-					correct += 1.0;
-				if(getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId()) == null)
-					isComplete = Boolean.FALSE;
+			if(multiChoiceQList == null || multiChoiceQList.isEmpty() == true)
+				isComplete = Boolean.FALSE;
+			else if(multiList.getGraded() == Boolean.TRUE){
+				for(int i = 0; i < multiChoiceQList.size(); i++){
+					total += 1.0;
+					//userAns = getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId());
+					if(isMultiChoiceCorrect(userId,multiChoiceQList.get(i).getMultiQuesId()) == Boolean.TRUE)
+						correct += 1.0;
+					if(getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId()) == null)
+						isComplete = Boolean.FALSE;
+				}
+				if((correct/total) < 0.5)
+					isComplete =  Boolean.FALSE;
 			}
-			if((correct/total) < 0.5)
-				isComplete =  Boolean.FALSE;
-		}
-		else{
-			for(int i = 0; i < multiChoiceQList.size(); i++){
-				if(getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId()) == null)
-					isComplete = Boolean.FALSE;
+			else{
+				for(int i = 0; i < multiChoiceQList.size(); i++){
+					if(getUserAnswer(userId,multiChoiceQList.get(i).getMultiQuesId()) == null)
+						isComplete = Boolean.FALSE;
+				}
 			}
 		}
 		return isComplete;
