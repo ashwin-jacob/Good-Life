@@ -69,14 +69,18 @@ public class ShortAnswerUserAnswerDAOImpl implements ShortAnswerUserAnswerDAO{
 
 		Boolean isComplete = Boolean.TRUE;
 		List<ShortAnswerQ> questionList = new ArrayList<ShortAnswerQ>();
+		ShortAnswerUserAnswer shortAnsUA;
 		questionList = shortAnswerQDAO.getShortAnswerBySubChapter(subChapId);
 		
 		if(questionList == null || questionList.isEmpty())
 			isComplete = Boolean.FALSE;
 		else{
 		    for(int i = 0; i < questionList.size(); i++){
-				if(getUserAnswer(userId, questionList.get(i).getSaQId()).isAprvd().equals(Boolean.FALSE))
-					isComplete = Boolean.FALSE;
+		    	shortAnsUA = getUserAnswer(userId, questionList.get(i).getSaQId());
+		    	if(shortAnsUA != null){
+		    		if(shortAnsUA.isAprvd().equals(Boolean.FALSE))
+		    			isComplete = Boolean.FALSE;
+		    	}
 			}
 		}
 		return isComplete;
