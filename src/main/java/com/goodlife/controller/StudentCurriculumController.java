@@ -103,7 +103,7 @@ public class StudentCurriculumController {
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(instructorDAO.getStudentProgress(userId, student.getRosterId()));
+			jsonResp = mapper.writeValueAsString(instructorDAO.getStudentProgress(userId, student.getRosterId())*100);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {

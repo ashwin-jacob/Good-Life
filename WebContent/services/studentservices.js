@@ -21,9 +21,11 @@ studentServices.factory('student', ['$http', '$log', '$resource', function($http
 	function getProgress(userId) {
 		$log.log("Got to get student progress");
 		$log.log("Userid: "+userId);
-		return $resource('student/getprogress', {userId:userId}, {
-			getProgress:{method:'GET'}
-		}).getProgress();
+		var promise = $http.get('student/getprogress', { params:{userId:userId} } ).then(function(response) {
+			$log.log(response);
+			return response.data;
+		});
+		return promise;
 	}
 
 	/**
