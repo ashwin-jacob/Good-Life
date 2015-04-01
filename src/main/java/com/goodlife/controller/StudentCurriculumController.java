@@ -101,9 +101,10 @@ public class StudentCurriculumController {
 		Student student = studentDAO.findStudentByUserId(userId);
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
+		Double progress = instructorDAO.getStudentProgress(userId, student.getRosterId())*100;
 		
 		try {
-			jsonResp = mapper.writeValueAsString(instructorDAO.getStudentProgress(userId, student.getRosterId())*100);
+			jsonResp = mapper.writeValueAsString(progress.intValue());
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {

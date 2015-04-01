@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.goodlife.controller.InstructorController;
 import com.goodlife.dao.InstructorDAO;
+import com.goodlife.dao.MultiChoiceUserAnsDAO;
+import com.goodlife.dao.ShortAnswerUserAnswerDAO;
+import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.UserNotFoundException;
 
@@ -31,8 +34,8 @@ public class InstructorControllerTest {
 	private static final String LAST_NAME = "Fuentes";
 	private static final String STATE = "IL";
 	private static final Integer INSTRUCTOR_USER_ID = 2;
-	private static final Integer USER_ID = 1;
-	private static final Integer ROSTER_ID = 1;
+	private static final Integer USER_ID = 14;
+	private static final Integer ROSTER_ID = 4;
 	private static final Integer N_STDNT = 1;
 	private static final Integer TOT_CAP = 2;
 	private static final Integer SA_Q_ID = 1;
@@ -44,6 +47,28 @@ public class InstructorControllerTest {
 	private UsersDAO usersDAO;
 	@Autowired
 	private InstructorController instructorController;
+	
+	@Autowired
+	private MultiChoiceUserAnsDAO multiAnsDAO;
+	
+	@Autowired
+	private ShortAnswerUserAnswerDAO shortAnsUADAO;
+	
+	@Autowired
+	private UploadedAnswerDAO uploadAnsDAO;
+	
+	@Test
+	@Transactional
+	public void testProgress(){
+		Integer userId = 14;
+		for(int subChapId = 1; subChapId < 10; subChapId++){
+		System.out.println(subChapId);
+		System.out.println(multiAnsDAO.isMultiChoiceSubChapComplete(userId,subChapId));
+		System.out.println(shortAnsUADAO.isShortAnswerSubChapComplete(userId, subChapId));
+		System.out.println(uploadAnsDAO.isUploadedQuestionComplete(userId, subChapId));
+		}
+		assertTrue(userId == 14);
+	}
 	
 	@Test
 	@Transactional

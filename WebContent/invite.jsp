@@ -28,7 +28,7 @@
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
 		
-		<input type="lookup" name="username" placeholder="username" required>
+		<input type="text" name="username" id="solo" placeholder="username" required>
 		<button type="submit">Submit</button>
     	
 	</form>
