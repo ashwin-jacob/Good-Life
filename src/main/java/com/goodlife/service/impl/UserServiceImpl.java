@@ -16,8 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 
+
 import com.goodlife.dao.InstructorDAO;
 import com.goodlife.dao.StudentDAO;
+import com.goodlife.dao.SuperAdminDAO;
 import com.goodlife.dao.UsersDAO;
 import com.goodlife.exceptions.InvalidEmailToken;
 import com.goodlife.exceptions.UserAlreadyExistsException;
@@ -34,6 +36,8 @@ public class UserServiceImpl implements UserService {
 
 	static final Logger logger = LogManager.getLogger(UserServiceImpl.class.getName());
 
+	@Autowired
+	SuperAdminDAO superAdminDAO;
 	
 	@Autowired
 	UsersDAO usersDao;
@@ -69,7 +73,7 @@ public class UserServiceImpl implements UserService {
 		if(Character.toUpperCase(user.getRoleTypeCode()) == 'I'){
 			instructorDao.addInstructor(user.getUserId());
 		}
-		else{
+		else if(Character.toUpperCase(user.getRoleTypeCode()) == 'S'){
 			Student student = new Student();
 			student.setCurrentChapterId(1);
 			student.setStartDate(new Date());
