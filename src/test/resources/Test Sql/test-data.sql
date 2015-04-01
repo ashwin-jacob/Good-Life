@@ -38,8 +38,8 @@ insert into goodlife.users
 (usr_nm,rgstrd,pwd,invit_by,invit_dt,invit_cd,role_typ_cd,email)
 values('Admin',true,'$2a$10$XH8Xm5r/Rx8fJAZHy2qxyO2xT8WgDfU1QUeZHYI/f95s5CduO8YU.','force0',current_date(),100003,'A','admin@gmail.com');
 insert into goodlife.users 
-(usr_nm,rgstrd,pwd,invit_by,invit_dt,invit_cd,role_typ_cd,email)
-values('student',true,'temp','Admin',current_date(),100004,'S','student@gmail.com');
+(usr_nm,rgstrd,pwd,invit_by,invit_dt,invit_cd,role_typ_cd,email,lst_nm,frst_nm)
+values('student',true,'temp','Admin',current_date(),100004,'S','student@gmail.com','student','student');
 
 INSERT INTO GOODLIFE.STUDENT
 (USERID,ROSTER_ID,CURRENTCHAPTERID,START_DT)
@@ -81,10 +81,10 @@ VALUES(1,current_time(),5,12);
 
 INSERT INTO GOODLIFE.USER_STATUS
 (END_DT,STRT_DT,STS_TYP_CD,USERID)
-VALUES(current_timestamp(),current_timestamp(),'s',2);
+VALUES(current_date()+7,current_timestamp(),'s',2);
 INSERT INTO GOODLIFE.USER_STATUS
 (END_DT,STRT_DT,STS_TYP_CD,USERID)
-VALUES(current_timestamp(),current_timestamp(),'s',5);
+VALUES(current_date()+10,current_date(),'s',14);
 INSERT INTO GOODLIFE.USER_STATUS
 (END_DT,STRT_DT,STS_TYP_CD,USERID)
 VALUES(current_timestamp(),current_timestamp(),'d',8);
