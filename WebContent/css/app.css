@@ -83,7 +83,7 @@ a#navlink:hover {
 	height: 100%;
 	overflow:hidden;
 }
-button#submit, button#save, input#upload {
+button#submit, button#save, input#upload, button#invite {
 	padding: 5px;
 	margin: 20px 0px;
 	float: left;
@@ -91,18 +91,24 @@ button#submit, button#save, input#upload {
 button#save {
 	margin-right: 20px;
 }
+input#invite {
+	margin-left: 20px;
+}
 textarea.form-control {
 	margin: 20px 0px;
 	padding: 5px;
 	width: 80%;
 }
-#confirmation-success-m, #confirmation-success-s, #confirmation-success-u,
-#confirmation-fail-m, #confirmation-fail-s, #confirmation-fail-u {
+#confirmation-success-m, #confirmation-success-s, #confirmation-success-u, #confirmation-failure-inv,
+#confirmation-fail-m, #confirmation-fail-s, #confirmation-fail-u, #confirmation-success-inv {
 	width: 500px;
 	height: 30px;
 	float: left;
 	margin: 20px;
 	padding: 5px;
+}
+#confirmation-success-inv, #confirmation-failure-inv {
+	width: 60%;
 }
 #maxLen {
 	width: 500px;
