@@ -51,7 +51,7 @@ ul.navview>li, ul.navview>li>ul {
 	color: #FFF;
 	list-style-type: none;
 	padding: 0px;
-	margin: 0px;
+	margin-left: 20px;
 }
 .ng-table tr.emphasis td {
 	background-color: #DDD;
@@ -65,7 +65,9 @@ ul.navview>li, ul.navview>li>ul {
 	color: #FFF;
 	border-radius:5px;
 }
-
+li#navlink {
+	font-weight: bold;
+}
 .navlink, ul.navlink>li>a, a#navlink {
 	text-decoration: none;
 	color: #FFF;
