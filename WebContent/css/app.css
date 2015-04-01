@@ -117,22 +117,11 @@ textarea.form-control {
 .leftmargin {
 	padding-left: 20px;
 }
-#progress {
+.progress {
 	height: 50px;
 }
-#notifications {
-	margin-top: 30px;
-	padding: 2px;
-	border: 1px solid #888;
-}
-#notifications>legend {
-	font-size: 16px;
-	width: 70%;
-}
-#notifications>ul {
-    list-style-type: none;
-    padding:0; 
-    margin:0;
+ul#notifications {
+    list-style-type: circle;
 }
 
 /* ====================================================
