@@ -235,6 +235,7 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    	$scope.editExFlag = true;
 	    	$scope.addExFlag = false;
 	 	   var title = event.target.textContent;
+	 	   $scope.exTitle = title;
 	 	   var chapId = rowData.chap.chapId;
 	       $scope.chapIdNum = chapId;
 	 	   var chapTitle = "";
@@ -247,7 +248,7 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 		  				chapTitle = comArr[i].chap.chapTitle;
 		  			}
 		  		}
-	    	$scope.showPane("subchapter", chapTitle, title, "");
+	    	$scope.showPane("subchapter", chapTitle, title, "", "");
 
 	    }
 	    
@@ -415,7 +416,7 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	  		if(form.$valid){
 	  			listChapters.updateExercise(itemToModify.subChapId, chapId, title, exDesc, orderId, false).then( handleSuccess, handleError );
 				$scope.showConfirmation("success", "Exercise" + " titled '"+ itemToModify.subChapTitle +"' has been modified!");	
-				$scope.resetPaneValues();
+				//$scope.resetPaneValues();
 	  		}
 			
 	    }
@@ -469,11 +470,10 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 				$scope.showConfirmation("fail", "Chapter" + "#"+row.exer[0].subChapId +" was not deleted!");
 	  		}
 	  		var itemToDelete = row.exer[exindex];
-	  		data[chapindex].exer.splice(exindex, 1);		
+	  		$scope.chapterData[chapindex].exer.splice(exindex, 1);		
 			listChapters.deleteExercise(itemToDelete.subChapId).then( handleSuccess, handleError );
 			$scope.showConfirmation("success", "Exercise" + " titled '"+ itemToDelete.subChapTitle +"' has been deleted!");
 			$scope.showChapterPane = false;
-			$scope.chapterTable .reload();
 			init();
 	    }
 	    
