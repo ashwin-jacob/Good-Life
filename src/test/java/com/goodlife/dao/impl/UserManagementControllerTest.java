@@ -51,7 +51,7 @@ public class UserManagementControllerTest {
 	@Test
 	@Transactional
 	public void testGetList() {
-		String userList = userManagement.getList("Raj", "lst_nm", 1, 0, 0);
+		String userList = userManagement.getList("student", "lst_nm", 1, 0, 0);
 		System.out.println(userList);
 		assertTrue(userList.length() > 0);
 	}

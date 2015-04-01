@@ -61,7 +61,7 @@ public class UserManagementController {
 
 		List<Users> filteredList = new ArrayList<Users>();
 		List<Object> userAndStatusList = new ArrayList<Object>();
-		List<Character> userStatusList = new ArrayList<Character>();
+		List<UserStatus> userStatusList = new ArrayList<UserStatus>();
 		UserStatus userStatus;
 		String searchStr = cleanInput(input, field);
 		
@@ -79,10 +79,11 @@ public class UserManagementController {
 		for(int i = 0; i < filteredList.size(); i++)
 		{
 			userStatus = userStatusDAO.findCurrentStatusByUser(filteredList.get(i).getUserId());
-			if(userStatus == null)
-				userStatusList.add(Character.valueOf('a'));
-			else
-				userStatusList.add(userStatus.getStatusTypeCode());
+			if(userStatus == null){
+				userStatus = new UserStatus();
+				userStatus.setStatusTypeCode(Character.valueOf('a'));
+			}
+			userStatusList.add(userStatus);
 		}
 		
 		userAndStatusList.add(filteredList);
