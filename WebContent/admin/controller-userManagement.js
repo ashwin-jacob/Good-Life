@@ -6,6 +6,9 @@ var userManagement = angular.module('userManagement', []);
 userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableParams', 'userService',
 	function($scope, $log, $filter, ngTableParams, userService) {
 
+		//Store user status in object for quicklookup
+		var userStatus = {};
+
 		$scope.submitSearch = function(searchForm) {
 			$log.log( 'Submitting values' );
 			var idsForRoles = getIdsForRoles($scope.roleOptions);
@@ -74,14 +77,39 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 		var handleSuccess = function (response) {
 			$log.log("Succesful search");
 			data = response.data[0];
-			$scope.status = response.data[1];
-			$scope.userTable .reload();
+			tempStatusObjects = response.data[1];
+			$scope.status = [];
+			userStatus = {};
+			angular.forEach(tempStatusObjects, function(statusObj) {
+				$scope.status.push(statusObj.statusTypeCode);
+				userStatus[statusObj.userId] = statusObj;
+			});
+			$scope.userTable.reload();
 		};
 
 		var handleError = function (response) {
 			$log.log("Error with search");
 			data = [{}];
 			$scope.userTable .reload();
+		};
+
+		//When user wants to change status
+		$scope.changeUserStatus = function(action, userId) {
+			if(action == 'a') {
+				if( userStatus.hasOwnProperty(userId)) {
+					$log.log("Activate User");
+					userService.activateUser(userStatus[userId].userStatusId, $filter('date')(new Date(), 'shortDate') );
+				}
+				else {
+					//User already is active
+				}
+			}
+			else {
+				userService.changeUserStatus(action, userId).then(function(result) {
+					$log.log("Got to return value");
+					$log.log(result.data);
+				});
+			}
 		};
 
 }]);

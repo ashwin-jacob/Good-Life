@@ -41,7 +41,7 @@
 	</accordion-group>
 </accordion>
 <table ng-table="userTable" class="table">
-	<tr ng-repeat="user in $data" ng-class="{ 'emphasis': status[$index] == 's', 'emphasis': status[$index] == 'd'  }">
+	<tr ng-repeat="user in $data" ng-class="{ 'emphasis': status[$index] == 's' || status[$index] == 'd'  }">
 		<td data-title="'User ID'" sortable="'userId'">
 			{{user.userId}}
 		</td>
@@ -59,6 +59,18 @@
 		</td>
 		<td data-title="'Role'" sortable="'roleTypeCode'">
 			{{user.roleTypeCode | roleType}}
+		</td>
+		<td>
+			<div class="btn-group" dropdown>
+				<button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>
+					User Status <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href ng-click="changeUserStatus('a', user.userId)">Activate</a></li>
+					<li><a href ng-click="changeUserStatus('s', user.userId)">Suspend</a></li>
+					<li><a href ng-click="changeUserStatus('d', user.userId)">Delete</a></li>
+				</ul>
+			</div>
 		</td>
 		
 	</tr>

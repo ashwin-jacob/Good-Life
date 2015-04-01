@@ -5,7 +5,9 @@ adminService.factory('userService', function( $http, $q, $log ) {
 	return({
 		//APIs
 		search : search,
-		inviteuser: inviteuser
+		inviteuser: inviteuser,
+		changeUserStatus: changeUserStatus,
+		activateUser : activateUser
 	});
 
 	//Function to return serach
@@ -29,6 +31,34 @@ adminService.factory('userService', function( $http, $q, $log ) {
 			params: {email:email}
 		});
 		
+		return request;
+	}
+
+	/**
+	Suspend or delete user
+	*/
+	function changeUserStatus(action, userId) {
+		var request = $http({
+			method: 'POST',
+			url: 'usermanagement/adduserstatus',
+			params: {userId:userId, statusTypeCode:action}
+		});
+
+		return request;
+	}
+
+	/**
+	Activate User
+	*/
+	function activateUser(userStatusId, date) {
+		$log.log("Activate User");
+		$log.log(date);
+		var request = $http({
+			method: 'POST',
+			url: 'usermanagement/changeenddate',
+			params: {userStatusId:userStatusId, newDate:date}
+		});
+
 		return request;
 	}
 

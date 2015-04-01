@@ -112,7 +112,7 @@ public class UserManagementController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/adduserstatus", method = RequestMethod.GET)
+	@RequestMapping(value = "/adduserstatus", method = RequestMethod.POST)
 	public String addUserStatus(@RequestParam(value="userId") Integer userId,
 									@RequestParam(value="statusTypeCode") Character statusTypeCode) {
 
@@ -172,7 +172,7 @@ public class UserManagementController {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/changeenddate", method = RequestMethod.GET)
+	@RequestMapping(value = "/changeenddate", method = RequestMethod.POST)
 	public String changeEndDate(@RequestParam(value="userStatusId") Integer userStatusId, @RequestParam(value="newDate") Date newDate){
 		
 		Boolean response = userStatusDAO.changeEndDate(userStatusId, newDate);
