@@ -181,9 +181,9 @@ curriculum.controller('ChapterBuilder', ['$scope', '$log', '$filter', 'ngTablePa
 	    var myModal;
 	    $scope.addExerciseData = {};
 	    
-	    $scope.openDialog = function(url, formData){
+	    $scope.openDialog = function(url, formData, size){
 	    	$scope.addExerciseData = formData;
-	    	myModal = modal.open({templateUrl: url, scope: $scope
+	    	myModal = modal.open({templateUrl: url, scope: $scope, size: size
 	    		
 	    	
 	    	});
