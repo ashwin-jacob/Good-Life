@@ -45,6 +45,9 @@
 		<td data-title="'Status'" sortable="'userStatus'">
 			{{user.userStatus | statusType}}
 		</td>
+		<td data-title="'End Date'" sortable="'endDate'">
+			{{user.endDate | date:'shortDate'}}
+		</td>
 		<td data-title="'Email'" sortable="'email'">
 			{{user.email}}
 		</td>

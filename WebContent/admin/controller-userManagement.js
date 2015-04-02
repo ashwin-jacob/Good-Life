@@ -82,16 +82,12 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 			$log.log("Succesful search");
 			data = response.data[0];
 			tempStatusObjects = response.data[1];
-			$scope.status = [];
 			userStatus = {};
-			angular.forEach(tempStatusObjects, function(statusObj) {
-				$scope.status.push(statusObj.statusTypeCode);
-				userStatus[statusObj.userId] = statusObj;
-			});
 			for(var index=0; index<data.length; index++) {
-				data[index].userStatus = tempStatusObjects[index].statusTypeCode
+				data[index].userStatus = tempStatusObjects[index].statusTypeCode;
+				data[index].endDate = tempStatusObjects[index].endDate;
+				userStatus[tempStatusObjects[index].userId] = tempStatusObjects[index]
 			}
-
 			$scope.userTable.reload();
 		};
 
@@ -158,6 +154,7 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 					$log.log(returnValue);
 					userService.changeEndDate(returnValue.userStatusId, $filter('date')(returnValue.endDate, 'shortDate') ).then(function(result) {
 						$log.log(result);
+						$scope.submitSearch(searchFormValues);
 						toastr.success('End Date Change successful', 'Success');
 					});
 				});
