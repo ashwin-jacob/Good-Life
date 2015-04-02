@@ -2,33 +2,27 @@
 <!DOCTYPE html>
 <html>
 <script>
-	function checkPass() {
-		//Store the password field objects into variables ...
-		var pass1 = document.getElementById('pass1');
-		var pass2 = document.getElementById('pass2');
-		//Store the Confimation Message Object ...
-		var message = document.getElementById('confirmMessage');
-		//Set the colors we will be using ...
-		var goodColor = "#66cc66";
-		var badColor = "#ff6666";
-		//Compare the values in the password field 
-		//and the confirmation field
-		if (pass1.value == pass2.value) {
-			//The passwords match. 
-			//Set the color to the good color and inform
-			//the user that they have entered the correct password 
-			pass2.style.backgroundColor = goodColor;
-			message.style.color = goodColor;
-			message.innerHTML = "Passwords Match!"
-		} else {
-			//The passwords do not match.
-			//Set the color to the bad color and
-			//notify the user.
-			pass2.style.backgroundColor = badColor;
-			message.style.color = badColor;
-			message.innerHTML = "Passwords Do Not Match!"
-		}
+function checkPass() {
+	//Store the password field objects into variables ...
+	var pass1 = document.getElementsByClassName("pass1");
+	var pass2 = document.getElementsByClassName("pass2");
+	//Set the colors we will be using ...
+	var goodColor = "#66cc66";
+	var badColor = "#ff6666";
+	//Compare the values in the password field 
+	//and the confirmation field
+	if (pass1[0].value == pass2[0].value) {
+		//The passwords match. 
+		//Set the color to the good color and inform
+		//the user that they have entered the correct password 
+		pass2[0].style.backgroundColor = goodColor;
+	} else {
+		//The passwords do not match.
+		//Set the color to the bad color and
+		//notify the user.
+		pass2[0].style.backgroundColor = badColor;
 	}
+}
 </script>
 <head>
 
@@ -57,18 +51,12 @@
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
 		<input type="Email" name="email" id="top" placeholder="Email" required>
-<!-- 		<div class="bar"> -->
-<!-- 			<i></i> -->
-<!-- 		</div> -->
-		<input type="password" name="pass1" id="mid" placeholder="Password" required  onkeyup="checkPass(); return false;">
-<!--         <div class="bar"> -->
-<!-- 			<i></i> -->
-<!-- 		</div> -->
-        <input type="password" name="pass2" id="mid" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
-<!--         <div class="bar"> -->
-<!-- 			<i></i> -->
-<!-- 		</div> -->
-        <input type="number" name="token" id="bot" placeholder="Email Token" required>
+
+		<input type="password" name="pass1" class="pass1" id="mid" placeholder="Password" required  onkeyup="checkPass(); return false;">
+
+        <input type="password" name="pass2" class="pass2" id="mid" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
+
+        <input type="text" name="token" id="bot" placeholder="Invite Code" required>
 		<a href="resetPwdStepOne" class="forgot_link">Misplaced?</a>
 		<button type="submit">Reset Password</button>
 	</form>
