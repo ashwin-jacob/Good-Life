@@ -154,10 +154,10 @@ public class UsersDAOImpl implements UsersDAO {
 			List<Character> roles) {
 		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(Users.class);
 		if(roles != null)
-			criteria.add(Restrictions.and(Restrictions.sqlRestriction(field + " = '" + input + "'"),
+			criteria.add(Restrictions.and(Restrictions.sqlRestriction(field + " like '%" + input + "%'"),
 					 Restrictions.in("roleTypeCode",roles)));
 		else
-			criteria.add(Restrictions.sqlRestriction(field + " = '" + input + "'"));
+			criteria.add(Restrictions.sqlRestriction(field + " like '%" + input + "%'"));
 		return criteria.list();
 		
 	}
