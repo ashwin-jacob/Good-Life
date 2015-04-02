@@ -15,4 +15,19 @@ angular.module('adminFilter', [])
 			}
 			
 		};
-	});
+	})
+	.filter('statusType', function() {
+		return function(input) {
+			if(input.toLowerCase() == "s") {
+				return "Suspended";
+			}
+			if(input.toLowerCase() == "a") {
+				return "Active";
+			}
+
+			if(input.toLowerCase() == "d") {
+				return "Deleted";
+			}
+		}
+	})
+	;
