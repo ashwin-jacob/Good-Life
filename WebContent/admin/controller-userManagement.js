@@ -105,6 +105,7 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 						$log.log(result);
 						toastr.success('User has been activated', 'Activation Succesful')
 					});
+					$scope.userTable .reload();
 				}
 				else {
 					//User already is active
@@ -126,6 +127,7 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 							toastr.success('Suspended for 7 days', 'Suspension Succesful');
 						}
 					});
+					$scope.userTable .reload();
 				}
 			}
 		};
