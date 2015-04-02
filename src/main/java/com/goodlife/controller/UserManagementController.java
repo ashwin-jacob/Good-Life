@@ -116,7 +116,12 @@ public class UserManagementController {
 	public String addUserStatus(@RequestParam(value="userId") Integer userId,
 									@RequestParam(value="statusTypeCode") Character statusTypeCode) {
 
-		UserStatus userStatus = new UserStatus();
+		UserStatus userStatus = userStatusDAO.findCurrentStatusByUser(userId);
+		if(userStatus != null && Character.toUpperCase(userStatus.getStatusTypeCode()) != 'D')
+			userStatusDAO.changeEndDate(userStatus.getUserStatusId(), new Date());
+		else if(Character.toUpperCase(userStatus.getStatusTypeCode()) == 'D')
+			userStatusDAO.deleteUserStatus(userStatus.getUserStatusId());
+		userStatus = new UserStatus();
 		userStatus.setUserId(userId);
 		userStatus.setStartDate(new Timestamp(new Date().getTime()));
 		// 604800000 is the amount of milliseconds in 7 days
