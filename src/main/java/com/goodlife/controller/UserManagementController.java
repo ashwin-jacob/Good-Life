@@ -119,7 +119,7 @@ public class UserManagementController {
 		UserStatus userStatus = userStatusDAO.findCurrentStatusByUser(userId);
 		if(userStatus != null && Character.toUpperCase(userStatus.getStatusTypeCode()) != 'D')
 			userStatusDAO.changeEndDate(userStatus.getUserStatusId(), new Date());
-		else if(Character.toUpperCase(userStatus.getStatusTypeCode()) == 'D')
+		else if(userStatus != null && Character.toUpperCase(userStatus.getStatusTypeCode()) == 'D')
 			userStatusDAO.deleteUserStatus(userStatus.getUserStatusId());
 		userStatus = new UserStatus();
 		userStatus.setUserId(userId);
