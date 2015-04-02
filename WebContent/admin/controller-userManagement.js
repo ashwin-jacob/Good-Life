@@ -88,6 +88,10 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 				$scope.status.push(statusObj.statusTypeCode);
 				userStatus[statusObj.userId] = statusObj;
 			});
+			for(var index=0; index<data.length; index++) {
+				data[index].userStatus = tempStatusObjects[index].statusTypeCode
+			}
+
 			$scope.userTable.reload();
 		};
 
