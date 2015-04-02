@@ -9,6 +9,7 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 		//Store user status in object for quicklookup
 		var userStatus = {};
 		$scope.seachisOpen = true;
+		var searchFormValues = null;
 
 		$scope.submitSearch = function(searchForm) {
 			$log.log( 'Submitting values' );
@@ -20,6 +21,7 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 			// $scope.userTable .reload();
 			userService.search(idsForRoles, parameters).then( handleSuccess, handleError );
 			$scope.seachisOpen = false;
+			searchFormValues = searchForm;
 		};
 
 		//Search Options for the Text Field
@@ -104,8 +106,8 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 					userService.changeEndDate(userStatus[userId].userStatusId, $filter('date')(new Date(), 'shortDate') ).then(function(result) {
 						$log.log(result);
 						toastr.success('User has been activated', 'Activation Succesful');
+						$scope.submitSearch(searchFormValues);
 					});
-					$scope.userTable .reload();
 				}
 				else {
 					//User already is active
@@ -126,8 +128,8 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 						} else {
 							toastr.success('Suspended for 7 days', 'Suspension Succesful');
 						}
+						$scope.submitSearch(searchFormValues);
 					});
-					$scope.userTable .reload();
 				}
 			}
 		};
