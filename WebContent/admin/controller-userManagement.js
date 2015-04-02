@@ -3,8 +3,8 @@ var userManagement = angular.module('userManagement', []);
 /*
 	Admin Seach page controller
 */
-userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableParams', 'userService', 'toastr',
-	function($scope, $log, $filter, ngTableParams, userService, toastr) {
+userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableParams', 'userService', 'toastr', '$modal',
+	function($scope, $log, $filter, ngTableParams, userService, toastr, $modal) {
 
 		//Store user status in object for quicklookup
 		var userStatus = {};
@@ -101,9 +101,9 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 				if( userStatus.hasOwnProperty(userId)) {
 					//User is suspended or deleted
 					$log.log("Activate User");
-					userService.activateUser(userStatus[userId].userStatusId, $filter('date')(new Date(), 'shortDate') ).then(function(result) {
+					userService.changeEndDate(userStatus[userId].userStatusId, $filter('date')(new Date(), 'shortDate') ).then(function(result) {
 						$log.log(result);
-						toastr.success('User has been activated', 'Activation Succesful')
+						toastr.success('User has been activated', 'Activation Succesful');
 					});
 					$scope.userTable .reload();
 				}
@@ -132,4 +132,52 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 			}
 		};
 
+		//Change User Suspension/Deletion End Date
+		$scope.changeEndDate = function(userId) {
+			if(userStatus.hasOwnProperty(userId)) {
+				//User is suspended/deleted
+				var modalInstanceDate = $modal.open({
+					templateUrl: 'admin/pickEndDate.html',
+					controller: 'ModalEndDatePicker',
+					size: 'lg',
+					resolve: {
+						userStatusId: function() {
+							return userStatus[userId].userStatusId;
+						}
+					},
+					keyboard: false
+				});
+
+				modalInstanceDate.result.then(function(returnValue) {
+					$log.log(returnValue);
+					userService.changeEndDate(returnValue.userStatusId, $filter('date')(returnValue.endDate, 'shortDate') ).then(function(result) {
+						$log.log(result);
+						toastr.success('End Date Change successful', 'Success');
+					});
+				});
+			}
+			else {
+				//Active User
+				toastr.warning('User is Active', 'Warning');
+			}
+		};
+
 }]);
+
+userManagement.controller('ModalEndDatePicker', ['$scope', '$log', '$modalInstance', 'userStatusId',
+	function($scope, $log, $modalInstance, userStatusId) {
+		$scope.currDate = new Date();
+		$scope.endDate = new Date(); //Date that user picks
+		var returnValue = {};
+
+		$scope.ok = function() {
+			returnValue.endDate = $scope.endDate;
+			returnValue.userStatusId = userStatusId;
+			$modalInstance.close(returnValue);
+		};
+
+		$scope.cancel = function () {
+			$modalInstance.dismiss('cancel');
+		};
+	}
+]);

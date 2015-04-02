@@ -7,7 +7,7 @@ adminService.factory('userService', function( $http, $q, $log ) {
 		search : search,
 		inviteuser: inviteuser,
 		changeUserStatus: changeUserStatus,
-		activateUser : activateUser
+		changeEndDate : changeEndDate
 	});
 
 	//Function to return serach
@@ -52,7 +52,7 @@ adminService.factory('userService', function( $http, $q, $log ) {
 	/**
 	Activate User
 	*/
-	function activateUser(userStatusId, date) {
+	function changeEndDate(userStatusId, date) {
 		$log.log("Activate User");
 		$log.log(date);
 		var promise = $http({
