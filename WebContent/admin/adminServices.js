@@ -38,13 +38,15 @@ adminService.factory('userService', function( $http, $q, $log ) {
 	Suspend or delete user
 	*/
 	function changeUserStatus(action, userId) {
-		var request = $http({
+		var promise = $http({
 			method: 'POST',
 			url: 'usermanagement/adduserstatus',
 			params: {userId:userId, statusTypeCode:action}
-		});
+		}).then(function(response) {
+			return response.data;
+		})
 
-		return request;
+		return promise;
 	}
 
 	/**
@@ -53,13 +55,15 @@ adminService.factory('userService', function( $http, $q, $log ) {
 	function activateUser(userStatusId, date) {
 		$log.log("Activate User");
 		$log.log(date);
-		var request = $http({
+		var promise = $http({
 			method: 'POST',
 			url: 'usermanagement/changeenddate',
 			params: {userStatusId:userStatusId, newDate:date}
+		}).then(function(response) {
+			return response.data;
 		});
 
-		return request;
+		return promise;
 	}
 
 });

@@ -13,7 +13,8 @@ var forceForGood = angular.module('forceForGood', [
 	'chapterServices',
 	'studentServices',
 	'angularFileUpload',
-	'ngAnimate']);
+	'ngAnimate',
+	'toastr']);
 
 forceForGood.config(['$routeProvider',
 	function($routeProvider) {

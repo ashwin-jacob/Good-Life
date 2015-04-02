@@ -3,8 +3,8 @@ var userManagement = angular.module('userManagement', []);
 /*
 	Admin Seach page controller
 */
-userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableParams', 'userService',
-	function($scope, $log, $filter, ngTableParams, userService) {
+userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableParams', 'userService', 'toastr',
+	function($scope, $log, $filter, ngTableParams, userService, toastr) {
 
 		//Store user status in object for quicklookup
 		var userStatus = {};
@@ -98,7 +98,10 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 			if(action == 'a') {
 				if( userStatus.hasOwnProperty(userId)) {
 					$log.log("Activate User");
-					userService.activateUser(userStatus[userId].userStatusId, $filter('date')(new Date(), 'shortDate') );
+					userService.activateUser(userStatus[userId].userStatusId, $filter('date')(new Date(), 'shortDate') ).then(function(result) {
+						$log.log(result);
+						toastr.success('User has been activated', 'Activation Succesful')
+					});
 				}
 				else {
 					//User already is active
@@ -106,8 +109,12 @@ userManagement.controller('AdminSearch', ['$scope', '$log', '$filter', 'ngTableP
 			}
 			else {
 				userService.changeUserStatus(action, userId).then(function(result) {
-					$log.log("Got to return value");
-					$log.log(result.data);
+					$log.log(result);
+					if(action == 'd') {
+						toastr.success('Deletion will occur in 7 days', 'Deletion Succesful');
+					} else {
+						toastr.success('Suspended for 7 days', 'Suspension Succesful');
+					}
 				});
 			}
 		};
