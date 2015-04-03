@@ -4,29 +4,23 @@
 <script>
 	function checkPass() {
 		//Store the password field objects into variables ...
-		var pass1 = document.getElementByName("pass1");
-		var pass2 = document.getElementByName("pass2");
-		//Store the Confimation Message Object ...
-		var message = document.getElementById('confirmMessage');
+		var pass1 = document.getElementsByClassName("pass1");
+		var pass2 = document.getElementsByClassName("pass2");
 		//Set the colors we will be using ...
 		var goodColor = "#66cc66";
 		var badColor = "#ff6666";
 		//Compare the values in the password field 
 		//and the confirmation field
-		if (pass1.value == pass2.value) {
+		if (pass1[0].value == pass2[0].value) {
 			//The passwords match. 
 			//Set the color to the good color and inform
 			//the user that they have entered the correct password 
-			pass2.style.backgroundColor = goodColor;
-			message.style.color = goodColor;
-			message.innerHTML = "Passwords Match!"
+			pass2[0].style.backgroundColor = goodColor;
 		} else {
 			//The passwords do not match.
 			//Set the color to the bad color and
 			//notify the user.
-			pass2.style.backgroundColor = badColor;
-			message.style.color = badColor;
-			message.innerHTML = "Passwords Do Not Match!"
+			pass2[0].style.backgroundColor = badColor;
 		}
 	}
 </script>
@@ -60,18 +54,12 @@
 		<input type="text" name="firstname" id="mid" placeholder="First Name" required>
 		<input type="text" name="lastname" id="mid" placeholder="Last Name" required>
 		<input type="text" name="username" id="mid" placeholder="User Name" required>
-<!-- 		<div class="bar"> -->
-<!-- 			<i></i> -->
-<!-- 		</div> -->
-		<input type="password" name="pass1" id="mid" placeholder="Password" required onkeyup="checkPass(); return false;">
-<!--         <div class="bar"> -->
-<!-- 			<i></i> -->
-<!-- 		</div> -->
-        <input type="password" name="pass2" id="mid" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
-<!--         <div class="bar"> -->
-<!-- 			<i></i> -->
-<!-- 		</div> -->
-        <input type="Token" name="token" id="bot" placeholder="Email Token" required>
+
+		<input type="password" name="pass1" id="mid" class="pass1" placeholder="Password" required onkeyup="checkPass(); return false;">
+
+        <input type="password" name="pass2" id="mid" class="pass2" placeholder="Confirm Password" required onkeyup="checkPass(); return false;">
+
+        <input type="text" name="token" id="bot" placeholder="Invite Code" required>
 		<a href="requestInvitationCode" class="forgot_link">misplaced?</a>
 		<button type="submit">Sign Up</button>
 	</form>

@@ -62,8 +62,12 @@ public class InvitationServiceImpl implements InvitationService {
 
 		usersDao.addUser(newUser);
 
-		String subject = "creating account";
-		String body = "random number is " + randomNumber;
+		String subject = "Register Your Account";
+		String body = "Hello " + email + ","
+					+ "\n\nWelcome to the Good Life Organization Curriculum Tool."
+					+ " Please use the invite code below to register your account and begin your work."
+					+ "\n\nInvite code: " + randomNumber
+					+ "\n\nThank you,\nThe Good Life Organization Team";
 		mailer.sendMail(email, subject, body);
 
 	}
@@ -123,8 +127,12 @@ public class InvitationServiceImpl implements InvitationService {
 		Integer randomNumber = generateRandomNumber(RandomMin, RandomMax);
 		user.setInvitationCode(randomNumber);
 		usersDao.addUser(user);
-		String subject = "New Invitation Code";
-		String body = "Invitation Code is " + randomNumber;
+		String subject = "Reset Password";
+		String body = "Hello " + user.getUsername() + ","
+					+ "\n\nTo reset your password use the new invite code below."
+					+ "\n\nInvite Code is " + randomNumber
+					+ "\n\nThank you,"
+					+ "\nThe Good Life Organization Team";
 		mailer.sendMail(user.getEmail(), subject, body);
 	}
 
