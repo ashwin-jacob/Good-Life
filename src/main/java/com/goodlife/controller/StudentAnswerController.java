@@ -31,10 +31,12 @@ import com.goodlife.dao.SubChapterDAO;
 import com.goodlife.dao.UploadFileQDAO;
 import com.goodlife.dao.UploadedAnswerDAO;
 import com.goodlife.exceptions.MultipleChoiceOptionNotFoundException;
+import com.goodlife.exceptions.ShortAnswerNotFoundException;
 import com.goodlife.exceptions.UploadPathException;
 import com.goodlife.model.MediaType;
 import com.goodlife.model.MultiChoiceOption;
 import com.goodlife.model.MultiChoiceUserAns;
+import com.goodlife.model.ShortAnswerQ;
 import com.goodlife.model.ShortAnswerUserAnswer;
 import com.goodlife.model.UploadedAnswer;
 
@@ -101,18 +103,26 @@ public class StudentAnswerController {
 											  @RequestParam(value = "submitted") String submitted){
 		
 		ShortAnswerUserAnswer shortAnswerUserAnswer = shortAnswerUserAnsDAO.getUserAnswer(userId, saQId);
-		if(shortAnswerUserAnswer == null){
-			shortAnswerUserAnswer = new ShortAnswerUserAnswer();
-			shortAnswerUserAnswer.setUserId(userId);
-			shortAnswerUserAnswer.setSaQId(saQId);
-			shortAnswerUserAnswer.setUserAnswer(userAnswer);
-			shortAnswerUserAnswer.setSubmitted(Boolean.valueOf(submitted));
-		}
-		else{
-			shortAnswerUserAnswer.setUserAnswer(userAnswer);
-			shortAnswerUserAnswer.setSubmitted(Boolean.valueOf(submitted));
-		}
+		try {
+			ShortAnswerQ shortAnswerQ = shortAnswerQDAO.getShortAnswerById(saQId);
 		
+			if(shortAnswerUserAnswer == null){
+				shortAnswerUserAnswer = new ShortAnswerUserAnswer();
+				shortAnswerUserAnswer.setSubChapId(shortAnswerQ.getSubChapId());
+				shortAnswerUserAnswer.setUserId(userId);
+				shortAnswerUserAnswer.setSaQId(saQId);
+				shortAnswerUserAnswer.setUserAnswer(userAnswer);
+				shortAnswerUserAnswer.setSubmitted(Boolean.valueOf(submitted));
+				shortAnswerUserAnswer.setAprvd(false);
+			}
+			else{
+				shortAnswerUserAnswer.setUserAnswer(userAnswer);
+				shortAnswerUserAnswer.setSubmitted(Boolean.valueOf(submitted));
+			}
+		} catch (ShortAnswerNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		Boolean isShortAnsUpdated = shortAnswerUserAnsDAO.addUserAnswer(shortAnswerUserAnswer);
 		
 		ObjectMapper mapper = new ObjectMapper();
