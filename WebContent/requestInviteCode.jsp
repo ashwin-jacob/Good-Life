@@ -5,8 +5,8 @@
 
   <meta charset="UTF-8">
 
-	<title>The Good Life - New Invite Code</title>
-	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.ico">
+	<title>The Good Life</title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.png">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     
@@ -16,7 +16,7 @@
 	<form class="wrap" action="<c:url value='resendInvitationCode' />" method='POST' >
   		
   		<div class="logo">
-  			<img src="${pageContext.request.contextPath}/img/goodlifelogo.png">
+  			The Good Life
   		</div>
 		<c:if test="${not empty error}">
 			<div class="errorblock">
@@ -28,7 +28,7 @@
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">
 		</div>
 		
-		<input type="text" name="Username" id="solo" placeholder="username" required>
+		<input type="email" name="Email" id="solo" placeholder="Email" required>
 		<button type="submit">Submit</button>
     	
 	</form>

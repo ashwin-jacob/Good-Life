@@ -1,17 +1,29 @@
 /* ====================================================
    Login Page Style
  ==================================================== */
+@font-face {
+    font-family: 'honey_scriptsemibold';
+    src: url('../fonts/honeyscript-semibold-webfont.eot');
+    src: url('../fonts/honeyscript-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/honeyscript-semibold-webfont.woff2') format('woff2'),
+         url('../fonts/honeyscript-semibold-webfont.woff') format('woff'),
+         url('../fonts/honeyscript-semibold-webfont.ttf') format('truetype'),
+         url('../fonts/honeyscript-semibold-webfont.svg#honey_scriptsemibold') format('svg');
+    font-weight: normal;
+    font-style: normal;
 
-#login {
 }
 body {
 	background-color: #fff;
-	font-family: "Times New Roman";
+	font-family: 'Times New Roman';
 	color: #808080;
 }
-.logo img{
-	margin-bottom: 30px;
+.logo{
 	width: 100%;
+	margin-bottom: 30px;
+	font-family: 'honey_scriptsemibold';
+	font-size: 65px;
+	color: #428BCA;
 }
 .wrap {
 	width: 250px;
@@ -41,7 +53,7 @@ body {
 #top {
 	border: thin solid #428BCA;
 	background: #D9EDF7;
-  	font-family:"Times New Roman" ;
+  	font-family:'Times New Roman' ;
   	font-weight:700 ;
 	display: block;
 	height: 50px;
@@ -57,7 +69,7 @@ body {
 #mid {
 	border: thin solid #428BCA;
 	background: #D9EDF7;
-  	font-family:"Times New Roman" ;
+  	font-family:'Times New Roman' ;
   	font-weight:700 ;
 	display: block;
 	height: 50px;
@@ -71,7 +83,7 @@ body {
 #bot {
 	border: thin solid #428BCA;
 	background: #D9EDF7;
-  	font-family:"Times New Roman" ;
+  	font-family:'Times New Roman' ;
   	font-weight:700 ;
 	display: block;
 	height: 50px;
@@ -85,7 +97,7 @@ body {
 #solo {
 	border: thin solid #428BCA;
 	background: #D9EDF7;
-  	font-family:"Times New Roman" ;
+  	font-family:'Times New Roman' ;
   	font-weight:700 ;
 	display: block;
 	height: 50px;
@@ -100,7 +112,7 @@ body {
 .forgot_link {
 	color: #0000ff;
 	text-decoration: none;
-	font-family: "Times New Roman";
+	font-family: 'Times New Roman';
 	font-size: 11px;
 	position: relative;
 	left: 193px;
@@ -117,7 +129,7 @@ body {
 	padding-top: 14px;
 	padding-bottom: 14px;
 	outline: none;
-	font-family: "Times New Roman";
+	font-family: 'Times New Roman';
 	font-size: 13px;
 	cursor: pointer;
 }

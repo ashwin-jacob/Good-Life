@@ -28,8 +28,8 @@ function checkPass() {
 
   <meta charset="UTF-8">
 
-	<title>The Good Life - Reset Password</title>
-	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.ico">
+	<title>The Good Life</title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.png">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     
@@ -45,7 +45,7 @@ function checkPass() {
 
 	<form class="wrap" action="<c:url value='resetPasswdComplete' />" method='POST'>
   		<div class="logo">
-  			<img src="${pageContext.request.contextPath}/img/goodlifelogo.png">
+  			The Good Life
   		</div>
 		<div class="avatar">
       		<img src="${pageContext.request.contextPath}/img/GLO_logo_blue.png">

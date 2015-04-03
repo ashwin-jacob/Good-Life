@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
 
 	<title>The Good Life</title>
-	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.ico">
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/img/GLO_logo_grey.png">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reset.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/style.css">
     
@@ -16,7 +16,7 @@
 	<form class="wrap" action="<c:url value='/secured/su/addUser' />" method='POST' >
   		
   		<div class="logo">
-  			<img src="${pageContext.request.contextPath}/img/goodlifelogo.png">
+  			The Good Life
   		</div>
 		<c:if test="${not empty error}">
 			<div class="errorblock">
