@@ -2,6 +2,7 @@ package com.goodlife.dao.impl;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class StudentAnswerControllerTest {
 	
 	@Test
 	@Transactional
-	public void testUpdateUploadedUserAnswer() throws NumberFormatException, UploadPathException {
+	public void testUpdateUploadedUserAnswer() throws NumberFormatException, UploadPathException, IOException {
 		
 		HttpSession session = new MockHttpSession();	
 		MultipartFile mpfile = new MockMultipartFile("upload.txt", "upload.txt", "text", "myContent".getBytes());

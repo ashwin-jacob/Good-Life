@@ -204,7 +204,7 @@ public class StudentAnswerController {
 											@RequestParam(value = "uploadQuesId") Integer uploadQuesId,
 											@RequestParam(value = "mediaTypeId") Integer mediaTypeId,
 											@RequestParam(value = "file") MultipartFile mpfile,
-											HttpSession session) throws UploadPathException {
+											HttpSession session) throws UploadPathException, IOException {
 		
 		System.out.println("Got to update upload");
 		
@@ -220,9 +220,13 @@ public class StudentAnswerController {
 			System.out.println("Got to upload student answer");
 		}
 		else{
-			uploadedAnswer.setMediaTypeId(mediaTypeId);
-			uploadStudentAnswer(uploadedAnswer, mpfile, session);
+			//TODO delete file in old filepath.
+			String oldFilePath = uploadedAnswer.getFilePath();
+			File oldFile = new File(oldFilePath);
+			System.out.println("OLD FILE PATH : " + oldFile.getAbsolutePath());
 			
+			uploadedAnswer.setMediaTypeId(mediaTypeId);
+			uploadStudentAnswer(uploadedAnswer, mpfile, session);	
 			System.out.println("Got to else case");
 		}
 		
@@ -249,18 +253,18 @@ public class StudentAnswerController {
 	}
 	
 	// helper method for updateUploadedUserAnswer upload
-	private void uploadStudentAnswer(UploadedAnswer uploadedAnswer, MultipartFile mpfile, HttpSession session) throws UploadPathException {
+	private void uploadStudentAnswer(UploadedAnswer uploadedAnswer, MultipartFile mpfile, HttpSession session) throws UploadPathException, IOException {
 		
 		if (mpfile != null && mpfile.getSize() > 0) {
 			Boolean uploadSuccess = false;
 			String fileName = mpfile.getOriginalFilename();
-			
+			 
 			// Create upload directory 
 			String uploadDirPath = session.getServletContext().getRealPath(UPLOAD_DIR);
 			if (uploadDirPath == null) {
 				uploadDirPath = UPLOAD_DIR;
 			}
-			
+
 			// different media types are stored in different directories.
 			uploadDirPath += findDir(mpfile, uploadedAnswer);
 			
@@ -274,7 +278,8 @@ public class StudentAnswerController {
 			System.out.println("directory: "+uploadDir.getPath());
 			
 			//Create Path for file
-			String uploadFilePath = uploadDir.getPath()+"//"+fileName;
+			String uploadFilePath = uploadDir.getPath()+"/"+fileName;
+			
 			FileOutputStream fos = null;
 			try {
 				byte[] bytes = mpfile.getBytes();
@@ -285,9 +290,12 @@ public class StudentAnswerController {
 			} catch(IOException e) {
 				logger.error("File Save Problem", e);
 			}
-		
+			
 			if (uploadSuccess) {
-				uploadedAnswer.setFilePath(uploadFilePath);
+				// trimmed filepath
+				String url = trimUrl(uploadFilePath);
+				System.out.println("Trimmed "+ url);
+				uploadedAnswer.setFilePath(url);
 				System.out.println("File Path of Uploaded File: "+uploadFilePath);
 			} else {
 				System.out.println("Upload success failed");
@@ -303,8 +311,7 @@ public class StudentAnswerController {
 	 */
 	private String findDir(MultipartFile file, UploadedAnswer uploadedAnswer) {
 		String dir = null;
-		//dir = "/resources/";
-		System.out.println("Multipart type: "+file.getContentType());
+
 		Integer mediaType = null;
 		if (file.getContentType().startsWith("image")) {
 			dir = "/img";
@@ -325,6 +332,21 @@ public class StudentAnswerController {
 		
 		uploadedAnswer.setMediaTypeId(mediaType);
 		return dir;
+	}
+	
+	/*
+	 * returns the filename and it's current directory (without parent directory) of the real path.
+	 * e.g. img/
+	 */
+	private String trimUrl(String s) {
+		
+		int j = s.lastIndexOf("/");
+		String file = s.substring(j);
+		s = s.substring(0,j);
+		int k = s.lastIndexOf("/");
+		String dir = s.substring(k+1);
+		
+		return dir+file;
 	}
 }
 
