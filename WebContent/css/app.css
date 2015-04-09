@@ -110,7 +110,7 @@ textarea.form-control {
 #confirmation-success-inv, #confirmation-failure-inv {
 	width: 60%;
 }
-#maxLen {
+#maxLen, #minLen {
 	width: 500px;
 	height: 30px;
 	padding: 5px;

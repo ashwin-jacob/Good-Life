@@ -25,7 +25,7 @@ public class ShortAnswerUserAnswer implements Serializable{
 	@JoinColumn(name = "sa_q_id")
 	private Integer saQId;
 	
-	@Column(name = "usr_ans", nullable = false)
+	@Column(name = "usr_ans", columnDefinition = "BLOB", nullable = false)
 	private String userAnswer;
 	
 	@JoinColumn(name = "usr_id", nullable = false)

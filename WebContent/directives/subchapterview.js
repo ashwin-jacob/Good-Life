@@ -34,18 +34,37 @@ forceForGood.directive('subchapterView', ['$log', 'student', '$compile', '$http'
 		var controllerFunc = function($scope) {
 			$scope.postShortAns = function(submitWork) {
 				$log.log("Got Here to submitPost for Short Answer");
-				angular.forEach($scope.subchapterForm, function(subChapterElement) {
-					student.updateShortAns($scope.userId, subChapterElement.saQId, subChapterElement.userAnswer, submitWork);
-				});
-				$scope.showConfirmation("success", "shortanswer");
-				if (submitWork) {
-					$("#confirmation-success-s").get(0).innerHTML = 
-						$("#confirmation-success-s").get(0).innerHTML.replace("saved", "submitted");
-					$("#confirmation-success-s").show().delay(4000).fadeOut(200);
-				} else {
+				if (!submitWork) {
+					angular.forEach($scope.subchapterForm, function(subChapterElement) {
+						student.updateShortAns($scope.userId, subChapterElement.saQId, subChapterElement.userAnswer, submitWork);
+					});
 					$("#confirmation-success-s").get(0).innerHTML = 
 						$("#confirmation-success-s").get(0).innerHTML.replace("submitted", "saved");
+					$scope.showConfirmation("success", "shortanswer");
 					$("#confirmation-success-s").show().delay(4000).fadeOut(200);
+				} else {
+					var i = 0;
+					var failed = false;
+					while ($scope.subchapterForm[i] != undefined) {
+						var subChapterElement = $scope.subchapterForm[i];
+						// submit is not acceptable if answer is less than minimum length.
+						if (subChapterElement.userAnswer == undefined ||
+							subChapterElement.userAnswer.length < 150) {
+							failed = true;
+							$log.log(i, " failed.");
+							$scope.showConfirmation("fail", "shortanswer");
+							$("#confirmation-fail-s").show().delay(4000).fadeOut(200);
+							break;
+						}
+						$log.log(i, " good.");
+						i += 1;
+					}
+					if (!failed) {
+						$("#confirmation-success-s").get(0).innerHTML = 
+							$("#confirmation-success-s").get(0).innerHTML.replace("saved", "submitted");
+						$scope.showConfirmation("success", "shortanswer");
+						$("#confirmation-success-s").show().delay(4000).fadeOut(200);
+					}
 				}
 			};
 
