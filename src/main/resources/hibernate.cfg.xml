@@ -17,6 +17,7 @@
 		<mapping class="com.goodlife.model.MultiChoiceList" />
 		<mapping class="com.goodlife.model.MultiChoiceOption" />
 		<mapping class="com.goodlife.model.MultiChoiceUserAns" />
+		<mapping class="com.goodlife.model.Notification" />
 		<mapping class="com.goodlife.model.UploadFileQ" />
 		<mapping class="com.goodlife.model.UploadedAnswer" />
 		<mapping class="com.goodlife.model.ShortAnswerQ" />
