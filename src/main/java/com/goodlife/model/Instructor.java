@@ -38,9 +38,8 @@ public class Instructor implements Serializable  {
 		super();
 	}
 
-
 	public Instructor(Integer userId, Integer numStudent,
-			Integer totalCapacity, Date startDate) {
+			Integer totalCapacity, Date startDate, Date instructorTS) {
 		super();
 		this.userId = userId;
 		this.numStudent = numStudent;

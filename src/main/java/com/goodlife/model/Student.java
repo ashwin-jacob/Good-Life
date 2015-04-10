@@ -35,9 +35,9 @@ public class Student implements Serializable {
 	public Student() {
 		super();
 	}
-
+	
 	public Student(Integer instructorId, Integer currentChapterId,
-			Date startDate, Date promotionDate) {
+			Date startDate, Date promotionDate, Date studentTS) {
 		super();
 		this.instructorId = instructorId;
 		this.currentChapterId = currentChapterId;
