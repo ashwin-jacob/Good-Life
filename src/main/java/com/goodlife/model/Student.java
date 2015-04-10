@@ -36,13 +36,8 @@ public class Student implements Serializable {
 		super();
 	}
 
-<<<<<<< HEAD
-	public Student(Integer rosterId, Integer currentChapterId,
-			Date startDate, Date promotionDate, Date studentTS) {
-=======
 	public Student(Integer instructorId, Integer currentChapterId,
 			Date startDate, Date promotionDate) {
->>>>>>> facilitator-view
 		super();
 		this.instructorId = instructorId;
 		this.currentChapterId = currentChapterId;

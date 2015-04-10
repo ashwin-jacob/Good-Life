@@ -38,13 +38,9 @@ public class Instructor implements Serializable  {
 		super();
 	}
 
-<<<<<<< HEAD
-	public Instructor(Integer userId, Integer rosterId, Integer numStudent,
-			Integer totalCapacity, Date startDate, Date instructorTS) {
-=======
+
 	public Instructor(Integer userId, Integer numStudent,
 			Integer totalCapacity, Date startDate) {
->>>>>>> facilitator-view
 		super();
 		this.userId = userId;
 		this.numStudent = numStudent;
