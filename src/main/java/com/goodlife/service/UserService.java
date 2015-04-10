@@ -27,9 +27,7 @@ public interface UserService {
 	
 	public List<Users> findByRoleTypes(List<Character> roles) throws UserNotFoundException;
 	
-	public List<Student> findStudentByRosterId(Integer rosterId) throws UserNotFoundException;
-	
-	public Instructor findInstructorByRosterId(Integer rosterId) throws UserNotFoundException;
+	public List<Student> findStudentByInstructorId(Integer instructorId) throws UserNotFoundException;
 	
 	public List<Users> advancedQuery(String input, String field, List<Character> roles) 
 			throws UserNotFoundException;

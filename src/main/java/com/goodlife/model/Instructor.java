@@ -17,13 +17,9 @@ public class Instructor implements Serializable  {
 
 	private static final long serialVersionUID = 1L;
 	
+	@Id
 	@JoinColumn(name = "usr_id", unique = true, nullable = false)
 	private Integer userId;
-	
-	@Id
-	@Column(name = "roster_id", unique = true, nullable = true, columnDefinition = "MEDIUMINT AUTO_INCREMENT")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer rosterId;
 	
 	@Column(name = "n_stdnt")
 	private Integer numStudent;
@@ -42,11 +38,15 @@ public class Instructor implements Serializable  {
 		super();
 	}
 
+<<<<<<< HEAD
 	public Instructor(Integer userId, Integer rosterId, Integer numStudent,
 			Integer totalCapacity, Date startDate, Date instructorTS) {
+=======
+	public Instructor(Integer userId, Integer numStudent,
+			Integer totalCapacity, Date startDate) {
+>>>>>>> facilitator-view
 		super();
 		this.userId = userId;
-		this.rosterId = rosterId;
 		this.numStudent = numStudent;
 		this.totalCapacity = totalCapacity;
 		this.startDate = startDate;
@@ -59,14 +59,6 @@ public class Instructor implements Serializable  {
 
 	public void setInstructorTS(Date instructorTS) {
 		this.instructorTS = instructorTS;
-	}
-
-	public Integer getRosterId() {
-		return rosterId;
-	}
-
-	public void setRosterId(Integer rosterId) {
-		this.rosterId = rosterId;
 	}
 
 	public Integer getNumStudent() {

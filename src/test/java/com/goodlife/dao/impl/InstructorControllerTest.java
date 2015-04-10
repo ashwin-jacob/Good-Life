@@ -73,7 +73,7 @@ public class InstructorControllerTest {
 	@Test
 	@Transactional
 	public void testGetStudentProgress() {
-		String studentProgress = instructorController.getStudentProgress(USER_ID, ROSTER_ID);
+		String studentProgress = instructorController.getStudentProgress(USER_ID);
 		System.out.println(studentProgress);
 		assertTrue(Double.valueOf(studentProgress) > 0);
 	}
@@ -88,8 +88,8 @@ public class InstructorControllerTest {
 	
 	@Test
 	@Transactional
-	public void testFindInstructorByRosterId(){
-		String instructor = instructorController.findInstructorByRosterId(ROSTER_ID);
+	public void testFindInstructorByInstructorId(){
+		String instructor = instructorController.findInstructorByUserId(USER_ID);
 		assertTrue(instructor.length() > 2);
 		assertTrue(instructor.contains(String.valueOf(USER_ID)));
 	}
@@ -97,7 +97,7 @@ public class InstructorControllerTest {
 	@Test
 	@Transactional
 	public void testAddStudentToRoster(){
-		Boolean isSuccess = Boolean.valueOf(instructorController.addStudentToRoster(USER_ID + 2, ROSTER_ID));
+		Boolean isSuccess = Boolean.valueOf(instructorController.addStudentToRoster(USER_ID + 2, USER_ID));
 		assertTrue(isSuccess);
 		
 		

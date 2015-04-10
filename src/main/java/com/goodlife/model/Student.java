@@ -19,8 +19,8 @@ public class Student implements Serializable {
 	@JoinColumn(name = "usr_id", unique = true, nullable = false)
 	private Integer userId;
 	
-	@Column(name = "roster_id")
-	private Integer rosterId;
+	@Column(name = "instructor_id")
+	private Integer instructorId;
 	
 	@JoinColumn(name = "crnt_chap_id")
 	private Integer currentChapterId;
@@ -36,10 +36,15 @@ public class Student implements Serializable {
 		super();
 	}
 
+<<<<<<< HEAD
 	public Student(Integer rosterId, Integer currentChapterId,
 			Date startDate, Date promotionDate, Date studentTS) {
+=======
+	public Student(Integer instructorId, Integer currentChapterId,
+			Date startDate, Date promotionDate) {
+>>>>>>> facilitator-view
 		super();
-		this.rosterId = rosterId;
+		this.instructorId = instructorId;
 		this.currentChapterId = currentChapterId;
 		this.startDate = startDate;
 		this.studentTS = studentTS;
@@ -53,12 +58,12 @@ public class Student implements Serializable {
 		this.studentTS = studentTS;
 	}
 
-	public Integer getRosterId() {
-		return rosterId;
+	public Integer getInstructorId() {
+		return instructorId;
 	}
 
-	public void setRosterId(Integer rosterId) {
-		this.rosterId = rosterId;
+	public void setInstructorId(Integer instructorId) {
+		this.instructorId = instructorId;
 	}
 
 	public Integer getCurrentChapterId() {

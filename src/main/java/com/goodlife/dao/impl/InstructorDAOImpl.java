@@ -62,23 +62,12 @@ public class InstructorDAOImpl implements InstructorDAO  {
         }
 		return instructor;
 	}
-	
-	@Override
-	public Instructor findInstructorByRosterId(Integer rosterId)
-			throws UserNotFoundException {
-		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Instructor.class);
-		criteria.add(Restrictions.eqOrIsNull("rosterId", rosterId));
-		Instructor userList = (Instructor) criteria.uniqueResult();
-		if(userList == null)
-			throw new UserNotFoundException("Instructor rosterId: " + rosterId + " not found.");
-		return userList;
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Student> findStudentsByRosterId(Integer rosterId) {
-		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Instructor.class);
-		criteria.add(Restrictions.eqOrIsNull("rosterId", rosterId));
+	public List<Student> findStudentsByInstructorId(Integer instructorId) {
+		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Student.class);
+		criteria.add(Restrictions.eqOrIsNull("instructorId", instructorId));
 		List<Student> studentList = criteria.list();
 		if(studentList == null)
 			return new ArrayList<Student>();
@@ -87,7 +76,7 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	}
 	
 	@Override
-	public Double getStudentProgress(Integer userId, Integer rosterId){
+	public Double getStudentProgress(Integer userId){
 		
 		List<Chapter> chapList = chapterDAO.listAllPublishedChapters();
 		Integer currChap = studentDAO.findStudentByUserId(userId).getCurrentChapterId();
@@ -118,7 +107,7 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	}
 
 	@Override
-	public Integer addInstructor(Integer userId) {
+	public Boolean addInstructor(Integer userId) {
 		Instructor instructor = new Instructor();
 		try {
 			usersDAO.findByUserId(userId);
@@ -127,19 +116,19 @@ public class InstructorDAOImpl implements InstructorDAO  {
 			instructor.setNumStudent(0);
 			instructor.setTotalCapacity(0);
 			this.sessionFactory.getCurrentSession().saveOrUpdate(instructor);
-			return instructor.getRosterId();
+			return Boolean.TRUE;
 		} catch (UserNotFoundException e) {
 			e.printStackTrace();
-			return null;
+			return Boolean.FALSE;
 		}
 	}
 	
 	@Override
-	public Boolean addStudentToRoster(Integer userId, Integer rosterId){
+	public Boolean addStudentToRoster(Integer userId, Integer instructorId){
 		
 		Student student;
 		try {
-			Instructor instructor = findInstructorByRosterId(rosterId);
+			Instructor instructor = findInstructorByUserId(instructorId);
 			if(instructor.getTotalCapacity() <= instructor.getNumStudent())
 				return Boolean.FALSE;
 			else{
@@ -148,7 +137,7 @@ public class InstructorDAOImpl implements InstructorDAO  {
 					if(student == null)
 						return Boolean.FALSE;
 					else{
-						student.setRosterId(rosterId);
+						student.setInstructorId(instructorId);
 						this.sessionFactory.getCurrentSession().saveOrUpdate(student);
 						instructor.setNumStudent(instructor.getNumStudent() + 1);
 						this.sessionFactory.getCurrentSession().saveOrUpdate(instructor);
@@ -166,13 +155,13 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	}
 	
 	@Override
-	public Boolean removeStudentFromRoster(Integer userId, Integer rosterId){
+	public Boolean removeStudentFromRoster(Integer userId, Integer instructorId){
 		
 		try {
-			Instructor instructor = findInstructorByRosterId(rosterId);
+			Instructor instructor = findInstructorByUserId(instructorId);
 			try{
 				Student student = studentDAO.findStudentByUserId(userId);
-				student.setRosterId(null);
+				student.setInstructorId(null);
 				instructor.setNumStudent(instructor.getNumStudent() - 1);
 				this.sessionFactory.getCurrentSession().saveOrUpdate(student);
 				this.sessionFactory.getCurrentSession().saveOrUpdate(instructor);
@@ -189,10 +178,10 @@ public class InstructorDAOImpl implements InstructorDAO  {
 	}
 	
 	@Override
-	public Boolean changeRosterCapSize(Integer rosterId, Integer rosterSize){
+	public Boolean changeRosterCapSize(Integer instructorId, Integer rosterSize){
 		
 		try {
-			Instructor instructor = findInstructorByRosterId(rosterId);
+			Instructor instructor = findInstructorByUserId(instructorId);
 			if(instructor.getNumStudent() > rosterSize)
 				return Boolean.FALSE;
 			else{

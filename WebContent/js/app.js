@@ -12,6 +12,7 @@ var forceForGood = angular.module('forceForGood', [
 	'adminService',
 	'chapterServices',
 	'studentServices',
+	'facilitatorServices'
 	'angularFileUpload',
 	'ngAnimate',
 	'toastr']);
@@ -42,6 +43,10 @@ forceForGood.config(['$routeProvider',
 			when('/studentHome/:userId', {
 				templateUrl: 'partials/studentHome.html',
 				controller: 'StudentHome'
+			}).
+			when('/facilitator/home/:userId', {
+				templateUrl: 'facilitator/homepage.html',
+				controller: 'FacHomePage'
 			}).
 			when('/home', {
 				templateUrl: 'partials/selectFromMany.html',
