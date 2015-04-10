@@ -37,7 +37,7 @@ public class SubChapter implements Serializable{
 	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 	
-	@Column(name = "sub_chap_ts", nullable = false)
+	@Column(name = "sub_chap_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date subChapTS;
 	
 	public SubChapter(){

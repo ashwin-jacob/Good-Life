@@ -35,7 +35,7 @@ public class UploadFileQ implements Serializable{
 	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 	
-	@Column(name = "upload_file_q_ts", nullable = false)
+	@Column(name = "upload_file_q_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date uploadFileQTS;
 
 	public UploadFileQ() {

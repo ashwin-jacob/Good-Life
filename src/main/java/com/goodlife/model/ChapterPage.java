@@ -34,7 +34,7 @@ public class ChapterPage implements Serializable{
 	@Column(name = "page_url")
 	private String pageUrl;
 	
-	@Column(name = "chap_page_ts", nullable = false)
+	@Column(name = "chap_page_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date chapPageTS;
 	
 	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")

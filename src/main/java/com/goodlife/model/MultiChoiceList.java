@@ -43,7 +43,7 @@ public class MultiChoiceList implements Serializable{
 	@Column(name = "graded", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean graded;
 	
-	@Column(name = "multi_choice_list_ts", nullable = false)
+	@Column(name = "multi_choice_list_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date multiChoiceListTS;
 	
 	public MultiChoiceList() {

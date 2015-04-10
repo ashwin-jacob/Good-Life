@@ -19,7 +19,7 @@ public class SuperAdmin implements Serializable {
 	@JoinColumn(name = "usr_id", unique = true, nullable = false)
 	private Integer userId;
 	
-	@Column(name = "admin_ts")
+	@Column(name = "admin_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date adminTS;
 	
 	public SuperAdmin() {

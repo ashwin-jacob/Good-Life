@@ -40,7 +40,7 @@ public class UserStatus implements Serializable{
 	@Column(name = "end_dt", unique = false, nullable = true)
 	private Date endDate;
 	
-	@Column(name = "user_status_ts", nullable = false)
+	@Column(name = "user_status_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date userStatusTS;
 	
 	public UserStatus(){

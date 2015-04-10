@@ -46,7 +46,7 @@ public class UploadedAnswer implements Serializable {
 	@JoinColumn(name = "up_q_id", nullable = false)
 	private Integer uploadQuesId;
 	
-	@Column(name = "upload_ans_ts", nullable = false)
+	@Column(name = "upload_ans_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date uploadAnsTS;
 
 	public UploadedAnswer() {

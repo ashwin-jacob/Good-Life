@@ -30,7 +30,7 @@ public class Instructor implements Serializable  {
 	@Column(name = "start_dt")
 	private Date startDate;
 	
-	@Column(name = "instructor_ts", nullable = false)
+	@Column(name = "instructor_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date instructorTS;
 
 	

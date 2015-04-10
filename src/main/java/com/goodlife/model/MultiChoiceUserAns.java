@@ -29,7 +29,7 @@ public class MultiChoiceUserAns implements Serializable{
 	@Column(name = "usr_ans")
 	private Integer userAnswer;
 	
-	@Column(name = "multi_choice_ans_ts", nullable = false)
+	@Column(name = "multi_choice_ans_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date multiChoiceAnsTS;
 
 	public MultiChoiceUserAns() {

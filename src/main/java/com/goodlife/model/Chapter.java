@@ -31,7 +31,7 @@ public class Chapter implements Serializable{
 	@Column(name = "order_id", nullable = false)
 	private Integer orderId;
 	
-	@Column(name = "chap_ts", nullable = false)
+	@Column(name = "chap_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date chapTS;
 	
 	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")

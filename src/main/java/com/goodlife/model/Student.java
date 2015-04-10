@@ -28,7 +28,7 @@ public class Student implements Serializable {
 	@Column(name = "start_dt")
 	private Date startDate;
 	
-	@Column(name = "student_ts", nullable = false)
+	@Column(name = "student_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date studentTS;
 
 

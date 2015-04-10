@@ -66,7 +66,7 @@ public class Users implements Serializable {
 	@Column(name = "promo_dt")
 	private Date promotionDate;
 	
-	@Column(name = "users_ts", nullable = false)
+	@Column(name = "users_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date usersTS;
 	
     public Users() {

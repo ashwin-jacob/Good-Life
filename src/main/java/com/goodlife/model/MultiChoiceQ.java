@@ -43,7 +43,7 @@ public class MultiChoiceQ implements Serializable{
 	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 	
-	@Column(name = "multi_choice_q_ts", nullable = false)
+	@Column(name = "multi_choice_q_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date multiChoiceQTS;
 
 	public MultiChoiceQ() {

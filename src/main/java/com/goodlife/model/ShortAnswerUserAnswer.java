@@ -38,7 +38,7 @@ public class ShortAnswerUserAnswer implements Serializable{
 	@Column(name = "submitted", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean submitted;
 	
-	@Column(name = "short_ans_ans_ts", nullable = false)
+	@Column(name = "short_ans_ans_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
 	private Date shortAnsATS;
 
 	public ShortAnswerUserAnswer() {
