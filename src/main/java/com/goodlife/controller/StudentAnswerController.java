@@ -3,6 +3,7 @@ package com.goodlife.controller;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.http.HttpSession;
 
@@ -108,12 +109,15 @@ public class StudentAnswerController {
 		
 			if(shortAnswerUserAnswer == null){
 				shortAnswerUserAnswer = new ShortAnswerUserAnswer();
+				Date shortAnsATS = new Date();
 				shortAnswerUserAnswer.setSubChapId(shortAnswerQ.getSubChapId());
 				shortAnswerUserAnswer.setUserId(userId);
 				shortAnswerUserAnswer.setSaQId(saQId);
 				shortAnswerUserAnswer.setUserAnswer(userAnswer);
 				shortAnswerUserAnswer.setSubmitted(Boolean.valueOf(submitted));
 				shortAnswerUserAnswer.setAprvd(false);
+				shortAnswerUserAnswer.setShortAnsATS(shortAnsATS);
+				
 			}
 			else{
 				shortAnswerUserAnswer.setUserAnswer(userAnswer);
@@ -164,7 +168,8 @@ public class StudentAnswerController {
 		if(mcOpt == null)
 			isMultiChoiceAnsUpdated = false;
 		else if(multiChoiceUserAns == null){
-			multiChoiceUserAns = new MultiChoiceUserAns(userId, multiQuesId, userAnswer);
+			Date multiChoiceAnsTS = new Date();
+			multiChoiceUserAns = new MultiChoiceUserAns(userId, multiQuesId, userAnswer, multiChoiceAnsTS);
 			isMultiChoiceAnsUpdated = multiChoiceUserAnsDAO.addMultiChoiceAnswer(multiChoiceUserAns);
 		}
 		else{
@@ -212,9 +217,11 @@ public class StudentAnswerController {
 		
 		if(uploadedAnswer == null){
 			uploadedAnswer = new UploadedAnswer();
+			Date uploadAnsTS = new Date();
 			uploadedAnswer.setUserId(userId);
 			uploadedAnswer.setMediaTypeId(mediaTypeId);
 			uploadedAnswer.setUploadQuesId(uploadQuesId);
+			uploadedAnswer.setUploadAnsTS(uploadAnsTS);
 			uploadStudentAnswer(uploadedAnswer, mpfile, session);
 
 			System.out.println("Got to upload student answer");

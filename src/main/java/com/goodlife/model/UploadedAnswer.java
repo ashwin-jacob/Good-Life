@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,6 +45,9 @@ public class UploadedAnswer implements Serializable {
 	
 	@JoinColumn(name = "up_q_id", nullable = false)
 	private Integer uploadQuesId;
+	
+	@Column(name = "upload_ans_ts", nullable = false)
+	private Date uploadAnsTS;
 
 	public UploadedAnswer() {
 		super();
@@ -50,7 +55,7 @@ public class UploadedAnswer implements Serializable {
 
 	public UploadedAnswer(Integer uploadAnswerId, Integer mediaTypeId,
 			String filePath, Integer userId, boolean aprvd, boolean shared,
-			Integer uploadQuesId) {
+			Integer uploadQuesId, Date uploadAnsTS) {
 		super();
 		this.uploadAnswerId = uploadAnswerId;
 		this.mediaTypeId = mediaTypeId;
@@ -59,6 +64,15 @@ public class UploadedAnswer implements Serializable {
 		this.aprvd = aprvd;
 		this.shared = shared;
 		this.uploadQuesId = uploadQuesId;
+		this.uploadAnsTS = uploadAnsTS;
+	}
+
+	public Date getUploadAnsTS() {
+		return uploadAnsTS;
+	}
+
+	public void setUploadAnsTS(Date uploadAnsTS) {
+		this.uploadAnsTS = uploadAnsTS;
 	}
 
 	public Integer getUploadAnswerId() {

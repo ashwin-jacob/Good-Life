@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,12 +64,15 @@ public class ChapterController {
 											 @RequestParam(value="chapDescr") String chapDescr,
 											 @RequestParam(value="orderId") String orderId){
 		logger.debug("inside add chapter");
+		
+		Date chapTS = new Date();
 
 		Chapter chapter = new Chapter();
 		chapter.setChapTitle(chapTitle);
 		chapter.setChapDescr(chapDescr);
 		chapter.setOrderId(Integer.valueOf(orderId));
 		chapter.setPublished(false);
+		chapter.setChapTS(chapTS);
 		
 		Integer response = 0;
 		response = chapterDAO.addChapter(chapter);
@@ -237,8 +241,9 @@ public class ChapterController {
 								@RequestParam(value="chapTitle") String chapTitle,
 								@RequestParam(value="orderId") Integer orderId,
 								@RequestParam(value="published") Boolean published){
+		Date chapTS = new Date();
 		
-		Chapter updatedChapter = new Chapter(chapId, chapDescr, chapTitle, orderId, published);
+		Chapter updatedChapter = new Chapter(chapId, chapDescr, chapTitle, orderId, chapTS, published);
 		
 		Boolean response = chapterDAO.updateChapter(updatedChapter);
 		
@@ -364,6 +369,7 @@ public class ChapterController {
 	// helper method for addChapterPage upload
 	private ChapterPage uploadChapterPage(Integer chapId, Integer pageNum, String pageUrl, MultipartFile mpfile, HttpSession session) throws UploadPathException {
 		ChapterPage chapterPage = null;
+		Date chapPageTS = new Date();
 		
 		if (mpfile != null && mpfile.getSize() > 0) {
 			Boolean uploadSuccess = false;
@@ -405,6 +411,7 @@ public class ChapterController {
 				chapterPage.setChapId(chapId);
 				chapterPage.setPageNum(pageNum);
 				chapterPage.setPageUrl("" + UPLOAD_DIR + "/" + fileName);
+				chapterPage.setChapPageTS(chapPageTS);
 			}
 		}
 		

@@ -1,6 +1,7 @@
 package com.goodlife.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,6 +31,9 @@ public class Chapter implements Serializable{
 	@Column(name = "order_id", nullable = false)
 	private Integer orderId;
 	
+	@Column(name = "chap_ts", nullable = false)
+	private Date chapTS;
+	
 	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 
@@ -38,13 +42,22 @@ public class Chapter implements Serializable{
 	}
 
 	public Chapter(Integer chapId, String chapDescr, String chapTitle,
-			Integer orderId, Boolean published) {
+			Integer orderId, Date chapTS, Boolean published) {
 		super();
 		this.chapId = chapId;
 		this.chapDescr = chapDescr;
 		this.chapTitle = chapTitle;
 		this.orderId = orderId;
+		this.chapTS = chapTS;
 		this.published = published;
+	}
+
+	public Date getChapTS() {
+		return chapTS;
+	}
+
+	public void setChapTS(Date chapTS) {
+		this.chapTS = chapTS;
 	}
 
 	public Integer getChapId() {

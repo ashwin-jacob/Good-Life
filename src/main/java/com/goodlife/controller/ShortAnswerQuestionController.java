@@ -1,6 +1,7 @@
 package com.goodlife.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -36,10 +37,12 @@ public class ShortAnswerQuestionController {
 											 @RequestParam(value="descr") String descr,
 											 @RequestParam(value="orderId") Integer orderId) {
 		
+		Date shortAnsQTS = new Date();
 		ShortAnswerQ shortAnswerQ = new ShortAnswerQ();
 		shortAnswerQ.setSubChapId(subChapId);
 		shortAnswerQ.setHelpText(helpTxt);
 		shortAnswerQ.setOrderId(orderId);
+		shortAnswerQ.setShortAnsQTS(shortAnsQTS);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";

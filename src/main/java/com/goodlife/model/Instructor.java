@@ -33,6 +33,9 @@ public class Instructor implements Serializable  {
 	
 	@Column(name = "start_dt")
 	private Date startDate;
+	
+	@Column(name = "instructor_ts", nullable = false)
+	private Date instructorTS;
 
 	
 	public Instructor() {
@@ -40,13 +43,22 @@ public class Instructor implements Serializable  {
 	}
 
 	public Instructor(Integer userId, Integer rosterId, Integer numStudent,
-			Integer totalCapacity, Date startDate) {
+			Integer totalCapacity, Date startDate, Date instructorTS) {
 		super();
 		this.userId = userId;
 		this.rosterId = rosterId;
 		this.numStudent = numStudent;
 		this.totalCapacity = totalCapacity;
 		this.startDate = startDate;
+		this.instructorTS = instructorTS;
+	}
+
+	public Date getInstructorTS() {
+		return instructorTS;
+	}
+
+	public void setInstructorTS(Date instructorTS) {
+		this.instructorTS = instructorTS;
 	}
 
 	public Integer getRosterId() {

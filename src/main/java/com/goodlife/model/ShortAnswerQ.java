@@ -1,6 +1,7 @@
 package com.goodlife.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,13 +40,16 @@ public class ShortAnswerQ implements Serializable{
 	
 	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
+	
+	@Column(name = "short_ans_q_ts", nullable = false)
+	private Date shortAnsQTS;
 
 	public ShortAnswerQ() {
 		super();
 	}
 
 	public ShortAnswerQ(Integer saQId, Integer subChapId, String question,
-			String helpText, Integer orderId, Boolean published) {
+			String helpText, Integer orderId, Boolean published, Date shortAnsQTS) {
 		super();
 		this.saQId = saQId;
 		this.subChapId = subChapId;
@@ -53,6 +57,15 @@ public class ShortAnswerQ implements Serializable{
 		this.helpText = helpText;
 		this.orderId = orderId;
 		this.published = published;
+		this.shortAnsQTS = shortAnsQTS;
+	}
+
+	public Date getShortAnsQTS() {
+		return shortAnsQTS;
+	}
+
+	public void setShortAnsQTS(Date shortAnsQTS) {
+		this.shortAnsQTS = shortAnsQTS;
 	}
 
 	public Integer getSaQId() {

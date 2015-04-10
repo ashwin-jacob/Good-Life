@@ -27,6 +27,9 @@ public class Student implements Serializable {
 	
 	@Column(name = "start_dt")
 	private Date startDate;
+	
+	@Column(name = "student_ts", nullable = false)
+	private Date studentTS;
 
 
 	public Student() {
@@ -34,11 +37,20 @@ public class Student implements Serializable {
 	}
 
 	public Student(Integer rosterId, Integer currentChapterId,
-			Date startDate, Date promotionDate) {
+			Date startDate, Date promotionDate, Date studentTS) {
 		super();
 		this.rosterId = rosterId;
 		this.currentChapterId = currentChapterId;
 		this.startDate = startDate;
+		this.studentTS = studentTS;
+	}
+
+	public Date getStudentTS() {
+		return studentTS;
+	}
+
+	public void setStudentTS(Date studentTS) {
+		this.studentTS = studentTS;
 	}
 
 	public Integer getRosterId() {

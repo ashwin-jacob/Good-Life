@@ -2,6 +2,7 @@ package com.goodlife.model;
 
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,19 +34,32 @@ public class UploadFileQ implements Serializable{
 	
 	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
+	
+	@Column(name = "upload_file_q_ts", nullable = false)
+	private Date uploadFileQTS;
 
 	public UploadFileQ() {
 		super();
 	}
 
 	public UploadFileQ(Integer uploadQuesId, Integer subChapId,
-			String helpText, String description, Boolean published) {
+			String helpText, String description, Boolean published, Date uploadFileQTS) {
 		super();
 		this.uploadQuesId = uploadQuesId;
 		this.subChapId = subChapId;
 		this.helpText = helpText;
 		this.description = description;
 		this.published = published;
+		this.uploadFileQTS = uploadFileQTS;
+	}
+
+	
+	public Date getUploadFileQTS() {
+		return uploadFileQTS;
+	}
+
+	public void setUploadFileQTS(Date uploadFileQTS) {
+		this.uploadFileQTS = uploadFileQTS;
 	}
 
 	public Integer getUploadQuesId() {

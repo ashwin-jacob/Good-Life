@@ -1,6 +1,7 @@
 package com.goodlife.controller;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,10 +37,12 @@ public class UploadQuestionController {
 											 //@RequestParam(value="orderId") Integer orderId) {
 		
 		UploadFileQ uploadFileQ = new UploadFileQ();
+		Date uploadFileQTS = new Date();
 		uploadFileQ.setDescription(descr);
 		uploadFileQ.setSubChapId(subChapId);
 		uploadFileQ.setHelpText(helpTxt);
 		//uploadFileQ.setOrderId(orderId);
+		uploadFileQ.setUploadFileQTS(uploadFileQTS);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";

@@ -122,11 +122,13 @@ public class UserManagementController {
 		else if(userStatus != null && Character.toUpperCase(userStatus.getStatusTypeCode()) == 'D')
 			userStatusDAO.deleteUserStatus(userStatus.getUserStatusId());
 		userStatus = new UserStatus();
+		Date userStatusTS = new Date();
 		userStatus.setUserId(userId);
 		userStatus.setStartDate(new Timestamp(new Date().getTime()));
 		// 604800000 is the amount of milliseconds in 7 days
 		userStatus.setEndDate(new Timestamp(new Date().getTime() + 604800000));	
 		userStatus.setStatusTypeCode(statusTypeCode);
+		userStatus.setUserStatusTS(userStatusTS);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";

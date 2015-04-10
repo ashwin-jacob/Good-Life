@@ -66,6 +66,9 @@ public class Users implements Serializable {
 	@Column(name = "promo_dt")
 	private Date promotionDate;
 	
+	@Column(name = "users_ts", nullable = false)
+	private Date usersTS;
+	
     public Users() {
     	
     }
@@ -75,7 +78,7 @@ public class Users implements Serializable {
 			Integer invitationCode, String invitedBy, Date invitedDate,
 			Integer userStatusId, String firstname, String lastname,
 			String city, String state, String aboutMe, String profileImagePath,
-			Date promotionDate) {
+			Date promotionDate, Date usersTS) {
 		super();
 		this.userId = userId;
 		this.email = email;
@@ -93,8 +96,18 @@ public class Users implements Serializable {
 		this.aboutMe = aboutMe;
 		this.profileImagePath = profileImagePath;
 		this.promotionDate = promotionDate;
+		this.usersTS = usersTS;
 	}
 
+	
+
+	public Date getUsersTS() {
+		return usersTS;
+	}
+
+	public void setUsersTS(Date usersTS) {
+		this.usersTS = usersTS;
+	}
 
 	public Integer getUserId() {
 		return userId;

@@ -1,7 +1,9 @@
 package com.goodlife.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,6 +19,9 @@ public class SuperAdmin implements Serializable {
 	@JoinColumn(name = "usr_id", unique = true, nullable = false)
 	private Integer userId;
 	
+	@Column(name = "admin_ts")
+	private Date adminTS;
+	
 	public SuperAdmin() {
 		super();
 	}
@@ -28,5 +33,15 @@ public class SuperAdmin implements Serializable {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
+
+	public Date getAdminTS() {
+		return adminTS;
+	}
+
+	public void setAdminTS(Date adminTS) {
+		this.adminTS = adminTS;
+	}
+	
+	
 	
 }
