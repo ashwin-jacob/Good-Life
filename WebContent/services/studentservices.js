@@ -9,6 +9,7 @@ studentServices.factory('student', ['$http', '$log', '$resource', function($http
 		getMultChoiceOption : getMultChoiceOption,
 		getMultiUserAnswer : getMultiUserAnswer,
 		getShortAnsUserAnswer : getShortAnsUserAnswer,
+		getUploadedAns : getUploadedAns,
 		updateMultiChoice : updateMultiChoice,
 		updateShortAns : updateShortAns,
 		getAllowedCurriculum : getAllowedCurriculum,
@@ -112,6 +113,17 @@ studentServices.factory('student', ['$http', '$log', '$resource', function($http
 		return $resource('student/getshortansweruseranswer', {userId:userId, shortAnsId:shortAnsId}, {
 			queryShortAns:{method:'GET'}
 		}).queryShortAns();
+	}
+
+	/**
+	Get the user answer for short answer
+	*/
+	function getUploadedAns(userId, uploadQuesId) {
+		var promise = $http.get('student/getuploadedans', { 
+			params: {userId: userId, uploadQuesId:uploadQuesId}} ).then(function(response) {
+				return response.data;
+			});
+		return promise;
 	}
 
 	/**

@@ -41,7 +41,18 @@ forceForGood.controller('StudentCurriculumView', ['$scope', '$log', 'student', '
 						});
 					});
 				} else {
-
+					angular.forEach( subChapterFormTemp, function(subChapQues) {
+						student.getUploadedAns($scope.userId, subChapQues.uploadQuesId).then(function(result) {
+							if ( angular.isUndefined(result) || result === null ) {
+								subChapQues.userAnswer  = null;
+							}
+							else {
+								subChapQues.userAnswer = result.filePath;
+							}
+							$log.log("result of short answer");
+							$log.log(result);
+						});
+					});
 				}
 				$scope.subChapterSelected = subChapter;
 				$scope.subChapterForm = subChapterFormTemp;

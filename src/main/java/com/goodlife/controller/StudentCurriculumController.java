@@ -275,7 +275,7 @@ public class StudentCurriculumController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getuploadedansweruseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/getuploadedans", method = RequestMethod.GET)
 	public String getUploadedAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
 											  @RequestParam(value = "uploadQuesId") Integer uploadQuesId){
 		
