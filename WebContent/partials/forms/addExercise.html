@@ -14,21 +14,21 @@
 			<div class="form-group">
 				<label class="col-md-2">Title</label>
 				<div class="col-md-4">
-					<input type="text" ng-model="exTitle" name="exTitle"
+					<input type="text" ng-model="selectedExercise.subChapTitle" name="subChapTitle"
 						class="form-control ng-pristine ng-valid" required />
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-md-2">Description</label>
 				<div class="col-md-4">
-					<input type="text" ng-model="exDescr" name="exDescr"
+					<input type="text" ng-model="selectedExercise.subChapDescr" name="subChapDescr"
 						class="form-control ng-pristine ng-valid">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-md-2">Order</label>
 				<div class="col-md-4">
-					<select ng-model="exOrder" name="exOrder" ng-init="exOrder = orderOptions[0]"
+					<select ng-model="exOrder" name="exOrder" ng-init="exOrder = ex_order"
 					class="form-control" ng-options="orderOption.id for orderOption in orderOptions">
 					
 				
@@ -38,7 +38,7 @@
 			<div class="form-group">
 				<label class="col-md-2">Published</label>
 				<div class="col-md-1">
-					<input type="checkbox" ng-model="chapPub" name="chapPub"
+					<input type="checkbox" ng-model="selectedExercise.published" name="chapPub"
 						class="ng-pristine ng-valid">
 				</div>
 			</div>
@@ -64,13 +64,13 @@
 				<div class="form-group">
 
 					<label class="col-md-2">Question:</label>
-					<div class="col-md-9">
+					<div class="col-md-8">
 						<input type="text"
 							class="form-control ng-pristine ng-valid ng-touched"
 							name="questionText" ng-model="questionText">
 					</div>
 					<div class="col-md-1">
-						<input type="button" ng-click="addItem(questionText)" value="Add"
+						<input type="button" ng-click="addItem(questionText)" value="Add Question"
 							class="btn btn-sm btn-info">
 
 					</div>
