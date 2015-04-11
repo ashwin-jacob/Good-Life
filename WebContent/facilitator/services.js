@@ -1,6 +1,6 @@
 var facilitatorServices = angular.module('facilitatorServices', []);
 
-facilitatorServices.factory('facilitator', function('$http', '$log') {
+facilitatorServices.factory('facilitator', function($http, $log) {
 	return({
 		getProfile : getProfile,
 		editProfile: editProfile

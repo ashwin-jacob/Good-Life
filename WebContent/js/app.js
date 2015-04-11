@@ -12,7 +12,7 @@ var forceForGood = angular.module('forceForGood', [
 	'adminService',
 	'chapterServices',
 	'studentServices',
-	'facilitatorServices'
+	'facilitatorServices',
 	'angularFileUpload',
 	'ngAnimate',
 	'toastr']);
