@@ -22,7 +22,7 @@
 <!-- center pane -->
 <div class="col-md-10" >
 <h3 class="text-center leftmargin">Keep up the good work!</h3>
-<div class="progress">
+<div class="progress" id="progress">
   <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{progressValue}}" aria-valuemin="0" aria-valuemax="100" style="width: {{progressValue}}%">
     {{progressValue}}%
   </div>
@@ -30,11 +30,13 @@
     
 <div class="jumbotron">
     <!-- Notifications -->
-    <h3>Notifications</h3>
-   	<ul class="text-info" id="notifications">
-   		<li>Your short answer in chapter 1 was approved!</li>
-   		<li>You have been added to Roberto's student list</li>
-   	</ul>
+    <div class="leftpadding">
+	    <h3>Notifications</h3>
+	   	<ul class="text-info" id="notifications">
+	   		<li>Your short answer in chapter 1 was approved!</li>
+	   		<li>You have been added to Roberto's student list</li>
+	   	</ul>
+   	</div>
     
 	<dl class="dl-horizontal">
 	  <dt>Name</dt><dd>John Smith</dd>

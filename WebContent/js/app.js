@@ -43,6 +43,10 @@ forceForGood.config(['$routeProvider',
 				templateUrl: 'partials/studentHome.html',
 				controller: 'StudentHome'
 			}).
+			when('/instructorHome', {
+				templateUrl: 'partials/instructorHome.html',
+				controller: 'RedirectController'
+			}).
 			when('/home', {
 				templateUrl: 'partials/selectFromMany.html',
 				controller: 'RedirectController'

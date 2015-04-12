@@ -8,8 +8,9 @@ forceForGood.controller('RedirectController', ['$scope', '$log', '$location', '$
 
 				if(userInfo.roleTypeCode == "S") {
 					$location.path("/curriculum/"+userInfo.userId);
-				}
-				else if(userInfo.roleTypeCode == "A") {
+				} else if(userInfo.roleTypeCode == "F" || userInfo.roleTypeCode == "M") {
+					$location.path("/instructorHome");
+				} else if(userInfo.roleTypeCode == "A") {
 					$location.path("/adminConsole");
 				}
 			}).

@@ -125,13 +125,18 @@ textarea.form-control {
 .leftmargin {
 	padding-left: 20px;
 }
-.progress {
+#progress {
 	height: 50px;
 }
 ul#notifications {
     list-style-type: circle;
 }
-
+.leftpadding {
+	padding: 0 100px;
+}
+.rightalign {
+	text-align: right;
+}
 /* ====================================================
 	CURRICULUM BUILDER
 	==================================================== */
