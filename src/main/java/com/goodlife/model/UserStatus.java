@@ -40,21 +40,33 @@ public class UserStatus implements Serializable{
 	@Column(name = "end_dt", unique = false, nullable = true)
 	private Date endDate;
 	
+	@Column(name = "user_status_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
+	private Date userStatusTS;
+	
 	public UserStatus(){
 		
 	}
 
 	public UserStatus(Integer userStatusId, Integer userId, char statusTypeCode,
-			Date startDate, Date endDate) {
+			Date startDate, Date endDate, Date userStatusTS) {
 		super();
 		this.userStatusId = userStatusId;
 		this.userId = userId;
 		this.statusTypeCode = statusTypeCode;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.userStatusTS = userStatusTS;
 	}
 	
 	
+
+	public Date getUserStatusTS() {
+		return userStatusTS;
+	}
+
+	public void setUserStatusTS(Date userStatusTS) {
+		this.userStatusTS = userStatusTS;
+	}
 
 	public Integer getUserId() {
 		return userId;

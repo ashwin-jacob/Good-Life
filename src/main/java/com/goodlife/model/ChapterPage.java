@@ -1,6 +1,7 @@
 package com.goodlife.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +34,9 @@ public class ChapterPage implements Serializable{
 	@Column(name = "page_url")
 	private String pageUrl;
 	
+	@Column(name = "chap_page_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
+	private Date chapPageTS;
+	
 	@Column(name = "published", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean published;
 
@@ -41,13 +45,22 @@ public class ChapterPage implements Serializable{
 	}
 
 	public ChapterPage(Integer pageId, Integer chapId, Integer pageNum,
-			String pageUrl, Boolean published) {
+			String pageUrl, Date chapPageTS, Boolean published) {
 		super();
 		this.pageId = pageId;
 		this.chapId = chapId;
 		this.pageNum = pageNum;
 		this.pageUrl = pageUrl;
+		this.chapPageTS = chapPageTS;
 		this.published = published;
+	}
+
+	public Date getChapPageTS() {
+		return chapPageTS;
+	}
+
+	public void setChapPageTS(Date chapPageTS) {
+		this.chapPageTS = chapPageTS;
 	}
 
 	public Integer getPageId() {

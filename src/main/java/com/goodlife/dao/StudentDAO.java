@@ -10,10 +10,10 @@ import com.goodlife.model.Student;
 
 public interface StudentDAO {
 	public Student findStudentByUserId(Integer userId) throws ObjectNotFoundException;
-	public List<Student> findStudentByRosterId(Integer rosterId) throws ObjectNotFoundException;
+	public List<Student> findStudentByInstructorId(Integer instructorId) throws ObjectNotFoundException;
 	public Boolean addStudent(Student user) throws UserNotFoundException;
 	public Boolean deleteStudent(Integer userId) throws ObjectNotFoundException;
-	public Boolean addExistingStudentToRoster(Integer userId, Integer rosterId) throws ObjectNotFoundException;
+	public Boolean addExistingStudentToRoster(Integer userId, Integer instructorId) throws ObjectNotFoundException;
 	public List<Chapter> getAllowedChapters(Integer userId) throws ObjectNotFoundException;
 	public Boolean updateCurrentChapter(Integer userId, Integer chapId);
 }

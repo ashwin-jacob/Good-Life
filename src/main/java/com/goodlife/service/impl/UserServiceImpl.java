@@ -120,12 +120,8 @@ public class UserServiceImpl implements UserService {
 		return usersDao.findByState(state);
 	}
 
-	public List<Student> findStudentByRosterId(Integer rosterId) throws UserNotFoundException {
-		return studentDao.findStudentByRosterId(rosterId);
-	}
-
-	public Instructor findInstructorByRosterId(Integer rosterId) throws UserNotFoundException {
-		return instructorDao.findInstructorByRosterId(rosterId);
+	public List<Student> findStudentByInstructorId(Integer instructorId) throws UserNotFoundException {
+		return studentDao.findStudentByInstructorId(instructorId);
 	}
 
 

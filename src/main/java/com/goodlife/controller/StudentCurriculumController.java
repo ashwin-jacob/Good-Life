@@ -101,7 +101,7 @@ public class StudentCurriculumController {
 		Student student = studentDAO.findStudentByUserId(userId);
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
-		Double progress = instructorDAO.getStudentProgress(userId, student.getRosterId())*100;
+		Double progress = instructorDAO.getStudentProgress(userId)*100;
 		
 		try {
 			jsonResp = mapper.writeValueAsString(progress.intValue());
@@ -275,7 +275,7 @@ public class StudentCurriculumController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/getuploadedansweruseranswer", method = RequestMethod.GET)
+	@RequestMapping(value = "/getuploadedans", method = RequestMethod.GET)
 	public String getUploadedAnswerUserAnswer(@RequestParam(value = "userId") Integer userId,
 											  @RequestParam(value = "uploadQuesId") Integer uploadQuesId){
 		

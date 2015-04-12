@@ -1,6 +1,7 @@
 package com.goodlife.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -37,10 +38,12 @@ public class SubChapterController {
 											 @RequestParam(value="orderId") Integer orderId){
 		
 		SubChapter subChapter = new SubChapter();
+		Date subChapTS = new Date();
 		subChapter.setChapId(chapId);
 		subChapter.setSubChapTitle(subChapTitle);
 		subChapter.setSubChapDescr(subChapDescr);
 		subChapter.setOrderId(orderId);
+		subChapter.setSubChapTS(subChapTS);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -124,7 +127,8 @@ public class SubChapterController {
 									@RequestParam("orderId") Integer orderId,
 									@RequestParam("published") Boolean published){
 		
-		SubChapter updatedSubChapter = new SubChapter(subChapId, chapId, subChapDescr, subChapTitle, orderId, published);
+		Date subChapTS = new Date();
+		SubChapter updatedSubChapter = new SubChapter(subChapId, chapId, subChapDescr, subChapTitle, orderId, published, subChapTS);
 		
 		Boolean response = subChapterDAO.updateSubChapter(updatedSubChapter);
 		

@@ -72,42 +72,14 @@ public class InstructorController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value = "/findinstructorbyrosterid", method = RequestMethod.GET)
-	public String findInstructorByRosterId(@RequestParam(value = "rosterId") Integer rosterId){
-		
-		Instructor instructor;
-		try {
-			instructor = instructorDAO.findInstructorByRosterId(rosterId);
-		} catch (UserNotFoundException e1) {
-			instructor = null;
-			e1.printStackTrace();
-		}
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String jsonResp ="";
-		
-		try {
-			jsonResp = mapper.writeValueAsString(instructor);
-		} catch (JsonGenerationException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return jsonResp;
-	}
-	
-	@ResponseBody
 	@RequestMapping(value = "/getstudentprogress", method = RequestMethod.GET)
-	public String getStudentProgress(@RequestParam(value = "userId") Integer userId,
-									 @RequestParam(value = "rosterId") Integer rosterId){
+	public String getStudentProgress(@RequestParam(value = "userId") Integer userId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(instructorDAO.getStudentProgress(userId, rosterId));
+			jsonResp = mapper.writeValueAsString(instructorDAO.getStudentProgress(userId));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -141,13 +113,13 @@ public class InstructorController {
 	@ResponseBody
 	@RequestMapping(value = "/addStudentToRoster", method = RequestMethod.GET)
 	public String addStudentToRoster(@RequestParam(value = "userId") Integer userId,
-									 @RequestParam(value = "rosterId") Integer rosterId){
+									 @RequestParam(value = "instructorId") Integer instructorId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(instructorDAO.addStudentToRoster(userId,rosterId));
+			jsonResp = mapper.writeValueAsString(instructorDAO.addStudentToRoster(userId,instructorId));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -161,13 +133,13 @@ public class InstructorController {
 	@ResponseBody
 	@RequestMapping(value = "/removestudentfromroster", method = RequestMethod.GET)
 	public String removeStudentFromRoster(@RequestParam("userId") Integer userId,
-										  @RequestParam("rosterId") Integer rosterId){
+										  @RequestParam("instructorId") Integer instructorId){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(instructorDAO.removeStudentFromRoster(userId,rosterId));
+			jsonResp = mapper.writeValueAsString(instructorDAO.removeStudentFromRoster(userId,instructorId));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -180,14 +152,14 @@ public class InstructorController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/changerostercapsize", method = RequestMethod.GET)
-	public String changeRosterCapSize(@RequestParam("rosterId") Integer rosterId,
+	public String changeRosterCapSize(@RequestParam("instructorId") Integer instructorId,
 									  @RequestParam("rosterSize") Integer rosterSize){
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
 		
 		try {
-			jsonResp = mapper.writeValueAsString(instructorDAO.changeRosterCapSize(rosterId,rosterSize));
+			jsonResp = mapper.writeValueAsString(instructorDAO.changeRosterCapSize(instructorId,rosterSize));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -241,10 +213,10 @@ public class InstructorController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/liststudentsbyroster", method = RequestMethod.GET)
-	public String listStudentsByRoster(@RequestParam("rosterId") Integer rosterId){
+	public String listStudentsByRoster(@RequestParam("instructorId") Integer instructorId){
 		
 		List<ObjectPair> studentInfoList = new ArrayList<ObjectPair>();
-		List<Student> studentList = studentDAO.findStudentByRosterId(rosterId);
+		List<Student> studentList = studentDAO.findStudentByInstructorId(instructorId);
 		
 		for(int i = 0; i < studentList.size(); i++){	
 			Users user;

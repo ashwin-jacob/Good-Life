@@ -1,6 +1,7 @@
 package com.goodlife.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -49,6 +50,7 @@ public class MultiChoiceController {
 											 @RequestParam(value="subChapId") Integer subChapId,
 											 @RequestParam(value="title") String title) {
 		
+		Date multiChoiceListTS = new Date();
 		MultiChoiceList mcL = new MultiChoiceList();
 		mcL.setDescription(description);
 		mcL.setGraded(graded);
@@ -56,6 +58,7 @@ public class MultiChoiceController {
 		mcL.setPublished(Boolean.FALSE);
 		mcL.setSubChapId(subChapId);
 		mcL.setTitle(title);
+		mcL.setMultiChoiceListTS(multiChoiceListTS);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -80,12 +83,14 @@ public class MultiChoiceController {
 											 @RequestParam(value="corrAns", required = false) Integer corrAns,
 											 @RequestParam(value="orderId") Integer orderId) {
 		
+		Date multiChoiceQTS = new Date();
 		MultiChoiceQ mcQ = new MultiChoiceQ();
 		mcQ.setQuesText(questionText);
 		mcQ.setMultiChoiceListId(multiChoiceListId);
 		mcQ.setHelpText(helpTxt);
 		if(corrAns != null) mcQ.setCorrectAnswer(corrAns);
 		mcQ.setOrderId(orderId);
+		mcQ.setMultiChoiceQTS(multiChoiceQTS);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -107,9 +112,11 @@ public class MultiChoiceController {
 	public String addMultiChoiceOption(@RequestParam(value="mcQId") Integer mcQId,
 											 @RequestParam(value="choiceText") String choiceText) {
 		
+		Date multiChoiceOptionTS = new Date();
 		MultiChoiceOption mcOpt = new MultiChoiceOption();
 		mcOpt.setMultiQuesId(mcQId);
 		mcOpt.setChoiceText(choiceText);
+		mcOpt.setMultiChoiceOptionTS(multiChoiceOptionTS);
 
 		ObjectMapper mapper = new ObjectMapper();
 		String jsonResp ="";
@@ -235,6 +242,7 @@ public class MultiChoiceController {
 		
 		Boolean response = Boolean.TRUE;
 		MultiChoiceList mcList;
+		Date multiChoiceListTS = new Date();
 		try {
 			mcList = mcListdao.getMultiChoiceListById(multiChoiceListId);
 			mcList.setDescription(description);
@@ -243,6 +251,7 @@ public class MultiChoiceController {
 			mcList.setPublished(published);
 			mcList.setSubChapId(subChapId);
 			mcList.setTitle(title);
+			mcList.setMultiChoiceListTS(multiChoiceListTS);
 			
 			if(mcListdao.addMultiChoiceList(mcList) == null)
 				response = Boolean.FALSE;

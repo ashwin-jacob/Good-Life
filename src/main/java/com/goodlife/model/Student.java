@@ -19,34 +19,46 @@ public class Student implements Serializable {
 	@JoinColumn(name = "usr_id", unique = true, nullable = false)
 	private Integer userId;
 	
-	@Column(name = "roster_id")
-	private Integer rosterId;
+	@Column(name = "instructor_id")
+	private Integer instructorId;
 	
 	@JoinColumn(name = "crnt_chap_id")
 	private Integer currentChapterId;
 	
 	@Column(name = "start_dt")
 	private Date startDate;
+	
+	@Column(name = "student_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
+	private Date studentTS;
 
 
 	public Student() {
 		super();
 	}
-
-	public Student(Integer rosterId, Integer currentChapterId,
-			Date startDate, Date promotionDate) {
+	
+	public Student(Integer instructorId, Integer currentChapterId,
+			Date startDate, Date promotionDate, Date studentTS) {
 		super();
-		this.rosterId = rosterId;
+		this.instructorId = instructorId;
 		this.currentChapterId = currentChapterId;
 		this.startDate = startDate;
+		this.studentTS = studentTS;
 	}
 
-	public Integer getRosterId() {
-		return rosterId;
+	public Date getStudentTS() {
+		return studentTS;
 	}
 
-	public void setRosterId(Integer rosterId) {
-		this.rosterId = rosterId;
+	public void setStudentTS(Date studentTS) {
+		this.studentTS = studentTS;
+	}
+
+	public Integer getInstructorId() {
+		return instructorId;
+	}
+
+	public void setInstructorId(Integer instructorId) {
+		this.instructorId = instructorId;
 	}
 
 	public Integer getCurrentChapterId() {

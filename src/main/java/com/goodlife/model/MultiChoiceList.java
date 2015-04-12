@@ -1,6 +1,7 @@
 package com.goodlife.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,13 +43,16 @@ public class MultiChoiceList implements Serializable{
 	@Column(name = "graded", columnDefinition = "TINYINT(1) DEFAULT 0")
 	private Boolean graded;
 	
+	@Column(name = "multi_choice_list_ts", nullable = false, columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP()")
+	private Date multiChoiceListTS;
+	
 	public MultiChoiceList() {
 		super();
 	}
 
 	public MultiChoiceList(Integer multiChoiceListId, String title,
 			String description, Integer subChapId, Integer orderId,
-			Boolean published, Boolean graded) {
+			Boolean published, Boolean graded, Date multiChoiceListTS) {
 		super();
 		this.multiChoiceListId = multiChoiceListId;
 		this.title = title;
@@ -57,6 +61,15 @@ public class MultiChoiceList implements Serializable{
 		this.orderId = orderId;
 		this.published = published;
 		this.graded = graded;
+		this.multiChoiceListTS = multiChoiceListTS;
+	}
+
+	public Date getMultiChoiceListTS() {
+		return multiChoiceListTS;
+	}
+
+	public void setMultiChoiceListTS(Date multiChoiceListTS) {
+		this.multiChoiceListTS = multiChoiceListTS;
 	}
 
 	public Integer getMultiChoiceListId() {

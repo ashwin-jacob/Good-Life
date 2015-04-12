@@ -39,11 +39,11 @@ public class StudentDAOImpl implements StudentDAO  {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<Student> findStudentByRosterId(Integer rosterId)
+	public List<Student> findStudentByInstructorId(Integer instructorId)
 			throws ObjectNotFoundException{
 		
 		Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(Student.class);
-		criteria.add(Restrictions.eqOrIsNull("rosterId", rosterId));
+		criteria.add(Restrictions.eqOrIsNull("instructorId", instructorId));
 		List<Student> studentList = criteria.list();
 		if(studentList == null)
 			return new ArrayList<Student>();
@@ -79,10 +79,10 @@ public class StudentDAOImpl implements StudentDAO  {
 	}
 
 	@Override
-	public Boolean addExistingStudentToRoster(Integer userId, Integer rosterId){
+	public Boolean addExistingStudentToRoster(Integer userId, Integer instructorId){
 		try{
 			Student student = findStudentByUserId(userId);
-			student.setRosterId(rosterId);
+			student.setInstructorId(instructorId);
 			this.sessionFactory.getCurrentSession().saveOrUpdate(student);
 			return Boolean.TRUE;
 		}catch(ObjectNotFoundException e){
